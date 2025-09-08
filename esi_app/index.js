@@ -1,19 +1,27 @@
-import fetch from 'node-fetch';
-import readline from 'readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
+const loading = document.getElementById("loading");
+const output2 = document.getElementById("output");
+const form = document.getElementById("systemForm");
+const inputBox = document.getElementById("systemInput");
+
+form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const systemName = inputBox.value.trim();
+    if (!systemName) return;
+    await getSystemInfo(systemName);
+});
 
 async function getSystemInfo(systemName) {
+    loading.classList.remove("hidden"); // show spinner
+    output2.innerHTML = ""; // clear old output
 
     try {
-        loading.classList.remove("hidden"); // show spinner
-        output2.innerHTML = ""; // clear old output
-
         // Search for matching system IDs
         const searchResp = await fetch(`https://esi.evetech.net/latest/universe/systems/?search=${systemName}`);
+        if (!searchResp.ok) throw new Error("Failed to search systems.");
         const systemIds = await searchResp.json();
 
         if (!systemIds || systemIds.length === 0) {
-            console.log("System not found!");
+            output2.innerHTML = `<p style="color:red;">System not found!</p>`;
             return;
         }
 
@@ -32,24 +40,20 @@ async function getSystemInfo(systemName) {
         }
 
         if (!matchedSystem) {
-            console.log("Exact system match not found!");
+            output2.innerHTML = `<p style="color:red;">Exact system match not found!</p>`;
             return;
         }
 
         // Fetch constellation name
         let constellationName = "Unknown";
-        // Fetch Constellation details via system name
         const constResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
-        
-        // Pull constellation name from the response if fetch was successful
         if (constResp.ok) {
             const constDetails = await constResp.json();
             constellationName = constDetails.name;
         }
 
-        // Fetch region name via constellation
+        // Fetch region name
         let regionName = "Unknown";
-
         const constellationResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
         if (constellationResp.ok) {
             const constellationData = await constellationResp.json();
@@ -61,18 +65,19 @@ async function getSystemInfo(systemName) {
                 regionName = regionData.name;
             }
         }
+
+        // Show results
+        output2.innerHTML = `
+            <h3>System Info</h3>
+            <p><b>Name:</b> ${matchedSystem.name}</p>
+            <p><b>Constellation:</b> ${constellationName}</p>
+            <p><b>Region:</b> ${regionName}</p>
+            <p><b>Security Status:</b> ${matchedSystem.security_status.toFixed(1)}</p>
+        `;
+
     } catch (err) {
         output2.innerHTML = `<p style="color:red;">Error: ${err.message}</p>`;
-    } finally{ 
-        loading.classList.add("hidden");
+    } finally {
+        loading.classList.add("hidden"); // always hide spinner
     }
-    console.log(`Name: ${matchedSystem.name}`);
-    console.log(`Constellation: ${constellationName}`);
-    console.log(`Region: ${regionName}`);
-    console.log(`Security Status: ${matchedSystem.security_status.toFixed(1)}`);
 }
-
-const rl = readline.createInterface({ input, output });
-const name = await rl.question("Enter system name: ");
-await getSystemInfo(name);
-rl.close();
