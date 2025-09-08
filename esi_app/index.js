@@ -1,57 +1,60 @@
 const lookupBtn = document.getElementById("lookupBtn");
+const systemInput = document.getElementById("systemName");
 const outputDiv = document.getElementById("output");
+const loadingSpinner = document.getElementById("loading");
 
 lookupBtn.addEventListener("click", async () => {
-  const systemName = document.getElementById("systemName").value.trim();
-  if (!systemName) {
-    outputDiv.innerHTML = "<p>Please enter a system name.</p>";
-    return;
-  }
+  const name = systemInput.value.trim();
+  if (!name) return;
 
-  outputDiv.innerHTML = "<p>Searching...</p>";
+  outputDiv.innerHTML = "Searching...";
+  loadingSpinner.classList.add("active");
 
   try {
-    const systemIdsResp = await fetch(`https://esi.evetech.net/latest/universe/systems/?search=${systemName}`);
-    const systemIds = await systemIdsResp.json();
+    // Step 1: resolve system name -> system ID
+    const idRes = await fetch("https://esi.evetech.net/latest/universe/ids/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([name]),
+    });
 
-    if (!systemIds || systemIds.length === 0) {
-      outputDiv.innerHTML = "<p>System not found.</p>";
-      return;
+    const idData = await idRes.json();
+    if (!idData.solar_systems || idData.solar_systems.length === 0) {
+      throw new Error("System not found");
     }
 
-    let matchedSystem = null;
-    for (const id of systemIds) {
-      const resp = await fetch(`https://esi.evetech.net/latest/universe/systems/${id}/`);
-      if (!resp.ok) continue;
+    const systemId = idData.solar_systems[0].id;
 
-      const details = await resp.json();
-      if (details.name.toLowerCase() === systemName.toLowerCase()) {
-        matchedSystem = details;
-        break;
-      }
-    }
+    // Step 2: fetch system info by ID
+    const sysRes = await fetch(
+      `https://esi.evetech.net/latest/universe/systems/${systemId}/`
+    );
+    const sysData = await sysRes.json();
 
-    if (!matchedSystem) {
-      outputDiv.innerHTML = "<p>Exact system match not found.</p>";
-      return;
-    }
+    // Step 3: fetch constellation name
+    const constRes = await fetch(
+      `https://esi.evetech.net/latest/universe/constellations/${sysData.constellation_id}/`
+    );
+    const constData = await constRes.json();
 
-    // constellation
-    const constResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
-    const constData = await constResp.json();
+    // Step 4: fetch region name
+    const regionRes = await fetch(
+      `https://esi.evetech.net/latest/universe/regions/${constData.region_id}/`
+    );
+    const regionData = await regionRes.json();
 
-    // region
-    const regionResp = await fetch(`https://esi.evetech.net/latest/universe/regions/${constData.region_id}/`);
-    const regionData = await regionResp.json();
-
+    // Step 5: display results
     outputDiv.innerHTML = `
-      <h2>System Info</h2>
-      <p><strong>Name:</strong> ${matchedSystem.name}</p>
-      <p><strong>Constellation:</strong> ${constData.name}</p>
-      <p><strong>Region:</strong> ${regionData.name}</p>
-      <p><strong>Security Status:</strong> ${matchedSystem.security_status.toFixed(1)}</p>
+      <h2>${name}</h2>
+      <p><b>System ID:</b> ${systemId}</p>
+      <p><b>Security Status:</b> ${sysData.security_status.toFixed(2)}</p>
+      <p><b>Constellation:</b> ${constData.name} (ID: ${sysData.constellation_id})</p>
+      <p><b>Region:</b> ${regionData.name} (ID: ${regionData.region_id})</p>
+      <p><b>Star ID:</b> ${sysData.star_id}</p>
     `;
   } catch (err) {
-    outputDiv.innerHTML = `<p>Error fetching system data: ${err.message}</p>`;
+    outputDiv.innerHTML = `<p style="color: red;">Error: ${err.message}</p>`;
+  } finally {
+    loadingSpinner.classList.remove("active");
   }
 });
