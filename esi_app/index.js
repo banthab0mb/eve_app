@@ -7,6 +7,12 @@ loadingText.style.display = "none"; // hide initially
 
 lookupBtn.addEventListener("click", async () => {
     
+    const systemName = input.value.trim();
+    if (!systemName) return;
+
+    loadingText.style.display = "block";
+    outputDiv.innerHTML = "";
+
     // Search for matching system IDs
     const searchResp = await fetch(`https://esi.evetech.net/latest/universe/systems/?search=${systemName}`);
     const systemIds = await searchResp.json();
