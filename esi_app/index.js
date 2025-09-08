@@ -1,4 +1,5 @@
 const loadingText = document.getElementById("loading");
+loadingText.style.display = "none"; // hide initially
 const outputDiv = document.getElementById("output");
 const lookupBtn = document.getElementById("lookupBtn");
 const input = document.getElementById("systemName");
@@ -8,17 +9,16 @@ lookupBtn.addEventListener("click", async () => {
   if (!systemName) return;
 
   // show "Loading..."
-  loadingText.classList.remove("hidden");
+  loadingText.style.display = "block";
   outputDiv.innerHTML = "";
 
   try {
-    // strict search for exact system name
     const resp = await fetch(
-      `https://esi.evetech.net/latest/search/?categories=solar_system&search=${systemName}&strict=true`
+      `https://esi.evetech.net/latest/search/?categories=solar_system&search=${systemName}`
     );
     const data = await resp.json();
 
-    if (!data.solar_system) {
+    if (!data.solar_system || data.solar_system.length === 0) {
       outputDiv.innerHTML = `<p>System not found!</p>`;
       return;
     }
@@ -29,13 +29,11 @@ lookupBtn.addEventListener("click", async () => {
     );
     const sysData = await sysResp.json();
 
-    // constellation
     const constResp = await fetch(
       `https://esi.evetech.net/latest/universe/constellations/${sysData.constellation_id}/`
     );
     const constData = await constResp.json();
 
-    // region
     const regResp = await fetch(
       `https://esi.evetech.net/latest/universe/regions/${constData.region_id}/`
     );
@@ -52,6 +50,6 @@ lookupBtn.addEventListener("click", async () => {
     outputDiv.innerHTML = `<p>Error: ${err.message}</p>`;
   } finally {
     // hide "Loading..."
-    loadingText.classList.add("hidden");
+    loadingText.style.display = "none";
   }
 });
