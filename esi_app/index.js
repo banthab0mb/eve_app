@@ -30,7 +30,7 @@ lookupBtn.addEventListener("click", async () => {
             if (!resp.ok) continue;
 
             const details = await resp.json();
-            if (details.name.toLowerCase() === systemName.toLowerCase()) {
+            if (details.name === systemName) {
                 matchedSystem = details;
                 break;
             }
