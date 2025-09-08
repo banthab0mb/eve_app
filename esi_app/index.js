@@ -1,20 +1,25 @@
-async function getSystemInfo(systemName) {
-  const outputDiv = document.getElementById("output");
-  outputDiv.textContent = "Searching...";
+const lookupBtn = document.getElementById("lookupBtn");
+const outputDiv = document.getElementById("output");
+
+lookupBtn.addEventListener("click", async () => {
+  const systemName = document.getElementById("systemName").value.trim();
+  if (!systemName) {
+    outputDiv.innerHTML = "<p>Please enter a system name.</p>";
+    return;
+  }
+
+  outputDiv.innerHTML = "<p>Searching...</p>";
 
   try {
-    // Search for matching system IDs
-    const searchResp = await fetch(`https://esi.evetech.net/latest/universe/systems/?search=${systemName}`);
-    const systemIds = await searchResp.json();
+    const systemIdsResp = await fetch(`https://esi.evetech.net/latest/universe/systems/?search=${systemName}`);
+    const systemIds = await systemIdsResp.json();
 
     if (!systemIds || systemIds.length === 0) {
-      outputDiv.textContent = "System not found!";
+      outputDiv.innerHTML = "<p>System not found.</p>";
       return;
     }
 
     let matchedSystem = null;
-
-    // Loop through IDs to find exact match
     for (const id of systemIds) {
       const resp = await fetch(`https://esi.evetech.net/latest/universe/systems/${id}/`);
       if (!resp.ok) continue;
@@ -27,56 +32,26 @@ async function getSystemInfo(systemName) {
     }
 
     if (!matchedSystem) {
-      outputDiv.textContent = "Exact system match not found!";
+      outputDiv.innerHTML = "<p>Exact system match not found.</p>";
       return;
     }
 
-    // Fetch constellation name
-    let constellationName = "Unknown";
-    try {
-      const constResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
-      if (constResp.ok) {
-        const constDetails = await constResp.json();
-        constellationName = constDetails.name;
-      }
-    } catch {}
+    // constellation
+    const constResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
+    const constData = await constResp.json();
 
-    // Fetch region name
-    let regionName = "Unknown";
-    try {
-      const constellationResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
-      if (constellationResp.ok) {
-        const constellationData = await constellationResp.json();
-        const regionId = constellationData.region_id;
+    // region
+    const regionResp = await fetch(`https://esi.evetech.net/latest/universe/regions/${constData.region_id}/`);
+    const regionData = await regionResp.json();
 
-        const regionResp = await fetch(`https://esi.evetech.net/latest/universe/regions/${regionId}/`);
-        if (regionResp.ok) {
-          const regionData = await regionResp.json();
-          regionName = regionData.name;
-        }
-      }
-    } catch {}
-
-    // Output results
     outputDiv.innerHTML = `
-      <pre>
-        Name: ${matchedSystem.name}
-        Constellation: ${constellationName}
-        Region: ${regionName}
-        Security Status: ${matchedSystem.security_status.toFixed(2)}
-      </pre>
+      <h2>System Info</h2>
+      <p><strong>Name:</strong> ${matchedSystem.name}</p>
+      <p><strong>Constellation:</strong> ${constData.name}</p>
+      <p><strong>Region:</strong> ${regionData.name}</p>
+      <p><strong>Security Status:</strong> ${matchedSystem.security_status.toFixed(1)}</p>
     `;
-
   } catch (err) {
-    console.error(err);
-    outputDiv.textContent = "Error fetching system data.";
-  }
-}
-
-// Hook up button
-document.getElementById("lookupBtn").addEventListener("click", () => {
-  const name = document.getElementById("systemName").value.trim();
-  if (name) {
-    getSystemInfo(name);
+    outputDiv.innerHTML = `<p>Error fetching system data: ${err.message}</p>`;
   }
 });
