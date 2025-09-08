@@ -6,15 +6,15 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="container">
+    <h1>EVE System Lookup</h1>
+    <input type="text" id="systemName" placeholder="Enter system name" />
+    <button id="lookupBtn">Lookup</button>
 
-  <h1>EVE System Lookup</h1>
-  <input type="text" id="systemName" placeholder="Enter system name" />
-  <button id="lookupBtn">Lookup</button>
+    <div id="loading" class="hidden">Loading...</div>
+    <div id="output"></div>
+  </div>
 
-  <div id="output"></div>
-  <div id="loading" class="hidden">Searching...</div>
-
-  <!-- defer ensures DOM is ready -->
   <script type="module" src="esi_app/index.js" defer></script>
 </body>
 </html>

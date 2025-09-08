@@ -1,108 +1,52 @@
-/* Reset some basics */
 body {
-  margin: 0;
+  background-color: #111;
+  color: #eee;
   font-family: Arial, sans-serif;
-  background: #121212;
-  color: #e0e0e0;
+  margin: 0;
+  height: 100vh;
   display: flex;
   justify-content: center;
-  align-items: flex-start;
-  min-height: 100vh;
-  padding: 40px;
+  align-items: center;
 }
 
-/* Centered container */
 .container {
-  max-width: 700px;
-  width: 100%;
-  background: #1e1e1e;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.6);
-  padding: 30px;
-}
-
-/* Title */
-h1 {
-  font-size: 2rem;
-  margin-bottom: 20px;
-  color: #64ffda;
   text-align: center;
+  max-width: 600px;
+  width: 100%;
 }
 
-/* Input + Button row */
-.input-row {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-input[type="text"] {
-  flex: 1;
+input {
   padding: 10px;
-  border-radius: 6px;
+  width: 60%;
   border: none;
-  outline: none;
-  font-size: 1rem;
+  border-radius: 5px;
+  margin-right: 5px;
 }
 
 button {
-  background: #64ffda;
+  padding: 10px 15px;
   border: none;
-  padding: 10px 16px;
-  border-radius: 6px;
-  font-weight: bold;
+  border-radius: 5px;
+  background-color: #4caf50;
+  color: white;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
 button:hover {
-  background: #52e0c4;
+  background-color: #45a049;
 }
 
-/* Output box */
+#loading {
+  margin-top: 15px;
+  font-style: italic;
+}
+
 #output {
-  background: #2c2c2c;
-  padding: 20px;
-  border-radius: 8px;
   margin-top: 20px;
-}
-
-#output h2 {
-  margin-top: 0;
-  color: #64ffda;
-}
-
-#output p {
-  margin: 6px 0;
-}
-
-/* Spinner */
-.spinner {
-  border: 6px solid #2c2c2c;
-  border-top: 6px solid #64ffda;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
-  margin: 20px auto;
-  display: none;
-}
-
-.spinner.active {
-  display: block;
-}
-
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  text-align: left;
+  display: inline-block; /* keeps text centered while aligned left inside */
 }
 
 .hidden {
   display: none;
-}
-
-#loading {
-  margin-top: 10px;
-  font-style: italic;
-  color: #ccc;
 }
