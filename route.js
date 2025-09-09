@@ -23,39 +23,34 @@ fetch("systems.json")
   .catch(err => console.error("Failed to load systems.json:", err));
 
 // Generic autocomplete function
-function setupAutocomplete(inputEl, suggestionsEl, focusVar) {
+function setupAutocomplete(inputEl, suggestionsEl) {
+  let currentFocus = -1;
+
   inputEl.addEventListener("input", () => {
     const query = inputEl.value.trim().toLowerCase();
-    if (!query) {
-      suggestionsEl.innerHTML = "";
-      return;
-    }
-
-    const matches = systems
-      .filter(s => s.system.toLowerCase().startsWith(query))
-      .slice(0, 10);
-
+    currentFocus = -1;
     suggestionsEl.innerHTML = "";
+    if (!query) return;
+
+    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
 
     matches.forEach(s => {
-        const div = document.createElement("div");
-        div.classList.add("suggestion");
-        // System name + region in italics
-        div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
+      const div = document.createElement("div");
+      div.classList.add("suggestion");
+      div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
 
-        div.addEventListener("click", () => {
-            inputEl.value = s.system;
-            suggestionsEl.innerHTML = "";
-        });
+      div.addEventListener("click", () => {
+        inputEl.value = s.system;
+        suggestionsEl.innerHTML = "";
+      });
 
-        suggestionsEl.appendChild(div);
+      suggestionsEl.appendChild(div);
     });
-
   });
 
   inputEl.addEventListener("keydown", (e) => {
     const items = suggestionsEl.querySelectorAll(".suggestion");
-    let currentFocus = inputEl === originInput ? currentFocusOrigin : currentFocusDest;
+    if (!items.length) return;
 
     if (e.key === "ArrowDown") {
       currentFocus++;
@@ -68,60 +63,48 @@ function setupAutocomplete(inputEl, suggestionsEl, focusVar) {
       setActive(items, currentFocus);
       e.preventDefault();
     } else if (e.key === "Enter") {
-      if (currentFocus > -1 && items.length) {
+      if (currentFocus > -1) {
         e.preventDefault();
-        inputEl.value = items[currentFocus].textContent;
+        inputEl.value = items[currentFocus].textContent.split(" (")[0]; // remove region from value
         suggestionsEl.innerHTML = "";
       }
     }
-
-    if (inputEl === originInput) currentFocusOrigin = currentFocus;
-    else currentFocusDest = currentFocus;
-  });
-
-  function setActive(items, index) {
-    items.forEach(el => el.classList.remove("active"));
-    if (index > -1 && items[index]) {
-      items[index].classList.add("active");
-    }
-  }
-
-  document.addEventListener("click", (e) => {
-    if (e.target !== inputEl) suggestionsEl.innerHTML = "";
   });
 }
 
-// Initialize autocomplete for both inputs
-setupAutocomplete(originInput, suggestionsOrigin);
-setupAutocomplete(destInput, suggestionsDest);
+function setActive(items, index) {
+  items.forEach(el => el.classList.remove("active"));
+  if (index > -1 && items[index]) items[index].classList.add("active");
+}
 
-// Route planning (dummy example using systems.json names and IDs)
-routeBtn.addEventListener("click", () => {
-  const originName = originInput.value.trim().toLowerCase();
-  const destName = destInput.value.trim().toLowerCase();
+// Initialize for system lookup
+setupAutocomplete(document.getElementById("systemName"), document.getElementById("suggestions-system"));
 
-  if (!originName || !destName) {
-    routeOutput.innerHTML = "<p>Please enter both origin and destination.</p>";
-    return;
-  }
+// Initialize for route planner
+setupAutocomplete(document.getElementById("originSystem"), document.getElementById("suggestions-origin"));
+setupAutocomplete(document.getElementById("destSystem"), document.getElementById("suggestions-dest"));
+
+document.getElementById("routeBtn").addEventListener("click", () => {
+  const originName = document.getElementById("origin").value.trim().toLowerCase();
+  const destName = document.getElementById("dest").value.trim().toLowerCase();
 
   const origin = systems.find(s => s.system.toLowerCase() === originName);
   const dest = systems.find(s => s.system.toLowerCase() === destName);
 
   if (!origin || !dest) {
-    routeOutput.innerHTML = "<p>One or both systems not found.</p>";
+    document.getElementById("route-output").innerHTML = `<p>Invalid origin or destination system.</p>`;
     return;
   }
 
-  // Display dummy route for now
-  routeOutput.innerHTML = `
+  document.getElementById("route-output").innerHTML = `
     <table>
-      <tr><th>Step</th><th>System</th><th>Region</th></tr>
-      <tr><td>1</td><td>${origin.system}</td><td>${origin.region}</td></tr>
-      <tr><td>2</td><td>${dest.system}</td><td>${dest.region}</td></tr>
+      <tr><th>Step</th><th>System</th></tr>
+      <tr><td>1</td><td>${origin.system} <i>(${origin.region})</i></td></tr>
+      <tr><td>2</td><td>${dest.system} <i>(${dest.region})</i></td></tr>
     </table>
   `;
 });
+
 
 
 

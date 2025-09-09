@@ -9,6 +9,7 @@ html, body {
   flex-direction: column;
 }
 
+/* Header & Footer */
 header, footer {
   background: #111;
   color: #ccc;
@@ -69,13 +70,12 @@ h2 {
   padding-bottom: 5px;
 }
 
-/* Search Inputs */
-/* Side-by-side search inputs */
+/* Search Inputs - side by side */
 .search-wrapper {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-  position: relative; /* for suggestions absolute positioning */
+  position: relative; /* suggestions absolute */
 }
 
 .search-wrapper input {
@@ -101,13 +101,14 @@ h2 {
   background: #333;
 }
 
-/* Suggestions styling for multiple inputs */
+/* Suggestions below each input */
+#suggestions-system,
 #suggestions-origin,
 #suggestions-dest {
   position: absolute;
   top: 100%;
   left: 0;
-  right: 0;
+  width: 100%; /* matches input width */
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
@@ -116,6 +117,7 @@ h2 {
   color: #000;
 }
 
+#suggestions-system .suggestion,
 #suggestions-origin .suggestion,
 #suggestions-dest .suggestion {
   padding: 5px 10px;
@@ -124,38 +126,27 @@ h2 {
   color: #000;
 }
 
+#suggestions-system .suggestion:hover,
 #suggestions-origin .suggestion:hover,
 #suggestions-dest .suggestion:hover {
   background-color: #eee;
 }
 
+#suggestions-system .active,
 #suggestions-origin .active,
 #suggestions-dest .active {
   background-color: #1e88e5;
   color: #fff !important;
 }
 
-/* Show system + region in suggestions */
+/* Region styling inside suggestions */
 .suggestion span.region {
   font-style: italic;
   color: #555;
   margin-left: 5px;
 }
 
-#suggestions .suggestion {
-  padding: 5px 10px;
-  cursor: pointer;
-  color: black;
-  background-color: white;
-}
-
-#suggestions .suggestion:hover,
-#suggestions .active {
-  background-color: #1e88e5;
-  color: white !important;
-}
-
-/* Table Styling */
+/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -177,20 +168,12 @@ tr:nth-child(even) {
   background: #141414;
 }
 
-/* Security Status Colors */
-.sec-high {
-  color: #0f0; /* green */
-}
+/* Security status colors */
+.sec-high { color: #0f0; }
+.sec-low { color: #ffa500; }
+.sec-null { color: #f00; }
 
-.sec-low {
-  color: #ffa500; /* orange */
-}
-
-.sec-null {
-  color: #f00; /* red */
-}
-
-/* Footer */
+/* Footer - glued to bottom */
 footer {
   border-top: 2px solid #222;
   flex-shrink: 0;
@@ -201,6 +184,7 @@ footer {
   justify-content: center;
   padding: 15px 20px;
   background: #111;
+  margin-top: auto; /* ensures footer stays at bottom */
 }
 
 footer p {
