@@ -37,6 +37,38 @@ input.addEventListener("input", () => {
   });
 });
 
+// Add keyboard navigation
+input.addEventListener("keydown", (e) => {
+  let items = suggestionsDiv.querySelectorAll(".suggestion");
+  if (!items.length) return;
+
+  if (e.key === "ArrowDown") {
+    currentFocus++;
+    if (currentFocus >= items.length) currentFocus = 0;
+    setActive(items);
+    e.preventDefault();
+  } else if (e.key === "ArrowUp") {
+    currentFocus--;
+    if (currentFocus < 0) currentFocus = items.length - 1;
+    setActive(items);
+    e.preventDefault();
+  } else if (e.key === "Enter") {
+    e.preventDefault();
+    if (currentFocus > -1) {
+      items[currentFocus].click();
+    } else {
+      lookupBtn.click();
+    }
+  }
+});
+
+function setActive(items) {
+  items.forEach(el => el.classList.remove("active"));
+  if (currentFocus > -1 && items[currentFocus]) {
+    items[currentFocus].classList.add("active");
+  }
+}
+
 // Lookup system on button click
 lookupBtn.addEventListener("click", () => {
   const name = input.value.trim().toLowerCase();
