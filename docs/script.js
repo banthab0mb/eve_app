@@ -7,7 +7,7 @@ let systems = [];
 let currentFocus = -1;
 
 // Load systems.json once
-fetch("systems.json")
+fetch("../systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
