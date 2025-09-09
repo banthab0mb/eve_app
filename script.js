@@ -40,7 +40,7 @@ input.addEventListener("input", () => {
       lookupBtn.click();
     });
 
-    // Mousedown (used by Enter key) → fill input only, no lookup
+    // Mousedown (used by Enter/Tab selection) → fill input only
     div.addEventListener("mousedown", (e) => {
       e.preventDefault(); // keep focus in input
       input.value = s.system;
@@ -54,29 +54,36 @@ input.addEventListener("input", () => {
 // Keyboard navigation
 input.addEventListener("keydown", (e) => {
   let items = suggestionsDiv.querySelectorAll(".suggestion");
-  if (!items.length) return;
 
   if (e.key === "ArrowDown") {
-    currentFocus++;
-    if (currentFocus >= items.length) currentFocus = 0;
-    setActive(items);
-    e.preventDefault();
+    if (items.length) {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items);
+      e.preventDefault();
+    }
   } else if (e.key === "ArrowUp") {
-    currentFocus--;
-    if (currentFocus < 0) currentFocus = items.length - 1;
-    setActive(items);
-    e.preventDefault();
+    if (items.length) {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items);
+      e.preventDefault();
+    }
   } else if (e.key === "Enter") {
-    if (currentFocus > -1) {
-      e.preventDefault(); // stop lookup
+    if (currentFocus > -1 && items.length) {
+      // choose suggestion only
+      e.preventDefault();
       items[currentFocus].dispatchEvent(new Event("mousedown"));
     } else {
-      lookupBtn.click(); // only if no suggestion highlighted
+      // normal search
+      e.preventDefault();
+      lookupBtn.click();
     }
   } else if (e.key === "Tab") {
-    if (items.length > 0) {
+    if (items.length) {
       e.preventDefault();
-      items[0].click(); // pick the first suggestion
+      if (currentFocus === -1) currentFocus = 0; // default to first
+      items[currentFocus].dispatchEvent(new Event("mousedown"));
     }
   }
 });
