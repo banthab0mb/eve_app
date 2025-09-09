@@ -57,6 +57,7 @@ button:hover {
   overflow-y: auto;         /* scroll if too many suggestions */
   z-index: 1000;            /* on top of everything */
   width: 100%;              /* match input width */
+  color: black;             /* black text color */
 }
 
 .suggestion {
