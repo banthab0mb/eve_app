@@ -1,52 +1,50 @@
 body {
-  background-color: #111;
-  color: #eee;
-  font-family: Arial, sans-serif;
-  margin: 0;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 50px;
 }
 
 .container {
-  text-align: center;
-  max-width: 600px;
-  width: 100%;
+    max-width: 600px;
+    width: 100%;
 }
 
-input {
-  padding: 10px;
-  width: 60%;
-  border: none;
-  border-radius: 5px;
-  margin-right: 5px;
+.search-box {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 8px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
 }
 
 button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 5px;
-  background-color: #4caf50;
-  color: white;
-  cursor: pointer;
+    padding: 8px 16px;
+    font-size: 16px;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    background-color: #1e88e5;
+    color: white;
 }
 
 button:hover {
-  background-color: #45a049;
+    background-color: #1565c0;
 }
 
 #loading {
-  margin-top: 15px;
-  font-style: italic;
+    margin-left: 10px;
 }
 
-#output {
-  margin-top: 20px;
-  text-align: left;
-  display: inline-block; /* keeps text centered while aligned left inside */
-}
-
-.hidden {
-  display: none;
+#output p {
+    margin: 5px 0;
 }
