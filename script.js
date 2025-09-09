@@ -26,17 +26,28 @@ input.addEventListener("input", () => {
     .filter(s => s.system.toLowerCase().includes(query))
     .slice(0, 10); // limit suggestions
 
-  suggestionsDiv.innerHTML = matches
-    .map(s => `<div class="suggestion">${s.system}</div>`)
-    .join("");
+  suggestionsDiv.innerHTML = "";
 
-  // click on suggestion to fill input
-  document.querySelectorAll(".suggestion").forEach(el => {
-    el.addEventListener("click", () => {
-      input.value = el.textContent;
+  matches.forEach(s => {
+    const div = document.createElement("div");
+    div.classList.add("suggestion");
+    div.textContent = s.system;
+
+    // Click → fill input + lookup
+    div.addEventListener("click", () => {
+      input.value = s.system;
       suggestionsDiv.innerHTML = "";
       lookupBtn.click();
     });
+
+    // Mousedown (used by Enter key) → fill input only, no lookup
+    div.addEventListener("mousedown", (e) => {
+      e.preventDefault(); // keep focus in input
+      input.value = s.system;
+      suggestionsDiv.innerHTML = "";
+    });
+
+    suggestionsDiv.appendChild(div);
   });
 });
 
@@ -56,13 +67,11 @@ input.addEventListener("keydown", (e) => {
     setActive(items);
     e.preventDefault();
   } else if (e.key === "Enter") {
-    e.preventDefault();
     if (currentFocus > -1) {
-      // Select the highlighted suggestion only
-      items[currentFocus].click();
+      e.preventDefault(); // stop lookup
+      items[currentFocus].dispatchEvent(new Event("mousedown"));
     } else {
-      // Only run lookup if no suggestion is selected
-      lookupBtn.click();
+      lookupBtn.click(); // only if no suggestion highlighted
     }
   } else if (e.key === "Tab") {
     if (items.length > 0) {
@@ -71,7 +80,6 @@ input.addEventListener("keydown", (e) => {
     }
   }
 });
-
 
 function setActive(items) {
   items.forEach(el => el.classList.remove("active"));
