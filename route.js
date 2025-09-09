@@ -1,10 +1,11 @@
 // route.js
-const originInput = document.getElementById("originSystem");
-const destInput = document.getElementById("destSystem");
+const originInput = document.getElementById("origin");
+const destInput = document.getElementById("dest");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
 
 let systems = [];
+let systemKills = [];
 
 // Load systems.json once
 fetch("systems.json")
@@ -12,23 +13,29 @@ fetch("systems.json")
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
 
+// Load system kills once (cached for 1 hour)
+fetch("https://esi.evetech.net/latest/universe/system_kills/")
+  .then(res => res.json())
+  .then(data => systemKills = data)
+  .catch(err => console.error("Failed to load system kills:", err));
+
 // Helper: get system ID from name
 function getSystemId(name) {
   const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
   return system ? system.system_id : null;
 }
 
-// Helper: get security status
-function getSecurityStatus(id) {
-  const system = systems.find(s => s.system_id === id);
-  return system ? system.security_status : null;
-}
-
-// Security class for color coding
+// Helper: get security status class
 function secClass(sec) {
   if (sec >= 0.5) return "sec-high";
   if (sec > 0.0) return "sec-low";
   return "sec-null";
+}
+
+// Helper: get kills for a system
+function getKills(systemId) {
+  const entry = systemKills.find(s => s.system_id === systemId);
+  return entry ? entry.ship_kills : 0;
 }
 
 // Plan route
@@ -47,7 +54,8 @@ routeBtn.addEventListener("click", async () => {
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/destination/${destId}/?datasource=tranquility&flag=shortest`);
+    // Call EVE route API
+    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/${destId}`);
     const routeData = await res.json();
 
     if (!routeData || !routeData.length) {
@@ -57,7 +65,7 @@ routeBtn.addEventListener("click", async () => {
 
     // Build table
     let html = `<table>
-      <tr><th>Step</th><th>System</th><th>Security</th><th>Kills (last 24h)</th></tr>`;
+      <tr><th>Step</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th></tr>`;
 
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];
@@ -66,14 +74,7 @@ routeBtn.addEventListener("click", async () => {
 
       const sec = system.security_status;
       const cls = secClass(sec);
-
-      // Kills API
-      let kills = "-";
-      try {
-        const killsRes = await fetch(`https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility&system_id=${sysId}`);
-        const killsData = await killsRes.json();
-        kills = killsData.ship_kills || 0;
-      } catch { kills = "-"; }
+      const kills = getKills(sysId);
 
       html += `<tr>
         <td>${i + 1}</td>
@@ -92,7 +93,7 @@ routeBtn.addEventListener("click", async () => {
   }
 });
 
-// Autocomplete function
+// Autocomplete setup
 function setupAutocomplete(input, suggestionsId) {
   const suggestionsDiv = document.getElementById(suggestionsId);
   let currentFocus = -1;
@@ -116,7 +117,6 @@ function setupAutocomplete(input, suggestionsId) {
     });
   });
 
-  // Keyboard navigation
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
@@ -150,20 +150,24 @@ function setupAutocomplete(input, suggestionsId) {
   });
 }
 
-// Initialize autocomplete
+// Initialize autocomplete for both inputs
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
 
-// Player count (top-right)
+// Player count
 fetch("https://esi.evetech.net/latest/status/")
   .then(res => res.json())
   .then(data => {
     const playerCount = document.getElementById("onlineCounter");
-    if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
-    playerCount.style.color = "#378937ff";
+    if (playerCount) {
+      playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
+      playerCount.style.color = "#378937ff";
+    }
   })
   .catch(() => {
     const playerCount = document.getElementById("onlineCounter");
-    if (playerCount) playerCount.textContent = "Tranquility unreachable";
-    playerCount.style.color = "#9f3232ff";
+    if (playerCount) {
+      playerCount.textContent = "Tranquility unreachable";
+      playerCount.style.color = "#9f3232ff";
+    }
   });
