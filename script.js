@@ -22,7 +22,7 @@ input.addEventListener("input", () => {
   }
 
   const matches = systems
-    .filter(s => s.system.toLowerCase().includes(query))
+    .filter(s => s.system.toLowerCase().startsWith(query))
     .slice(0, 10);
 
   suggestionsDiv.innerHTML = "";
