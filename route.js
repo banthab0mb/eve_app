@@ -1,73 +1,126 @@
+// route.js
 const originInput = document.getElementById("originSystem");
 const destInput = document.getElementById("destSystem");
+const suggestionsOrigin = document.createElement("div");
+const suggestionsDest = document.createElement("div");
 const routeBtn = document.getElementById("routeBtn");
-const routeOutput = document.getElementById("route-output");
+const routeOutput = document.getElementById("routeOutput");
+
+// Wrap suggestions under each input
+originInput.parentNode.appendChild(suggestionsOrigin);
+destInput.parentNode.appendChild(suggestionsDest);
+suggestionsOrigin.id = "suggestions-origin";
+suggestionsDest.id = "suggestions-dest";
 
 let systems = [];
+let currentFocusOrigin = -1;
+let currentFocusDest = -1;
 
-// Load systems.json for name/id lookup
+// Load systems.json
 fetch("systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
 
-// Helper to get system object by name
-function getSystemByName(name) {
-  return systems.find(s => s.system.toLowerCase() === name.toLowerCase());
+// Generic autocomplete function
+function setupAutocomplete(inputEl, suggestionsEl, focusVar) {
+  inputEl.addEventListener("input", () => {
+    const query = inputEl.value.trim().toLowerCase();
+    if (!query) {
+      suggestionsEl.innerHTML = "";
+      return;
+    }
+
+    const matches = systems
+      .filter(s => s.system.toLowerCase().startsWith(query))
+      .slice(0, 10);
+
+    suggestionsEl.innerHTML = "";
+
+    matches.forEach(s => {
+      const div = document.createElement("div");
+      div.classList.add("suggestion");
+      div.textContent = s.system;
+
+      div.addEventListener("click", () => {
+        inputEl.value = s.system;
+        suggestionsEl.innerHTML = "";
+      });
+
+      suggestionsEl.appendChild(div);
+    });
+  });
+
+  inputEl.addEventListener("keydown", (e) => {
+    const items = suggestionsEl.querySelectorAll(".suggestion");
+    let currentFocus = inputEl === originInput ? currentFocusOrigin : currentFocusDest;
+
+    if (e.key === "ArrowDown") {
+      currentFocus++;
+      if (currentFocus >= items.length) currentFocus = 0;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === "ArrowUp") {
+      currentFocus--;
+      if (currentFocus < 0) currentFocus = items.length - 1;
+      setActive(items, currentFocus);
+      e.preventDefault();
+    } else if (e.key === "Enter") {
+      if (currentFocus > -1 && items.length) {
+        e.preventDefault();
+        inputEl.value = items[currentFocus].textContent;
+        suggestionsEl.innerHTML = "";
+      }
+    }
+
+    if (inputEl === originInput) currentFocusOrigin = currentFocus;
+    else currentFocusDest = currentFocus;
+  });
+
+  function setActive(items, index) {
+    items.forEach(el => el.classList.remove("active"));
+    if (index > -1 && items[index]) {
+      items[index].classList.add("active");
+    }
+  }
+
+  document.addEventListener("click", (e) => {
+    if (e.target !== inputEl) suggestionsEl.innerHTML = "";
+  });
 }
 
-// Helper for sec status class
-function secClass(sec) {
-  if (sec >= 0.5) return "sec-high";
-  if (sec > 0) return "sec-low";
-  return "sec-null";
-}
+// Initialize autocomplete for both inputs
+setupAutocomplete(originInput, suggestionsOrigin);
+setupAutocomplete(destInput, suggestionsDest);
 
-routeBtn.addEventListener("click", async () => {
-  const origin = getSystemByName(originInput.value.trim());
-  const destination = getSystemByName(destInput.value.trim());
+// Route planning (dummy example using systems.json names and IDs)
+routeBtn.addEventListener("click", () => {
+  const originName = originInput.value.trim().toLowerCase();
+  const destName = destInput.value.trim().toLowerCase();
 
-  if (!origin || !destination) {
-    routeOutput.innerHTML = "<p>Please enter valid origin and destination systems.</p>";
+  if (!originName || !destName) {
+    routeOutput.innerHTML = "<p>Please enter both origin and destination.</p>";
     return;
   }
 
-  try {
-    // ESI route API: https://esi.evetech.net/latest/universe/route/
-    const routeResp = await fetch(
-      `https://esi.evetech.net/latest/route/${origin.system_id}/${destination.system_id}/?flag=shortest&datasource=tranquility`
-    );
-    const route = await routeResp.json();
+  const origin = systems.find(s => s.system.toLowerCase() === originName);
+  const dest = systems.find(s => s.system.toLowerCase() === destName);
 
-    // Build table
-    let html = `<table>
-      <tr>
-        <th>System</th>
-        <th>Constellation</th>
-        <th>Region</th>
-        <th>Security</th>
-      </tr>`;
-
-    route.forEach(sysId => {
-      const sys = systems.find(s => s.system_id === sysId);
-      if (sys) {
-        html += `<tr>
-          <td>${sys.system}</td>
-          <td>${sys.constellation}</td>
-          <td>${sys.region}</td>
-          <td class="${secClass(sys.security_status)}">${sys.security_status.toFixed(2)}</td>
-        </tr>`;
-      }
-    });
-
-    html += `</table>`;
-    routeOutput.innerHTML = html;
-
-  } catch (err) {
-    console.error(err);
-    routeOutput.innerHTML = "<p>Error fetching route.</p>";
+  if (!origin || !dest) {
+    routeOutput.innerHTML = "<p>One or both systems not found.</p>";
+    return;
   }
+
+  // Display dummy route for now
+  routeOutput.innerHTML = `
+    <table>
+      <tr><th>Step</th><th>System</th><th>Region</th></tr>
+      <tr><td>1</td><td>${origin.system}</td><td>${origin.region}</td></tr>
+      <tr><td>2</td><td>${dest.system}</td><td>${dest.region}</td></tr>
+    </table>
+  `;
 });
+
 
 
 
