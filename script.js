@@ -1,11 +1,10 @@
-// script.js
 const input = document.getElementById("systemName");
 const suggestionsDiv = document.getElementById("suggestions");
 const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
 
 let systems = [];
-let currentFocus = -1; // track highlighted suggestion
+let currentFocus = -1;
 
 // Load systems.json once
 fetch("systems.json")
@@ -13,10 +12,10 @@ fetch("systems.json")
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
 
-// Simple autocomplete
+// Autocomplete
 input.addEventListener("input", () => {
   const query = input.value.trim().toLowerCase();
-  currentFocus = -1; // reset focus
+  currentFocus = -1;
   if (!query) {
     suggestionsDiv.innerHTML = "";
     return;
@@ -24,7 +23,7 @@ input.addEventListener("input", () => {
 
   const matches = systems
     .filter(s => s.system.toLowerCase().includes(query))
-    .slice(0, 10); // limit suggestions
+    .slice(0, 10);
 
   suggestionsDiv.innerHTML = "";
 
@@ -33,18 +32,11 @@ input.addEventListener("input", () => {
     div.classList.add("suggestion");
     div.textContent = s.system;
 
-    // Click → fill input + lookup
+    // Click → fill + search
     div.addEventListener("click", () => {
       input.value = s.system;
       suggestionsDiv.innerHTML = "";
       lookupBtn.click();
-    });
-
-    // Mousedown (used by Enter/Tab selection) → fill input only
-    div.addEventListener("mousedown", (e) => {
-      e.preventDefault(); // keep focus in input
-      input.value = s.system;
-      suggestionsDiv.innerHTML = "";
     });
 
     suggestionsDiv.appendChild(div);
@@ -71,19 +63,21 @@ input.addEventListener("keydown", (e) => {
     }
   } else if (e.key === "Enter") {
     if (currentFocus > -1 && items.length) {
-      // choose suggestion only
+      // Fill only, don’t search
       e.preventDefault();
-      items[currentFocus].dispatchEvent(new Event("mousedown"));
+      input.value = items[currentFocus].textContent;
+      suggestionsDiv.innerHTML = "";
     } else {
-      // normal search
+      // Normal search
       e.preventDefault();
       lookupBtn.click();
     }
   } else if (e.key === "Tab") {
     if (items.length) {
       e.preventDefault();
-      if (currentFocus === -1) currentFocus = 0; // default to first
-      items[currentFocus].dispatchEvent(new Event("mousedown"));
+      if (currentFocus === -1) currentFocus = 0;
+      input.value = items[currentFocus].textContent;
+      suggestionsDiv.innerHTML = "";
     }
   }
 });
