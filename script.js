@@ -97,7 +97,7 @@ lookupBtn.addEventListener("click", () => {
     <p><b>Name:</b> ${system.system}</p>
     <p><b>Constellation:</b> ${system.constellation || "Unknown"}</p>
     <p><b>Region:</b> ${system.region || "Unknown"}</p>
-    <p><b>Security Status:</b> ${system.security_status}</p>
+    <p><b>Security Status:</b> ${system.security_status.toFixed(1)}</p>
   `;
 });
 
