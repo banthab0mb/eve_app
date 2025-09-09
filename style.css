@@ -71,21 +71,24 @@ h2 {
 
 /* Search Inputs */
 .search-wrapper {
-  display: flex;
-  gap: 10px;
+  position: relative;
+  width: 100%;
+  max-width: 300px;
   margin-bottom: 20px;
 }
 
 .search-wrapper input {
-  flex: 1;
+  width: 100%;
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
   color: #eee;
   border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .search-wrapper button {
+  margin-top: 10px;
   background: #222;
   color: #eee;
   border: 1px solid #555;
@@ -96,6 +99,34 @@ h2 {
 
 .search-wrapper button:hover {
   background: #333;
+}
+
+/* Autocomplete Suggestions */
+#suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  color: black;
+  border-radius: 4px;
+}
+
+#suggestions .suggestion {
+  padding: 5px 10px;
+  cursor: pointer;
+  color: black;
+  background-color: white;
+}
+
+#suggestions .suggestion:hover,
+#suggestions .active {
+  background-color: #1e88e5;
+  color: white !important;
 }
 
 /* Table Styling */
@@ -140,6 +171,10 @@ footer {
   flex-grow: 0;
   text-align: center;
   flex-direction: column;
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  background: #111;
 }
 
 footer p {

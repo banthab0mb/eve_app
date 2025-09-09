@@ -1,72 +1,74 @@
-let systemsData = {};
+const originInput = document.getElementById("origin");
+const destInput = document.getElementById("dest");
+const routeBtn = document.getElementById("routeBtn");
+const routeOutput = document.getElementById("route-output");
+
+let systems = [];
+
+// Load systems.json for name/id lookup
 fetch("systems.json")
-  .then(r => r.json())
-  .then(data => {
-    // Index systems by ID for fast lookup
-    data.forEach(s => {
-      systemsData[s.system_id] = s;
-    });
-  });
+  .then(res => res.json())
+  .then(data => systems = data)
+  .catch(err => console.error("Failed to load systems.json:", err));
 
-async function fetchRoute(originName, destName) {
-  // Find system IDs from names
-  let origin = Object.values(systemsData).find(s => s.system.toLowerCase() === originName.toLowerCase());
-  let dest = Object.values(systemsData).find(s => s.system.toLowerCase() === destName.toLowerCase());
-
-  if (!origin || !dest) {
-    return alert("Origin or destination not found!");
-  }
-
-  // Get route
-  let routeRes = await fetch(`https://esi.evetech.net/latest/route/${origin.system_id}/${dest.system_id}/`);
-  let route = await routeRes.json();
-
-  // Get jumps & kills
-  let jumps = await (await fetch("https://esi.evetech.net/latest/universe/system_jumps/")).json();
-  let kills = await (await fetch("https://esi.evetech.net/latest/universe/system_kills/")).json();
-
-  let jumpsMap = {};
-  jumps.forEach(j => jumpsMap[j.system_id] = j.ship_jumps);
-
-  let killsMap = {};
-  kills.forEach(k => killsMap[k.system_id] = k);
-
-  // Render
-  let output = document.getElementById("route-output");
-  output.innerHTML = `
-    <table>
-      <tr>
-        <th>System</th>
-        <th>Security</th>
-        <th>Jumps (last hour)</th>
-        <th>Ship Kills</th>
-        <th>Pod Kills</th>
-        <th>NPC Kills</th>
-      </tr>
-      ${route.map(id => {
-        let sys = systemsData[id];
-        if (!sys) return "";
-        let k = killsMap[id] || {};
-        return `
-          <tr>
-            <td>${sys.system}</td>
-            <td>${sys.security_status.toFixed(2)}</td>
-            <td>${jumpsMap[id] || 0}</td>
-            <td>${k.ship_kills || 0}</td>
-            <td>${k.pod_kills || 0}</td>
-            <td>${k.npc_kills || 0}</td>
-          </tr>
-        `;
-      }).join("")}
-    </table>
-  `;
+// Helper to get system object by name
+function getSystemByName(name) {
+  return systems.find(s => s.system.toLowerCase() === name.toLowerCase());
 }
 
-document.getElementById("routeBtn").addEventListener("click", () => {
-  let origin = document.getElementById("origin").value.trim();
-  let dest = document.getElementById("dest").value.trim();
-  fetchRoute(origin, dest);
+// Helper for sec status class
+function secClass(sec) {
+  if (sec >= 0.5) return "sec-high";
+  if (sec > 0) return "sec-low";
+  return "sec-null";
+}
+
+routeBtn.addEventListener("click", async () => {
+  const origin = getSystemByName(originInput.value.trim());
+  const destination = getSystemByName(destInput.value.trim());
+
+  if (!origin || !destination) {
+    routeOutput.innerHTML = "<p>Please enter valid origin and destination systems.</p>";
+    return;
+  }
+
+  try {
+    // ESI route API: https://esi.evetech.net/latest/universe/route/
+    const routeResp = await fetch(
+      `https://esi.evetech.net/latest/route/${origin.system_id}/${destination.system_id}/?flag=shortest&datasource=tranquility`
+    );
+    const route = await routeResp.json();
+
+    // Build table
+    let html = `<table>
+      <tr>
+        <th>System</th>
+        <th>Constellation</th>
+        <th>Region</th>
+        <th>Security</th>
+      </tr>`;
+
+    route.forEach(sysId => {
+      const sys = systems.find(s => s.system_id === sysId);
+      if (sys) {
+        html += `<tr>
+          <td>${sys.system}</td>
+          <td>${sys.constellation}</td>
+          <td>${sys.region}</td>
+          <td class="${secClass(sys.security_status)}">${sys.security_status.toFixed(2)}</td>
+        </tr>`;
+      }
+    });
+
+    html += `</table>`;
+    routeOutput.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+    routeOutput.innerHTML = "<p>Error fetching route.</p>";
+  }
 });
+
 
 
 
@@ -76,10 +78,10 @@ fetch("https://esi.evetech.net/latest/status/")
   .then(data => {
     const playerCount = document.getElementById("onlineCounter");
     if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
-    playerCount.style.color = "#00ff00";
+    playerCount.style.color = "#378937ff";
   })
   .catch(() => {
     const playerCount = document.getElementById("onlineCounter");
     if (playerCount) playerCount.textContent = "Tranquility unreachable";
-    playerCount.style.color = "#ff0000";
+    playerCount.style.color = "#9f3232ff";
   });
