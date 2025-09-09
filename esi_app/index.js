@@ -5,6 +5,21 @@ const input = document.getElementById("systemName");
 
 loadingText.style.display = "none"; // hide initially
 
+async function getAllSystemIds() {
+    // Try to get cached IDs first
+    const cached = localStorage.getItem("allSystemIds");
+    if (cached) return JSON.parse(cached);
+
+    // Fetch all system IDs from ESI
+    const resp = await fetch("https://esi.evetech.net/latest/universe/systems");
+    if (!resp.ok) throw new Error("Failed to fetch system IDs");
+    const ids = await resp.json();
+
+    // Cache for future use
+    localStorage.setItem("allSystemIds", JSON.stringify(ids));
+    return ids;
+}
+
 lookupBtn.addEventListener("click", async () => {
     const systemName = input.value.trim();
     if (!systemName) return;
@@ -13,10 +28,8 @@ lookupBtn.addEventListener("click", async () => {
     outputDiv.innerHTML = "";
 
     try {
-        // Step 1: Fetch all system IDs
-        const allIdsResp = await fetch("https://esi.evetech.net/latest/universe/systems");
-        if (!allIdsResp.ok) throw new Error("Failed to fetch system IDs");
-        const systemIds = await allIdsResp.json();
+        // Step 1: Get all system IDs (from cache if possible)
+        const systemIds = await getAllSystemIds();
 
         let matchedSystem = null;
 
@@ -42,7 +55,7 @@ lookupBtn.addEventListener("click", async () => {
         try {
             const constResp = await fetch(`https://esi.evetech.net/latest/universe/constellations/${matchedSystem.constellation_id}/`);
             if (constResp.ok) {
-                const constDetails = await constResp.json();
+                constDetails = await constResp.json();
                 constellationName = constDetails.name;
             }
         } catch {}
