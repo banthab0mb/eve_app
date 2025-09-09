@@ -1,157 +1,156 @@
-/* Font */
-@font-face {
-  font-family: 'Square721BoldExtended';
-  src: url('fonts/Square721BoldExtended.otf') format('opentype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-/* Global */
-body {
+/* Reset + Layout */
+html, body {
+  height: 100%;
+  margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #121212;
-  color: #f0f0f0;
-  margin: 0;
-  padding: 0;
-}
-
-/* Header */
-header {
-  background-color: #1e1e1e;
+  background: #0d0d0d;
+  color: #e0e0e0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 12px 24px;
-  border-bottom: 2px solid #1e88e5;
+  flex-direction: column;
 }
 
-header .logo {
-  font-family: 'Square721BoldExtended', Arial, sans-serif;
-  font-size: 28px;
-  color: #f0f0f0;
+header, footer {
+  background: #111;
+  color: #ccc;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+header {
+  border-bottom: 2px solid #222;
+}
+
+header .app-title {
+  font-family: "Square 721 Bold Extended", sans-serif;
+  font-size: 1.5rem;
+  color: #f2f2f2;
   margin: 0;
 }
 
-header nav a {
-  margin-left: 20px;
+nav {
+  flex: 1;
+  text-align: center;
+}
+
+nav a {
+  color: #aaa;
+  margin: 0 15px;
   text-decoration: none;
-  color: #f0f0f0;
   font-weight: bold;
 }
 
-header nav a:hover {
-  color: #1e88e5;
-}
-
-header nav a.active {
-  border-bottom: 2px solid #1e88e5;
+nav a.active, nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
   padding-bottom: 2px;
 }
 
-header .online-counter {
-  font-size: 14px;
-  color: #37a52d;
+#onlineCounter {
+  font-size: 0.9rem;
+  color: #0f0;
 }
 
-/* Main container */
+/* Main Content */
+main {
+  flex: 1;
+  padding: 20px;
+}
+
 .container {
-  max-width: 600px;
-  width: 100%;
-  margin: 40px auto;
-  padding: 0 16px;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-/* Search wrapper */
+h2 {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
+
+/* Search Inputs */
 .search-wrapper {
-  position: relative;
-  width: 150px;
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
 }
 
-#systemName {
-  width: 150px;
+.search-wrapper input {
+  flex: 1;
   padding: 8px;
-  font-size: 16px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #eee;
   border-radius: 4px;
-  border: none;
-  box-sizing: border-box;
 }
 
-button {
-  padding: 8px 16px;
-  font-size: 16px;
+.search-wrapper button {
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  padding: 8px 15px;
   border-radius: 4px;
-  border: none;
   cursor: pointer;
-  background-color: #1e88e5;
-  color: white;
-  transition: background-color 0.2s ease;
 }
 
-button:hover {
-  background-color: #1565c0;
+.search-wrapper button:hover {
+  background: #333;
 }
 
-/* Output */
-#output p {
-  margin: 5px 0;
+/* Table Styling */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  font-size: 0.9rem;
 }
 
-/* Suggestions dropdown */
-#suggestions {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: white;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-  color: black;
+th, td {
+  border: 1px solid #333;
+  padding: 8px;
+  text-align: center;
 }
 
-#suggestions .suggestion {
-  padding: 5px 10px;
-  cursor: pointer;
-  color: black;
-  background-color: white;
+th {
+  background: #1a1a1a;
 }
 
-#suggestions .suggestion:hover {
-  background-color: #eee;
-  color: black;
+tr:nth-child(even) {
+  background: #141414;
 }
 
-#suggestions .active {
-  background-color: #1e88e5;
-  color: white !important;
+/* Security Status Colors */
+.sec-high {
+  color: #0f0; /* green */
+}
+
+.sec-low {
+  color: #ffa500; /* orange */
+}
+
+.sec-null {
+  color: #f00; /* red */
 }
 
 /* Footer */
 footer {
-  margin-top: 40px;
-  padding: 20px;
-  background-color: #1e1e1e;
-  color: #bbb;
+  border-top: 2px solid #222;
+  flex-shrink: 0;
+  flex-grow: 0;
   text-align: center;
-  border-top: 1px solid #333;
+  flex-direction: column;
+}
+
+footer p {
+  margin: 5px 0;
 }
 
 footer a {
-  color: #1e88e5;
+  color: #888;
   text-decoration: none;
 }
 
 footer a:hover {
-  text-decoration: underline;
-}
-
-#ccp-disclaimer {
-  margin-top: 10px;
-  padding: 10px;
-  border: 1px solid #444;
-  background: #222;
-  color: #ccc;
-  display: none;
+  color: #fff;
 }

@@ -1,162 +1,73 @@
-// routes.js
-const originInput = document.getElementById("originSystem");
-const destInput = document.getElementById("destSystem");
-const suggestionsDiv = document.getElementById("routeSuggestions");
-const routeBtn = document.getElementById("routeBtn");
-const routeOutput = document.getElementById("routeOutput");
-
-let systemsData = [];
-let currentFocus = -1;
-let activeInput = null; // track which box is active 
-
-// Load systems.json once
+let systemsData = {};
 fetch("systems.json")
-  .then((res) => res.json())
-  .then((data) => (systemsData = data))
-  .catch((err) => console.error("Failed to load systems.json:", err));
-
-/**
- * Setup autocomplete for a given input box
- */
-function setupAutocomplete(inputEl) {
-  inputEl.addEventListener("input", () => {
-    const val = inputEl.value.trim().toLowerCase();
-    currentFocus = -1;
-    activeInput = inputEl;
-
-    if (!val) {
-      suggestionsDiv.innerHTML = "";
-      return;
-    }
-
-    const matches = systemsData
-      .filter((sys) => sys.system.toLowerCase().startsWith(val))
-      .slice(0, 10);
-
-    suggestionsDiv.innerHTML = "";
-    matches.forEach((sys) => {
-      const div = document.createElement("div");
-      div.classList.add("suggestion");
-      div.textContent = sys.system;
-
-      div.addEventListener("click", () => {
-        inputEl.value = sys.system;
-        suggestionsDiv.innerHTML = "";
-      });
-
-      suggestionsDiv.appendChild(div);
+  .then(r => r.json())
+  .then(data => {
+    // Index systems by ID for fast lookup
+    data.forEach(s => {
+      systemsData[s.system_id] = s;
     });
   });
 
-  inputEl.addEventListener("keydown", (e) => {
-    let items = suggestionsDiv.querySelectorAll(".suggestion");
-
-    if (e.key === "ArrowDown") {
-      if (items.length) {
-        currentFocus++;
-        if (currentFocus >= items.length) currentFocus = 0;
-        setActive(items);
-        e.preventDefault();
-      }
-    } else if (e.key === "ArrowUp") {
-      if (items.length) {
-        currentFocus--;
-        if (currentFocus < 0) currentFocus = items.length - 1;
-        setActive(items);
-        e.preventDefault();
-      }
-    } else if (e.key === "Enter") {
-      if (currentFocus > -1 && items.length) {
-        e.preventDefault();
-        inputEl.value = items[currentFocus].textContent;
-        suggestionsDiv.innerHTML = "";
-      }
-    }
-  });
-}
-
-function setActive(items) {
-  items.forEach((el) => el.classList.remove("active"));
-  if (currentFocus > -1 && items[currentFocus]) {
-    items[currentFocus].classList.add("active");
-  }
-}
-
-/**
- * Lookup system_id by name
- */
-function getSystemId(name) {
-  const sys = systemsData.find(
-    (s) => s.system.toLowerCase() === name.toLowerCase()
-  );
-  return sys ? sys.system_id : null;
-}
-
-/**
- * Lookup system name by id
- */
-function getSystemName(id) {
-  const sys = systemsData.find((s) => s.system_id === id);
-  return sys ? sys.system : id;
-}
-
-/**
- * Fetch route from EVE API
- */
-routeBtn.addEventListener("click", () => {
-  const origin = originInput.value.trim();
-  const dest = destInput.value.trim();
+async function fetchRoute(originName, destName) {
+  // Find system IDs from names
+  let origin = Object.values(systemsData).find(s => s.system.toLowerCase() === originName.toLowerCase());
+  let dest = Object.values(systemsData).find(s => s.system.toLowerCase() === destName.toLowerCase());
 
   if (!origin || !dest) {
-    routeOutput.innerHTML = "<p>Please enter both systems.</p>";
-    return;
+    return alert("Origin or destination not found!");
   }
 
-  const originId = getSystemId(origin);
-  const destId = getSystemId(dest);
+  // Get route
+  let routeRes = await fetch(`https://esi.evetech.net/latest/route/${origin.system_id}/${dest.system_id}/`);
+  let route = await routeRes.json();
 
-  if (!originId || !destId) {
-    routeOutput.innerHTML = "<p>Invalid system name.</p>";
-    return;
-  }
+  // Get jumps & kills
+  let jumps = await (await fetch("https://esi.evetech.net/latest/universe/system_jumps/")).json();
+  let kills = await (await fetch("https://esi.evetech.net/latest/universe/system_kills/")).json();
 
-  const url = `https://esi.evetech.net/latest/route/${originId}/${destId}/`;
+  let jumpsMap = {};
+  jumps.forEach(j => jumpsMap[j.system_id] = j.ship_jumps);
 
-  routeOutput.innerHTML = "<p>Loading route...</p>";
+  let killsMap = {};
+  kills.forEach(k => killsMap[k.system_id] = k);
 
-  fetch(url)
-    .then((res) => {
-      if (!res.ok) throw new Error("Failed to fetch route");
-      return res.json();
-    })
-    .then((ids) => {
-      if (!ids.length) {
-        routeOutput.innerHTML = "<p>No route found.</p>";
-        return;
-      }
+  // Render
+  let output = document.getElementById("route-output");
+  output.innerHTML = `
+    <table>
+      <tr>
+        <th>System</th>
+        <th>Security</th>
+        <th>Jumps (last hour)</th>
+        <th>Ship Kills</th>
+        <th>Pod Kills</th>
+        <th>NPC Kills</th>
+      </tr>
+      ${route.map(id => {
+        let sys = systemsData[id];
+        if (!sys) return "";
+        let k = killsMap[id] || {};
+        return `
+          <tr>
+            <td>${sys.system}</td>
+            <td>${sys.security_status.toFixed(2)}</td>
+            <td>${jumpsMap[id] || 0}</td>
+            <td>${k.ship_kills || 0}</td>
+            <td>${k.pod_kills || 0}</td>
+            <td>${k.npc_kills || 0}</td>
+          </tr>
+        `;
+      }).join("")}
+    </table>
+  `;
+}
 
-      const names = ids.map(getSystemName);
-      routeOutput.innerHTML = `
-        <p><b>Route from ${origin} → ${dest}:</b></p>
-        <ol>${names.map((n) => `<li>${n}</li>`).join("")}</ol>
-      `;
-    })
-    .catch((err) => {
-      console.error(err);
-      routeOutput.innerHTML = "<p>Error fetching route.</p>";
-    });
+document.getElementById("routeBtn").addEventListener("click", () => {
+  let origin = document.getElementById("origin").value.trim();
+  let dest = document.getElementById("dest").value.trim();
+  fetchRoute(origin, dest);
 });
 
-// Close suggestions when clicking outside
-document.addEventListener("click", (e) => {
-  if (e.target !== originInput && e.target !== destInput) {
-    suggestionsDiv.innerHTML = "";
-  }
-});
-
-// Attach autocomplete
-setupAutocomplete(originInput);
-setupAutocomplete(destInput);
 
 
 // Player count (EVE Online status API)
