@@ -1,71 +1,58 @@
-const API_BASE = "https://eve-app.onrender.com"; // Render URL
-
+// script.js
 const input = document.getElementById("systemName");
 const suggestionsDiv = document.getElementById("suggestions");
 const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
 
-// --- Autocomplete ---
-input.addEventListener("input", async () => {
-    const query = input.value.trim();
-    suggestionsDiv.innerHTML = ""; // Clear suggestions immediately
+let systems = [];
 
-    if (!query) return;
+// Load systems.json once
+fetch("systems.json")
+  .then(res => res.json())
+  .then(data => systems = data)
+  .catch(err => console.error("Failed to load systems.json:", err));
 
-    try {
-        const resp = await fetch(`${API_BASE}/autocomplete?query=${encodeURIComponent(query)}`);
-        const suggestions = await resp.json();
+// Simple autocomplete
+input.addEventListener("input", () => {
+  const query = input.value.trim().toLowerCase();
+  if (!query) {
+    suggestionsDiv.innerHTML = "";
+    return;
+  }
 
-        suggestionsDiv.innerHTML = suggestions
-            .map(name => `<div class="suggestion">${name}</div>`)
-            .join("");
+  const matches = systems
+    .filter(s => s.system.toLowerCase().includes(query))
+    .slice(0, 10); // limit suggestions
 
-        // Add click listener to each suggestion
-        document.querySelectorAll(".suggestion").forEach(el => {
-            el.addEventListener("click", () => {
-                input.value = el.textContent;
-                suggestionsDiv.innerHTML = ""; // Clear suggestions after selection
-            });
-        });
-    } catch (err) {
-        console.error("Autocomplete error:", err);
-    }
+  suggestionsDiv.innerHTML = matches
+    .map(s => `<div class="suggestion">${s.system}</div>`)
+    .join("");
+
+  // click on suggestion to fill input
+  document.querySelectorAll(".suggestion").forEach(el => {
+    el.addEventListener("click", () => {
+      input.value = el.textContent;
+      suggestionsDiv.innerHTML = "";
+    });
+  });
 });
 
-// --- Lookup ---
-lookupBtn.addEventListener("click", async () => {
-    const name = input.value.trim();
-    outputDiv.innerHTML = ""; // Clear previous output
-    suggestionsDiv.innerHTML = ""; // Hide suggestions on lookup
+// Lookup system on button click
+lookupBtn.addEventListener("click", () => {
+  const name = input.value.trim().toLowerCase();
+  if (!name) return;
 
-    if (!name) return;
+  const system = systems.find(s => s.system.toLowerCase() === name);
 
-    outputDiv.innerHTML = "Loading...";
+  if (!system) {
+    outputDiv.innerHTML = `<p>System not found!</p>`;
+    return;
+  }
 
-    try {
-        const resp = await fetch(`${API_BASE}/lookup?name=${encodeURIComponent(name)}`);
-        const data = await resp.json();
-
-        if (data.error) {
-            outputDiv.innerHTML = `<p>${data.error}</p>`;
-            return;
-        }
-
-        outputDiv.innerHTML = `
-            <p><b>Name:</b> ${data.system}</p>
-            <p><b>Constellation:</b> ${data.constellation}</p>
-            <p><b>Region:</b> ${data.region}</p>
-            <p><b>Security Status:</b> ${data.security_status.toFixed(1)}</p>
-        `;
-    } catch (err) {
-        outputDiv.innerHTML = `<p>Error fetching system info.</p>`;
-        console.error("Lookup error:", err);
-    }
-});
-
-// --- Hide suggestions if user clicks outside ---
-document.addEventListener("click", (e) => {
-    if (!suggestionsDiv.contains(e.target) && e.target !== input) {
-        suggestionsDiv.innerHTML = "";
-    }
+  outputDiv.innerHTML = `
+    <p><b>Name:</b> ${system.system}</p>
+    <p><b>Constellation:</b> ${system.constellation || "Unknown"}</p>
+    <p><b>Region:</b> ${system.region || "Unknown"}</p>
+    <p><b>Security Status:</b> ${system.security_status}</p>
+  `;
 });
