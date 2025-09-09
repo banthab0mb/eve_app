@@ -1,6 +1,6 @@
 // route.js
-const originInput = document.getElementById("origin");
-const destInput = document.getElementById("dest");
+const originInput = document.getElementById("originSystem");
+const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
 
