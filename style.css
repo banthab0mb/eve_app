@@ -70,15 +70,16 @@ h2 {
 }
 
 /* Search Inputs */
+/* Side-by-side search inputs */
 .search-wrapper {
-  position: relative;
-  width: 100%;
-  max-width: 300px;
+  display: flex;
+  gap: 10px;
   margin-bottom: 20px;
+  position: relative; /* for suggestions absolute positioning */
 }
 
 .search-wrapper input {
-  width: 100%;
+  flex: 1;
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
@@ -88,11 +89,10 @@ h2 {
 }
 
 .search-wrapper button {
-  margin-top: 10px;
+  padding: 8px 16px;
   background: #222;
   color: #eee;
   border: 1px solid #555;
-  padding: 8px 15px;
   border-radius: 4px;
   cursor: pointer;
 }
@@ -101,19 +101,45 @@ h2 {
   background: #333;
 }
 
-/* Autocomplete Suggestions */
-#suggestions {
+/* Suggestions styling for multiple inputs */
+#suggestions-origin,
+#suggestions-dest {
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: white;
+  background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  color: black;
-  border-radius: 4px;
+  color: #000;
+}
+
+#suggestions-origin .suggestion,
+#suggestions-dest .suggestion {
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #fff;
+  color: #000;
+}
+
+#suggestions-origin .suggestion:hover,
+#suggestions-dest .suggestion:hover {
+  background-color: #eee;
+}
+
+#suggestions-origin .active,
+#suggestions-dest .active {
+  background-color: #1e88e5;
+  color: #fff !important;
+}
+
+/* Show system + region in suggestions */
+.suggestion span.region {
+  font-style: italic;
+  color: #555;
+  margin-left: 5px;
 }
 
 #suggestions .suggestion {

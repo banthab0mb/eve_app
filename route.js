@@ -38,17 +38,19 @@ function setupAutocomplete(inputEl, suggestionsEl, focusVar) {
     suggestionsEl.innerHTML = "";
 
     matches.forEach(s => {
-      const div = document.createElement("div");
-      div.classList.add("suggestion");
-      div.textContent = s.system;
+        const div = document.createElement("div");
+        div.classList.add("suggestion");
+        // System name + region in italics
+        div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
 
-      div.addEventListener("click", () => {
-        inputEl.value = s.system;
-        suggestionsEl.innerHTML = "";
-      });
+        div.addEventListener("click", () => {
+            inputEl.value = s.system;
+            suggestionsEl.innerHTML = "";
+        });
 
-      suggestionsEl.appendChild(div);
+        suggestionsEl.appendChild(div);
     });
+
   });
 
   inputEl.addEventListener("keydown", (e) => {
