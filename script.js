@@ -119,3 +119,17 @@ document.addEventListener("click", (e) => {
     suggestionsDiv.innerHTML = "";
   }
 });
+
+// Toggle CCP disclaimer
+document.addEventListener("DOMContentLoaded", () => {
+  const ccpLink = document.getElementById("ccp-link");
+  const disclaimer = document.getElementById("ccp-disclaimer");
+
+  if (ccpLink) {
+    ccpLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
+    });
+  }
+});
+

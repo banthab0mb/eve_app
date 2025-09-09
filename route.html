@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVE Tools – Route Planner</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1 class="app-title">EVE Tools</h1>
+    <nav>
+      <a href="index.html">System Lookup</a>
+      <a href="route.html" class="active">Route Planner</a>
+    </nav>
+    <div id="player-count">Loading...</div>
+  </header>
+
+  <main>
+    <div class="container">
+      <h2>Route Planner</h2>
+      <div class="search-wrapper">
+        <input type="text" id="origin" placeholder="Origin system">
+        <input type="text" id="destination" placeholder="Destination system">
+        <button id="routeBtn">Plan Route</button>
+      </div>
+      <div id="route-output"></div>
+    </div>
+  </main>
+
+  <footer>
+    <p>Brought to you by <a href="https://evewho.com/character/2118260155" target="_blank">Erica Romero</a></p>
+    <p><a href="#" id="ccp-link">All Eve Related Materials are Property of CCP Games</a></p>
+    <div id="ccp-disclaimer" style="display:none;">
+      <p>
+        EVE Online and the EVE logo are the registered trademarks of CCP hf...
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>

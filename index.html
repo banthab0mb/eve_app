@@ -3,28 +3,50 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVE Toolkit</title>
+  <title>EVE Tools – System Lookup</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <!-- Shared Header -->
   <header>
-    <div class="logo">EVE Toolkit</div>
+    <h1 class="app-title">EVE Tools</h1>
     <nav>
-      <a href="index.html">System Lookup</a>
-      <a href="#">Route Planner</a>
+      <a href="index.html" class="active">System Lookup</a>
+      <a href="route.html">Route Planner</a>
     </nav>
-    <div class="online-counter" id="onlineCounter">Players Online: ...</div>
+    <div id="player-count">Loading...</div>
   </header>
 
-  <div class="container">
-    <h1>System Lookup</h1>
-    <div class="search-wrapper">
-      <input type="text" id="systemName" placeholder="Type system name">
-      <div id="suggestions"></div>
+  <!-- Page Content -->
+  <main>
+    <div class="container">
+      <h2>System Lookup</h2>
+      <div class="search-wrapper">
+        <input type="text" id="systemName" placeholder="Type system name">
+        <div id="suggestions"></div>
+      </div>
+      <button id="lookupBtn">Search</button>
+      <div id="output"></div>
     </div>
-    <button id="lookupBtn">Search</button>
-    <div id="output"></div>
-  </div>
+  </main>
+
+  <!-- Shared Footer -->
+  <footer>
+    <p>Brought to you by <a href="https://evewho.com/character/2118260155" target="_blank">Erica Romero</a></p>
+    <p><a href="#" id="ccp-link">All Eve Related Materials are Property of CCP Games</a></p>
+    <div id="ccp-disclaimer" style="display:none;">
+      <p>
+        EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. 
+        All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all associated 
+        logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, vehicles, storylines, 
+        world facts or other recognizable features of the intellectual property relating to these trademarks are likewise the 
+        intellectual property of CCP hf. CCP hf. has granted permission to evewho.com to use EVE Online and all associated 
+        logos and designs for promotional and information purposes on its website but does not endorse, and is not in any way 
+        affiliated with this website. CCP is in no way responsible for the content on or functioning of this website, nor can 
+        it be liable for any damage arising from the use of this website.
+      </p>
+    </div>
+  </footer>
 
   <script src="script.js"></script>
 </body>
