@@ -68,16 +68,19 @@
         }
         });
 
-        // Optional: update online counter (mock example)
-        const onlineCounter = document.getElementById('onlineCounter');
-        if (onlineCounter) {
-        fetch('https://esi.evetech.net/latest/status/')
-            .then(res => res.json())
-            .then(data => {
-            if (data.players) onlineCounter.textContent = `Players Online: ${data.players}`;
-            })
-            .catch(err => console.error(err));
-        }
+        // Player count (top-right)
+        fetch("https://esi.evetech.net/latest/status/")
+        .then(res => res.json())
+        .then(data => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
+            playerCount.style.color = "#378937ff";
+        })
+        .catch(() => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = "Tranquility unreachable";
+            playerCount.style.color = "#9f3232ff";
+        });
     </script>
 </body>
 </html>
