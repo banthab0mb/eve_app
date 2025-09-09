@@ -9,19 +9,19 @@ body {
 }
 
 .container {
-  max-width: 100px;
+  max-width: 600px;
   width: 100%;
 }
 
 /* Wrap input + suggestions together */
 .search-wrapper {
   position: relative;
-  width: 100%;
+  width: 100px;
   margin-bottom: 20px;
 }
 
 #systemName {
-  width: 100%;
+  width: 100px;
   padding: 8px;
   font-size: 16px;
   border-radius: 4px;
