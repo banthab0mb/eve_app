@@ -100,12 +100,16 @@ h2 {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-  position: relative; /* for positioning suggestions relative to wrapper */
-  justify-content: flex-start; /* left-align inputs but suggestions will be centered under each */
+}
+
+/* Wrap each input separately for suggestion positioning */
+.input-container {
+  position: relative; /* suggestion absolute inside this */
+  flex: 1;
 }
 
 .search-wrapper input {
-  width: 250px; /* smaller width */
+  width: 100%;
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
@@ -128,14 +132,14 @@ h2 {
   background: #333;
 }
 
-/* Suggestions below each input */
+/* Suggestions dropdown */
 #suggestions-system,
 #suggestions-origin,
 #suggestions-dest {
   position: absolute;
-  top: 100%;
+  top: 100%; /* right below the input */
   left: 0;
-  width: 100%; /* matches input width */
+  width: 100%; /* match input width only */
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
@@ -144,11 +148,12 @@ h2 {
   color: #000;
 }
 
+/* Individual suggestion style */
 #suggestions-system .suggestion,
 #suggestions-origin .suggestion,
 #suggestions-dest .suggestion {
   padding: 5px 10px;
-  cursor: pointer; /* pointer on suggestion */
+  cursor: pointer; /* pointer on hover */
   background-color: #fff;
   color: #000;
 }

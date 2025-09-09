@@ -7,5 +7,3 @@ systems.db
 node_modules/
 
 sqldb_stuff/
-
-eslint.config.mjs

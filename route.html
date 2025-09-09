@@ -22,11 +22,16 @@
     <div class="container">
       <h2>Route Planner</h2>
       <div class="search-wrapper">
-        <input type="text" id="originSystem" placeholder="Origin system">
-        <input type="text" id="destSystem" placeholder="Destination system">
-        <button id="routeBtn">Plan Route</button>
-        <div id="routeSuggestions"></div>
-      </div>
+          <div class="input-container">
+            <input type="text" id="originSystem" placeholder="Origin system">
+            <div id="suggestions-origin"></div>
+          </div>
+          <div class="input-container">
+            <input type="text" id="destSystem" placeholder="Destination system">
+            <div id="suggestions-dest"></div>
+          </div>
+          <button id="routeBtn">Plan Route</button>
+        </div>
       <div id="routeOutput"></div>
     </div>
   </main>
