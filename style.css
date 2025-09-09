@@ -50,22 +50,26 @@ button:hover {
 }
 
 #suggestions {
-  position: relative;       /* float on top of other elements */
-  background: white;        /* white background */
-  border: 1px solid #ccc;   /* light border */
-  max-height: 200px;        /* optional max height */
-  overflow-y: auto;         /* scroll if too many suggestions */
-  z-index: 1000;            /* on top of everything */
-  width: 100%;              /* match input width */
-  color: black;             /* black text color */
+  position: absolute;       /* float on top of everything */
+  top: 0;                   /* align with top of container */
+  left: 0;
+  right: 0;                 /* stretch to full width */
+  background: white;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  color: black !important;
 }
 
-.suggestion {
+#suggestions .suggestion {
   padding: 5px 10px;
-  cursor: pointer;          /* mouse pointer on hover */
-  color: black;             /* black text color */
+  cursor: pointer;
+  color: black !important;
+  background-color: white;
 }
 
-.suggestion:hover {
-  background-color: #eee;   /* highlight on hover */
+#suggestions .suggestion:hover {
+  background-color: #eee;
+  color: black !important;
 }
