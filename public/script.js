@@ -5,25 +5,26 @@ const suggestionsDiv = document.getElementById("suggestions");
 const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
 
-// Autocomplete
+// --- Autocomplete ---
 input.addEventListener("input", async () => {
     const query = input.value.trim();
-    if (!query) {
-        suggestionsDiv.innerHTML = "";
-        return;
-    }
+    suggestionsDiv.innerHTML = ""; // Clear suggestions immediately
+
+    if (!query) return;
 
     try {
         const resp = await fetch(`${API_BASE}/autocomplete?query=${encodeURIComponent(query)}`);
         const suggestions = await resp.json();
+
         suggestionsDiv.innerHTML = suggestions
             .map(name => `<div class="suggestion">${name}</div>`)
             .join("");
 
+        // Add click listener to each suggestion
         document.querySelectorAll(".suggestion").forEach(el => {
             el.addEventListener("click", () => {
                 input.value = el.textContent;
-                suggestionsDiv.innerHTML = "";
+                suggestionsDiv.innerHTML = ""; // Clear suggestions after selection
             });
         });
     } catch (err) {
@@ -31,9 +32,12 @@ input.addEventListener("input", async () => {
     }
 });
 
-// Lookup
+// --- Lookup ---
 lookupBtn.addEventListener("click", async () => {
     const name = input.value.trim();
+    outputDiv.innerHTML = ""; // Clear previous output
+    suggestionsDiv.innerHTML = ""; // Hide suggestions on lookup
+
     if (!name) return;
 
     outputDiv.innerHTML = "Loading...";
@@ -56,5 +60,12 @@ lookupBtn.addEventListener("click", async () => {
     } catch (err) {
         outputDiv.innerHTML = `<p>Error fetching system info.</p>`;
         console.error("Lookup error:", err);
+    }
+});
+
+// --- Hide suggestions if user clicks outside ---
+document.addEventListener("click", (e) => {
+    if (!suggestionsDiv.contains(e.target) && e.target !== input) {
+        suggestionsDiv.innerHTML = "";
     }
 });
