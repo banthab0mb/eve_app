@@ -48,3 +48,22 @@ button:hover {
 #output p {
     margin: 5px 0;
 }
+
+#suggestions {
+  position: absolute;       /* float on top of other elements */
+  background: white;        /* white background */
+  border: 1px solid #ccc;   /* light border */
+  max-height: 200px;        /* optional max height */
+  overflow-y: auto;         /* scroll if too many suggestions */
+  z-index: 1000;            /* on top of everything */
+  width: 100%;              /* match input width */
+}
+
+.suggestion {
+  padding: 5px 10px;
+  cursor: pointer;          /* mouse pointer on hover */
+}
+
+.suggestion:hover {
+  background-color: #eee;   /* highlight on hover */
+}

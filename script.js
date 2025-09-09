@@ -56,3 +56,9 @@ lookupBtn.addEventListener("click", () => {
     <p><b>Security Status:</b> ${system.security_status}</p>
   `;
 });
+
+input.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") {
+    lookupBtn.click();
+  }
+});
