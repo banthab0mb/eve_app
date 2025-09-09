@@ -16,12 +16,12 @@ body {
 /* Wrap input + suggestions together */
 .search-wrapper {
   position: relative;
-  width: 100px;
+  width: 150px;
   margin-bottom: 20px;
 }
 
 #systemName {
-  width: 100px;
+  width: 150px;
   padding: 8px;
   font-size: 16px;
   border-radius: 4px;
