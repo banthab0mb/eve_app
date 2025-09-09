@@ -24,7 +24,7 @@ function getSecurityStatus(id) {
   return system ? system.security_status : null;
 }
 
-// Helper: get security class for color
+// Security class for color coding
 function secClass(sec) {
   if (sec >= 0.5) return "sec-high";
   if (sec > 0.0) return "sec-low";
@@ -47,8 +47,7 @@ routeBtn.addEventListener("click", async () => {
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    // Call EVE route API
-    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/destination/${destId}/?datasource=tranquility`);
+    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/destination/${destId}/?datasource=tranquility&flag=shortest`);
     const routeData = await res.json();
 
     if (!routeData || !routeData.length) {
@@ -68,7 +67,7 @@ routeBtn.addEventListener("click", async () => {
       const sec = system.security_status;
       const cls = secClass(sec);
 
-      // EVE kills API for system
+      // Kills API
       let kills = "-";
       try {
         const killsRes = await fetch(`https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility&system_id=${sysId}`);
@@ -77,8 +76,8 @@ routeBtn.addEventListener("click", async () => {
       } catch { kills = "-"; }
 
       html += `<tr>
-        <td>${i+1}</td>
-        <td>${system.system} (${system.region})</td>
+        <td>${i + 1}</td>
+        <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}">${sec.toFixed(2)}</td>
         <td>${kills}</td>
       </tr>`;
@@ -93,7 +92,7 @@ routeBtn.addEventListener("click", async () => {
   }
 });
 
-// Optional: autocomplete under inputs
+// Autocomplete function
 function setupAutocomplete(input, suggestionsId) {
   const suggestionsDiv = document.getElementById(suggestionsId);
   let currentFocus = -1;
@@ -151,13 +150,11 @@ function setupAutocomplete(input, suggestionsId) {
   });
 }
 
-// Initialize autocomplete for both inputs
+// Initialize autocomplete
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
 
-
-
-// Player count (EVE Online status API)
+// Player count (top-right)
 fetch("https://esi.evetech.net/latest/status/")
   .then(res => res.json())
   .then(data => {

@@ -8,14 +8,15 @@
 </head>
 <body>
   <header>
-    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-    <nav>
-      <a href="index.html" class="active">Home</a>
-      <a href="systemSearch.html">System Lookup</a>
-      <a href="route.html">Route Planner</a>
-    </nav>
-    <div id="onlineCounter">Loading...</div>
-  </header>
+  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="systemSearch.html">System Lookup</a>
+    <a href="route.html">Route Planner</a>
+  </nav>
+  <div id="onlineCounter">Loading...</div>
+</header>
+
 
   <main>
     <div class="container">
@@ -55,28 +56,28 @@
     </div>
   </footer>
   <script>
-  // Highlight current page
-  const navLinks = document.querySelectorAll('nav a');
-  const path = window.location.pathname.split('/').pop();
+        // Highlight current page
+        const navLinks = document.querySelectorAll('nav a');
+        const path = window.location.pathname.split('/').pop();
 
-  navLinks.forEach(link => {
-    if (link.getAttribute('href') === path || (path === "" && link.getAttribute('href') === "index.html")) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
+        navLinks.forEach(link => {
+        if (link.getAttribute('href') === path || (path === "" && link.getAttribute('href') === "index.html")) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+        });
 
-  // Optional: update online counter (mock example)
-  const onlineCounter = document.getElementById('onlineCounter');
-  if (onlineCounter) {
-    fetch('https://esi.evetech.net/latest/status/')
-      .then(res => res.json())
-      .then(data => {
-        if (data.players) onlineCounter.textContent = `Players Online: ${data.players}`;
-      })
-      .catch(err => console.error(err));
-  }
-</script>
+        // Optional: update online counter (mock example)
+        const onlineCounter = document.getElementById('onlineCounter');
+        if (onlineCounter) {
+        fetch('https://esi.evetech.net/latest/status/')
+            .then(res => res.json())
+            .then(data => {
+            if (data.players) onlineCounter.textContent = `Players Online: ${data.players}`;
+            })
+            .catch(err => console.error(err));
+        }
+    </script>
 </body>
 </html>
