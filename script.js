@@ -32,11 +32,10 @@ input.addEventListener("input", () => {
     div.classList.add("suggestion");
     div.textContent = s.system;
 
-    // Click → fill + search
+    // Click → fill only (NO search)
     div.addEventListener("click", () => {
       input.value = s.system;
       suggestionsDiv.innerHTML = "";
-      lookupBtn.click();
     });
 
     suggestionsDiv.appendChild(div);
