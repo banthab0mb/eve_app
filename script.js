@@ -124,6 +124,7 @@ fetch("https://esi.evetech.net/latest/status/")
   .then(data => {
     const playerCount = document.getElementById("onlineCounter");
     if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
+    playerCount.style.color = "#00ff00";
   })
   .catch(() => {
     const playerCount = document.getElementById("onlineCounter");
