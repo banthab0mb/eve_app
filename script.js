@@ -5,6 +5,7 @@ const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
 
 let systems = [];
+let currentFocus = -1; // track highlighted suggestion
 
 // Load systems.json once
 fetch("systems.json")
@@ -15,6 +16,7 @@ fetch("systems.json")
 // Simple autocomplete
 input.addEventListener("input", () => {
   const query = input.value.trim().toLowerCase();
+  currentFocus = -1; // reset focus
   if (!query) {
     suggestionsDiv.innerHTML = "";
     return;
@@ -33,6 +35,7 @@ input.addEventListener("input", () => {
     el.addEventListener("click", () => {
       input.value = el.textContent;
       suggestionsDiv.innerHTML = "";
+      lookupBtn.click();
     });
   });
 });
@@ -58,6 +61,11 @@ input.addEventListener("keydown", (e) => {
       items[currentFocus].click();
     } else {
       lookupBtn.click();
+    }
+  } else if (e.key === "Tab") {
+    if (items.length > 0) {
+      e.preventDefault();
+      items[0].click(); // pick the first suggestion
     }
   }
 });
@@ -85,18 +93,13 @@ lookupBtn.addEventListener("click", () => {
     <p><b>Name:</b> ${system.system}</p>
     <p><b>Constellation:</b> ${system.constellation || "Unknown"}</p>
     <p><b>Region:</b> ${system.region || "Unknown"}</p>
-    <p><b>Security Status:</b> ${system.security_status.toFixed(1)}</p>
+    <p><b>Security Status:</b> ${system.security_status}</p>
   `;
 });
 
-input.addEventListener("keydown", (e) => {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    lookupBtn.click();
+// Close suggestions when clicking outside
+document.addEventListener("click", (e) => {
+  if (e.target !== input) {
+    suggestionsDiv.innerHTML = "";
   }
 });
-
-input.addEventListener("blur", () => {
-  setTimeout(() => suggestionsDiv.innerHTML = "", 100);
-});
-
