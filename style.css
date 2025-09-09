@@ -50,7 +50,7 @@ button:hover {
 }
 
 #suggestions {
-  position: absolute;       /* float on top of other elements */
+  position: relative;       /* float on top of other elements */
   background: white;        /* white background */
   border: 1px solid #ccc;   /* light border */
   max-height: 200px;        /* optional max height */
