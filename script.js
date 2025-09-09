@@ -63,7 +63,7 @@ input.addEventListener("keydown", (e) => {
     }
   } else if (e.key === "Enter") {
     if (currentFocus > -1 && items.length) {
-      // Fill only, don’t search
+      // Fill input with suggestion, don’t search yet
       e.preventDefault();
       input.value = items[currentFocus].textContent;
       suggestionsDiv.innerHTML = "";
@@ -71,13 +71,6 @@ input.addEventListener("keydown", (e) => {
       // Normal search
       e.preventDefault();
       lookupBtn.click();
-    }
-  } else if (e.key === "Tab") {
-    if (items.length) {
-      e.preventDefault();
-      if (currentFocus === -1) currentFocus = 0;
-      input.value = items[currentFocus].textContent;
-      suggestionsDiv.innerHTML = "";
     }
   }
 });
