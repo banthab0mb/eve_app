@@ -2,7 +2,6 @@ const input = document.getElementById("systemName");
 const suggestionsDiv = document.getElementById("suggestions");
 const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
-const onlineCounter = document.getElementById("onlineCounter");
 
 let systems = [];
 let currentFocus = -1;
@@ -12,20 +11,6 @@ fetch("systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
-
-// Fetch online counter
-async function updateOnlineCounter() { 
-  try {
-    const res = await fetch("https://esi.evetech.net/latest/status/");
-    const data = await res.json();
-    onlineCounter.textContent = `TQ: ${data.players.toLocaleString()}`;
-  } catch (err) { // eslint-disable-line no-unused-vars
-    onlineCounter.textContent = "Tranquility unreachable";
-    onlineCounter.style.color = "#ff0000";
-  }
-}
-updateOnlineCounter();
-setInterval(updateOnlineCounter, 60000);
 
 // Autocomplete
 input.addEventListener("input", () => {
@@ -133,3 +118,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 });
 
+// Player count (EVE Online status API)
+fetch("https://esi.evetech.net/latest/status/")
+  .then(res => res.json())
+  .then(data => {
+    const playerCount = document.getElementById("onlineCounter");
+    if (playerCount) playerCount.textContent = `Players Online: ${data.players.toLocaleString()}`;
+  })
+  .catch(() => {
+    const playerCount = document.getElementById("onlineCounter");
+    if (playerCount) playerCount.textContent = "Players Online: N/A";
+  });
