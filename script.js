@@ -123,9 +123,10 @@ fetch("https://esi.evetech.net/latest/status/")
   .then(res => res.json())
   .then(data => {
     const playerCount = document.getElementById("onlineCounter");
-    if (playerCount) playerCount.textContent = `Players Online: ${data.players.toLocaleString()}`;
+    if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
   })
   .catch(() => {
     const playerCount = document.getElementById("onlineCounter");
-    if (playerCount) playerCount.textContent = "Players Online: N/A";
+    if (playerCount) playerCount.textContent = "Tranquility unreachable";
+    playerCount.style.color = "#ff0000";
   });

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EVE Tools – Route Planner</title>
+  <title>Route Planner</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -20,11 +20,12 @@
     <div class="container">
       <h2>Route Planner</h2>
       <div class="search-wrapper">
-        <input type="text" id="origin" placeholder="Origin system">
-        <input type="text" id="destination" placeholder="Destination system">
+        <input type="text" id="originSystem" placeholder="Origin system">
+        <input type="text" id="destSystem" placeholder="Destination system">
         <button id="routeBtn">Plan Route</button>
+        <div id="routeSuggestions"></div>
       </div>
-      <div id="route-output"></div>
+      <div id="routeOutput"></div>
     </div>
   </main>
 
@@ -33,11 +34,26 @@
     <p><a href="#" id="ccp-link">All Eve Related Materials are Property of CCP Games</a></p>
     <div id="ccp-disclaimer" style="display:none;">
       <p>
-        EVE Online and the EVE logo are the registered trademarks of CCP hf...
+        EVE Online and the EVE logo are the registered trademarks of CCP hf. All rights are reserved worldwide. 
+        All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all 
+        associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, 
+        vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these 
+        trademarks are likewise the intellectual property of CCP hf. CCP hf. has granted permission to evewho.com to use 
+        EVE Online and all associated logos and designs for promotional and information purposes on its website but does 
+        not endorse, and is not in any way affiliated with this website. CCP is in no way responsible for the content on 
+        or functioning of this website, nor can it be liable for any damage arising from the use of this website.
       </p>
     </div>
   </footer>
 
   <script src="route.js"></script>
+  <script>
+    // Toggle CCP disclaimer visibility
+    document.getElementById("ccp-link").addEventListener("click", (e) => {
+      e.preventDefault();
+      const disclaimer = document.getElementById("ccp-disclaimer");
+      disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
+    });
+  </script>
 </body>
 </html>

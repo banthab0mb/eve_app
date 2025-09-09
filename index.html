@@ -49,5 +49,13 @@
   </footer>
 
   <script src="script.js"></script>
+    <script>
+    // Toggle CCP disclaimer visibility
+    document.getElementById("ccp-link").addEventListener("click", (e) => {
+      e.preventDefault();
+      const disclaimer = document.getElementById("ccp-disclaimer");
+      disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
+    });
+  </script>
 </body>
 </html>
