@@ -23,11 +23,15 @@ header {
   border-bottom: 2px solid #222;
 }
 
-header .app-title {
+header .app-title a {
   font-family: "Square 721 Bold Extended", sans-serif;
   font-size: 1.5rem;
-  color: #f2f2f2;
-  margin: 0;
+  color: #fff;       /* logo always white */
+  text-decoration: none;
+}
+
+header .app-title a:hover {
+  color: #fff;
 }
 
 nav {
@@ -70,12 +74,33 @@ h2 {
   padding-bottom: 5px;
 }
 
+/* Features on home page */
+.features {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-box {
+  flex: 1;
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.feature-box h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #1e88e5;
+}
+
 /* Search Inputs - side by side */
 .search-wrapper {
   display: flex;
   gap: 10px;
   margin-bottom: 20px;
-  position: relative; /* suggestions absolute */
+  position: relative;
 }
 
 .search-wrapper input {
@@ -108,7 +133,7 @@ h2 {
   position: absolute;
   top: 100%;
   left: 0;
-  width: 100%; /* matches input width */
+  width: 100%; /* match input width */
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
@@ -184,7 +209,7 @@ footer {
   justify-content: center;
   padding: 15px 20px;
   background: #111;
-  margin-top: auto; /* ensures footer stays at bottom */
+  margin-top: auto;
 }
 
 footer p {
@@ -198,24 +223,4 @@ footer a {
 
 footer a:hover {
   color: #fff;
-}
-
-.features {
-  display: flex;
-  gap: 20px;
-  margin-top: 20px;
-}
-
-.feature-box {
-  flex: 1;
-  background: #1a1a1a;
-  padding: 15px;
-  border-radius: 6px;
-  border: 1px solid #333;
-}
-
-.feature-box h3 {
-  margin-top: 0;
-  margin-bottom: 8px;
-  color: #1e88e5;
 }
