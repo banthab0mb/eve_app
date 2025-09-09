@@ -1,0 +1,13 @@
+{
+  "name": "eve-api",
+  "version": "1.0.0",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^5.1.0",
+    "node-fetch": "^2.7.0",
+    "sqlite3": "^5.1.7"
+  }
+}
