@@ -9,8 +9,9 @@ body {
 }
 
 .container {
-    max-width: 600px;
-    width: 100%;
+  max-width: 600px;
+  width: 100%;
+  position: relative;
 }
 
 .search-box {
@@ -50,16 +51,16 @@ button:hover {
 }
 
 #suggestions {
-  position: absolute;       /* float on top of everything */
-  top: 0;                   /* align with top of container */
+  position: absolute;
+  top: 38px;       /* just below the input box */
   left: 0;
-  right: 0;                 /* stretch to full width */
+  right: 0;
   background: white;
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  color: black !important;
+  color: black;
 }
 
 #suggestions .suggestion {
