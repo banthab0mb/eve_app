@@ -1,35 +1,106 @@
 // route.js
-const originInput = document.getElementById("originSystem");
-const destInput = document.getElementById("destSystem");
-const suggestionsOrigin = document.createElement("div");
-const suggestionsDest = document.createElement("div");
+const originInput = document.getElementById("origin");
+const destInput = document.getElementById("dest");
 const routeBtn = document.getElementById("routeBtn");
-const routeOutput = document.getElementById("routeOutput");
-
-// Wrap suggestions under each input
-originInput.parentNode.appendChild(suggestionsOrigin);
-destInput.parentNode.appendChild(suggestionsDest);
-suggestionsOrigin.id = "suggestions-origin";
-suggestionsDest.id = "suggestions-dest";
+const routeOutput = document.getElementById("route-output");
 
 let systems = [];
-let currentFocusOrigin = -1;
-let currentFocusDest = -1;
 
-// Load systems.json
+// Load systems.json once
 fetch("systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
 
-// Generic autocomplete function
-function setupAutocomplete(inputEl, suggestionsEl) {
+// Helper: get system ID from name
+function getSystemId(name) {
+  const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
+  return system ? system.system_id : null;
+}
+
+// Helper: get security status
+function getSecurityStatus(id) {
+  const system = systems.find(s => s.system_id === id);
+  return system ? system.security_status : null;
+}
+
+// Helper: get security class for color
+function secClass(sec) {
+  if (sec >= 0.5) return "sec-high";
+  if (sec > 0.0) return "sec-low";
+  return "sec-null";
+}
+
+// Plan route
+routeBtn.addEventListener("click", async () => {
+  const originName = originInput.value.trim();
+  const destName = destInput.value.trim();
+  if (!originName || !destName) return;
+
+  const originId = getSystemId(originName);
+  const destId = getSystemId(destName);
+  if (!originId || !destId) {
+    routeOutput.innerHTML = "<p>Origin or destination system not found!</p>";
+    return;
+  }
+
+  routeOutput.innerHTML = "<p>Fetching route...</p>";
+
+  try {
+    // Call EVE route API
+    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/destination/${destId}/?datasource=tranquility`);
+    const routeData = await res.json();
+
+    if (!routeData || !routeData.length) {
+      routeOutput.innerHTML = "<p>No route found.</p>";
+      return;
+    }
+
+    // Build table
+    let html = `<table>
+      <tr><th>Step</th><th>System</th><th>Security</th><th>Kills (last 24h)</th></tr>`;
+
+    for (let i = 0; i < routeData.length; i++) {
+      const sysId = routeData[i];
+      const system = systems.find(s => s.system_id === sysId);
+      if (!system) continue;
+
+      const sec = system.security_status;
+      const cls = secClass(sec);
+
+      // EVE kills API for system
+      let kills = "-";
+      try {
+        const killsRes = await fetch(`https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility&system_id=${sysId}`);
+        const killsData = await killsRes.json();
+        kills = killsData.ship_kills || 0;
+      } catch { kills = "-"; }
+
+      html += `<tr>
+        <td>${i+1}</td>
+        <td>${system.system} (${system.region})</td>
+        <td class="${cls}">${sec.toFixed(2)}</td>
+        <td>${kills}</td>
+      </tr>`;
+    }
+
+    html += "</table>";
+    routeOutput.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+    routeOutput.innerHTML = "<p>Error fetching route.</p>";
+  }
+});
+
+// Optional: autocomplete under inputs
+function setupAutocomplete(input, suggestionsId) {
+  const suggestionsDiv = document.getElementById(suggestionsId);
   let currentFocus = -1;
 
-  inputEl.addEventListener("input", () => {
-    const query = inputEl.value.trim().toLowerCase();
-    currentFocus = -1;
-    suggestionsEl.innerHTML = "";
+  input.addEventListener("input", () => {
+    const query = input.value.trim().toLowerCase();
+    suggestionsDiv.innerHTML = "";
     if (!query) return;
 
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
@@ -38,75 +109,51 @@ function setupAutocomplete(inputEl, suggestionsEl) {
       const div = document.createElement("div");
       div.classList.add("suggestion");
       div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-
       div.addEventListener("click", () => {
-        inputEl.value = s.system;
-        suggestionsEl.innerHTML = "";
+        input.value = s.system;
+        suggestionsDiv.innerHTML = "";
       });
-
-      suggestionsEl.appendChild(div);
+      suggestionsDiv.appendChild(div);
     });
   });
 
-  inputEl.addEventListener("keydown", (e) => {
-    const items = suggestionsEl.querySelectorAll(".suggestion");
+  // Keyboard navigation
+  input.addEventListener("keydown", e => {
+    const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
 
     if (e.key === "ArrowDown") {
       currentFocus++;
       if (currentFocus >= items.length) currentFocus = 0;
-      setActive(items, currentFocus);
+      setActive(items);
       e.preventDefault();
     } else if (e.key === "ArrowUp") {
       currentFocus--;
       if (currentFocus < 0) currentFocus = items.length - 1;
-      setActive(items, currentFocus);
+      setActive(items);
       e.preventDefault();
     } else if (e.key === "Enter") {
+      e.preventDefault();
       if (currentFocus > -1) {
-        e.preventDefault();
-        inputEl.value = items[currentFocus].textContent.split(" (")[0]; // remove region from value
-        suggestionsEl.innerHTML = "";
+        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
+        suggestionsDiv.innerHTML = "";
       }
     }
   });
-}
 
-function setActive(items, index) {
-  items.forEach(el => el.classList.remove("active"));
-  if (index > -1 && items[index]) items[index].classList.add("active");
-}
-
-// Initialize for system lookup
-setupAutocomplete(document.getElementById("systemName"), document.getElementById("suggestions-system"));
-
-// Initialize for route planner
-setupAutocomplete(document.getElementById("originSystem"), document.getElementById("suggestions-origin"));
-setupAutocomplete(document.getElementById("destSystem"), document.getElementById("suggestions-dest"));
-
-document.getElementById("routeBtn").addEventListener("click", () => {
-  const originName = document.getElementById("origin").value.trim().toLowerCase();
-  const destName = document.getElementById("dest").value.trim().toLowerCase();
-
-  const origin = systems.find(s => s.system.toLowerCase() === originName);
-  const dest = systems.find(s => s.system.toLowerCase() === destName);
-
-  if (!origin || !dest) {
-    document.getElementById("route-output").innerHTML = `<p>Invalid origin or destination system.</p>`;
-    return;
+  function setActive(items) {
+    items.forEach(el => el.classList.remove("active"));
+    if (currentFocus > -1) items[currentFocus].classList.add("active");
   }
 
-  document.getElementById("route-output").innerHTML = `
-    <table>
-      <tr><th>Step</th><th>System</th></tr>
-      <tr><td>1</td><td>${origin.system} <i>(${origin.region})</i></td></tr>
-      <tr><td>2</td><td>${dest.system} <i>(${dest.region})</i></td></tr>
-    </table>
-  `;
-});
+  document.addEventListener("click", e => {
+    if (e.target !== input) suggestionsDiv.innerHTML = "";
+  });
+}
 
-
-
+// Initialize autocomplete for both inputs
+setupAutocomplete(originInput, "suggestions-origin");
+setupAutocomplete(destInput, "suggestions-dest");
 
 
 

@@ -199,3 +199,23 @@ footer a {
 footer a:hover {
   color: #fff;
 }
+
+.features {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.feature-box {
+  flex: 1;
+  background: #1a1a1a;
+  padding: 15px;
+  border-radius: 6px;
+  border: 1px solid #333;
+}
+
+.feature-box h3 {
+  margin-top: 0;
+  margin-bottom: 8px;
+  color: #1e88e5;
+}
