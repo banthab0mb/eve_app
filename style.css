@@ -104,7 +104,8 @@ h2 {
 }
 
 .search-wrapper input {
-  flex: 1;
+  flex: none;
+  width: 250px; /* smaller width */
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
@@ -126,20 +127,22 @@ h2 {
   background: #333;
 }
 
-/* Suggestions below each input */
+/* Suggestions below each input - centered */
 #suggestions-system,
 #suggestions-origin,
 #suggestions-dest {
   position: absolute;
   top: 100%;
-  left: 0;
-  width: 100%; /* match input width */
+  left: 50%;
+  transform: translateX(-50%);
+  width: 250px; /* match input width */
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
   color: #000;
+  cursor: default;
 }
 
 #suggestions-system .suggestion,
