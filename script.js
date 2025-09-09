@@ -40,7 +40,7 @@ input.addEventListener("input", () => {
   });
 });
 
-// Add keyboard navigation
+// Keyboard navigation
 input.addEventListener("keydown", (e) => {
   let items = suggestionsDiv.querySelectorAll(".suggestion");
   if (!items.length) return;
@@ -58,8 +58,10 @@ input.addEventListener("keydown", (e) => {
   } else if (e.key === "Enter") {
     e.preventDefault();
     if (currentFocus > -1) {
+      // Select the highlighted suggestion only
       items[currentFocus].click();
     } else {
+      // Only run lookup if no suggestion is selected
       lookupBtn.click();
     }
   } else if (e.key === "Tab") {
@@ -69,6 +71,7 @@ input.addEventListener("keydown", (e) => {
     }
   }
 });
+
 
 function setActive(items) {
   items.forEach(el => el.classList.remove("active"));
