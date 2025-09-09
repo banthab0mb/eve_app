@@ -1,16 +1,54 @@
+@font-face {
+  font-family: 'Square721BoldExtended';
+  src: url('fonts/Square721BoldExtended.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
 body {
     font-family: Arial, sans-serif;
     background-color: #121212;
     color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    background-color: #1e1e1e;
     display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding-top: 50px;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 2px solid #1e88e5;
+}
+
+header .logo {
+    font-family: 'Square721BoldExtended', Arial, sans-serif;
+    font-size: 24px;
+    color: #f0f0f0;
+}
+
+header nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #f0f0f0;
+    font-weight: bold;
+}
+
+header nav a:hover {
+    color: #1e88e5;
+}
+
+header .online-counter {
+    font-size: 14px;
+    color: #37802a;
 }
 
 .container {
   max-width: 600px;
   width: 100%;
+  margin: 40px auto;
 }
 
 /* Wrap input + suggestions together */
@@ -43,17 +81,13 @@ button:hover {
     background-color: #1565c0;
 }
 
-#loading {
-    margin-left: 10px;
-}
-
 #output p {
     margin: 5px 0;
 }
 
 #suggestions {
   position: absolute;
-  top: 100%;   /* directly under the input */
+  top: 100%;
   left: 0;
   right: 0;
   background: white;

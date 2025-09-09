@@ -2,6 +2,7 @@ const input = document.getElementById("systemName");
 const suggestionsDiv = document.getElementById("suggestions");
 const lookupBtn = document.getElementById("lookupBtn");
 const outputDiv = document.getElementById("output");
+const onlineCounter = document.getElementById("onlineCounter");
 
 let systems = [];
 let currentFocus = -1;
@@ -11,6 +12,20 @@ fetch("systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
+
+// Fetch online counter
+async function updateOnlineCounter() { 
+  try {
+    const res = await fetch("https://esi.evetech.net/latest/status/");
+    const data = await res.json();
+    onlineCounter.textContent = `TQ: ${data.players.toLocaleString()}`;
+  } catch (err) { // eslint-disable-line no-unused-vars
+    onlineCounter.textContent = "Tranquility unreachable";
+    onlineCounter.style.color = "#ff0000";
+  }
+}
+updateOnlineCounter();
+setInterval(updateOnlineCounter, 60000);
 
 // Autocomplete
 input.addEventListener("input", () => {
@@ -32,7 +47,6 @@ input.addEventListener("input", () => {
     div.classList.add("suggestion");
     div.textContent = s.system;
 
-    // Click → fill only (NO search)
     div.addEventListener("click", () => {
       input.value = s.system;
       suggestionsDiv.innerHTML = "";
@@ -62,12 +76,10 @@ input.addEventListener("keydown", (e) => {
     }
   } else if (e.key === "Enter") {
     if (currentFocus > -1 && items.length) {
-      // Fill input with suggestion, don’t search yet
       e.preventDefault();
       input.value = items[currentFocus].textContent;
       suggestionsDiv.innerHTML = "";
     } else {
-      // Normal search
       e.preventDefault();
       lookupBtn.click();
     }
@@ -81,7 +93,7 @@ function setActive(items) {
   }
 }
 
-// Lookup system on button click
+// Lookup system
 lookupBtn.addEventListener("click", () => {
   const name = input.value.trim().toLowerCase();
   if (!name) return;

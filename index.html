@@ -1,21 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EVE System Lookup</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EVE Toolkit</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>EVE System Lookup</h1>
-        <div class="search-wrapper">
-            <input type="text" id="systemName" placeholder="Type system name">
-            <div id="suggestions"></div>
-        </div>
-        <button id="lookupBtn">Search</button>
-        <div id="output"></div>
+  <header>
+    <div class="logo">EVE Toolkit</div>
+    <nav>
+      <a href="index.html">System Lookup</a>
+      <a href="#">Route Planner</a>
+    </nav>
+    <div class="online-counter" id="onlineCounter">Players Online: ...</div>
+  </header>
+
+  <div class="container">
+    <h1>System Lookup</h1>
+    <div class="search-wrapper">
+      <input type="text" id="systemName" placeholder="Type system name">
+      <div id="suggestions"></div>
     </div>
-    <script src="script.js"></script>
+    <button id="lookupBtn">Search</button>
+    <div id="output"></div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
