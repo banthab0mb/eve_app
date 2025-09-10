@@ -214,7 +214,7 @@
       const kills = systemKillsObj ? (systemKillsObj.ship_kills || 0) : 0;
       const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
 
-      const sec = system.security_status;
+      const sec = system.security_status.toFixed(1);
       const cls = secClass(sec);
       const killClass = (kills >= 5) ? 'kills-high' : "";
 

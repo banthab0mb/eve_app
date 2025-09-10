@@ -97,11 +97,11 @@ th { background: #1a1a1a; }
 tr:nth-child(even) { background: #141414; }
 
 /* Security colors */
-.sec-blue {color: #2e74dc; } /* 1.0 */
-.sec-lighter-blue {color: #3c9ced; } /* 0.9 */
-.sec-high-blue {color: #4bcef4; } /* 0.8 */
+.sec-blue { color: #2e74dc; } /* 1.0 */
+.sec-lighter-blue { color: #3c9ced; } /* 0.9 */
+.sec-high-blue { color: #4bcef4; } /* 0.8 */
 .sec-sea { color:#60daa6; } /* 0.7 */
-.sec-green {color:#71e452; } /* 0.6 */
+.sec-green { color:#71e452; } /* 0.6 */
 .sec-yellow { color: #eeff8a; } /* 0.5 */
 .sec-low { color: #dc6c09; } /* 0.4 */
 .sec-rorange { color: #d1440d; } /* 0.3 */
