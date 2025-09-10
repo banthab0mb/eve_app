@@ -25,9 +25,17 @@ input.addEventListener("input", () => {
   const query = input.value.trim().toLowerCase();
   currentFocus = -1;
   suggestionsDiv.innerHTML = "";
-  if (!query) return;
+  if (matches.length === 0) {
+    suggestionsDiv.style.display = "none";
+    return;
+  }
 
   const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
+
+  if (matches.length === 0) {
+    suggestionsDiv.style.display = "none";
+    return;
+  }
 
   matches.forEach(s => {
     const div = document.createElement("div");
@@ -36,9 +44,11 @@ input.addEventListener("input", () => {
     div.addEventListener("click", () => {
       input.value = s.system;
       suggestionsDiv.innerHTML = "";
+      suggestionsDiv.style.display = "none";
     });
     suggestionsDiv.appendChild(div);
   });
+  suggestionsDiv.style.display = "block";
 });
 
 input.addEventListener("keydown", e => {
@@ -73,6 +83,7 @@ function setActive(items) {
 
 document.addEventListener("click", e => {
   if (e.target !== input) suggestionsDiv.innerHTML = "";
+  suggestionsDiv.style.display = "none";
 });
 
 // Lookup system on button click
