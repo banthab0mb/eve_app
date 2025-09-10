@@ -114,6 +114,9 @@ tr:nth-child(even) { background: #141414; }
 .sec-low { color: #ffa500; }
 .sec-null { color: #f00; }
 
+/* Kills color */
+.kills-high { color: #f00; }
+
 /* Footer */
 footer {
   border-top: 2px solid #222;

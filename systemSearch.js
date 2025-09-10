@@ -201,13 +201,14 @@
 
       const sec = typeof system.security_status === 'number' ? system.security_status : null;
       const secClass = (sec === null) ? '' : (sec >= 0.5 ? 'sec-high' : (sec > 0 ? 'sec-low' : 'sec-null'));
+      const killClass = kills >= 5 ? "high-kills" : "";
 
       outputDiv.innerHTML = `
         <p><b>Name:</b> ${escapeHtml(system.system)}</p>
         <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
         <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
         <p><b>Security Status:</b> ${sec === null ? 'N/A' : `<span class="${secClass}">${sec.toFixed(1)}</span>`}</p>
-        <p><b>Kills (last hour):</b> ${kills}</p>
+        <p><b>Kills (last hour):</b> <"${killClass}">${kills}</p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
       `;
     } catch (err) {
