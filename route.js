@@ -94,61 +94,56 @@ routeBtn.addEventListener("click", async () => {
 });
 
 // Autocomplete setup
-function setupAutocomplete(input, suggestionsId) {
-  const suggestionsDiv = document.getElementById(suggestionsId);
-  let currentFocus = -1;
+function renderSuggestions(query) {
+    if (!suggestionsDiv || !input) return;
+    suggestionsDiv.innerHTML = '';
+    currentFocus = -1;
 
-  input.addEventListener("input", () => {
-    const query = input.value.trim().toLowerCase();
-    suggestionsDiv.innerHTML = "";
-    if (!query) return;
+    if (!query) {
+      hideSuggestions();
+      return;
+    }
 
-    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
+    if (!systems || !systems.length) {
+      // still loading or failed
+      console.log('No systems loaded yet; suggestions unavailable');
+      hideSuggestions();
+      return;
+    }
 
-    matches.forEach(s => {
-      const div = document.createElement("div");
-      div.classList.add("suggestion");
-      div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-      div.addEventListener("click", () => {
+    const matches = systems
+      .filter(s => s.system.toLowerCase().startsWith(query))
+      .slice(0, 12);
+
+    if (!matches.length) {
+      hideSuggestions();
+      return;
+    }
+
+    // ensure suggestions container gets the same width as the input
+    // (works even if CSS not loaded correctly)
+    const rect = input.getBoundingClientRect();
+    suggestionsDiv.style.minWidth = `${rect.width}px`;
+
+    matches.forEach((s, idx) => {
+      const div = document.createElement('div');
+      div.className = 'suggestion';
+      div.setAttribute('data-idx', idx);
+      // innerHTML includes the italic region span (style provided by CSS)
+      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
+      div.style.cursor = 'pointer';
+
+      div.addEventListener('mousedown', (ev) => {
+        ev.preventDefault();
         input.value = s.system;
-        suggestionsDiv.innerHTML = "";
+        hideSuggestions();
+        input.focus();
       });
       suggestionsDiv.appendChild(div);
     });
-  });
 
-  input.addEventListener("keydown", e => {
-    const items = suggestionsDiv.querySelectorAll(".suggestion");
-    if (!items.length) return;
-
-    if (e.key === "ArrowDown") {
-      currentFocus++;
-      if (currentFocus >= items.length) currentFocus = 0;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === "ArrowUp") {
-      currentFocus--;
-      if (currentFocus < 0) currentFocus = items.length - 1;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (currentFocus > -1) {
-        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
-        suggestionsDiv.innerHTML = "";
-      }
-    }
-  });
-
-  function setActive(items) {
-    items.forEach(el => el.classList.remove("active"));
-    if (currentFocus > -1) items[currentFocus].classList.add("active");
+    showSuggestionsContainer();
   }
-
-  document.addEventListener("click", e => {
-    if (e.target !== input) suggestionsDiv.innerHTML = "";
-  });
-}
 
 // Initialize autocomplete for both inputs
 setupAutocomplete(originInput, "suggestions-origin");
