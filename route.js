@@ -75,12 +75,13 @@ routeBtn.addEventListener("click", async () => {
       const sec = system.security_status;
       const cls = secClass(sec);
       const kills = getKills(sysId);
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
       html += `<tr>
         <td>${i + 1}</td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}">${sec.toFixed(1)}</td>
-        <td>${kills}</td>
+        <td>Kills:</b> <span class="${killClass}">${kills}</span></td>
       </tr>`;
     }
 
