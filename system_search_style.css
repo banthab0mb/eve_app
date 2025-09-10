@@ -98,7 +98,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 #suggestions-system .active {
   background-color: #1e88e5;
-  color: #fff !important;
+  color: #000000 !important;
 }
 
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }

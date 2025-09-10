@@ -88,11 +88,11 @@
       // innerHTML includes the italic region span (style provided by CSS)
       div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
       div.style.cursor = 'pointer';
-      // use mousedown (not click) so the input doesn't lose focus before we run
+
       div.addEventListener('mousedown', (ev) => {
         ev.preventDefault();
         input.value = s.system;
-        hideSuggestions(); // don't perform a lookup here — keeps selection separate from search
+        hideSuggestions();
         input.focus();
       });
       suggestionsDiv.appendChild(div);
