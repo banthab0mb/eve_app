@@ -86,10 +86,10 @@ routeBtn.addEventListener("click", async () => {
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
       html += `<tr>
-        <td>${i + 1}</td>
+        <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
-        <td class="${cls}">${sec.toFixed(1)}</td>
-        <td></b> <span class="${killClass}">${kills}</span></td>
+        <td class="${cls}"><b>${sec.toFixed(1)}</b></td>
+        <td><span class="${killClass}"><b>${kills}</b></span></td>
       </tr>`;
     }
 
