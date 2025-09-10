@@ -73,7 +73,7 @@ routeBtn.addEventListener("click", async () => {
 
     // Build table
     let html = `<table>
-      <tr><th>Step</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th></tr>`;
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th></tr>`;
 
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];

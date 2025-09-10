@@ -31,6 +31,21 @@
       console.error('Failed to load systems.json:', err);
     });
 
+  // Helper: get security status class
+  function secClass(sec) {
+    if (sec >= 1) return "sec-blue";
+    if (sec >= 0.9) return "sec-lighter-blue";
+    if (sec >= 0.8) return "sec-high-blue";
+    if (sec >= 0.7) return "sec-sea";
+    if (sec >= 0.6) return "sec-green";
+    if (sec >= 0.5) return "sec-yellow";
+    if (sec >= 0.4) return "sec-low";
+    if (sec >= 0.3) return "sec-rorange";
+    if (sec >= 0.2) return "sec-red";
+    if (sec >= 0.1) return "sec-purple";
+    return "sec-null";
+  }
+
   // expose a global for any inline oninput="showSuggestions(...)" left in HTML
   window.showSuggestions = (value) => {
     // set input value and call the normal input handler
@@ -199,15 +214,15 @@
       const kills = systemKillsObj ? (systemKillsObj.ship_kills || 0) : 0;
       const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
 
-      const sec = typeof system.security_status === 'number' ? system.security_status : null;
-      const secClass = (sec === null) ? '' : (sec >= 0.5 ? 'sec-high' : (sec > 0 ? 'sec-low' : 'sec-null'));
+      const sec = system.security_status;
+      const cls = secClass(sec);
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
       outputDiv.innerHTML = `
         <p><b>Name:</b> ${escapeHtml(system.system)}</p>
         <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
         <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
-        <p><b>Security Status:</b> ${sec === null ? 'N/A' : `<span class="${secClass}">${sec.toFixed(1)}</span>`}</p>
+        <p><b>Security Status:<b> class="${cls}"><b>${sec.toFixed(1)}<b></span>}</p>
         <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
       `;
