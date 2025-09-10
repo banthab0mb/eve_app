@@ -201,7 +201,7 @@
 
       const sec = typeof system.security_status === 'number' ? system.security_status : null;
       const secClass = (sec === null) ? '' : (sec >= 0.5 ? 'sec-high' : (sec > 0 ? 'sec-low' : 'sec-null'));
-      const killClass = kills >= 5 ? "high-kills" : "";
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
       outputDiv.innerHTML = `
         <p><b>Name:</b> ${escapeHtml(system.system)}</p>
