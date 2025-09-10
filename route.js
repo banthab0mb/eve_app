@@ -80,7 +80,7 @@ routeBtn.addEventListener("click", async () => {
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
-      const sec = Number(system.security_status.toFixed(1));
+      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
       const kills = getKills(sysId);
       const killClass = (kills >= 5) ? 'kills-high' : "";
