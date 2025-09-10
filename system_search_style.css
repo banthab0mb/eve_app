@@ -36,54 +36,54 @@ main { flex: 1; padding: 20px; }
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
-/* Search Input */
+/* Search box + button inline */
 .search-wrapper {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  width: 250px; /* keep it compact */
+  align-items: center;
+  gap: 10px;
   position: relative;
+  width: fit-content;
+  margin: 0 auto 20px auto; /* center the whole thing */
 }
 
 .search-wrapper input {
-  width: 100%;
+  width: 250px;
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
   color: #eee;
   border-radius: 4px;
   box-sizing: border-box;
+  position: relative;
+  z-index: 1;
 }
 
 .search-wrapper button {
-  margin-top: 8px; /* space between input and button */
-  padding: 6px 12px;
+  padding: 8px 16px;
   background: #222;
   color: #eee;
   border: 1px solid #555;
   border-radius: 4px;
   cursor: pointer;
+  z-index: 1;
 }
 
 .search-wrapper button:hover {
   background: #333;
 }
 
-/* Suggestions float over content */
-#suggestions-system,
-#suggestions-origin,
-#suggestions-dest {
+/* Suggestions floating directly under the input */
+#suggestions-system {
   position: absolute;
-  top: 100%;         /* start right below the input */
+  top: 100%;      /* right below input */
   left: 0;
-  width: 100%;       /* match input width */
+  width: 250px;   /* match input width */
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;     /* make sure it floats above button/content */
+  z-index: 2;     /* above button */
   color: #000;
-  border-radius: 0 0 4px 4px;
 }
 
 #suggestions-system .suggestion {
@@ -101,7 +101,6 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   background-color: #1e88e5;
   color: #fff !important;
 }
-
 
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
 
