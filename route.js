@@ -27,16 +27,16 @@ function getSystemId(name) {
 
 // Helper: get security status class
 function secClass(sec) {
-  if (sec = 1) return "sec-blue";
-  if (sec = 0.9) return "sec-lighter-blue";
-  if (sec = 0.8) return "sec-high-blue";
-  if (sec = 0.7) return "sec-sea";
-  if (sec = 0.6) return "sec-green";
-  if (sec = 0.5) return "sec-yellow";
-  if (sec = 0.4) return "sec-low";
-  if (sec = 0.3) return "sec-rorange";
-  if (sec = 0.2) return "sec-red";
-  if (sec = 0.1) return "sec-purple";
+  if (sec >= 1) return "sec-blue";
+  if (sec >= 0.9) return "sec-lighter-blue";
+  if (sec >= 0.8) return "sec-high-blue";
+  if (sec >= 0.7) return "sec-sea";
+  if (sec >= 0.6) return "sec-green";
+  if (sec >= 0.5) return "sec-yellow";
+  if (sec >= 0.4) return "sec-low";
+  if (sec >= 0.3) return "sec-rorange";
+  if (sec >= 0.2) return "sec-red";
+  if (sec >= 0.1) return "sec-purple";
   return "sec-null";
 }
 
@@ -80,7 +80,7 @@ routeBtn.addEventListener("click", async () => {
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
-      const sec = system.security_status.toFixed(1);
+      const sec = Number(system.security_status.toFixed(1));
       const cls = secClass(sec);
       const kills = getKills(sysId);
       const killClass = (kills >= 5) ? 'kills-high' : "";
