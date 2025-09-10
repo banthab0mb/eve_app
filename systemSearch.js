@@ -208,7 +208,7 @@
         <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
         <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
         <p><b>Security Status:</b> ${sec === null ? 'N/A' : `<span class="${secClass}">${sec.toFixed(1)}</span>`}</p>
-        <p><b>Kills (last hour):</b> <"${killClass}">${kills}</p>
+        <p><b>Kills (last hour):</b> ${killClass}"${kills}"</p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
       `;
     } catch (err) {
