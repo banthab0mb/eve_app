@@ -55,7 +55,7 @@ routeBtn.addEventListener("click", async () => {
 
   try {
     // Call EVE route API
-    const res = await fetch(`https://esi.evetech.net/latest/route/origin/${originId}/${destId}`);
+    const res = await fetch(`https://esi.evetech.net/latest/route/${originId}/${destId}`);
     const routeData = await res.json();
 
     if (!routeData || !routeData.length) {
