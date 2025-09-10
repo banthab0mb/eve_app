@@ -97,9 +97,17 @@ th { background: #1a1a1a; }
 tr:nth-child(even) { background: #141414; }
 
 /* Security colors */
-.sec-high { color: #0f0; }
-.sec-low { color: #ffa500; }
-.sec-null { color: #f00; }
+.sec-blue {color: #2e74dc; } /* 1.0 */
+.sec-lighter-blue {color: #3c9ced; } /* 0.9 */
+.sec-high-blue {color: #4bcef4; } /* 0.8 */
+.sec-sea { color:#60daa6; } /* 0.7 */
+.sec-green {color:#71e452; } /* 0.6 */
+.sec-yellow { color: #eeff8a; } /* 0.5 */
+.sec-low { color: #dc6c09; } /* 0.4 */
+.sec-rorange { color: #d1440d; } /* 0.3 */
+.sec-red { color: #bc1116; } /* 0.2 */
+.sec-purple { color: #6e221a; } /* 0.1 */
+.sec-null { color: #8f2f69; } /* 0 >= */
 
 /* High kills color */
 .kills-high { color: #f00; }
