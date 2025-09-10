@@ -18,20 +18,22 @@
   <div id="onlineCounter">Loading...</div>
 </header>
   <main>
-    <div class="container">
-      <h2>Route Planner</h2>
-      <div class="search-wrapper">
-          <div class="input-container">
-            <input type="text" id="originSystem" placeholder="Origin system">
-            <div id="suggestions-origin"></div>
-          </div>
-          <div class="input-container">
-            <input type="text" id="destSystem" placeholder="Destination system">
-            <div id="suggestions-dest"></div>
-          </div>
-          <button id="routeBtn">Plan Route</button>
-        </div>
-      <div id="route-output"></div>
+    <div class="route-search">
+      <div class="search-group">
+        <input id="originSystem" type="text" placeholder="Origin system">
+        <div id="suggestions-origin" class="suggestions"></div>
+      </div>
+
+      <div class="search-group">
+        <input id="destSystem" type="text" placeholder="Destination system">
+        <div id="suggestions-dest" class="suggestions"></div>
+      </div>
+
+      <button id="routeBtn">Find Route</button>
+    </div>
+
+    <div id="route-output"></div>
+
     </div>
   </main>
 

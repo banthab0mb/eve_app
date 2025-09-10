@@ -37,9 +37,20 @@ main { flex: 1; padding: 20px; }
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 /* Search Inputs - side by side */
-.search-wrapper { display: flex; flex-direction: column; gap: 5px; margin-bottom: 20px; position: relative; }
-.search-wrapper input {
-  width: 250px;
+.route-search {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.search-group {
+  position: relative; /* suggestions are positioned relative to input */
+  flex: 1;
+}
+
+.search-group input {
+  width: 100%;
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
@@ -48,8 +59,33 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   box-sizing: border-box;
 }
 
-.search-wrapper button {
-  padding: 8px;
+/* Suggestions dropdown */
+.suggestions {
+  position: absolute;
+  top: 100%;   /* directly under input */
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  color: #000;
+}
+
+.suggestions .suggestion {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.suggestions .suggestion:hover,
+.suggestions .active {
+  background-color: #eee;
+}
+
+/* Button */
+#routeBtn {
+  padding: 8px 16px;
   background: #222;
   color: #eee;
   border: 1px solid #555;
@@ -57,36 +93,10 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   cursor: pointer;
 }
 
-.search-wrapper button:hover { background: #333; }
-
-/* Suggestions below inputs */
-#suggestions-origin,
-#suggestions-dest {
-  position: absolute;
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 250px;
-  background: #fff;
-  border: 1px solid #ccc;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-  color: #000;
-  cursor: pointer;
+#routeBtn:hover {
+  background: #333;
 }
 
-#suggestions-origin .suggestion,
-#suggestions-dest .suggestion {
-  padding: 5px 10px;
-  background: #fff;
-  color: #000;
-}
-
-#suggestions-origin .suggestion:hover,
-#suggestions-dest .suggestion:hover { background: #eee; }
-#suggestions-origin .active,
-#suggestions-dest .active { background: #1e88e5; color: #fff !important; }
 
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
 
