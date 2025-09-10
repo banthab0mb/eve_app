@@ -21,14 +21,15 @@
 
   <!-- Page Content -->
   <main>
-    <div class="container">
-      <h2>System Lookup</h2>
-      <div class="search-container">
-        <input type="text" class="search-box" placeholder="Type system name" oninput="showSuggestions(this.value)">
-        <div class="suggestions" id="suggestions-box"></div>
-      </div>
-      <button class="search-button">Search</button>
-      <div id="output"></div>
+    <div class="search-container">
+      <input type="text" 
+            id="systemName" 
+            class="search-box" 
+            placeholder="Type system name">
+      <div class="suggestions" id="suggestions"></div>
+    </div>
+    <button class="search-button" id="lookupBtn">Search</button>
+    <div id="output"></div>
     </div>
   </main>
 
