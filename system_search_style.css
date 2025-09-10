@@ -37,7 +37,15 @@ main { flex: 1; padding: 20px; }
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 /* Search Input */
-.search-wrapper { position: relative; width: 250px; margin-bottom: 20px; }
+/* Search Input */
+.search-wrapper {
+  position: relative;
+  width: 250px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
 .search-wrapper input {
   width: 100%;
   padding: 8px;
@@ -46,6 +54,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   color: #eee;
   border-radius: 4px;
   box-sizing: border-box;
+  z-index: 1; /* keep input above other elements if needed */
 }
 
 .search-wrapper button {
@@ -56,14 +65,14 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   color: #eee;
   border: 1px solid #555;
   border-radius: 4px;
+  cursor: pointer;
+  z-index: 1;
 }
 
-.search-wrapper button:hover { background: #333; }
-
-/* Suggestions */
+/* Suggestions - hover above button */
 #suggestions-system {
   position: absolute;
-  top: 100%;
+  top: 100%;  /* right below input */
   left: 50%;
   transform: translateX(-50%);
   width: 250px;
@@ -71,8 +80,9 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
-  z-index: 1000;
+  z-index: 2;  /* above input/button */
   color: #000;
+  cursor: pointer;
 }
 
 #suggestions-system .suggestion {
@@ -81,8 +91,14 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   color: #000;
 }
 
-#suggestions-system .suggestion:hover { background: #eee; }
-#suggestions-system .active { background: #1e88e5; color: #fff !important; }
+#suggestions-system .suggestion:hover {
+  background: #eee;
+}
+
+#suggestions-system .active {
+  background: #1e88e5;
+  color: #fff !important;
+}
 
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
 
