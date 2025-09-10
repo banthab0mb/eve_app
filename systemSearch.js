@@ -222,7 +222,7 @@
         <p><b>Name:</b> ${escapeHtml(system.system)}</p>
         <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
         <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
-        <p><b>Security Status:</b> <span class="${cls}">${sec.toFixed(1)}</span>}</p>
+        <p><b>Security Status:</b> <span class="${cls}">${sec.toFixed(1)}</span></p>
         <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
       `;
