@@ -1,129 +1,219 @@
-// systemLookup.js
-const input = document.getElementById("systemName");
-const suggestionsDiv = document.getElementById("suggestions");
-const lookupBtn = document.getElementById("lookupBtn");
-const outputDiv = document.getElementById("output");
+(() => {
+  // element selection
+  const input = document.querySelector('#systemName') || document.querySelector('.search-box');
+  const suggestionsDiv =
+    (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
+    document.getElementById('suggestions') ||
+    document.getElementById('suggestions-box') ||
+    document.querySelector('.suggestions');
+  const lookupBtn =
+    document.getElementById('lookupBtn') ||
+    document.querySelector('.search-button') ||
+    document.querySelector('button.search-button') ||
+    document.querySelector('button');
+  const outputDiv = document.getElementById('output') || document.querySelector('.output');
 
-let systems = [];
-
-// Load systems.json once
-fetch("systems.json")
-  .then(res => res.json())
-  .then(data => systems = data)
-  .catch(err => console.error("Failed to load systems.json:", err));
-
-// Helper: get security class for color
-function secClass(sec) {
-  if (sec >= 0.5) return "sec-high";
-  if (sec > 0.0) return "sec-low";
-  return "sec-null";
-}
-
-// Autocomplete
-let currentFocus = -1;
-input.addEventListener("input", () => {
-  const query = input.value.trim().toLowerCase();
-  currentFocus = -1;
-  suggestionsDiv.innerHTML = "";
-  if (matches.length === 0) {
-    suggestionsDiv.style.display = "none";
-    return;
+  if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
+    console.warn('systemSearch.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
   }
 
-  const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
+  let systems = [];
+  let currentFocus = -1;
 
-  if (matches.length === 0) {
-    suggestionsDiv.style.display = "none";
-    return;
-  }
-
-  matches.forEach(s => {
-    const div = document.createElement("div");
-    div.classList.add("suggestion");
-    div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-    div.addEventListener("click", () => {
-      input.value = s.system;
-      suggestionsDiv.innerHTML = "";
-      suggestionsDiv.style.display = "none";
+  // Load systems.json
+  fetch('systems.json')
+    .then(res => res.json())
+    .then(data => {
+      systems = data;
+      console.log('systems.json loaded, systems:', systems.length);
+    })
+    .catch(err => {
+      console.error('Failed to load systems.json:', err);
     });
-    suggestionsDiv.appendChild(div);
+
+  // expose a global for any inline oninput="showSuggestions(...)" left in HTML
+  window.showSuggestions = (value) => {
+    // set input value and call the normal input handler
+    if (!input) return;
+    input.value = value;
+    renderSuggestions(value.trim().toLowerCase());
+  };
+
+  // helper: show/hide
+  function hideSuggestions() {
+    suggestionsDiv.innerHTML = '';
+    suggestionsDiv.style.display = 'none';
+    currentFocus = -1;
+  }
+  function showSuggestionsContainer() {
+    suggestionsDiv.style.display = 'block';
+  }
+
+  // Build and show suggestions (query: lowercase)
+  function renderSuggestions(query) {
+    if (!suggestionsDiv || !input) return;
+    suggestionsDiv.innerHTML = '';
+    currentFocus = -1;
+
+    if (!query) {
+      hideSuggestions();
+      return;
+    }
+
+    if (!systems || !systems.length) {
+      // still loading or failed
+      console.log('No systems loaded yet; suggestions unavailable');
+      hideSuggestions();
+      return;
+    }
+
+    const matches = systems
+      .filter(s => s.system.toLowerCase().startsWith(query))
+      .slice(0, 12);
+
+    if (!matches.length) {
+      hideSuggestions();
+      return;
+    }
+
+    // ensure suggestions container gets the same width as the input
+    // (works even if CSS not loaded correctly)
+    const rect = input.getBoundingClientRect();
+    suggestionsDiv.style.minWidth = `${rect.width}px`;
+
+    matches.forEach((s, idx) => {
+      const div = document.createElement('div');
+      div.className = 'suggestion';
+      div.setAttribute('data-idx', idx);
+      // innerHTML includes the italic region span (style provided by CSS)
+      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
+      div.style.cursor = 'pointer';
+      // use mousedown (not click) so the input doesn't lose focus before we run
+      div.addEventListener('mousedown', (ev) => {
+        ev.preventDefault();
+        input.value = s.system;
+        hideSuggestions(); // don't perform a lookup here — keeps selection separate from search
+        input.focus();
+      });
+      suggestionsDiv.appendChild(div);
+    });
+
+    showSuggestionsContainer();
+  }
+
+  // escape helper for safety when injecting system names
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // key handling for input
+  input.addEventListener('input', (e) => {
+    const q = input.value.trim().toLowerCase();
+    renderSuggestions(q);
   });
-  suggestionsDiv.style.display = "block";
-});
 
-input.addEventListener("keydown", e => {
-  const items = suggestionsDiv.querySelectorAll(".suggestion");
-  if (!items.length) return;
+  input.addEventListener('keydown', (e) => {
+    const items = suggestionsDiv.querySelectorAll('.suggestion');
+    if (e.key === 'ArrowDown') {
+      if (!items.length) return;
+      currentFocus = (currentFocus + 1) % items.length;
+      setActive(items);
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      if (!items.length) return;
+      currentFocus = (currentFocus - 1 + items.length) % items.length;
+      setActive(items);
+      e.preventDefault();
+    } else if (e.key === 'Escape') {
+      hideSuggestions();
+    } else if (e.key === 'Enter') {
+      // If a suggestion is highlighted, pick it and DON'T run lookup
+      if (currentFocus > -1 && items.length) {
+        e.preventDefault();
+        const chosen = items[currentFocus];
+        if (chosen) {
+          // choose text only (strip the region in parentheses)
+          const txt = chosen.textContent.replace(/\s\(.+\)$/, '').trim();
+          input.value = txt;
+          hideSuggestions();
+          return;
+        }
+      }
+      // otherwise run lookup
+      e.preventDefault();
+      runLookup();
+    }
+  });
 
-  if (e.key === "ArrowDown") {
-    currentFocus++;
-    if (currentFocus >= items.length) currentFocus = 0;
-    setActive(items);
-    e.preventDefault();
-  } else if (e.key === "ArrowUp") {
-    currentFocus--;
-    if (currentFocus < 0) currentFocus = items.length - 1;
-    setActive(items);
-    e.preventDefault();
-  } else if (e.key === "Enter") {
-    e.preventDefault();
-    if (currentFocus > -1) {
-      input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
-      suggestionsDiv.innerHTML = "";
-    } else {
-      lookupBtn.click();
+  function setActive(items) {
+    items.forEach(i => i.classList.remove('active'));
+    if (currentFocus > -1 && items[currentFocus]) items[currentFocus].classList.add('active');
+    // ensure active item is visible (scroll into view if needed)
+    const active = items[currentFocus];
+    if (active) active.scrollIntoView({ block: 'nearest' });
+  }
+
+  // click outside => hide
+  document.addEventListener('click', (ev) => {
+    if (!input) return;
+    if (ev.target === input || suggestionsDiv.contains(ev.target)) return;
+    hideSuggestions();
+  });
+
+  // make lookup button clickable with pointer if CSS doesn't set it
+  lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
+  lookupBtn.addEventListener('click', runLookup);
+
+  async function runLookup() {
+    const name = input.value.trim().toLowerCase();
+    if (!name) return;
+    if (!systems || !systems.length) {
+      outputDiv.innerHTML = '<p>Systems data still loading, try again in a moment.</p>';
+      return;
+    }
+
+    const system = systems.find(s => s.system.toLowerCase() === name);
+    if (!system) {
+      outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found!</p>`;
+      return;
+    }
+
+    outputDiv.innerHTML = `<p>Fetching kills and jumps for ${escapeHtml(system.system)}...</p>`;
+
+    try {
+      const [killsRes, jumpsRes] = await Promise.all([
+        fetch('https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility'),
+        fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility')
+      ]);
+      const killsData = await killsRes.json();
+      const jumpsData = await jumpsRes.json();
+
+      const systemKillsObj = Array.isArray(killsData) ? killsData.find(k => k.system_id === system.system_id) : null;
+      const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
+
+      const kills = systemKillsObj ? (systemKillsObj.ship_kills || 0) : 0;
+      const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
+
+      const sec = typeof system.security_status === 'number' ? system.security_status : null;
+      const secClass = (sec === null) ? '' : (sec >= 0.5 ? 'sec-high' : (sec > 0 ? 'sec-low' : 'sec-null'));
+
+      outputDiv.innerHTML = `
+        <p><b>Name:</b> ${escapeHtml(system.system)}</p>
+        <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
+        <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
+        <p><b>Security Status:</b> ${sec === null ? 'N/A' : `<span class="${secClass}">${sec.toFixed(2)}</span>`}</p>
+        <p><b>Kills (last hour):</b> ${kills}</p>
+        <p><b>Jumps (last hour):</b> ${jumps}</p>
+      `;
+    } catch (err) {
+      console.error(err);
+      outputDiv.innerHTML = '<p>Error fetching kills/jumps. See console.</p>';
     }
   }
-});
 
-function setActive(items) {
-  items.forEach(el => el.classList.remove("active"));
-  if (currentFocus > -1) items[currentFocus].classList.add("active");
-}
-
-document.addEventListener("click", e => {
-  if (e.target !== input) suggestionsDiv.innerHTML = "";
-  suggestionsDiv.style.display = "none";
-});
-
-// Lookup system on button click
-lookupBtn.addEventListener("click", async () => {
-  const name = input.value.trim().toLowerCase();
-  if (!name) return;
-
-  const system = systems.find(s => s.system.toLowerCase() === name);
-  if (!system) {
-    outputDiv.innerHTML = `<p>System not found!</p>`;
-    return;
-  }
-
-  outputDiv.innerHTML = `<p>Fetching kills and jumps...</p>`;
-
-  try {
-    // Fetch kills & jumps arrays
-    const [killsRes, jumpsRes] = await Promise.all([
-      fetch("https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility"),
-      fetch("https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility")
-    ]);
-
-    const killsData = await killsRes.json();
-    const jumpsData = await jumpsRes.json();
-
-    const systemKills = killsData.find(k => k.system_id === system.system_id)?.ship_kills || 0;
-    const systemJumps = jumpsData.find(j => j.system_id === system.system_id)?.ship_jumps || 0;
-
-    const secClassName = secClass(system.security_status);
-
-    outputDiv.innerHTML = `
-      <p><b>Name:</b> ${system.system}</p>
-      <p><b>Constellation:</b> ${system.constellation || "Unknown"}</p>
-      <p><b>Region:</b> ${system.region || "Unknown"}</p>
-      <p><b>Security Status:</b> <span class="${secClassName}">${system.security_status.toFixed(2)}</span></p>
-      <p><b>Kills (last hour):</b> ${systemKills}</p>
-      <p><b>Jumps (last hour):</b> ${systemJumps}</p>
-    `;
-  } catch (err) {
-    console.error(err);
-    outputDiv.innerHTML = "<p>Error fetching kills/jumps.</p>";
-  }
-});
+})();
