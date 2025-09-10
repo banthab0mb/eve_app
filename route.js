@@ -88,7 +88,7 @@ routeBtn.addEventListener("click", async () => {
       html += `<tr>
         <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
-        <td class="${cls}"><b>${sec.toFixed(1)}</b></td>
+        <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
       </tr>`;
     }
