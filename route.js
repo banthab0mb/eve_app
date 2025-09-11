@@ -2,6 +2,7 @@ const originInput = document.getElementById("originSystem");
 const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
+const avoidContainer = document.getElementById("avoid-container");
 
 let systems = [];
 let systemKills = [];
@@ -45,24 +46,96 @@ function getKills(systemId) {
   return entry ? entry.ship_kills : 0;
 }
 
+// Collect avoidance IDs
+function getAvoidIds() {
+  const tags = avoidContainer.querySelectorAll(".avoid-tag");
+  return Array.from(tags).map(tag => tag.dataset.id);
+}
+
+// Add avoidance tag + new input
+function addAvoidTag(systemName) {
+  const sysId = getSystemId(systemName);
+  if (!sysId) return;
+
+  // Prevent duplicates
+  if (getAvoidIds().includes(String(sysId))) return;
+
+  const tag = document.createElement("span");
+  tag.classList.add("avoid-tag");
+  tag.textContent = systemName;
+  tag.dataset.id = sysId;
+
+  const removeBtn = document.createElement("button");
+  removeBtn.textContent = "×";
+  removeBtn.classList.add("remove-btn");
+  removeBtn.addEventListener("click", () => tag.remove());
+
+  tag.appendChild(removeBtn);
+  avoidContainer.insertBefore(tag, avoidContainer.querySelector(".search-group:last-child"));
+
+  // Always ensure a fresh input exists
+  if (!avoidContainer.querySelector(".search-group input").value) return;
+  createAvoidInput();
+}
+
+// Create new avoid input
+function createAvoidInput() {
+  const group = document.createElement("div");
+  group.classList.add("search-group");
+
+  const input = document.createElement("input");
+  input.type = "text";
+  input.placeholder = "Avoid system";
+
+  const suggestionsDiv = document.createElement("div");
+  suggestionsDiv.classList.add("suggestions");
+
+  group.appendChild(input);
+  group.appendChild(suggestionsDiv);
+  avoidContainer.appendChild(group);
+
+  setupAutocomplete(input, suggestionsDiv.id = `suggestions-${Date.now()}`);
+
+  // On Enter, add system as tag
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      const val = input.value.trim();
+      if (val) {
+        addAvoidTag(val);
+        input.value = "";
+      }
+    }
+  });
+}
+
 // Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
+
   if (!originName || !destName) return;
 
   const originId = getSystemId(originName);
   const destId = getSystemId(destName);
+  const avoidIds = getAvoidIds();
+
   if (!originId || !destId) {
     routeOutput.innerHTML = "<p>Origin or destination system not found!</p>";
     return;
   }
 
+  // Get selected flag
+  const flag = document.querySelector("input[name='route-flag']:checked").value;
+
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    // Call EVE route API
-    const res = await fetch(`https://esi.evetech.net/latest/route/${originId}/${destId}`);
+    // Build query params
+    let url = `https://esi.evetech.net/latest/route/${originId}/${destId}?flag=${flag}`;
+    if (avoidIds.length) url += `&avoid=${avoidIds.join(",")}`;
+
+    const res = await fetch(url);
     const routeData = await res.json();
 
     if (!routeData || !routeData.length) {
@@ -85,11 +158,11 @@ routeBtn.addEventListener("click", async () => {
       // Call secClass function with above value as parameter to get color for displaying
       const cls = secClass(sec);
 
-      // Get kills and determine if highlighting is needed
+      // Determine if highlighting is needed for kill amount
       const kills = getKills(sysId);
-      const killClass = (kills >= 5) ? 'kills-high' : "";
+      const killClass = (kills >= 5) ? "kills-high" : "";
 
-      // Display system info in the table
+      // Display output
       html += `<tr>
         <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
@@ -109,7 +182,11 @@ routeBtn.addEventListener("click", async () => {
 
 // Autocomplete setup
 function setupAutocomplete(input, suggestionsId) {
-  const suggestionsDiv = document.getElementById(suggestionsId);
+  const suggestionsDiv = document.getElementById(suggestionsId) || document.createElement("div");
+  suggestionsDiv.classList.add("suggestions");
+  if (!suggestionsDiv.id) suggestionsDiv.id = suggestionsId;
+  if (!suggestionsDiv.parentNode) input.parentNode.appendChild(suggestionsDiv);
+
   let currentFocus = -1;
 
   input.addEventListener("input", () => {
@@ -124,7 +201,8 @@ function setupAutocomplete(input, suggestionsId) {
       div.classList.add("suggestion");
       div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
       div.addEventListener("click", () => {
-        input.value = s.system;
+        addAvoidTag(s.system);
+        input.value = "";
         suggestionsDiv.innerHTML = "";
       });
       suggestionsDiv.appendChild(div);
@@ -150,7 +228,9 @@ function setupAutocomplete(input, suggestionsId) {
     } else if (e.key === "Enter") {
       e.preventDefault();
       if (currentFocus > -1) {
-        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
+        const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
+        addAvoidTag(systemName);
+        input.value = "";
         suggestionsDiv.innerHTML = "";
       }
     }
@@ -166,9 +246,49 @@ function setupAutocomplete(input, suggestionsId) {
   });
 }
 
-// Initialize autocomplete for both inputs
+// Initialize autocomplete for origin/dest
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
+
+// --- Remember last chosen route flag ---
+const flagRadios = document.querySelectorAll("input[name='route-flag']");
+
+// Load saved value on page load
+const savedFlag = localStorage.getItem("route-flag");
+if (savedFlag) {
+  const radio = document.querySelector(`input[name='route-flag'][value='${savedFlag}']`);
+  if (radio) radio.checked = true;
+}
+
+// Save whenever user changes
+flagRadios.forEach(radio => {
+  radio.addEventListener("change", () => {
+    localStorage.setItem("route-flag", radio.value);
+  });
+});
+
+// Initialize first avoid input
+createAvoidInput();
+
+// --- Save + restore avoid list ---
+function saveAvoidList() {
+  const avoidNames = Array.from(avoidContainer.querySelectorAll(".avoid-tag"))
+    .map(tag => tag.textContent.replace("×", "").trim());
+  localStorage.setItem("avoid-list", JSON.stringify(avoidNames));
+}
+
+function restoreAvoidList() {
+  const stored = JSON.parse(localStorage.getItem("avoid-list") || "[]");
+  stored.forEach(name => addAvoidTag(name));
+}
+
+// Hook saving when avoid tags change
+const observer = new MutationObserver(saveAvoidList);
+observer.observe(avoidContainer, { childList: true, subtree: true });
+
+// Restore on page load
+restoreAvoidList();
+
 
 // Player count
 fetch("https://esi.evetech.net/latest/status/")

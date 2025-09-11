@@ -30,6 +30,19 @@
         <div id="suggestions-dest" class="suggestions"></div>
       </div>
 
+      <div class="route-options">
+      <div class="flag-select">
+        <label><input type="radio" name="route-flag" value="shortest" checked> Shortest</label>
+        <label><input type="radio" name="route-flag" value="secure"> Secure</label>
+        <label><input type="radio" name="route-flag" value="insecure"> Insecure</label>
+      </div>
+
+      <div class="search-group">
+        <input id="avoidSystem" type="text" placeholder="Avoid system (optional)">
+        <div id="suggestions-avoid" class="suggestions"></div>
+      </div>
+    </div>
+
       <button id="routeBtn">Find Route</button>
     </div>
 

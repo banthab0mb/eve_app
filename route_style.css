@@ -53,6 +53,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   width: 100%;
   padding: 8px;
   border: 1px solid #333;
+  color: #eee;
   background: #1a1a1a;
   border-radius: 4px;
   box-sizing: border-box;
@@ -103,6 +104,56 @@ table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9
 th, td { border: 1px solid #333; padding: 8px; text-align: center; }
 th { background: #1a1a1a; }
 tr:nth-child(even) { background: #141414; }
+
+/* Route options */
+.route-options {
+  margin-top: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flag-select {
+  display: flex;
+  gap: 15px;
+  font-size: 0.9rem;
+}
+
+.flag-select input {
+  margin-right: 5px;
+}
+
+.avoid-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.avoid-tag {
+  background: #222;
+  color: #eee;
+  padding: 4px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.avoid-tag .remove-btn {
+  background: none;
+  border: none;
+  color: #f55;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.avoid-container .search-group {
+  flex: 1 1 150px;
+  position: relative;
+}
+
+
 
 /* Security colors */
 .sec-blue { color: #2e74dc; } /* 1.0 */
