@@ -54,7 +54,6 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   padding: 8px;
   border: 1px solid #333;
   background: #1a1a1a;
-  color: #eee;
   border-radius: 4px;
   box-sizing: border-box;
 }
@@ -96,7 +95,6 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 #routeBtn:hover {
   background: #333;
 }
-
 
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
 

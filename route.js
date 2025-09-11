@@ -1,4 +1,3 @@
-// route.js
 const originInput = document.getElementById("originSystem");
 const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
@@ -7,13 +6,13 @@ const routeOutput = document.getElementById("route-output");
 let systems = [];
 let systemKills = [];
 
-// Load systems.json once
+// Load systems.json
 fetch("systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));
 
-// Load system kills once (cached for 1 hour)
+// Load system kills
 fetch("https://esi.evetech.net/latest/universe/system_kills/")
   .then(res => res.json())
   .then(data => systemKills = data)
@@ -25,7 +24,7 @@ function getSystemId(name) {
   return system ? system.system_id : null;
 }
 
-// Helper: get security status class
+// Get color value for security status
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -40,7 +39,7 @@ function secClass(sec) {
   return "sec-null";
 }
 
-// Helper: get kills for a system
+// Get kills in the system
 function getKills(systemId) {
   const entry = systemKills.find(s => s.system_id === systemId);
   return entry ? entry.ship_kills : 0;
@@ -71,7 +70,7 @@ routeBtn.addEventListener("click", async () => {
       return;
     }
 
-    // Build table
+    // Build result table
     let html = `<table>
       <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th></tr>`;
 
@@ -80,11 +79,17 @@ routeBtn.addEventListener("click", async () => {
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
+      // Round security to 1 decimal place
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+
+      // Call secClass function with above value as parameter to get color for displaying
       const cls = secClass(sec);
+
+      // Get kills and determine if highlighting is needed
       const kills = getKills(sysId);
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
+      // Display system info in the table
       html += `<tr>
         <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
@@ -125,6 +130,8 @@ function setupAutocomplete(input, suggestionsId) {
       suggestionsDiv.appendChild(div);
     });
   });
+
+  // Basically everything below is for keyboard navigation
 
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");

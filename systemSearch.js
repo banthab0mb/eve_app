@@ -1,5 +1,5 @@
 (() => {
-  // element selection
+  // Assign elements to CSS and stuff
   const input = document.querySelector('#systemName') || document.querySelector('.search-box');
   const suggestionsDiv =
     (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
@@ -31,7 +31,7 @@
       console.error('Failed to load systems.json:', err);
     });
 
-  // Helper: get security status class
+  // Get color value for security status
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -46,15 +46,7 @@
     return "sec-null";
   }
 
-  // expose a global for any inline oninput="showSuggestions(...)" left in HTML
-  window.showSuggestions = (value) => {
-    // set input value and call the normal input handler
-    if (!input) return;
-    input.value = value;
-    renderSuggestions(value.trim().toLowerCase());
-  };
-
-  // helper: show/hide
+  // Show/hide suggestions functions
   function hideSuggestions() {
     suggestionsDiv.innerHTML = '';
     suggestionsDiv.style.display = 'none';
@@ -64,7 +56,7 @@
     suggestionsDiv.style.display = 'block';
   }
 
-  // Build and show suggestions (query: lowercase)
+  // Build and show suggestions
   function renderSuggestions(query) {
     if (!suggestionsDiv || !input) return;
     suggestionsDiv.innerHTML = '';
@@ -76,12 +68,13 @@
     }
 
     if (!systems || !systems.length) {
-      // still loading or failed
+      // still loading systems.json or failed loading
       console.log('No systems loaded yet; suggestions unavailable');
       hideSuggestions();
       return;
     }
 
+    // Find 12 systems from systems.json that start with what is being inputted
     const matches = systems
       .filter(s => s.system.toLowerCase().startsWith(query))
       .slice(0, 12);
@@ -126,7 +119,7 @@
       .replace(/'/g, '&#039;');
   }
 
-  // key handling for input
+  // Basically everything below is for input handling and keyboard navigation
   input.addEventListener('input', (e) => {
     const q = input.value.trim().toLowerCase();
     renderSuggestions(q);
@@ -173,7 +166,7 @@
     if (active) active.scrollIntoView({ block: 'nearest' });
   }
 
-  // click outside => hide
+  // click outside to hide
   document.addEventListener('click', (ev) => {
     if (!input) return;
     if (ev.target === input || suggestionsDiv.contains(ev.target)) return;
@@ -184,8 +177,11 @@
   lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
+  // Look up the kills and jumps for the inputted system
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
+
+    // Escape logic
     if (!name) return;
     if (!systems || !systems.length) {
       outputDiv.innerHTML = '<p>Systems data still loading, try again in a moment.</p>';
@@ -198,8 +194,10 @@
       return;
     }
 
-    outputDiv.innerHTML = `<p>Fetching kills and jumps for ${escapeHtml(system.system)}...</p>`;
+    // Loading text
+    outputDiv.innerHTML = `<p>Fetching kills and jumps for <b>${escapeHtml(system.system)}</b>...</p>`;
 
+    // Api logic
     try {
       const [killsRes, jumpsRes] = await Promise.all([
         fetch('https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility'),
@@ -211,18 +209,25 @@
       const systemKillsObj = Array.isArray(killsData) ? killsData.find(k => k.system_id === system.system_id) : null;
       const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
 
+      // Kills and jumps variable assignment
       const kills = systemKillsObj ? (systemKillsObj.ship_kills || 0) : 0;
       const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
 
-      const sec = system.security_status.toFixed(1);
+      // Round security to 1 decimal place
+      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+
+      // Call secClass function with above value as parameter to get color for displaying
       const cls = secClass(sec);
+
+      // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
+      // Display results
       outputDiv.innerHTML = `
         <p><b>Name:</b> ${escapeHtml(system.system)}</p>
         <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
         <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
-        <p><b>Security Status:</b> <span class="${cls}">${sec.toFixed(1)}</span></p>
+        <p><b>Security Status:</b> <span class="${cls}">${sec}</span></p>
         <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
       `;
