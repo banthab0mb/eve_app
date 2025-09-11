@@ -20,7 +20,12 @@ header, footer {
 
 header { border-bottom: 2px solid #222; }
 
-header .app-title a { font-family: "Square 721 Bold Extended", sans-serif; font-size: 1.5rem; color: #fff; text-decoration: none; }
+header .app-title a { 
+  font-family: "Square 721 Bold Extended", sans-serif; 
+  font-size: 1.5rem; 
+  color: #fff; 
+  text-decoration: none; 
+}
 header .app-title a:hover { color: #fff; }
 
 nav { flex: 1; text-align: center; }
@@ -91,6 +96,8 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   border: 1px solid #555;
   border-radius: 4px;
   cursor: pointer;
+  align-self: flex-start;
+  margin: 0;
 }
 
 #routeBtn:hover {
@@ -106,11 +113,17 @@ th { background: #1a1a1a; }
 tr:nth-child(even) { background: #141414; }
 
 /* Route options */
-.route-options {
-  margin-top: 15px;
+.route-options-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 6px; /* small spacing between radios, avoid container, and button */
+}
+
+.route-options {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
 }
 
 .flag-select {
@@ -119,15 +132,14 @@ tr:nth-child(even) { background: #141414; }
   font-size: 0.9rem;
 }
 
-.flag-select input {
-  margin-right: 5px;
-}
+.flag-select input { margin-right: 5px; }
 
 .avoid-container {
   display: flex;
   flex-wrap: wrap; /* so tags wrap if too many */
   gap: 5px;
   align-items: center; /* vertically center tags and input */
+  margin: 0;
 }
 
 .avoid-tag {

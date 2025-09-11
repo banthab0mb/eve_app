@@ -9,15 +9,16 @@
 </head>
 <body>
   <header>
-  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="systemSearch.html">System Lookup</a>
-    <a href="route.html">Route Planner</a>
-  </nav>
-  <div id="onlineCounter">Loading...</div>
-  <div id="eveTime">--:--</div>
-</header>
+    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="systemSearch.html">System Lookup</a>
+      <a href="route.html">Route Planner</a>
+    </nav>
+    <div id="onlineCounter">Loading...</div>
+    <div id="eveTime">--:--</div>
+  </header>
+
   <main>
     <div class="route-search">
       <div class="search-group">
@@ -30,21 +31,21 @@
         <div id="suggestions-dest" class="suggestions"></div>
       </div>
 
-      <div class="route-options">
-      <div class="flag-select">
-        <label><input type="radio" name="route-flag" value="shortest" checked> Shortest</label>
-        <label><input type="radio" name="route-flag" value="secure"> Secure</label>
-        <label><input type="radio" name="route-flag" value="insecure"> Insecure</label>
+      <div class="route-options-wrapper">
+        <div class="route-options">
+          <div class="flag-select">
+            <label><input type="radio" name="route-flag" value="shortest" checked> Shortest</label>
+            <label><input type="radio" name="route-flag" value="secure"> Secure</label>
+            <label><input type="radio" name="route-flag" value="insecure"> Insecure</label>
+          </div>
+
+          <div id="avoid-container" class="avoid-container"></div>
+        </div>
+
+        <button id="routeBtn">Find Route</button>
       </div>
 
-      <div id="avoid-container" class="avoid-container"></div>
-    </div>
-
-      <button id="routeBtn">Find Route</button>
-    </div>
-
-    <div id="route-output"></div>
-
+      <div id="route-output"></div>
     </div>
   </main>
 
@@ -73,8 +74,7 @@
       const disclaimer = document.getElementById("ccp-disclaimer");
       disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
     });
-  </script>
-  <script>
+
     // Highlight current page
     const navLinks = document.querySelectorAll('nav a');
     const path = window.location.pathname.split('/').pop();
@@ -88,30 +88,28 @@
     });
 
     // Player count (top-right)
-        fetch("https://esi.evetech.net/latest/status/")
-        .then(res => res.json())
-        .then(data => {
-            const playerCount = document.getElementById("onlineCounter");
-            if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
-            playerCount.style.color = "#378937ff";
-        })
-        .catch(() => {
-            const playerCount = document.getElementById("onlineCounter");
-            if (playerCount) playerCount.textContent = "Tranquility unreachable";
-            playerCount.style.color = "#9f3232ff";
-        });
+    fetch("https://esi.evetech.net/latest/status/")
+      .then(res => res.json())
+      .then(data => {
+          const playerCount = document.getElementById("onlineCounter");
+          if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
+          playerCount.style.color = "#378937ff";
+      })
+      .catch(() => {
+          const playerCount = document.getElementById("onlineCounter");
+          if (playerCount) playerCount.textContent = "Tranquility unreachable";
+          playerCount.style.color = "#9f3232ff";
+      });
+
+    function updateEveTime() {
+      const now = new Date();
+      const hours = String(now.getUTCHours()).padStart(2, "0");
+      const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+      document.getElementById("eveTime").textContent = `${hours}:${minutes}`;
+    }
+
+    updateEveTime();
+    setInterval(updateEveTime, 1000);
   </script>
-  <script>
-      function updateEveTime() {
-        const now = new Date();
-        const hours = String(now.getUTCHours()).padStart(2, "0");
-        const minutes = String(now.getUTCMinutes()).padStart(2, "0");
-        document.getElementById("eveTime").textContent = `${hours}:${minutes}`;
-      }
-
-      updateEveTime();
-      setInterval(updateEveTime, 1000);
-
-    </script>
 </body>
 </html>
