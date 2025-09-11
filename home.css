@@ -33,6 +33,13 @@ header, footer {
   src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
 }
 
+@font-face {
+  font-family: 'Shentox-Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
+}
+
 header {
   border-bottom: 2px solid #222;
   font-family: "Shentox-Regular", sans-serif !important;
@@ -98,6 +105,7 @@ footer {
   padding: 15px 20px;
   background: #111;
   margin-top: auto;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 footer p { margin: 5px 0; }
@@ -109,6 +117,7 @@ footer a:hover { color: #fff; }
 #onlineCounter {
   margin-top: 6px;
   padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
 }
 
 #eveTime {

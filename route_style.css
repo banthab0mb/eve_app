@@ -2,11 +2,25 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
+}
+
+@font-face {
+  font-family: 'Shentox-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Shentox-Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
 header, footer {
@@ -209,15 +223,19 @@ footer {
   padding: 15px 20px;
   background: #111;
   margin-top: auto;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 footer p { margin: 5px 0; }
+
 footer a { color: #888; text-decoration: none; }
+
 footer a:hover { color: #fff; }
 
 #onlineCounter {
   margin-top: 6px;
   padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
 }
 
 #eveTime {
