@@ -92,7 +92,7 @@
       .then(res => res.json())
       .then(data => {
           const playerCount = document.getElementById("onlineCounter");
-          if (playerCount) playerCount.textContent = `TQ ${data.players.toLocaleString()}`;
+          if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
           playerCount.style.color = "#378937ff";
       })
       .catch(() => {
