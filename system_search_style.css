@@ -32,7 +32,7 @@ header, footer {
   justify-content: space-between;
 }
 
-header { border-bottom: 2px solid #222; }
+header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
 
 header .app-title a { font-family: "Square 721 Extended Bold", sans-serif; font-size: 1.5rem; color: #fff; text-decoration: none; }
 header .app-title a:hover { color: #fff; }
@@ -46,7 +46,7 @@ nav a.active, nav a:hover { color: #fff; border-bottom: 2px solid #fff; padding-
 
 /* Main Content */
 main { flex: 1; padding: 20px; }
-.container { max-width: 600px; margin: 0 auto; }
+.container { max-width: 600px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important;}
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
