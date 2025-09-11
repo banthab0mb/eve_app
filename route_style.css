@@ -44,9 +44,15 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 /* Search Inputs - side by side */
 .route-search {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column;
+  align-items: center; /* center all children horizontally */
   gap: 10px;
   position: relative;
+}
+
+.route-search .search-group {
+  width: 100%;
+  max-width: 300px; /* keeps inputs from stretching too wide */
 }
 
 .search-group {
