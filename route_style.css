@@ -68,6 +68,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   background: #1a1a1a;
   border-radius: 4px;
   box-sizing: border-box;
+  outline: none;
 }
 
 /* Suggestions dropdown */
