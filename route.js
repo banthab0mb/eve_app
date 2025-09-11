@@ -2,6 +2,7 @@ const originInput = document.getElementById("originSystem");
 const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
+const totalJumps = document.getElementById("total-jumps");
 const avoidContainer = document.getElementById("avoid-container");
 
 let systems = [];
@@ -275,6 +276,7 @@ routeBtn.addEventListener("click", async () => {
       </tr>`;
     }
 
+    totalJumps.innerHTML = `Total Jumps: ${routeData.length - 1}`;
     html += "</table>";
     routeOutput.innerHTML = html;
   } catch (err) {
