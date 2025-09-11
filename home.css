@@ -19,9 +19,16 @@ header, footer {
   justify-content: space-between;
 }
 
+@font-face {
+  font-family: 'Square721ExtendedBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
+}
+
 header {
   border-bottom: 2px solid #222;
-  font-family: "Square 721 Extended Bold", sans-serif !important;
+  font-family: "Square721ExtendedBold", sans-serif !important;
 }
 
 header .app-title a {
