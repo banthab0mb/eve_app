@@ -276,7 +276,7 @@ routeBtn.addEventListener("click", async () => {
       </tr>`;
     }
 
-    totalJumps.innerHTML = `Total Jumps: ${routeData.length - 1}`;
+    totalJumps.innerHTML = `Total Jumps: ${routeData.length}`;
     html += "</table>";
     routeOutput.innerHTML = html;
   } catch (err) {
