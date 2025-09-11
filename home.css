@@ -26,9 +26,16 @@ header, footer {
   src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
 }
 
+@font-face {
+  font-family: 'Shentox-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
+}
+
 header {
   border-bottom: 2px solid #222;
-  font-family: "Square721ExtendedBold", sans-serif !important;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 header .app-title a {
