@@ -67,7 +67,7 @@ nav a.active, nav a:hover {
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
 /* Main Content */
-main { flex: 1; padding: 20px; }
+main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important;}
 
 .container { max-width: 900px; margin: 0 auto; }
 
