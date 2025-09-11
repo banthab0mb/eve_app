@@ -48,6 +48,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   align-items: center; /* center all children horizontally */
   gap: 10px;
   position: relative;
+  outline: none;
 }
 
 .route-search .search-group {
@@ -61,14 +62,11 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 }
 
 .search-group input {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #333;
-  color: #eee;
+  border: 1px solid #333; /* solid border all around */
+  outline: none;          /* remove default focus outline */
   background: #1a1a1a;
-  border-radius: 4px;
-  box-sizing: border-box;
-  outline: none;
+  color: #eee;
+  border-radius: 4px;     /* optional rounded corners */
 }
 
 /* Suggestions dropdown */
