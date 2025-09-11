@@ -125,35 +125,41 @@ tr:nth-child(even) { background: #141414; }
 
 .avoid-container {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 10px;
+  flex-wrap: wrap; /* so tags wrap if too many */
+  gap: 5px;
+  align-items: center; /* vertically center tags and input */
 }
 
 .avoid-tag {
-  background: #222;
-  color: #eee;
-  padding: 4px 8px;
-  border-radius: 4px;
   display: inline-flex;
   align-items: center;
-  gap: 5px;
+  padding: 2px 6px;
+  background-color: #333;
+  color: #fff;
+  border-radius: 3px;
+  font-size: 0.9em;
 }
 
 .avoid-tag .remove-btn {
+  margin-left: 4px;
   background: none;
   border: none;
-  color: #f55;
-  font-weight: bold;
+  color: #fff;
   cursor: pointer;
+  font-weight: bold;
 }
 
 .avoid-container .search-group {
-  flex: 1 1 150px;
-  position: relative;
+  display: inline-flex;
+  flex: 1;
+  min-width: 120px; /* or whatever fits */
 }
 
-
+.avoid-container input {
+  flex: 1;
+  min-width: 120px;
+  padding: 4px;
+}
 
 /* Security colors */
 .sec-blue { color: #2e74dc; } /* 1.0 */
