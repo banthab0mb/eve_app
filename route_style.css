@@ -36,7 +36,7 @@ header, footer {
 header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
 
 header .app-title a { 
-  font-family: "Square 721 Extended Bold", sans-serif; 
+  font-family: "Shentox-Regular", sans-serif !important;
   font-size: 1.5rem; 
   color: #fff; 
   text-decoration: none; 
