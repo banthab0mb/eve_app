@@ -256,7 +256,7 @@ routeBtn.addEventListener("click", async () => {
     }
 
     let html = `<table>
-      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKill</th></tr><tr>`;
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
 
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];
@@ -273,7 +273,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/">zKillboard</a></td>
+        <td><f href="https://zkillboard.com/system/${sysId}/">zKillboard</f></td>
       </tr>`;
     }
 
