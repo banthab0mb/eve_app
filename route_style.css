@@ -48,6 +48,9 @@ nav { flex: 1; text-align: center; }
 nav a { color: #aaa; margin: 0 15px; text-decoration: none; font-weight: bold; }
 nav a.active, nav a:hover { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
 
+a { color: #aaa; margin: 0 15px; text-decoration: none; font-weight: bold; }
+a.active, a:hover { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
 /* Main Content */
