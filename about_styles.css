@@ -81,7 +81,7 @@ links a {
   font-weight: bold;
 }
 
-links a.active, nav a:hover {
+links a.active, links a:hover {
   color: #fff;
   border-bottom: 2px solid #fff;
   padding-bottom: 2px;
