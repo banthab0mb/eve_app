@@ -273,7 +273,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank" title="zKillboard"></a></td>
+        <td><a href="https://zkillboard.com/system/${sysId}/">zKillboard</a></td>
       </tr>`;
     }
 
