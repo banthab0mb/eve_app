@@ -9,16 +9,23 @@
 </head>
 <body>
   <header>
-  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="systemSearch.html">System Lookup</a>
-    <a href="route.html">Route Planner</a>
-    <a href="about.html">About</a>
-  </nav>
-  <div id="onlineCounter">Loading...</div>
-  <div id="eveTime">--:--</div>
+  <div class="header-left">
+    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  </div>
+  <div class="header-right">
+    <span id="onlineCounter"></span>
+    <span id="eveTime">11:39</span>
+    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
+  </div>
 </header>
+
+<nav id="sidebar">
+  <a href="index.html">Home</a>
+  <a href="lookup.html">System Lookup</a>
+  <a href="route.html">Route Planner</a>
+  <a href="about.html">About</a>
+</nav>
+
 
 
   <main>
