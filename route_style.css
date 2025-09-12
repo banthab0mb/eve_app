@@ -30,6 +30,7 @@ header, footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
@@ -84,6 +85,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   box-sizing: border-box;
   outline: none;
   box-shadow: none;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* Suggestions dropdown */
@@ -98,6 +100,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   overflow-y: auto;
   z-index: 1000;
   color: #000;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 .suggestions .suggestion {
@@ -120,6 +123,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   cursor: pointer;
   align-self: flex-start;
   margin: 0;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 #routeBtn:hover {

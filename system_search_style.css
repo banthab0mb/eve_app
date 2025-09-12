@@ -34,7 +34,7 @@ header, footer {
 
 header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
 
-header .app-title a { font-family: "Square 721 Extended Bold", sans-serif; font-size: 1.5rem; color: #fff; text-decoration: none; }
+header .app-title a { font-family: "Shentox-Regular", sans-serif !important; font-size: 1.5rem; color: #fff; text-decoration: none; }
 header .app-title a:hover { color: #fff; }
 
 nav { flex: 1; text-align: center; }
@@ -64,6 +64,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   background: #1a1a1a;
   color: #eee;
   border-radius: 4px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 .search-button {
@@ -75,6 +76,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   color: #eee;
   border: 1px solid #555;
   border-radius: 4px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* Suggestions dropdown */
