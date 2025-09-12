@@ -105,5 +105,13 @@
       setInterval(updateEveTime, 1000);
 
     </script>
+    <script>
+      const menuToggle = document.querySelector('.menu-toggle');
+      const sidebar = document.getElementById('sidebar');
+
+      menuToggle.addEventListener('click', () => {
+        sidebar.classList.toggle('active');
+      });
+    </script>
 </body>
 </html>

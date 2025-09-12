@@ -40,16 +40,87 @@ header, footer {
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
+/* Header layout */
 header {
-  border-bottom: 2px solid #222;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 1rem;
+  background: #000;
+  border-bottom: 1px solid #222;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
 header .app-title a {
-  font-size: 1.5rem;
-  color: #fff;
   text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2rem;
 }
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  color: #fff;
+}
+
+.menu-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Desktop sidebar behaves like inline nav */
+#sidebar {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+#sidebar a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+#sidebar a:hover {
+  color: #fff;
+}
+
+/* Mobile sidebar */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px;
+    width: 250px;
+    height: 100%;
+    background: #111;
+    flex-direction: column;
+    padding: 2rem 1rem;
+    gap: 1rem;
+    transition: left 0.3s ease;
+    z-index: 1000;
+  }
+
+  #sidebar.active {
+    left: 0;
+  }
+
+  .menu-toggle {
+    display: block;
+  }
+
+  /* Hide inline nav on mobile */
+  header + #sidebar {
+    display: flex;
+  }
+}
+
 
 header .app-title a:hover { color: #fff; }
 
