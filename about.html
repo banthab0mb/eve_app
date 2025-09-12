@@ -87,11 +87,11 @@
         });
 
         // Player count (top-right)
-        fetch("https://esi.evetech.net/latest/staus/")
+        fetch("https://esi.evetech.net/latest/status/")
         .then(res => res.json())
         .then(data => {
             const playerCount = document.getElementById("onlineCounter");
-            if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
+            if (playerCount) playerCount.textContent = <a href="https://eve-offline.net" target="_blank">${data.players.toLocaleString()}</a>;
             playerCount.style.color = "#378937ff";
         })
         .catch(() => {
