@@ -9,23 +9,16 @@
 </head>
 <body>
   <header>
-  <div class="header-left">
-    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-  </div>
-  <div class="header-right">
-    <span id="onlineCounter"></span>
-    <span id="eveTime">11:39</span>
-    <button class="menu-toggle" aria-label="Toggle menu">☰</button>
-  </div>
+  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="systemSearch.html">System Lookup</a>
+    <a href="route.html">Route Planner</a>
+    <a href="about.html">About</a>
+  </nav>
+  <div id="onlineCounter">Loading...</div>
+  <div id="eveTime">--:--</div>
 </header>
-
-<nav id="sidebar">
-  <a href="index.html">Home</a>
-  <a href="lookup.html">System Lookup</a>
-  <a href="route.html">Route Planner</a>
-  <a href="about.html">About</a>
-</nav>
-
 
 
   <main>
@@ -111,14 +104,6 @@
       updateEveTime();
       setInterval(updateEveTime, 1000);
 
-    </script>
-    <script>
-      const menuToggle = document.querySelector('.menu-toggle');
-      const sidebar = document.getElementById('sidebar');
-
-      menuToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('active');
-      });
     </script>
 </body>
 </html>
