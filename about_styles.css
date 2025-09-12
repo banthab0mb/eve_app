@@ -55,12 +55,10 @@ header .app-title a:hover { color: #fff; }
 
 nav {
   flex: 1;
-  text-align: center;
 }
 
 nav a {
   color: #aaa;
-  margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
 }
