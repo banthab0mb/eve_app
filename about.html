@@ -91,12 +91,12 @@
         .then(res => res.json())
         .then(data => {
             const playerCount = document.getElementById("onlineCounter");
-            if (playerCount) playerCount.textContent = <a href="https://eve-offline.net" target="_blank">${data.players.toLocaleString()}</a>;
+            if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
             playerCount.style.color = "#378937ff";
         })
         .catch(() => {
             const playerCount = document.getElementById("onlineCounter");
-            if (playerCount) playerCount.textContent = <a href="https://eve-offline.net" target="_blank">Tranquility Unreachable</a>;
+            if (playerCount) playerCount.textContent = "Tranquility unreachable";
             playerCount.style.color = "#9f3232ff";
         });
     </script>
