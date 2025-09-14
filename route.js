@@ -256,16 +256,22 @@ async function getPvpKills(systemId) {
 
 // Get kills for a whole route (with 500ms delay between calls)
 async function getRouteKills(route) {
-  console.log ("getRouteKills called");
+  console.log("getRouteKills called");
   const result = {};
   for (let i = 0; i < route.length; i++) {
     const sysId = route[i];
-    console.log (sysId);
+    const system = systems.find(s => s.system_id === sysId);
+    const systemName = system ? system.system : sysId; // fallback to ID if not found
+
+    // show progress in the UI
+    routeOutput.innerHTML = `<p>Fetching ${systemName}...</p>`;
+
     result[sysId] = await getPvpKills(sysId);
     await sleep(500); // polite delay
   }
   return result;
 }
+
 
 // Plan route
 routeBtn.addEventListener("click", async () => {
