@@ -301,6 +301,7 @@ routeBtn.addEventListener("click", async () => {
 
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];
+      console.log (sysId);
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
