@@ -261,10 +261,10 @@ async function getRouteKills(route) {
   for (let i = 0; i < route.length; i++) {
     const sysId = route[i];
     const system = systems.find(s => s.system_id === sysId);
-    const systemName = system ? system.system : sysId; // fallback to ID if not found
+//  const systemName = system ? system.system : sysId; // fallback to ID if not found
 
     // show progress in the UI
-    routeOutput.innerHTML = `<p>Fetching jump <b>#${i+1}</b>...</p>`;
+    routeOutput.innerHTML = `<p>Fetching jump #${i+1}...</p>`;
 
     result[sysId] = await getPvpKills(sysId);
     await sleep(500); // polite delay
@@ -308,7 +308,6 @@ routeBtn.addEventListener("click", async () => {
 
 
     const routeKills = await getRouteKills(routeData);
-    console.log (routeKills);
 
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];
