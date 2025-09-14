@@ -177,7 +177,6 @@
   lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
-
   // Sleep helper for rate limiting
   function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -185,14 +184,8 @@
 
   async function getPvpKills(systemId) {
     try {
-      const now = new Date();
-      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
-
-      // Format startTime YYYY-MM-DD HH:MM:SS
-      const startTime = oneHourAgo.toISOString().slice(0, 19).replace("T", " ");
-
       const res = await fetch(
-        `https://zkillboard.com/api/kills/systemID/${systemId}/startTime/${encodeURIComponent(startTime)}/`,
+        `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
         {
           headers: {
             "Accept-Encoding": "gzip",
