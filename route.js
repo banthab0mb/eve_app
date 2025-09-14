@@ -264,7 +264,7 @@ async function getRouteKills(route) {
     const systemName = system ? system.system : sysId; // fallback to ID if not found
 
     // show progress in the UI
-    routeOutput.innerHTML = `<p>Fetching ${systemName}...</p>`;
+    routeOutput.innerHTML = `<p>Fetching jump #${i}...</p>`;
 
     result[sysId] = await getPvpKills(sysId);
     await sleep(500); // polite delay
