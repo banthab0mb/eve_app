@@ -194,9 +194,12 @@
         }
       );
 
-      if (!res.ok) return 0;
+      const kills = await res.json();
+      if (!Array.isArray(kills)) return 0;
 
-      return await res.json();
+      // Only count real PvP (zkb.npc === false)
+      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
+      return pvpKills.length;
 
     } catch (err) {
       console.error("zKill fetch failed", err);
