@@ -309,7 +309,7 @@ routeBtn.addEventListener("click", async () => {
       const cls = secClass(sec);
 
       // Get kills
-      const kills = getRouteKills[sysId] ?? 0;
+      const kills = getRouteKills[sysId] || 0;
       // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
