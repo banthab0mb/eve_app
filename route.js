@@ -300,6 +300,10 @@ routeBtn.addEventListener("click", async () => {
     let html = `<table>
       <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
 
+
+    const routeKills = await getRouteKills(routeData);
+    console.log (routeKills);
+
     for (let i = 0; i < routeData.length; i++) {
       const sysId = routeData[i];
       console.log (sysId);
@@ -310,7 +314,7 @@ routeBtn.addEventListener("click", async () => {
       const cls = secClass(sec);
 
       // Get kills
-      const kills = getRouteKills[sysId] || 0;
+      const kills = routeKills[sysId] || 0;
       // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
