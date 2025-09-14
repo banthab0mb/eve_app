@@ -225,6 +225,47 @@ const observer = new MutationObserver(() => {
 });
 observer.observe(avoidContainer, { childList: true, subtree: true });
 
+// Sleep helper for rate limiting
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function getPvpKills(systemId) {
+  try {
+    const res = await fetch(
+      `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
+      {
+        headers: {
+          "Accept-Encoding": "gzip",
+          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+        }
+      }
+    );
+
+    const kills = await res.json();
+    if (!Array.isArray(kills)) return 0;
+
+    // Only count real PvP (zkb.npc === false)
+    const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
+    return pvpKills.length;
+
+  } catch (err) {
+    console.error("zKill fetch failed", err);
+    return 0;
+  }
+}
+
+// Get kills for a whole route (with 500ms delay between calls)
+async function getRouteKills(route) {
+  const result = {};
+  for (let i = 0; i < route.length; i++) {
+    const sysId = route[i];
+    result[sysId] = await getPvpKills(sysId);
+    await sleep(500); // polite delay
+  }
+  return result;
+}
+
 // Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
@@ -265,8 +306,11 @@ routeBtn.addEventListener("click", async () => {
 
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
-      const kills = getKills(sysId);
-      const killClass = (kills >= 5) ? "kills-high" : "";
+
+      // Get kills
+      const kills = await getRouteKills(system.system_id);
+      // Determine if highlighting is needed for kill amount
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
       html += `<tr>
         <td><b>${i + 1}</b></td>
