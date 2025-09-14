@@ -248,7 +248,6 @@ async function getPvpKills(systemId) {
     // Only count real PvP (zkb.npc === false)
     const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
     return pvpKills.length;
-
   } catch (err) {
     console.error("zKill fetch failed", err);
     return 0;
@@ -308,7 +307,7 @@ routeBtn.addEventListener("click", async () => {
       const cls = secClass(sec);
 
       // Get kills
-      const kills = await getRouteKills(system.system_id);
+      const kills = getRouteKills[sysId] ?? 0;
       // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
