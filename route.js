@@ -256,6 +256,7 @@ async function getPvpKills(systemId) {
 
 // Get kills for a whole route (with 500ms delay between calls)
 async function getRouteKills(route) {
+  console.log ("getRouteKills called");
   const result = {};
   for (let i = 0; i < route.length; i++) {
     const sysId = route[i];
