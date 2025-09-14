@@ -196,14 +196,7 @@
 
       if (!res.ok) return 0;
 
-      const kills = await res.json();
-
-      // Count only kills within last hour
-      const cutoff = oneHourAgo.getTime();
-      return kills.filter(kill => {
-        const killTime = new Date(kill.killmail_time).getTime();
-        return killTime >= cutoff;
-      }).length;
+      return await res.json();
 
     } catch (err) {
       console.error("zKill fetch failed", err);
