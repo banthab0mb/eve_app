@@ -256,6 +256,7 @@
       // Call secClass function with above value as parameter to get color for displaying
       const cls = secClass(sec);
 
+      const kills = await getPvpKills(system.system_id);
       // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
