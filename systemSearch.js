@@ -177,6 +177,47 @@
   lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
+
+  // Sleep helper for rate limiting
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  async function getPvpKills(systemId) {
+    try {
+      const now = new Date();
+      const oneHourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+
+      // Format startTime YYYY-MM-DD HH:MM:SS
+      const startTime = oneHourAgo.toISOString().slice(0, 19).replace("T", " ");
+
+      const res = await fetch(
+        `https://zkillboard.com/api/kills/systemID/${systemId}/startTime/${encodeURIComponent(startTime)}/`,
+        {
+          headers: {
+            "Accept-Encoding": "gzip",
+            "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+          }
+        }
+      );
+
+      if (!res.ok) return 0;
+
+      const kills = await res.json();
+
+      // Count only kills within last hour
+      const cutoff = oneHourAgo.getTime();
+      return kills.filter(kill => {
+        const killTime = new Date(kill.killmail_time).getTime();
+        return killTime >= cutoff;
+      }).length;
+
+    } catch (err) {
+      console.error("zKill fetch failed", err);
+      return 0;
+    }
+  }
+
   // Look up the kills and jumps for the inputted system
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
@@ -199,18 +240,14 @@
 
     // Api logic
     try {
-      const [killsRes, jumpsRes] = await Promise.all([
-        fetch('https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility'),
+      const [jumpsRes] = await Promise.all([
         fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility')
       ]);
-      const killsData = await killsRes.json();
       const jumpsData = await jumpsRes.json();
 
-      const systemKillsObj = Array.isArray(killsData) ? killsData.find(k => k.system_id === system.system_id) : null;
       const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
 
-      // Kills and jumps variable assignment
-      const kills = systemKillsObj ? (systemKillsObj.ship_kills || 0) : 0;
+      // Jumps variable assignment
       const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
 
       // Round security to 1 decimal place
