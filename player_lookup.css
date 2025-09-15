@@ -1,0 +1,155 @@
+/* Reset + Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d0d0d;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header & Footer */
+header, footer {
+  background: #111;
+  color: #ccc;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@font-face {
+  font-family: 'Square721ExtendedBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Shentox-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Shentox-Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
+}
+
+header {
+  border-bottom: 2px solid #222;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+header .app-title a {
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+header .app-title a:hover { color: #fff; }
+
+nav {
+  flex: 1;
+  text-align: center;
+}
+
+nav a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a.active, nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
+
+/* Main Content */
+main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important;}
+
+.container { max-width: 900px; margin: 0 auto; }
+
+h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+#searchBox {
+  width: 300px;
+  padding: 8px;
+  font-size: 16px;
+}
+
+#suggestions {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 300px;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  background: white;
+  position: absolute;
+}
+
+#suggestions li {
+  padding: 6px;
+  cursor: pointer;
+}
+
+#suggestions li:hover {
+  background: #eee;
+}
+
+#output {
+  margin-top: 20px;
+  padding: 10px;
+  background: #f4f4f4;
+  border: 1px solid #ccc;
+  max-width: 600px;
+  white-space: pre-wrap;
+}
+
+/* Footer */
+footer {
+  border-top: 2px solid #222;
+  flex-shrink: 0;
+  flex-grow: 0;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  background: #111;
+  margin-top: auto;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+footer p { margin: 5px 0; }
+
+footer a { color: #888; text-decoration: none; }
+
+footer a:hover { color: #fff; }
+
+#onlineCounter {
+  margin-top: 6px;
+  padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
+}
+
+#eveTime {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ccc; /* lighter so it looks secondary */
+}
