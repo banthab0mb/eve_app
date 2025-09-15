@@ -2,7 +2,7 @@ name: Update Corps & Alliances JSON
 
 on:
   schedule:
-    - cron: "0 * * * *"   # runs every hour
+    - cron: "0 0 * * *"   # runs every hour
   workflow_dispatch:       # optional manual trigger
 
 jobs:
