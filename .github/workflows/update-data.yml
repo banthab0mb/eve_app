@@ -25,11 +25,9 @@ jobs:
         run: node scripts/update-data.js
         
       - name: Commit & push changes
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add alliances.json corporations.json
           git commit -m "Update alliances and corps (automated)" || echo "No changes"
-          git push https://github-actions:${GH_PAT}@github.com/banthab0mb/eve_app.git HEAD:main
+          git push
