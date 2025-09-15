@@ -41,27 +41,6 @@ async function lookupName(name) {
   return { category, id, details };
 }
 
-// Fetch autocomplete suggestions
-async function fetchSuggestions(query) {
-  if (!query || query.length < 3) return [];
-
-  const url = `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(query)}&strict=false`;
-  try {
-    const res = await fetch(url);
-    if (!res.ok) return [];
-
-    const data = await res.json();
-    const ids = [];
-    for (let type of Object.keys(data)) ids.push(...data[type]);
-    if (!ids.length) return [];
-
-    return await esiPost("/universe/names/", ids);
-  } catch (err) {
-    console.error(err);
-    return [];
-  }
-}
-
 // Format clean output
 function formatOutput(result) {
   if (!result) return "No results found.";
@@ -102,24 +81,16 @@ Date Founded: ${alliance.date_founded}
 
 // Wire up DOM
 const box = document.getElementById("searchBox");
-const suggestions = document.getElementById("suggestions");
 const output = document.getElementById("output");
 
-box.addEventListener("input", async () => {
-  const query = box.value.trim();
-  const results = await fetchSuggestions(query);
+// When user presses Enter in search box
+box.addEventListener("keypress", async (e) => {
+  if (e.key === "Enter") {
+    const query = box.value.trim();
+    if (!query) return;
 
-  suggestions.innerHTML = "";
-  results.forEach(r => {
-    const li = document.createElement("li");
-    li.textContent = `${r.name} (${r.category})`;
-    li.onclick = async () => {
-      box.value = r.name;
-      suggestions.innerHTML = "";
-
-      const fullData = await lookupName(r.name);
-      output.textContent = formatOutput(fullData);
-    };
-    suggestions.appendChild(li);
-  });
+    output.textContent = "Searching...";
+    const result = await lookupName(query);
+    output.textContent = formatOutput(result);
+  }
 });
