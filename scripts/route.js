@@ -9,7 +9,7 @@ let systems = [];
 let systemKills = [];
 
 // Load systems.json
-fetch("systems.json")
+fetch("/data/systems.json")
   .then(res => res.json())
   .then(data => systems = data)
   .catch(err => console.error("Failed to load systems.json:", err));

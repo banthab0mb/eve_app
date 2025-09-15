@@ -21,7 +21,7 @@
   let currentFocus = -1;
 
   // Load systems.json
-  fetch('systems.json')
+  fetch('/data/systems.json')
     .then(res => res.json())
     .then(data => {
       systems = data;
