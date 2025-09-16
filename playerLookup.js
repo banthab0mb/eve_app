@@ -1,82 +1,58 @@
-// Lookup a player/corp/alliance by name
-async function lookupEntity(name) {
-  try {
-    const res = await fetch(
-      `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(name)}&strict=true`
-    );
+async function runEntityLookup() {
+  const query = document.getElementById("lookupInput").value.trim();
+  if (!query) return;
 
-    if (res.status === 404) {
-      console.log("No matches found.");
-      return null;
-    }
+  const searchUrl = `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&strict=true&search=${encodeURIComponent(query)}&datasource=tranquility`;
+
+  try {
+    const res = await fetch(searchUrl);
+    if (!res.ok) throw new Error("Search failed");
     const data = await res.json();
 
-    // Character
-    if (data.character?.length) {
-      const id = data.character[0];
-      const char = await esiGet(`/characters/${id}/`);
-
-      // fetch corp/alliance details if available
-      const corp = char.corporation_id
-        ? await esiGet(`/corporations/${char.corporation_id}/`)
-        : null;
-      const alliance = char.alliance_id
-        ? await esiGet(`/alliances/${char.alliance_id}/`)
-        : null;
-
-      return {
-        category: "character",
-        id,
-        details: char,
-        corp,
-        alliance
-      };
+    // Check what category matched
+    if (data.character && data.character.length > 0) {
+      fetchCharacter(data.character[0]);
+    } else if (data.corporation && data.corporation.length > 0) {
+      fetchCorporation(data.corporation[0]);
+    } else if (data.alliance && data.alliance.length > 0) {
+      fetchAlliance(data.alliance[0]);
+    } else {
+      document.getElementById("lookupOutput").innerHTML = "<p>No results found.</p>";
     }
-
-    // Corporation
-    if (data.corporation?.length) {
-      const id = data.corporation[0];
-      const corp = await esiGet(`/corporations/${id}/`);
-      return {
-        category: "corporation",
-        id,
-        details: corp
-      };
-    }
-
-    // Alliance
-    if (data.alliance?.length) {
-      const id = data.alliance[0];
-      const alliance = await esiGet(`/alliances/${id}/`);
-      return {
-        category: "alliance",
-        id,
-        details: alliance
-      };
-    }
-
-    return null;
-  } catch (err) {
-    console.error("Lookup error:", err);
-    return null;
-  }
-}
-
-// Hook into your UI (like runLookup)
-async function runEntityLookup() {
-  const name = input.value.trim();
-  if (!name) return;
-
-  outputDiv.innerHTML = `<p>Searching for <b>${escapeHtml(name)}</b>...</p>`;
-
-  try {
-    const result = await lookupEntity(name);
-    outputDiv.innerHTML = `<pre>${formatOutput(result)}</pre>`;
   } catch (err) {
     console.error(err);
-    outputDiv.innerHTML = "<p>Error during lookup. See console.</p>";
+    document.getElementById("lookupOutput").innerHTML = `<p>Error: ${err.message}</p>`;
   }
 }
 
-// attach button
-lookupBtn.addEventListener("click", runEntityLookup);
+async function fetchCharacter(id) {
+  const res = await fetch(`https://esi.evetech.net/latest/characters/${id}/`);
+  const data = await res.json();
+  document.getElementById("lookupOutput").innerHTML = `
+    <h3>Character: ${data.name}</h3>
+    <p>Corp ID: ${data.corporation_id}</p>
+    <p>Alliance ID: ${data.alliance_id ?? "None"}</p>
+    <img src="https://images.evetech.net/characters/${id}/portrait?size=128" />
+  `;
+}
+
+async function fetchCorporation(id) {
+  const res = await fetch(`https://esi.evetech.net/latest/corporations/${id}/`);
+  const data = await res.json();
+  document.getElementById("lookupOutput").innerHTML = `
+    <h3>Corporation: ${data.name}</h3>
+    <p>Ticker: ${data.ticker}</p>
+    <p>Member Count: ${data.member_count}</p>
+    <img src="https://images.evetech.net/corporations/${id}/logo?size=128" />
+  `;
+}
+
+async function fetchAlliance(id) {
+  const res = await fetch(`https://esi.evetech.net/latest/alliances/${id}/`);
+  const data = await res.json();
+  document.getElementById("lookupOutput").innerHTML = `
+    <h3>Alliance: ${data.name}</h3>
+    <p>Ticker: ${data.ticker}</p>
+    <img src="https://images.evetech.net/alliances/${id}/logo?size=128" />
+  `;
+}
