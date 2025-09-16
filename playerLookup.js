@@ -85,25 +85,88 @@ Alliance: ${alliance.name} [${alliance.ticker}] (ID: ${result.id})
 }
 
 // Wire up DOM
+
 const box = document.getElementById("searchBox");
 const suggestions = document.getElementById("suggestions");
 const output = document.getElementById("output");
+const searchBtn = document.getElementById("lookupBtn");
 
-box.addEventListener("input", async () => {
-  const query = box.value.trim();
-  const results = await fetchSuggestions(query);
+let corporations = [];
+let alliances = [];
+
+// Load local corp/alliance data
+fetch("corporations.json").then(r => r.json()).then(data => { corporations = data; });
+fetch("alliances.json").then(r => r.json()).then(data => { alliances = data; });
+
+async function showSuggestions(query) {
+  let results = await fetchSuggestions(query);
+  if (!Array.isArray(results)) results = [];
+
+  // Local corp/alliance suggestions
+  const localResults = [];
+  if (query.length >= 3) {
+    // Corporations
+    corporations.forEach(corp => {
+      if (
+        corp.name.toLowerCase().includes(query.toLowerCase()) ||
+        (corp.ticker && corp.ticker.toLowerCase().includes(query.toLowerCase()))
+      ) {
+        localResults.push({ name: corp.name, category: "corporation", id: corp.corporation_id });
+      }
+    });
+    // Alliances
+    alliances.forEach(alli => {
+      if (
+        alli.name.toLowerCase().includes(query.toLowerCase()) ||
+        (alli.ticker && alli.ticker.toLowerCase().includes(query.toLowerCase()))
+      ) {
+        localResults.push({ name: alli.name, category: "alliance", id: alli.alliance_id });
+      }
+    });
+  }
+
+  // Combine and deduplicate
+  const allResults = [...localResults, ...results].filter((v, i, a) =>
+    a.findIndex(t => t.id === v.id && t.category === v.category) === i
+  );
 
   suggestions.innerHTML = "";
-  results.forEach(r => {
+  allResults.forEach(r => {
     const li = document.createElement("li");
     li.textContent = `${r.name} (${r.category})`;
     li.onclick = async () => {
       box.value = r.name;
       suggestions.innerHTML = "";
-
       const fullData = await lookupName(r.name);
       output.textContent = formatOutput(fullData);
     };
     suggestions.appendChild(li);
   });
+}
+
+// Input event for suggestions
+box.addEventListener("input", async () => {
+  const query = box.value.trim();
+  await showSuggestions(query);
+});
+
+// Search button click
+if (searchBtn) {
+  searchBtn.addEventListener("click", async () => {
+    const query = box.value.trim();
+    suggestions.innerHTML = "";
+    const fullData = await lookupName(query);
+    output.textContent = formatOutput(fullData);
+  });
+}
+
+// Enter key triggers search
+box.addEventListener("keydown", async (e) => {
+  if (e.key === "Enter") {
+    e.preventDefault();
+    suggestions.innerHTML = "";
+    const query = box.value.trim();
+    const fullData = await lookupName(query);
+    output.textContent = formatOutput(fullData);
+  }
 });
