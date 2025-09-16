@@ -117,10 +117,11 @@ body {
 #output {
   margin-top: 20px;
   padding: 10px;
-  background: #f4f4f4;
+  background: #1a1a1a;
   border: 1px solid #ccc;
   max-width: 600px;
   white-space: pre-wrap;
+  color:#000;
 }
 
 /* Footer */
