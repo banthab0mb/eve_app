@@ -94,9 +94,10 @@ body {
 }
 
 .search-container {
-  position: relative; /* parent for absolute suggestions */
-  display: inline-block;
-  margin: 0 auto;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
 }
 
 .search-box {
@@ -132,7 +133,7 @@ body {
 }
 
 #output {
-  margin: 0 auto;
+  text-align: center;
   display: none;
   margin-top: 20px;
   padding: 10px;
