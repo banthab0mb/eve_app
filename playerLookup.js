@@ -1,9 +1,19 @@
 (() => {
 // Helper: GET from EveWho
 async function eveWhoGet(url) {
-  const res = await fetch(`https://evewho.com/api${url}`);
-  if (!res.ok) throw new Error(`EveWho API error ${res.status}: ${url}`);
-  return await res.json();
+  try {
+    const res = await fetch(`https://evewho.com/api${url}`);
+    if (!res.ok) {
+      console.error(`EveWho API error ${res.status}: ${url}`);
+      return null;
+    }
+    const json = await res.json();
+    console.log(`eveWhoGet(${url}) response:`, json);
+    return json;
+  } catch (err) {
+    console.error(`eveWhoGet(${url}) fetch error:`, err);
+    return null;
+  }
 }
 
 // Lookup by name using EveWho search
@@ -41,10 +51,10 @@ async function lookupName(name) {
     if (category === "character") {
       const details = await eveWhoGet(`/character/${id}`);
       result.details = details;
-      if (details.corporation_id) {
+      if (details && details.corporation_id) {
         result.corp = await eveWhoGet(`/corporation/${details.corporation_id}`);
       }
-      if (details.alliance_id) {
+      if (details && details.alliance_id) {
         result.alliance = await eveWhoGet(`/alliance/${details.alliance_id}`);
       }
     } else if (category === "corporation") {
@@ -52,17 +62,27 @@ async function lookupName(name) {
     } else if (category === "alliance") {
       result.details = await eveWhoGet(`/alliance/${id}`);
     }
+    console.log(`lookupByIdCategory(${id}, ${category}) result:`, result);
     return result;
   }
 
   // Lookup by name fallback (for search button/enter)
   async function lookupName(name) {
-    const res = await fetch(`https://evewho.com/api/search/${encodeURIComponent(name)}`);
-    if (!res.ok) return null;
-    const data = await res.json();
-    if (!data || !data.length) return null;
-    const match = data[0];
-    return await lookupByIdCategory(match.id, match.category);
+    try {
+      const res = await fetch(`https://evewho.com/api/search/${encodeURIComponent(name)}`);
+      if (!res.ok) {
+        console.error(`EveWho search error ${res.status}: ${name}`);
+        return null;
+      }
+      const data = await res.json();
+      console.log(`lookupName(${name}) search response:`, data);
+      if (!data || !data.length) return null;
+      const match = data[0];
+      return await lookupByIdCategory(match.id, match.category);
+    } catch (err) {
+      console.error(`lookupName(${name}) fetch error:`, err);
+      return null;
+    }
   }
 
 // Fetch autocomplete suggestions using EveWho search
