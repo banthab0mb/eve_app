@@ -1,10 +1,15 @@
-  const input = document.querySelector('#systemName') || document.querySelector('.searchBox');
+  // Assign elements to CSS and stuff
+  const input = document.querySelector('#systemName') || document.querySelector('.search-box');
   const suggestionsDiv =
     (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
     document.getElementById('suggestions') ||
     document.getElementById('suggestions-box') ||
     document.querySelector('.suggestions');
-  const lookupBtn = document.getElementById('lookupBtn')
+  const lookupBtn =
+    document.getElementById('lookupBtn') ||
+    document.querySelector('.search-button') ||
+    document.querySelector('button.search-button') ||
+    document.querySelector('button');
   const outputDiv = document.getElementById('output') || document.querySelector('.output');
 
   if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
