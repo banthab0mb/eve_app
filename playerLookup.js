@@ -83,7 +83,7 @@ if (corp) {
     const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ names: [name] })
+      body: JSON.stringify( [name] )
     });
     const data = await res.json();
 
