@@ -1,4 +1,4 @@
-
+(() => {
 // Helper: GET from EveWho
 async function eveWhoGet(url) {
   const res = await fetch(`https://evewho.com/api${url}`);
@@ -170,3 +170,5 @@ box.addEventListener("keydown", async (e) => {
     output.textContent = formatOutput(fullData);
   }
 });
+
+})();
