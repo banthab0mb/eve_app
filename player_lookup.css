@@ -40,17 +40,24 @@ header, footer {
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
-header {
-  border-bottom: 2px solid #222;
+header, footer {
+  background: #111;
+  color: #ccc;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-header .app-title a {
-  font-size: 1.5rem;
-  color: #fff;
-  text-decoration: none;
-}
+header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
 
+header .app-title a { 
+  font-family: "Shentox-Regular", sans-serif !important;
+  font-size: 1.5rem; 
+  color: #fff; 
+  text-decoration: none; 
+}
 header .app-title a:hover { color: #fff; }
 
 nav {
