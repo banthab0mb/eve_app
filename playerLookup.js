@@ -52,15 +52,15 @@ async function lookupName(name) {
       const details = await eveWhoGet(`/character/${id}`);
       result.details = details;
       if (details && details.corporation_id) {
-        result.corp = await eveWhoGet(`/corporation/${details.corporation_id}`);
+        result.corp = await eveWhoGet(`/corplist/${details.corporation_id}`);
       }
       if (details && details.alliance_id) {
-        result.alliance = await eveWhoGet(`/alliance/${details.alliance_id}`);
+        result.alliance = await eveWhoGet(`/allilist/${details.alliance_id}`);
       }
     } else if (category === "corporation") {
-      result.details = await eveWhoGet(`/corporation/${id}`);
+      result.details = await eveWhoGet(`/corplist/${id}`);
     } else if (category === "alliance") {
-      result.details = await eveWhoGet(`/alliance/${id}`);
+      result.details = await eveWhoGet(`/allilist/${id}`);
     }
     console.log(`lookupByIdCategory(${id}, ${category}) result:`, result);
     return result;
