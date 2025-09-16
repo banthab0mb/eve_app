@@ -1,40 +1,6 @@
-// playerLookup.js
-
-let alliances = [];
-let corporations = [];
-
-async function loadData() {
-    const [alliancesRes, corpsRes] = await Promise.all([
-        fetch('alliances.json'),
-        fetch('corporations.json')
-    ]);
-
-    alliances = await alliancesRes.json();
-    corporations = await corpsRes.json();
-}
-
-// Helper: GET from ESI
-async function esiGet(url) {
-    const res = await fetch(`https://esi.evetech.net/latest${url}`);
-    if (!res.ok) throw new Error(`ESI error ${res.status}: ${url}`);
-    return await res.json();
-}
-
-// Helper: POST to ESI
-async function esiPost(url, body) {
-    const res = await fetch(`https://esi.evetech.net/latest${url}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
-    });
-    if (!res.ok) throw new Error(`ESI error ${res.status}: ${url}`);
-    return await res.json();
-}
-
 // Lookup a player/corp/alliance by name
 async function lookupEntity(name) {
   try {
-    // Step 1: search
     const res = await fetch(
       `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(name)}&strict=true`
     );
@@ -45,95 +11,72 @@ async function lookupEntity(name) {
     }
     const data = await res.json();
 
-    // Step 2: pick first hit by category priority
+    // Character
     if (data.character?.length) {
       const id = data.character[0];
-      const charRes = await fetch(`https://esi.evetech.net/latest/characters/${id}/`);
-      const charData = await charRes.json();
-      return { type: "character", id, ...charData };
+      const char = await esiGet(`/characters/${id}/`);
+
+      // fetch corp/alliance details if available
+      const corp = char.corporation_id
+        ? await esiGet(`/corporations/${char.corporation_id}/`)
+        : null;
+      const alliance = char.alliance_id
+        ? await esiGet(`/alliances/${char.alliance_id}/`)
+        : null;
+
+      return {
+        category: "character",
+        id,
+        details: char,
+        corp,
+        alliance
+      };
     }
+
+    // Corporation
     if (data.corporation?.length) {
       const id = data.corporation[0];
-      const corpRes = await fetch(`https://esi.evetech.net/latest/corporations/${id}/`);
-      const corpData = await corpRes.json();
-      return { type: "corporation", id, ...corpData };
+      const corp = await esiGet(`/corporations/${id}/`);
+      return {
+        category: "corporation",
+        id,
+        details: corp
+      };
     }
+
+    // Alliance
     if (data.alliance?.length) {
       const id = data.alliance[0];
-      const allRes = await fetch(`https://esi.evetech.net/latest/alliances/${id}/`);
-      const allData = await allRes.json();
-      return { type: "alliance", id, ...allData };
+      const alliance = await esiGet(`/alliances/${id}/`);
+      return {
+        category: "alliance",
+        id,
+        details: alliance
+      };
     }
+
+    return null;
   } catch (err) {
     console.error("Lookup error:", err);
+    return null;
   }
 }
 
-// Fetch autocomplete suggestions
-async function fetchSuggestions(query) {
-    if (!query || query.length < 3) return [];
+// Hook into your UI (like runLookup)
+async function runEntityLookup() {
+  const name = input.value.trim();
+  if (!name) return;
 
-    const url = `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(query)}&strict=false`;
-    try {
-        const res = await fetch(url);
-        if (!res.ok) return [];
+  outputDiv.innerHTML = `<p>Searching for <b>${escapeHtml(name)}</b>...</p>`;
 
-        const data = await res.json();
-        const ids = [];
-        for (let type of Object.keys(data)) ids.push(...data[type]);
-        if (!ids.length) return [];
-
-        return await esiPost("/universe/names/", ids);
-    } catch (err) {
-        console.error("Error in fetchSuggestions:", err);
-        return [];
-    }
+  try {
+    const result = await lookupEntity(name);
+    outputDiv.innerHTML = `<pre>${formatOutput(result)}</pre>`;
+  } catch (err) {
+    console.error(err);
+    outputDiv.innerHTML = "<p>Error during lookup. See console.</p>";
+  }
 }
 
-// Format clean output
-function formatOutput(result) {
-    if (!result) return "No results found.";
-
-    if (result.category === "character") {
-        const char = result.details;
-        const corp = result.corp;
-        const alliance = result.alliance;
-        return `
-Character: ${char.name} (ID: ${result.id})
-Birthday: ${char.birthday}
-Sec Status: ${char.security_status ?? "N/A"}
-
-Corporation: ${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})
-Alliance: ${alliance ? `${alliance.name} [${alliance.ticker}] (ID: ${alliance.alliance_id})` : "None"}
-        `.trim();
-    }
-
-    if (result.category === "corporation") {
-        const corp = result.details;
-        return `
-Corporation: ${corp.name} [${corp.ticker}] (ID: ${result.id})
-Alliance ID: ${corp.alliance_id ?? "None"}
-        `.trim();
-    }
-
-    if (result.category === "alliance") {
-        const alliance = result.details;
-        return `
-Alliance: ${alliance.name} [${alliance.ticker}] (ID: ${result.id})
-Date Founded: ${alliance.date_founded}
-        `.trim();
-    }
-
-    return JSON.stringify(result, null, 2);
-}
-
-// Example usage
-(async () => {
-    await loadData();
-
-    const suggestions = await fetchSuggestions("Erica");
-    console.log("Suggestions:", suggestions);
-
-    const player = await lookupPlayer("Erica Romero");
-    console.log("Lookup:", formatOutput(player));
-})();
+// attach button
+lookupBtn.addEventListener("click", runEntityLookup);
