@@ -53,20 +53,30 @@ async function runLookup() {
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
   // 1. Try to match locally in alliances
-  const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
-  if (alliance) {
-    const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${alliance.alliance_id}/`)).json();
-    outputDiv.innerHTML = `<pre>${formatOutput({ category: "alliance", id: alliance.alliance_id, details })}</pre>`;
+const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
+if (alliance) {
+  const allianceId = alliance.alliance_id || alliance.id || alliance.allianceID;
+  if (!allianceId) {
+    outputDiv.innerHTML = `<p>Alliance found in JSON, but ID missing.</p>`;
     return;
   }
+  const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
+  outputDiv.innerHTML = `<pre>${formatOutput({ category: "alliance", id: allianceId, details })}</pre>`;
+  return;
+}
 
-  // 2. Try to match locally in corporations
-  const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
-  if (corp) {
-    const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corp.corporation_id}/`)).json();
-    outputDiv.innerHTML = `<pre>${formatOutput({ category: "corporation", id: corp.corporation_id, details })}</pre>`;
+// 2. Try to match locally in corporations
+const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
+if (corp) {
+  const corpId = corp.corporation_id || corp.id || corp.corporationID;
+  if (!corpId) {
+    outputDiv.innerHTML = `<p>Corporation found in JSON, but ID missing.</p>`;
     return;
   }
+  const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
+  outputDiv.innerHTML = `<pre>${formatOutput({ category: "corporation", id: corpId, details })}</pre>`;
+  return;
+}
 
   // 3. Fallback → use universe/ids for characters (or if it was missed)
   try {
