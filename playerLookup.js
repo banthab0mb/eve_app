@@ -53,32 +53,32 @@ async function runLookup() {
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
   // 1. Try to match locally in alliances
-const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
-if (alliance) {
-  const allianceId = alliance.alliance_id || alliance.id || alliance.allianceID;
-  if (!allianceId) {
-    outputDiv.innerHTML = `<p>Alliance found in JSON, but ID missing.</p>`;
+  const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
+  if (alliance) {
+    const allianceId = alliance.alliance_id || alliance.id || alliance.allianceID;
+    if (!allianceId) {
+      outputDiv.innerHTML = `<p>Alliance found in JSON, but ID missing.</p>`;
+      return;
+    }
+    const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
+    outputDiv.innerHTML = formatOutput({ category: "alliance", id: allianceId, details });
     return;
   }
-  const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
-  outputDiv.innerHTML = `<pre>${formatOutput({ category: "alliance", id: allianceId, details })}</pre>`;
-  return;
-}
 
-// 2. Try to match locally in corporations
-const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
-if (corp) {
-  const corpId = corp.corporation_id || corp.id || corp.corporationID;
-  if (!corpId) {
-    outputDiv.innerHTML = `<p>Corporation found in JSON, but ID missing.</p>`;
+  // 2. Try to match locally in corporations
+  const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
+  if (corp) {
+    const corpId = corp.corporation_id || corp.id || corp.corporationID;
+    if (!corpId) {
+      outputDiv.innerHTML = `<p>Corporation found in JSON, but ID missing.</p>`;
+      return;
+    }
+    const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
+    outputDiv.innerHTML = formatOutput({ category: "corporation", id: corpId, details });
     return;
   }
-  const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
-  outputDiv.innerHTML = `<pre>${formatOutput({ category: "corporation", id: corpId, details })}</pre>`;
-  return;
-}
 
-  // 3. Fallback → use universe/ids for characters (or if it was missed)
+  // 3. Fallback → use universe/ids for characters
   try {
     console.log("POSTing to universe/ids with:", [name]);
 
@@ -108,7 +108,7 @@ if (corp) {
         alliance = await (await fetch(`https://esi.evetech.net/latest/alliances/${corp.alliance_id}/`)).json();
       }
 
-      outputDiv.innerHTML = `<pre>${formatOutput({ category: "character", id, details: char, corp, alliance })}</pre>`;
+      outputDiv.innerHTML = formatOutput({ category: "character", id, details: char, corp, alliance });
       return;
     }
 
@@ -117,7 +117,6 @@ if (corp) {
     console.error("Lookup failed:", err);
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
   }
-
 }
 
 // ------------------ FORMAT OUTPUT ------------------
@@ -130,29 +129,56 @@ function formatOutput(result) {
     const alliance = result.alliance;
 
     return `
-Character: ${char.name} (ID: ${result.id})
-Birthday: ${char.birthday}
-Sec Status: ${char.security_status ?? "N/A"}
+      <div>
+        <h2>${char.name} (ID: ${result.id})</h2>
+        <img src="https://images.evetech.net/characters/${result.id}/portrait" 
+             alt="portrait" style="width:128px;height:128px;">
+        <p><b>Birthday:</b> ${char.birthday}</p>
+        <p><b>Sec Status:</b> ${char.security_status ?? "N/A"}</p>
 
-Corporation: ${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})
-Alliance: ${alliance ? `${alliance.name} [${alliance.ticker}] (ID: ${alliance.alliance_id})` : "None"}
-    `.trim();
+        <div>
+          <h3>Corporation</h3>
+          <img src="https://images.evetech.net/corporations/${corp.corporation_id}/logo"
+               alt="corp logo" style="width:64px;height:64px;">
+          <p>${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})</p>
+        </div>
+
+        <div>
+          <h3>Alliance</h3>
+          ${alliance ? `
+            <img src="https://images.evetech.net/alliances/${alliance.alliance_id}/logo"
+                 alt="alliance logo" style="width:64px;height:64px;">
+            <p>${alliance.name} [${alliance.ticker}] (ID: ${alliance.alliance_id})</p>
+          ` : "<p>None</p>"}
+        </div>
+      </div>
+    `;
   }
 
   if (result.category === "corporation") {
     const corp = result.details;
     return `
-Corporation: ${corp.name} [${corp.ticker}] (ID: ${result.id})
-Alliance ID: ${corp.alliance_id ?? "None"}
-    `.trim();
+      <div>
+        <h2>${corp.name} [${corp.ticker}]</h2>
+        <img src="https://images.evetech.net/corporations/${result.id}/logo"
+             alt="corp logo" style="width:128px;height:128px;">
+        <p>ID: ${result.id}</p>
+        <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
+      </div>
+    `;
   }
 
   if (result.category === "alliance") {
     const alliance = result.details;
     return `
-Alliance: ${alliance.name} [${alliance.ticker}] (ID: ${result.id})
-Date Founded: ${alliance.date_founded}
-    `.trim();
+      <div>
+        <h2>${alliance.name} [${alliance.ticker}]</h2>
+        <img src="https://images.evetech.net/alliances/${result.id}/logo"
+             alt="alliance logo" style="width:128px;height:128px;">
+        <p>ID: ${result.id}</p>
+        <p>Date Founded: ${alliance.date_founded}</p>
+      </div>
+    `;
   }
 
   return JSON.stringify(result, null, 2);
