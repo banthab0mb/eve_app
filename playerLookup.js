@@ -62,6 +62,7 @@ async function runLookup() {
     }
     const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
     outputDiv.innerHTML = formatOutput({ category: "alliance", id: allianceId, details });
+    outputDiv.style.display = "block"; 
     return;
   }
 
@@ -75,6 +76,7 @@ async function runLookup() {
     }
     const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
     outputDiv.innerHTML = formatOutput({ category: "corporation", id: corpId, details });
+    outputDiv.style.display = "block"; 
     return;
   }
 
@@ -92,6 +94,7 @@ async function runLookup() {
       const text = await res.text();
       console.error("universe/ids failed:", res.status, text);
       outputDiv.innerHTML = `<p>universe/ids failed: ${res.status}</p><pre>${escapeHtml(text)}</pre>`;
+      outputDiv.style.display = "block"; 
       return;
     }
 
@@ -109,13 +112,16 @@ async function runLookup() {
       }
 
       outputDiv.innerHTML = formatOutput({ category: "character", id, details: char, corp, alliance });
+      outputDiv.style.display = "block"; 
       return;
     }
 
     outputDiv.innerHTML = `<p>No match for "${escapeHtml(name)}"</p>`;
+    outputDiv.style.display = "block"; 
   } catch (err) {
     console.error("Lookup failed:", err);
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
+    outputDiv.style.display = "block"; 
   }
   outputDiv.style.display = "block"; 
 }
@@ -191,6 +197,7 @@ function formatOutput(result) {
   }
 
   return JSON.stringify(result, null, 2);
+  outputDiv.style.display = "block"; 
 }
 
 // Clean corporation description HTML
