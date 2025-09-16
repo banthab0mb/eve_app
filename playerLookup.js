@@ -133,6 +133,8 @@ function formatOutput(result) {
     const char = result.details;
     const corp = result.corp;
     const alliance = result.alliance;
+    
+    console.log(char.id, corp.id, alliance.id);
 
     return `
 <div class="lookup-result">
