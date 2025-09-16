@@ -135,7 +135,9 @@ function formatOutput(result) {
     const alliance = result.alliance;
     
     console.log(result, result.details, result.corp, result.alliance)
-    console.log(char, corp, alliance);
+    console.log(char);
+    console.log(corp);
+    console.log(alliance);
 
     return `
 <div class="lookup-result">
@@ -147,7 +149,7 @@ function formatOutput(result) {
 
   <h3>Corporation</h3>
   <img src="https://images.evetech.net/corporations/${corp.id}/logo?size=128" alt="${corp.name}" class="logo">
-  <p>${corp.name} [${corp.ticker}] (ID: ${corp.id})</p>
+  <p>${corp.name} [${corp.ticker}] (ID: ${char.corporation_id})</p>
 
   <h3>Alliance</h3>
   ${alliance ? `
