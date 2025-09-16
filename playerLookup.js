@@ -148,13 +148,13 @@ function formatOutput(result) {
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
   <h3>Corporation</h3>
-  <img src="https://images.evetech.net/corporations/${corp.id}/logo?size=128" alt="${corp.name}" class="logo">
+  <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
   <p>${corp.name} [${corp.ticker}] (ID: ${char.corporation_id})</p>
 
   <h3>Alliance</h3>
   ${alliance ? `
-    <img src="https://images.evetech.net/alliances/${alliance.id}/logo?size=128" alt="${alliance.name}" class="logo">
-    <p>${alliance.name} [${alliance.ticker}] (ID: ${alliance.id})</p>
+    <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
+    <p>${alliance.name} [${alliance.ticker}] (ID: ${char.alliance_id})</p>
     <p>Founded: ${formatDate(alliance.date_founded)}</p>
   ` : "<p>None</p>"}
 </div>
