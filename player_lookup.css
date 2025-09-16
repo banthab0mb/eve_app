@@ -9,16 +9,6 @@ html, body {
   flex-direction: column;
 }
 
-/* Header & Footer */
-header, footer {
-  background: #111;
-  color: #ccc;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
 @font-face {
   font-family: 'Square721ExtendedBold';
   font-style: normal;
@@ -101,7 +91,11 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 body {
   font-family: "Shentox-Regular", sans-serif !important;
-  margin: 20px;
+}
+
+.search-container {
+  position: relative; /* parent for absolute suggestions */
+  display: inline-block;
 }
 
 .search-box {
