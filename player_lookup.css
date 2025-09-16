@@ -96,6 +96,7 @@ body {
 .search-container {
   position: relative; /* parent for absolute suggestions */
   display: inline-block;
+  margin: 0 auto;
 }
 
 .search-box {
@@ -131,6 +132,7 @@ body {
 }
 
 #output {
+  margin: 0 auto;
   display: none;
   margin-top: 20px;
   padding: 10px;
