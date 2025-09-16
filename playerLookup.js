@@ -169,7 +169,10 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=128" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}] (ID: ${result.id})</p>
   <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
-  <p>Description: ${corp.description ? escapeHtml(corp.description) : "N/A"}</p>
+  <div class="corp-description">
+    <h3>Description</h3>
+    ${cleanDescription(corp.description)}
+  </div>
 </div>
     `;
   }
@@ -188,6 +191,27 @@ function formatOutput(result) {
 
   return JSON.stringify(result, null, 2);
 }
+
+function cleanDescription(raw) {
+  if (!raw) return "No description.";
+
+  // Remove all <font ...> and </font>
+  let cleaned = raw.replace(/<\/?font[^>]*>/g, "");
+
+  // Replace <br> with line breaks
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+
+  // Replace <loc><a href="...">text</a></loc> or <a href="...">text</a> with proper clickable links
+  cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
+  cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
+
+  // Remove extra empty spaces
+  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
+
+  // Wrap in <p> with line breaks
+  return cleaned.split("\n").map(line => `<p>${line}</p>`).join("");
+}
+
 
 // ------------------ INPUT + SUGGESTIONS ------------------
 input.addEventListener('keydown', (e) => {
