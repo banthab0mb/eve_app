@@ -141,18 +141,27 @@ body {
 }
 
 .lookup-result {
+  max-width: 700px;
   text-align: center;
-  margin: 20px auto;
+  margin: 30px auto;
+  background: #1a1a1a;   /* optional: dark card background */
+  padding: 20px;
+  border-radius: 10px;
+  color: #ccc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
   font-family: "Shentox-Regular", sans-serif !important;
 }
 .lookup-result img {
   display: block;
   margin: 10px auto;
   border-radius: 8px;
-  font-family: "Shentox-Regular", sans-serif !important;
 }
 .lookup-result h2, .lookup-result h3 {
   margin: 10px 0 5px;
+}
+
+.corp_description {
+  margin-top: 15px;
 }
 
 /* Footer */
