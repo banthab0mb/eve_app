@@ -123,61 +123,61 @@ async function runLookup() {
 function formatOutput(result) {
   if (!result) return "No results found.";
 
+  // Helper to format date as YYYY-MM-DD
+  const formatDate = (iso) => iso ? iso.split("T")[0] : "N/A";
+
+  // Helper to format sec status to 2 decimals
+  const formatSec = (sec) => sec !== undefined ? sec.toFixed(1) : "N/A";
+
   if (result.category === "character") {
     const char = result.details;
     const corp = result.corp;
     const alliance = result.alliance;
 
     return `
-      <div>
-        <h2>${char.name} (ID: ${result.id})</h2>
-        <img src="https://images.evetech.net/characters/${result.id}/portrait" 
-             alt="portrait" style="width:128px;height:128px;">
-        <p><b>Birthday:</b> ${char.birthday}</p>
-        <p><b>Sec Status:</b> ${char.security_status ?? "N/A"}</p>
+<div class="lookup-result">
+  <h2>Character</h2>
+  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=128" alt="${char.name}" class="portrait">
+  <p><strong>${char.name}</strong> (ID: ${result.id})</p>
+  <p>Birthday: ${formatDate(char.birthday)}</p>
+  <p>Sec Status: ${formatSec(char.security_status)}</p>
 
-        <div>
-          <h3>Corporation</h3>
-          <img src="https://images.evetech.net/corporations/${corp.corporation_id}/logo"
-               alt="corp logo" style="width:64px;height:64px;">
-          <p>${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})</p>
-        </div>
+  <h3>Corporation</h3>
+  <img src="https://images.evetech.net/corporations/${corp.id}/logo?size=128" alt="${corp.name}" class="logo">
+  <p>${corp.name} [${corp.ticker}] (ID: ${corp.id})</p>
 
-        <div>
-          <h3>Alliance</h3>
-          ${alliance ? `
-            <img src="https://images.evetech.net/alliances/${alliance.alliance_id}/logo"
-                 alt="alliance logo" style="width:64px;height:64px;">
-            <p>${alliance.name} [${alliance.ticker}] (ID: ${alliance.alliance_id})</p>
-          ` : "<p>None</p>"}
-        </div>
-      </div>
+  <h3>Alliance</h3>
+  ${alliance ? `
+    <img src="https://images.evetech.net/alliances/${alliance.id}/logo?size=128" alt="${alliance.name}" class="logo">
+    <p>${alliance.name} [${alliance.ticker}] (ID: ${alliance.id})</p>
+    <p>Founded: ${formatDate(alliance.date_founded)}</p>
+  ` : "<p>None</p>"}
+</div>
     `;
   }
 
   if (result.category === "corporation") {
     const corp = result.details;
     return `
-      <div>
-        <h2>${corp.name} [${corp.ticker}]</h2>
-        <img src="https://images.evetech.net/corporations/${result.id}/logo"
-             alt="corp logo" style="width:128px;height:128px;">
-        <p>ID: ${result.id}</p>
-        <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
-      </div>
+<div class="lookup-result">
+  <h2>Corporation</h2>
+  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=128" alt="${corp.name}" class="logo">
+  <p><strong>${corp.name}</strong> [${corp.ticker}] (ID: ${result.id})</p>
+  <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
+  <p>Description: ${corp.description ? escapeHtml(corp.description) : "N/A"}</p>
+</div>
     `;
   }
 
   if (result.category === "alliance") {
     const alliance = result.details;
     return `
-      <div>
-        <h2>${alliance.name} [${alliance.ticker}]</h2>
-        <img src="https://images.evetech.net/alliances/${result.id}/logo"
-             alt="alliance logo" style="width:128px;height:128px;">
-        <p>ID: ${result.id}</p>
-        <p>Date Founded: ${alliance.date_founded}</p>
-      </div>
+<div class="lookup-result">
+  <h2>Alliance</h2>
+  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=128" alt="${alliance.name}" class="logo">
+  <p><strong>${alliance.name}</strong> [${alliance.ticker}] (ID: ${result.id})</p>
+  <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
+</div>
     `;
   }
 
