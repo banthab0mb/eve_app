@@ -35,6 +35,35 @@ async function lookupName(name) {
   }
   return result;
 }
+  // Lookup by id and category using EveWho
+  async function lookupByIdCategory(id, category) {
+    let result = { category, id };
+    if (category === "character") {
+      const details = await eveWhoGet(`/character/${id}`);
+      result.details = details;
+      if (details.corporation_id) {
+        result.corp = await eveWhoGet(`/corporation/${details.corporation_id}`);
+      }
+      if (details.alliance_id) {
+        result.alliance = await eveWhoGet(`/alliance/${details.alliance_id}`);
+      }
+    } else if (category === "corporation") {
+      result.details = await eveWhoGet(`/corporation/${id}`);
+    } else if (category === "alliance") {
+      result.details = await eveWhoGet(`/alliance/${id}`);
+    }
+    return result;
+  }
+
+  // Lookup by name fallback (for search button/enter)
+  async function lookupName(name) {
+    const res = await fetch(`https://evewho.com/api/search/${encodeURIComponent(name)}`);
+    if (!res.ok) return null;
+    const data = await res.json();
+    if (!data || !data.length) return null;
+    const match = data[0];
+    return await lookupByIdCategory(match.id, match.category);
+  }
 
 // Fetch autocomplete suggestions using EveWho search
 async function fetchSuggestions(query) {
@@ -98,7 +127,7 @@ document.addEventListener("DOMContentLoaded", function() {
   fetch("alliances.json").then(r => r.json()).then(data => { alliances = data; });
 
   async function showSuggestions(query) {
-    let results = await fetchSuggestions(query);
+    let results = await fetchSuggestions(query.startsWith);
     if (!Array.isArray(results)) results = [];
 
     // Local corp/alliance suggestions
@@ -133,12 +162,14 @@ document.addEventListener("DOMContentLoaded", function() {
     allResults.forEach(r => {
       const li = document.createElement("li");
       li.textContent = `${r.name} (${r.category})`;
-      li.onclick = async () => {
-        box.value = r.name;
-        suggestions.innerHTML = "";
-        const fullData = await lookupName(r.name);
-        output.textContent = formatOutput(fullData);
-      };
+        // Attach data for direct lookup
+        li._data = { id: r.id, category: r.category };
+        li.onclick = async () => {
+          box.value = r.name;
+          suggestions.innerHTML = "";
+          const fullData = await lookupByIdCategory(r.id, r.category);
+          output.textContent = formatOutput(fullData);
+        };
       suggestions.appendChild(li);
     });
   }
