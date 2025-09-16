@@ -1,67 +1,102 @@
-  // Assign elements to CSS and stuff
-  const input = document.querySelector('#systemName') || document.querySelector('.search-box');
-  const suggestionsDiv =
-    (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
-    document.getElementById('suggestions') ||
-    document.getElementById('suggestions-box') ||
-    document.querySelector('.suggestions');
-  const lookupBtn =
-    document.getElementById('lookupBtn') ||
-    document.querySelector('.search-button') ||
-    document.querySelector('button.search-button') ||
-    document.querySelector('button');
-  const outputDiv = document.getElementById('output') || document.querySelector('.output');
+// Assign elements
+const input = document.querySelector('#input') || document.querySelector('.search-box');
+const suggestionsDiv =
+  (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
+  document.getElementById('suggestions') ||
+  document.getElementById('suggestions-box') ||
+  document.querySelector('.suggestions');
+const lookupBtn =
+  document.getElementById('lookupBtn') ||
+  document.querySelector('.search-button') ||
+  document.querySelector('button.search-button') ||
+  document.querySelector('button');
+const outputDiv = document.getElementById('output') || document.querySelector('.output');
 
-  if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
-    console.warn('playerLookup.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
-  }
+if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
+  console.warn('playerLookup.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
+}
 
 let currentFocus = -1;
-let names = [];
+
+// Escape HTML helper
+function escapeHtml(text) {
+  const div = document.createElement('div');
+  div.innerText = text;
+  return div.innerHTML;
+}
+
+// ------------------ LOOKUP ------------------
+let alliances = [];
+let corporations = [];
 
 // Load jsons
 fetch('alliances.json')
   .then(res => res.json())
   .then(data => {
     alliances = data;
-    console.log('alliances.json loaded, alliances:', alliances.length);
+    console.log('alliances.json loaded:', alliances.length);
   })
-  .catch(err => {
-    console.error('Failed to load alliances.json:', err);
-  });
-  fetch('corporations.json')
+  .catch(err => console.error('Failed to load alliances.json:', err));
+
+fetch('corporations.json')
   .then(res => res.json())
   .then(data => {
-    corps = data;
-    console.log('corporations.json loaded, corporations:', corps.length);
+    corporations = data;
+    console.log('corporations.json loaded:', corporations.length);
   })
-  .catch(err => {
-    console.error('Failed to load corporations.json:', err);
-  });
+  .catch(err => console.error('Failed to load corporations.json:', err));
 
 async function runLookup() {
-  const name = input.value.trim().toLowerCase();
-
-  // Escape logic
+  const name = input.value.trim();
   if (!name) return;
-  if (!names || !names.length) {
-    outputDiv.innerHTML = '<p>Data still loading, try again in a moment.</p>';
+
+  outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
+
+  // 1. Try to match locally in alliances
+  const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
+  if (alliance) {
+    const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${alliance.alliance_id}/`)).json();
+    outputDiv.innerHTML = `<pre>${formatOutput({ category: "alliance", id: alliance.alliance_id, details })}</pre>`;
     return;
   }
 
-  const Name = names.find(s => s.names.toLowerCase() === name);
-  if (!system) {
-    outputDiv.innerHTML = `<p>"${escapeHtml(input.value)}" not found!</p>`;
+  // 2. Try to match locally in corporations
+  const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
+  if (corp) {
+    const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corp.corporation_id}/`)).json();
+    outputDiv.innerHTML = `<pre>${formatOutput({ category: "corporation", id: corp.corporation_id, details })}</pre>`;
     return;
   }
 
-  const [result] = await fetch('https://esi.evetech.net/alliances/${id}');
-  
-  formatOutput(result);
-  console.log(result);
+  // 3. Fallback → use universe/ids for characters (or if it was missed)
+  try {
+    const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ names: [name] })
+    });
+    const data = await res.json();
+
+    if (data.characters && data.characters.length) {
+      const id = data.characters[0].id;
+      const char = await (await fetch(`https://esi.evetech.net/latest/characters/${id}/`)).json();
+      const corp = await (await fetch(`https://esi.evetech.net/latest/corporations/${char.corporation_id}/`)).json();
+      let alliance = null;
+      if (corp.alliance_id) {
+        alliance = await (await fetch(`https://esi.evetech.net/latest/alliances/${corp.alliance_id}/`)).json();
+      }
+      outputDiv.innerHTML = `<pre>${formatOutput({ category: "character", id, details: char, corp, alliance })}</pre>`;
+      return;
+    }
+
+    outputDiv.innerHTML = `<p>No match for "${escapeHtml(name)}"</p>`;
+  } catch (err) {
+    console.error("Lookup failed:", err);
+    outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
+  }
 }
 
-// Format clean output
+// ------------------ FORMAT OUTPUT ------------------
 function formatOutput(result) {
   if (!result) return "No results found.";
 
@@ -99,124 +134,55 @@ Date Founded: ${alliance.date_founded}
   return JSON.stringify(result, null, 2);
 }
 
-// Basically everything below is for input handling and keyboard navigation
-  input.addEventListener('input', (e) => {
-    const q = input.value.trim().toLowerCase();
-    renderSuggestions(q);
-  });
-
-  input.addEventListener('keydown', (e) => {
-    const items = suggestionsDiv.querySelectorAll('.suggestion');
-    if (e.key === 'ArrowDown') {
-      if (!items.length) return;
-      currentFocus = (currentFocus + 1) % items.length;
-      setActive(items);
+// ------------------ INPUT + SUGGESTIONS ------------------
+input.addEventListener('keydown', (e) => {
+  const items = suggestionsDiv.querySelectorAll('.suggestion');
+  if (e.key === 'ArrowDown') {
+    if (!items.length) return;
+    currentFocus = (currentFocus + 1) % items.length;
+    setActive(items);
+    e.preventDefault();
+  } else if (e.key === 'ArrowUp') {
+    if (!items.length) return;
+    currentFocus = (currentFocus - 1 + items.length) % items.length;
+    setActive(items);
+    e.preventDefault();
+  } else if (e.key === 'Escape') {
+    hideSuggestions();
+  } else if (e.key === 'Enter') {
+    if (currentFocus > -1 && items.length) {
       e.preventDefault();
-    } else if (e.key === 'ArrowUp') {
-      if (!items.length) return;
-      currentFocus = (currentFocus - 1 + items.length) % items.length;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === 'Escape') {
-      hideSuggestions();
-    } else if (e.key === 'Enter') {
-      // If a suggestion is highlighted, pick it and DON'T run lookup
-      if (currentFocus > -1 && items.length) {
-        e.preventDefault();
-        const chosen = items[currentFocus];
-        if (chosen) {
-          // choose text only (strip the region in parentheses)
-          const txt = chosen.textContent.replace(/\s\(.+\)$/, '').trim();
-          input.value = txt;
-          hideSuggestions();
-          return;
-        }
+      const chosen = items[currentFocus];
+      if (chosen) {
+        const txt = chosen.textContent.replace(/\s\(.+\)$/, '').trim();
+        input.value = txt;
+        hideSuggestions();
+        return;
       }
-      // otherwise run lookup
-      e.preventDefault();
-      runLookup();
     }
-  });
+    e.preventDefault();
+    runLookup();
+  }
+});
 
- // Show/hide suggestions functions
 function hideSuggestions() {
   suggestionsDiv.innerHTML = '';
   suggestionsDiv.style.display = 'none';
   currentFocus = -1;
 }
-function showSuggestionsContainer() {
-  suggestionsDiv.style.display = 'block';
-}
-
-// Build and show suggestions
-function renderSuggestions(query) {
-  if (!suggestionsDiv || !input) return;
-  suggestionsDiv.innerHTML = '';
-  currentFocus = -1;
-
-  if (!query) {
-    hideSuggestions();
-    return;
-  }
-
-  if (!systems || !systems.length) {
-    // still loading systems.json or failed loading
-    console.log('No systems loaded yet; suggestions unavailable');
-    hideSuggestions();
-    return;
-  }
-
-  // Find 12 systems from systems.json that start with what is being inputted
-  const matches = systems
-    .filter(s => s.system.toLowerCase().startsWith(query))
-    .slice(0, 12);
-
-  if (!matches.length) {
-    hideSuggestions();
-    return;
-  }
-
-  // ensure suggestions container gets the same width as the input
-  // (works even if CSS not loaded correctly)
-  const rect = input.getBoundingClientRect();
-  suggestionsDiv.style.minWidth = `${rect.width}px`;
-
-  matches.forEach((s, idx) => {
-    const div = document.createElement('div');
-    div.className = 'suggestion';
-    div.setAttribute('data-idx', idx);
-    // innerHTML includes the italic region span (style provided by CSS)
-    div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
-    div.style.cursor = 'pointer';
-
-    div.addEventListener('mousedown', (ev) => {
-      ev.preventDefault();
-      input.value = s.system;
-      hideSuggestions();
-      input.focus();
-    });
-    suggestionsDiv.appendChild(div);
-  });
-
-  showSuggestionsContainer();
-}
-
 function setActive(items) {
   items.forEach(i => i.classList.remove('active'));
   if (currentFocus > -1 && items[currentFocus]) items[currentFocus].classList.add('active');
-  // ensure active item is visible (scroll into view if needed)
   const active = items[currentFocus];
   if (active) active.scrollIntoView({ block: 'nearest' });
 }
 
-// click outside to hide
 document.addEventListener('click', (ev) => {
   if (!input) return;
   if (ev.target === input || suggestionsDiv.contains(ev.target)) return;
   hideSuggestions();
 });
 
-// make lookup button clickable with pointer if CSS doesn't set it
+// Button trigger
 lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
 lookupBtn.addEventListener('click', runLookup);
-
