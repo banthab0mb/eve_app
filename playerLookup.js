@@ -1,61 +1,50 @@
-// Helper: GET from ESI
-async function esiGet(url) {
-  const res = await fetch(`https://esi.evetech.net/latest${url}`);
-  if (!res.ok) throw new Error(`ESI error ${res.status}: ${url}`);
+
+// Helper: GET from EveWho
+async function eveWhoGet(url) {
+  const res = await fetch(`https://evewho.com/api${url}`);
+  if (!res.ok) throw new Error(`EveWho API error ${res.status}: ${url}`);
   return await res.json();
 }
 
-// Helper: POST to ESI
-async function esiPost(url, body) {
-  const res = await fetch(`https://esi.evetech.net/latest${url}`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body)
-  });
-  if (!res.ok) throw new Error(`ESI error ${res.status}: ${url}`);
-  return await res.json();
-}
-
-// Lookup full info
+// Lookup by name using EveWho search
 async function lookupName(name) {
-  const ids = await esiPost("/universe/ids/", [name]);
+  // EveWho search endpoint returns array of matches
+  const res = await fetch(`https://evewho.com/api/search/${encodeURIComponent(name)}`);
+  if (!res.ok) return null;
+  const data = await res.json();
+  if (!data || !data.length) return null;
+  // Pick the first match
+  const match = data[0];
+  let result = { category: match.category, id: match.id };
 
-  let category, id;
-  if (ids.characters) { category = "character"; id = ids.characters[0].id; }
-  else if (ids.corporations) { category = "corporation"; id = ids.corporations[0].id; }
-  else if (ids.alliances) { category = "alliance"; id = ids.alliances[0].id; }
-  else return null;
-
-  const details = await esiGet(`/${category}s/${id}/`);
-
-  if (category === "character") {
-    const corpId = details.corporation_id;
-    const corp = await esiGet(`/corporations/${corpId}/`);
-    let alliance = null;
-    if (corp.alliance_id) {
-      alliance = await esiGet(`/alliances/${corp.alliance_id}/`);
+  if (match.category === "character") {
+    const details = await eveWhoGet(`/character/${match.id}`);
+    result.details = details;
+    // Get corp info if available
+    if (details.corporation_id) {
+      result.corp = await eveWhoGet(`/corporation/${details.corporation_id}`);
     }
-    return { category, id, details, corp, alliance };
+    // Get alliance info if available
+    if (details.alliance_id) {
+      result.alliance = await eveWhoGet(`/alliance/${details.alliance_id}`);
+    }
+  } else if (match.category === "corporation") {
+    result.details = await eveWhoGet(`/corporation/${match.id}`);
+  } else if (match.category === "alliance") {
+    result.details = await eveWhoGet(`/alliance/${match.id}`);
   }
-
-  return { category, id, details };
+  return result;
 }
 
-// Fetch autocomplete suggestions
+// Fetch autocomplete suggestions using EveWho search
 async function fetchSuggestions(query) {
   if (!query || query.length < 3) return [];
-
-  const url = `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(query)}&strict=false`;
   try {
-    const res = await fetch(url);
+    const res = await fetch(`https://evewho.com/api/search/${encodeURIComponent(query)}`);
     if (!res.ok) return [];
-
     const data = await res.json();
-    const ids = [];
-    for (let type of Object.keys(data)) ids.push(...data[type]);
-    if (!ids.length) return [];
-
-    return await esiPost("/universe/names/", ids);
+    // EveWho returns array of {id, name, category}
+    return data;
   } catch (err) {
     console.error(err);
     return [];
@@ -70,13 +59,9 @@ function formatOutput(result) {
     const char = result.details;
     const corp = result.corp;
     const alliance = result.alliance;
-
     return `
 Character: ${char.name} (ID: ${result.id})
-Birthday: ${char.birthday}
-Sec Status: ${char.security_status ?? "N/A"}
-
-Corporation: ${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})
+Corporation: ${corp ? `${corp.name} [${corp.ticker}] (ID: ${corp.corporation_id})` : "Unknown"}
 Alliance: ${alliance ? `${alliance.name} [${alliance.ticker}] (ID: ${alliance.alliance_id})` : "None"}
     `.trim();
   }
@@ -93,7 +78,6 @@ Alliance ID: ${corp.alliance_id ?? "None"}
     const alliance = result.details;
     return `
 Alliance: ${alliance.name} [${alliance.ticker}] (ID: ${result.id})
-Date Founded: ${alliance.date_founded}
     `.trim();
   }
 
