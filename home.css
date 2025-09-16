@@ -89,6 +89,10 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   padding: 15px;
   border-radius: 6px;
   border: 1px solid #333;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* Creates two equal-width columns */
+  gap: 20px; /* Adds space between grid items */
+  padding: 20px;
 }
 
 .feature-box h3 { margin-top: 0; margin-bottom: 8px; color: #1e88e5; }
