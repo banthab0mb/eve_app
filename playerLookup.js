@@ -197,7 +197,6 @@ function formatOutput(result) {
   }
 
   return JSON.stringify(result, null, 2);
-  outputDiv.style.display = "block"; 
 }
 
 // Clean corporation description HTML
