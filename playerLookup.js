@@ -80,21 +80,34 @@ if (corp) {
 
   // 3. Fallback → use universe/ids for characters (or if it was missed)
   try {
+    console.log("POSTing to universe/ids with:", [name]);
+
     const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify( [name] )
+      body: JSON.stringify([name]) // must be array of strings
     });
+
+    if (!res.ok) {
+      const text = await res.text();
+      console.error("universe/ids failed:", res.status, text);
+      outputDiv.innerHTML = `<p>universe/ids failed: ${res.status}</p><pre>${escapeHtml(text)}</pre>`;
+      return;
+    }
+
     const data = await res.json();
+    console.log("universe/ids response:", data);
 
     if (data.characters && data.characters.length) {
       const id = data.characters[0].id;
       const char = await (await fetch(`https://esi.evetech.net/latest/characters/${id}/`)).json();
       const corp = await (await fetch(`https://esi.evetech.net/latest/corporations/${char.corporation_id}/`)).json();
+
       let alliance = null;
       if (corp.alliance_id) {
         alliance = await (await fetch(`https://esi.evetech.net/latest/alliances/${corp.alliance_id}/`)).json();
       }
+
       outputDiv.innerHTML = `<pre>${formatOutput({ category: "character", id, details: char, corp, alliance })}</pre>`;
       return;
     }
@@ -104,6 +117,7 @@ if (corp) {
     console.error("Lookup failed:", err);
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
   }
+
 }
 
 // ------------------ FORMAT OUTPUT ------------------
