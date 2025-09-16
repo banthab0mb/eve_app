@@ -101,6 +101,8 @@ body {
   overflow-y: auto;
   background: white;
   position: absolute;
+  color: #000;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 #suggestions li {
