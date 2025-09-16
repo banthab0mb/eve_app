@@ -130,6 +130,7 @@ body {
 }
 
 #output {
+  display: none;
   margin-top: 20px;
   padding: 10px;
   background: #1a1a1a;
@@ -141,7 +142,6 @@ body {
 }
 
 .lookup-result {
-  display: none;
   max-width: 700px;
   text-align: center;
   margin: 30px auto;
