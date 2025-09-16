@@ -32,40 +32,41 @@ async function esiPost(url, body) {
 }
 
 // Lookup a player/corp/alliance by name
-async function lookupPlayer(name) {
-    try {
-        const ids = await esiPost("/universe/ids/", [name]);
+async function lookupEntity(name) {
+  try {
+    // Step 1: search
+    const res = await fetch(
+      `https://esi.evetech.net/latest/search/?categories=character,corporation,alliance&search=${encodeURIComponent(name)}&strict=true`
+    );
 
-        let category, id;
-        if (ids.characters) { category = "character"; id = ids.characters[0].id; }
-        else if (ids.corporations) { category = "corporation"; id = ids.corporations[0].id; }
-        else if (ids.alliances) { category = "alliance"; id = ids.alliances[0].id; }
-        else return null;
-
-        const details = await esiGet(`/${category}s/${id}/`);
-
-        if (category === "character") {
-            const corpId = details.corporation_id;
-            const corp = await esiGet(`/corporations/${corpId}/`);
-            let alliance = null;
-            if (corp.alliance_id) {
-                alliance = await esiGet(`/alliances/${corp.alliance_id}/`);
-            }
-            return {
-                category,
-                id,
-                details,
-                corp,
-                alliance,
-                portrait: `https://images.evetech.net/characters/${id}/portrait?size=128`
-            };
-        }
-
-        return { category, id, details };
-    } catch (err) {
-        console.error("Error in lookupPlayer:", err);
-        return null;
+    if (res.status === 404) {
+      console.log("No matches found.");
+      return null;
     }
+    const data = await res.json();
+
+    // Step 2: pick first hit by category priority
+    if (data.character?.length) {
+      const id = data.character[0];
+      const charRes = await fetch(`https://esi.evetech.net/latest/characters/${id}/`);
+      const charData = await charRes.json();
+      return { type: "character", id, ...charData };
+    }
+    if (data.corporation?.length) {
+      const id = data.corporation[0];
+      const corpRes = await fetch(`https://esi.evetech.net/latest/corporations/${id}/`);
+      const corpData = await corpRes.json();
+      return { type: "corporation", id, ...corpData };
+    }
+    if (data.alliance?.length) {
+      const id = data.alliance[0];
+      const allRes = await fetch(`https://esi.evetech.net/latest/alliances/${id}/`);
+      const allData = await allRes.json();
+      return { type: "alliance", id, ...allData };
+    }
+  } catch (err) {
+    console.error("Lookup error:", err);
+  }
 }
 
 // Fetch autocomplete suggestions
