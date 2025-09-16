@@ -71,17 +71,30 @@ nav a.active, nav a:hover {
   padding-bottom: 2px;
 }
 
+a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
 /* Main Content */
 main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important;}
 
-.container { max-width: 900px; margin: 0 auto; }
+.container { max-width: 900px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important;}
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 body {
-  font-family: Arial, sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
   margin: 20px;
 }
 
@@ -89,6 +102,7 @@ body {
   width: 300px;
   padding: 8px;
   font-size: 16px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 #suggestions {
@@ -122,17 +136,19 @@ body {
   max-width: 600px;
   white-space: pre-wrap;
   color:#ccc;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 .lookup-result {
   text-align: center;
   margin: 20px auto;
-  font-family: sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 .lookup-result img {
   display: block;
   margin: 10px auto;
   border-radius: 8px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 .lookup-result h2, .lookup-result h3 {
   margin: 10px 0 5px;
