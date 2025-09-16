@@ -141,6 +141,7 @@ body {
 }
 
 .lookup-result {
+  display: none;
   max-width: 700px;
   text-align: center;
   margin: 30px auto;

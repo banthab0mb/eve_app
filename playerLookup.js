@@ -113,9 +113,11 @@ async function runLookup() {
     }
 
     outputDiv.innerHTML = `<p>No match for "${escapeHtml(name)}"</p>`;
+    outputDiv.style.display = "block"; 
   } catch (err) {
     console.error("Lookup failed:", err);
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
+    outputDiv.style.display = "block"; 
   }
 }
 
@@ -192,6 +194,7 @@ function formatOutput(result) {
   return JSON.stringify(result, null, 2);
 }
 
+// Clean corporation description HTML
 function cleanDescription(raw) {
   if (!raw) return "No description.";
 
