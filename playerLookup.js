@@ -144,7 +144,7 @@ function formatOutput(result) {
     console.log(result, result.details, result.corp, result.alliance)
     console.log(char);
     console.log(corp);
-    console.log(alliance);
+    console.log(alliance);  
 
     return `
 <div class="lookup-result">
@@ -153,6 +153,10 @@ function formatOutput(result) {
   <p><strong>${char.name}</strong> (ID: ${result.id})</p>
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
+  <div class="char-description">
+    <h3>Description</h3>
+    ${cleanDescription(char.description)}
+  </div>
 
   <h3>Corporation</h3>
   <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
@@ -169,6 +173,10 @@ function formatOutput(result) {
   }
 
   if (result.category === "corporation") {
+
+    console.log(result, result.details, result.corp, result.alliance)
+    console.log(corp);
+    
     const corp = result.details;
     return `
 <div class="lookup-result">
