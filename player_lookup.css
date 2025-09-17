@@ -125,7 +125,7 @@ body {
   display: none;
   margin: 20px auto 0 auto;   /* auto left/right centers it */
   text-align: left;
-  max-width: 600px;
+  max-width: 800px;
   padding: 10px;
   font-family: "Shentox-Regular", sans-serif !important;
 }
