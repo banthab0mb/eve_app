@@ -174,11 +174,11 @@ function formatOutput(result) {
   }
 
   if (result.category === "corporation") {
+    const corp = result.details;
 
     console.log(result, result.details, result.corp, result.alliance)
     console.log(corp);
-    
-    const corp = result.details;
+
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
