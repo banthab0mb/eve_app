@@ -125,7 +125,8 @@ body {
   display: none;
   margin: 20px auto 0 auto;   /* auto left/right centers it */
   text-align: left;
-  max-width: 800px;
+  max-width: 700px;
+  width: 100%;
   padding: 10px;
   font-family: "Shentox-Regular", sans-serif !important;
 }
@@ -169,7 +170,7 @@ body {
 
 .lookup-result {
   max-width: 700px;
-  text-align: center;
+  text-align: left;
   margin: 30px auto;
   background: #1a1a1a;   /* optional: dark card background */
   padding: 20px;
@@ -185,6 +186,7 @@ body {
 }
 .lookup-result h2, .lookup-result h3 {
   margin: 10px 0 5px;
+  text-align: center;
 }
 
 .corp_description {
