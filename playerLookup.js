@@ -175,7 +175,7 @@ function formatOutput(result) {
   <h2>Corporation</h2>
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}] (ID: ${result.id})</p>
-  <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
+  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
   <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
   <div class="corp-description">
     <h3>Description</h3>
