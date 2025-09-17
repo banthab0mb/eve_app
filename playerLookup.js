@@ -167,7 +167,7 @@ function formatOutput(result) {
 
   <div class="char-description">
     <h3>Description</h3>
-    ${cleanDescription(char.description)}
+    <p style="text-align: left;">${cleanDescription(char.description)}</p>
   </div>
 </div>
     `;
@@ -188,7 +188,7 @@ function formatOutput(result) {
   <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
   <div class="corp-description">
     <h3>Description</h3>
-    ${cleanDescription(corp.description)}
+    <p style="text-align: left;">${cleanDescription(corp.description)}</p>
   </div>
 </div>
     `;
