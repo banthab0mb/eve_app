@@ -83,7 +83,14 @@ a.active, a:hover {
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
 /* Main Content */
-main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important;}
+main { 
+  flex: 1; 
+  padding: 20px; 
+  font-family: "Shentox-Regular", sans-serif !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
 
 .container { max-width: 900px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important;}
 
@@ -137,8 +144,7 @@ body {
   display: none;
   margin-top: 20px;
   padding: 10px;
-  background: #1a1a1a;
-  border: 1px solid #ccc;
+  border: 0px;
   max-width: 600px;
   white-space: pre-wrap;
   color:#ccc;
