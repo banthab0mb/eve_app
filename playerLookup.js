@@ -149,7 +149,7 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Character</h2>
-  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=128" alt="${char.name}" class="portrait">
+  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" alt="${char.name}" class="portrait">
   <p><strong>${char.name}</strong> (ID: ${result.id})</p>
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
@@ -173,8 +173,9 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
-  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=128" alt="${corp.name}" class="logo">
+  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}] (ID: ${result.id})</p>
+  <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
   <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
   <div class="corp-description">
     <h3>Description</h3>
@@ -189,7 +190,7 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Alliance</h2>
-  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=128" alt="${alliance.name}" class="logo">
+  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
   <p><strong>${alliance.name}</strong> [${alliance.ticker}] (ID: ${result.id})</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
 </div>
