@@ -170,7 +170,7 @@ body {
 
 .lookup-result {
   max-width: 700px;
-  text-align: left;
+  text-align: center;
   margin: 30px auto;
   background: #1a1a1a;   /* optional: dark card background */
   padding: 20px;
@@ -191,6 +191,12 @@ body {
 
 .corp_description {
   margin-top: 15px;
+  text-align: left;
+}
+
+.char_description {
+  margin-top: 15px;
+  text-align: left;
 }
 
 /* Footer */
