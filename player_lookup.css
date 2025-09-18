@@ -191,12 +191,12 @@ body {
 
 .corp_description {
   margin-top: 15px;
-  text-align: left;
+  text-align: left !important;
 }
 
 .char_description {
   margin-top: 15px;
-  text-align: left;
+  text-align: left !important;
 }
 
 /* Footer */
