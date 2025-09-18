@@ -129,6 +129,7 @@ async function runLookup() {
 async function getAllianceName(id) {
   const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
   
+  console.log(alliance.name);
   return alliance.name;
 }
 
