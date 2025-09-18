@@ -126,6 +126,12 @@ async function runLookup() {
   outputDiv.style.display = "block"; 
 }
 
+async function getAllianceName(id) {
+  const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
+  
+  return alliance.name;
+}
+
 // ------------------ FORMAT OUTPUT ------------------
 function formatOutput(result) {
   if (!result) return "No results found.";
@@ -183,9 +189,9 @@ function formatOutput(result) {
 <div class="lookup-result">
   <h2>Corporation</h2>
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
-  <p><strong>${corp.name}</strong> [${corp.ticker}] (ID: ${result.id})</p>
+  <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
-  <p>Alliance ID: ${corp.alliance_id ?? "None"}</p>
+  <p>${getAllianceName(corp.alliance_id) ?? "None"}</p>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <div class="corp-description">
     <h3>Description</h3>
