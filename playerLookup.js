@@ -126,17 +126,24 @@ async function runLookup() {
   outputDiv.style.display = "block"; 
 }
 
-// Fetch alliance name by ID
-async function getAllianceName(id) {
-  const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
-  
-  console.log(alliance.name);
-  return alliance.name;
+// Fetch alliance info
+async function getAllianceInfo(id) {
+  const response = await fetch(`https://esi.evetech.net/latest/alliances/${id}`);
+  const alliance = await response.json();
+  return alliance; // contains both name and ticker
 }
 
-async function renderAllianceName(corp) {
-  const name = await getAllianceName(corp.alliance_id);
-  document.querySelector("#alliance-name").innerHTML = `<p>${name ?? "None"}</p>`;
+async function renderAllianceInfo(corp) {
+  if (!corp.alliance_id) {
+    document.querySelector("#alliance-name").innerHTML = `<p>None</p>`;
+    return;
+  }
+
+  const alliance = await getAllianceInfo(corp.alliance_id);
+  const name = alliance.name ?? "Unknown";
+  const ticker = alliance.ticker ?? "";
+
+  document.querySelector("#alliance-name").innerHTML = `<p>${name} [${ticker}]</p>`;
 }
 
 // ------------------ FORMAT OUTPUT ------------------
@@ -194,7 +201,7 @@ function formatOutput(result) {
     console.log(corp);
     console.log(getAllianceName(corp.alliance_id));
       
-    renderAllianceName(corp);
+    renderAllianceInfo(corp);
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
