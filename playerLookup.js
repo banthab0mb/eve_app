@@ -186,7 +186,7 @@ function formatOutput(result) {
 
     console.log(result, result.details, result.corp, result.alliance)
     console.log(corp);
-
+    console.log($getAllianceName(corp.alliance_id));
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
