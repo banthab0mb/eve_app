@@ -130,7 +130,7 @@ async function getAllianceName(id) {
   const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
   
   console.log(alliance.name);
-  return alliance.name;
+  return alliance.name.tostring();
 }
 
 // ------------------ FORMAT OUTPUT ------------------
@@ -238,7 +238,6 @@ function cleanDescription(raw) {
   // Wrap in <p> with line breaks
   return cleaned.split("\n").map(line => `<p>${line}</p>`).join("");
 }
-
 
 // ------------------ INPUT + SUGGESTIONS ------------------
 input.addEventListener('keydown', (e) => {
