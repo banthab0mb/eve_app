@@ -241,21 +241,48 @@ function formatOutput(result) {
 function cleanDescription(raw) {
   if (!raw) return "No description.";
 
-  // Remove all <font ...> and </font>
-  let cleaned = raw.replace(/<\/?font[^>]*>/g, "");
+  let cleaned = raw;
 
-  // Replace <br> with line breaks
+  // Decode unicode escapes (e.g. \u2019 → ’)
+  cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) =>
+    String.fromCharCode(parseInt(code, 16))
+  );
+
+  // Normalize <br> to line breaks
   cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
 
-  // Replace <loc><a href="...">text</a></loc> or <a href="...">text</a> with proper clickable links
+  // Convert <loc><a href="...">text</a></loc> to clickable links
   cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
+
+  // Convert <loc> with multiple <a> tags (Signal Cartel recruiter list)
+  cleaned = cleaned.replace(/<loc>((?:<a href="[^"]+">[^<]*<\/a>\s*)+)<\/loc>/gi, (_, links) => links);
+
+  // Convert plain <a href="...">text</a>
   cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
 
-  // Remove extra empty spaces
-  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
+  // Preserve <font> tags with attributes
+  cleaned = cleaned.replace(/<font([^>]*)>/gi, (_, attrs) => `<font${attrs}>`);
+  cleaned = cleaned.replace(/<\/font>/gi, `</font>`);
 
-  // Wrap in <p> with line breaks
-  return cleaned.split("\n").map(line => `<p>${line}</p>`).join("");
+  // Preserve basic formatting tags: <b>, <i>, <u>, <strong>, <em>, <a>, <font>
+  const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
+  cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag, attrs) => {
+    return allowedTags.includes(tag.toLowerCase()) ? match : "";
+  });
+
+  // Remove extra spaces before line breaks
+  cleaned = cleaned.replace(/\s+\n/g, "\n");
+
+  // Trim leading/trailing whitespace
+  cleaned = cleaned.trim();
+
+  // Wrap each line in <p>, preserving inline tags
+  return cleaned
+    .split("\n")
+    .map(line => line.trim())
+    .filter(line => line.length > 0)
+    .map(line => `<p>${line}</p>`)
+    .join("");
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
