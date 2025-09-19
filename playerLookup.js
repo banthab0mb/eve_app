@@ -136,6 +136,7 @@ async function runLookup() {
 async function getAllianceInfo(id) {
   const response = await fetch(`https://esi.evetech.net/latest/alliances/${id}`);
   const alliance = await response.json();
+  console.log(alliance);                    
   return alliance; // contains both name and ticker
 }
 
