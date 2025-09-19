@@ -187,6 +187,7 @@ function formatOutput(result) {
       <p>${alliance.name} [${alliance.ticker}]</p>
     ` : "<p>None</p>"}
   </div>
+  </div>
   <hr>
   <div class="char-description">
     <h3>Description</h3>
