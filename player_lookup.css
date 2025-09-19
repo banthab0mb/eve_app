@@ -219,6 +219,7 @@ body {
   box-shadow: none;
   background: none;
   font-family: sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* Target images directly */
