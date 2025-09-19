@@ -201,18 +201,31 @@ body {
 .char-affiliations {
   display: flex;
   justify-content: center;
-  gap: 40px; /* space between corp and alliance */
-  margin-top: 20px;
-  flex-wrap: wrap; /* allows stacking on smaller screens */
+  align-items: flex-start;
+  gap: 40px;
+  margin: 40px auto;
+  flex-wrap: wrap;
+  max-width: 800px;
 }
 
 .char-affiliations .corp-info,
 .char-affiliations .alliance-info {
-  font-family: "Shentox-Regular", sans-serif;
-  background: #1a1a1a;
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  flex: 1 1 300px;
+  min-width: 280px;
+  text-align: center;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: none;
+  font-family: sans-serif;
+}
+
+/* Target images directly */
+.char-affiliations .corp-info img,
+.char-affiliations .alliance-info img {
+  display: block;
+  margin: 0 auto 10px;
+  max-width: 100px;
 }
 
 /* Footer */
