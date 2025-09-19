@@ -206,6 +206,7 @@ body {
   margin: 40px auto;
   flex-wrap: wrap;
   max-width: 800px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 .char-affiliations .corp-info,
