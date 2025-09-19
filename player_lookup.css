@@ -124,7 +124,6 @@ body {
 #output {
   display: none;
   margin: 20px auto 0 auto;   /* auto left/right centers it */
-  text-align: center;
   max-width: 700px;
   width: 100%;
   padding: 10px;
@@ -189,12 +188,12 @@ body {
   text-align: center;
 }
 
-.corp_description {
+.corp-description {
   margin-top: 15px;
   text-align: left !important;
 }
 
-.char_description {
+.char-description {
   margin-top: 15px;
   text-align: left !important;
 }
