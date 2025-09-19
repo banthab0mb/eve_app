@@ -126,11 +126,12 @@ async function runLookup() {
   outputDiv.style.display = "block"; 
 }
 
+// Fetch alliance name by ID
 async function getAllianceName(id) {
   const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
   
   console.log(alliance.name);
-  return alliance.name.tostring();
+  return alliance.name;
 }
 
 // ------------------ FORMAT OUTPUT ------------------
@@ -195,6 +196,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
   <p>${getAllianceName(corp.alliance_id) ?? "None"}</p>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
+  <hr>
   <div class="corp-description">
     <h3>Description</h3>
     <p style="text-align: left;">${cleanDescription(corp.description)}</p>
@@ -222,21 +224,33 @@ function formatOutput(result) {
 function cleanDescription(raw) {
   if (!raw) return "No description.";
 
-  // Remove all <font ...> and </font>
-  let cleaned = raw.replace(/<\/?font[^>]*>/g, "");
+  let cleaned = raw;
 
-  // Replace <br> with line breaks
-  cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-
-  // Replace <loc><a href="...">text</a></loc> or <a href="...">text</a> with proper clickable links
+  // Handle <loc><a href="...">text</a></loc> and normal links
   cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
   cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
 
-  // Remove extra empty spaces
-  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
+  // Convert <font color="..."> to <span style="color:...">
+  cleaned = cleaned.replace(/<font color="([^"]+)">/gi, `<span style="color:$1">`);
+  cleaned = cleaned.replace(/<\/font>/gi, "</span>");
 
-  // Wrap in <p> with line breaks
-  return cleaned.split("\n").map(line => `<p>${line}</p>`).join("");
+  // Convert line breaks
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, "<br>");
+
+  // Keep headings
+  cleaned = cleaned.replace(/<\/?(h[1-6])>/gi, "<$1>");
+
+  // Keep lists
+  cleaned = cleaned.replace(/<\/?(ul|ol|li)>/gi, "<$1>");
+
+  // Keep bold, italic, underline
+  cleaned = cleaned.replace(/<\/?(b|i|u)>/gi, "<$1>");
+
+  // Remove all other unsupported tags
+  cleaned = cleaned.replace(/<\/?(?!b|i|u|span|a|br|h[1-6]|ul|ol|li)[^>]+>/gi, "");
+
+  // Trim extra spaces
+  return cleaned.trim();
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
