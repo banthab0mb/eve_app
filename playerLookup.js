@@ -52,8 +52,11 @@ async function runLookup() {
 
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
-  // 1. Try to match locally in alliances
-  const alliance = alliances.find(a => a.name.toLowerCase() === name.toLowerCase());
+  // 1. Try to match locally in alliances (by name or ticker)
+  const alliance = alliances.find(a =>
+    a.name.toLowerCase() === name.toLowerCase() ||
+    (a.ticker && a.ticker.toLowerCase() === name.toLowerCase())
+  );
   if (alliance) {
     const allianceId = alliance.alliance_id || alliance.id || alliance.allianceID;
     if (!allianceId) {
@@ -62,12 +65,15 @@ async function runLookup() {
     }
     const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
     outputDiv.innerHTML = formatOutput({ category: "alliance", id: allianceId, details });
-    outputDiv.style.display = "block"; 
+    outputDiv.style.display = "block";
     return;
   }
 
-  // 2. Try to match locally in corporations
-  const corp = corporations.find(c => c.name.toLowerCase() === name.toLowerCase());
+  // 2. Try to match locally in corporations (by name or ticker)
+  const corp = corporations.find(c =>
+    c.name.toLowerCase() === name.toLowerCase() ||
+    (c.ticker && c.ticker.toLowerCase() === name.toLowerCase())
+  );
   if (corp) {
     const corpId = corp.corporation_id || corp.id || corp.corporationID;
     if (!corpId) {
@@ -76,7 +82,7 @@ async function runLookup() {
     }
     const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
     outputDiv.innerHTML = formatOutput({ category: "corporation", id: corpId, details });
-    outputDiv.style.display = "block"; 
+    outputDiv.style.display = "block";
     return;
   }
 
