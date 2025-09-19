@@ -243,7 +243,7 @@ function cleanDescription(raw) {
 
   let cleaned = raw;
 
-  // Decode unicode escapes (e.g. \u2019 → ’)
+  // Decode unicode escapes
   cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) =>
     String.fromCharCode(parseInt(code, 16))
   );
@@ -251,32 +251,28 @@ function cleanDescription(raw) {
   // Normalize <br> to line breaks
   cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
 
-  // Convert <loc><a href="...">text</a></loc> to clickable links
+  // Convert <loc><a> and plain <a> to clickable links
   cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
-
-  // Convert <loc> with multiple <a> tags (Signal Cartel recruiter list)
   cleaned = cleaned.replace(/<loc>((?:<a href="[^"]+">[^<]*<\/a>\s*)+)<\/loc>/gi, (_, links) => links);
-
-  // Convert plain <a href="...">text</a>
   cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
 
-  // Preserve <font> tags with attributes
-  cleaned = cleaned.replace(/<font([^>]*)>/gi, (_, attrs) => `<font${attrs}>`);
-  cleaned = cleaned.replace(/<\/font>/gi, `</font>`);
+  // Scale down font sizes (e.g. size="18" → style="font-size:1.2rem")
+  cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
+    const scaled = Math.min(Math.max(parseInt(size), 10), 18); // clamp between 10–18
+    const rem = (scaled - 8) * 0.1 + 1; // size 10 → 1rem, size 18 → ~1.9rem
+    return `<font${pre} style="font-size:${rem}rem"${post}>`;
+  });
 
-  // Preserve basic formatting tags: <b>, <i>, <u>, <strong>, <em>, <a>, <font>
+  // Preserve allowed tags
   const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
   cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag, attrs) => {
     return allowedTags.includes(tag.toLowerCase()) ? match : "";
   });
 
-  // Remove extra spaces before line breaks
-  cleaned = cleaned.replace(/\s+\n/g, "\n");
+  // Clean up whitespace
+  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
 
-  // Trim leading/trailing whitespace
-  cleaned = cleaned.trim();
-
-  // Wrap each line in <p>, preserving inline tags
+  // Wrap each line in <p>
   return cleaned
     .split("\n")
     .map(line => line.trim())
