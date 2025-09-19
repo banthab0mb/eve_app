@@ -134,6 +134,11 @@ async function getAllianceName(id) {
   return alliance.name;
 }
 
+async function renderAllianceName(corp) {
+  const name = await getAllianceName(corp.alliance_id);
+  document.querySelector("#alliance-name").innerHTML = `<p>${name ?? "None"}</p>`;
+}
+
 // ------------------ FORMAT OUTPUT ------------------
 function formatOutput(result) {
   if (!result) return "No results found.";
@@ -194,7 +199,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
-  <p id="alliance-name-${corp.id}">Alliance Name</p>
+  <div id="alliance-name"></div>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <hr>
   <div class="corp-description">
