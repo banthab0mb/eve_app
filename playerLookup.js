@@ -224,33 +224,21 @@ function formatOutput(result) {
 function cleanDescription(raw) {
   if (!raw) return "No description.";
 
-  let cleaned = raw;
+  // Remove all <font ...> and </font>
+  let cleaned = raw.replace(/<\/?font[^>]*>/g, "");
 
-  // Handle <loc><a href="...">text</a></loc> and normal links
+  // Replace <br> with line breaks
+  cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+
+  // Replace <loc><a href="...">text</a></loc> or <a href="...">text</a> with proper clickable links
   cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
   cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
 
-  // Convert <font color="..."> to <span style="color:...">
-  cleaned = cleaned.replace(/<font color="([^"]+)">/gi, `<span style="color:$1">`);
-  cleaned = cleaned.replace(/<\/font>/gi, "</span>");
+  // Remove extra empty spaces
+  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
 
-  // Convert line breaks
-  cleaned = cleaned.replace(/<br\s*\/?>/gi, "<br>");
-
-  // Keep headings
-  cleaned = cleaned.replace(/<\/?(h[1-6])>/gi, "<$1>");
-
-  // Keep lists
-  cleaned = cleaned.replace(/<\/?(ul|ol|li)>/gi, "<$1>");
-
-  // Keep bold, italic, underline
-  cleaned = cleaned.replace(/<\/?(b|i|u)>/gi, "<$1>");
-
-  // Remove all other unsupported tags
-  cleaned = cleaned.replace(/<\/?(?!b|i|u|span|a|br|h[1-6]|ul|ol|li)[^>]+>/gi, "");
-
-  // Trim extra spaces
-  return cleaned.trim();
+  // Wrap in <p> with line breaks
+  return cleaned.split("\n").map(line => `<p>${line}</p>`).join("");
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
