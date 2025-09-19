@@ -198,6 +198,23 @@ body {
   text-align: left !important;
 }
 
+.char-affiliations {
+  display: flex;
+  justify-content: center;
+  gap: 40px; /* space between corp and alliance */
+  margin-top: 20px;
+  flex-wrap: wrap; /* allows stacking on smaller screens */
+}
+
+.char-affiliations .corp-info,
+.char-affiliations .alliance-info {
+  font-family: "Shentox-Regular", sans-serif;
+  background: #1a1a1a;
+  padding: 10px 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+}
+
 /* Footer */
 footer {
   border-top: 2px solid #222;
