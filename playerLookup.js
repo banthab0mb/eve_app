@@ -25,6 +25,13 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
+async function getAllianceName(id) {
+  const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
+  
+  console.log(alliance.name);
+  return alliance.name;
+}
+
 // ------------------ LOOKUP ------------------
 let alliances = [];
 let corporations = [];
@@ -47,6 +54,11 @@ fetch('corporations.json')
   .catch(err => console.error('Failed to load corporations.json:', err));
 
 async function runLookup(nameFromUrl) {
+
+  if (typeof nameFromUrl !== "string") return; // guard against bad calls
+  input.value = nameFromUrl;                   // keeps the search box in sync
+  history.pushState({}, "", `?q=${encodeURIComponent(nameFromUrl)}`);
+
   const name = nameFromUrl || input.value.trim();
   if (!name) return;
 
@@ -184,6 +196,10 @@ function formatOutput(result) {
        onclick="runLookup('${corp.name}')">
 
   <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
+  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" 
+        alt="${corp.alliance}" class="logo clickable"
+        onclick="runLookup('${corp.getAllianceName(corp.alliance_id)}')">
+  <p>${getAllianceName(corp.alliance_id) ?? "None"}</p>
   <p><a href="${corp.url}" target="_blank">${corp.url || ""}</a></p>
   <div class="corp-description">
     <h3>Description</h3>
