@@ -123,6 +123,7 @@ body {
 /* Output centered under the search bar */
 #output {
   display: none;
+  text-align: center;
   margin: 20px auto 0 auto;   /* auto left/right centers it */
   max-width: 700px;
   width: 100%;
