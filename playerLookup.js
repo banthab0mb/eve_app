@@ -174,7 +174,7 @@ function formatOutput(result) {
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
   <hr>
-  <div class="char-affilliations">
+  <div class="char-affiliations">
   <div class="corp-info">
     <h3>Corporation</h3>
     <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
