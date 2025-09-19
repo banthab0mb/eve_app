@@ -228,6 +228,13 @@ body {
   max-width: 100px;
 }
 
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc; /* or any color you prefer */
+  margin: 30px 0;
+}
+
 /* Footer */
 footer {
   border-top: 2px solid #222;
