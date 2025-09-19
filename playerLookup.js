@@ -259,7 +259,7 @@ function cleanDescription(raw) {
   // Scale down font sizes (e.g. size="18" → style="font-size:1.2rem")
   cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
     const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-    const rem = (scaled - 8) * 0.07 + 1;
+    const rem = (scaled - 8) * 0.05 + 1;
     return `<font${pre} style="font-size:${rem}rem"${post}>`;
   });
 
