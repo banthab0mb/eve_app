@@ -199,7 +199,7 @@ function formatOutput(result) {
 
     console.log(result, result.details, result.corp, result.alliance)
     console.log(corp);
-    console.log(getAllianceName(corp.alliance_id));
+    console.log(renderAllianceInfo(corp));
       
     renderAllianceInfo(corp);
     return `
