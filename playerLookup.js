@@ -168,9 +168,8 @@ function formatOutput(result) {
 
     return `
 <div class="lookup-result">
-  <h2>Character</h2>
+  <h2>${char.name}</h2>
   <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" alt="${char.name}" class="portrait">
-  <p><strong>${char.name}</strong></p>
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
@@ -204,9 +203,9 @@ function formatOutput(result) {
     renderAllianceInfo(corp);
     return `
 <div class="lookup-result">
-  <h2>Corporation</h2>
+  <h2>${corp.name}</h2>
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
-  <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
+  <p>[${corp.ticker}]</p>
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
   <div id="alliance-name"></div>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
@@ -223,9 +222,9 @@ function formatOutput(result) {
     const alliance = result.details;
     return `
 <div class="lookup-result">
-  <h2>Alliance</h2>
+  <h2>${alliance.name}</h2>
   <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
-  <p><strong>${alliance.name}</strong> [${alliance.ticker}]</p>
+  <p>[${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
 </div>
     `;
