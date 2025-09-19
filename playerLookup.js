@@ -25,13 +25,6 @@ function escapeHtml(text) {
   return div.innerHTML;
 }
 
-async function getAllianceName(id) {
-  const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
-  
-  console.log(alliance.name);
-  return alliance.name;
-}
-
 // ------------------ LOOKUP ------------------
 let alliances = [];
 let corporations = [];
@@ -53,18 +46,9 @@ fetch('corporations.json')
   })
   .catch(err => console.error('Failed to load corporations.json:', err));
 
-async function runLookup(nameFromUrl) {
-
-  if (typeof nameFromUrl !== "string") return; // guard against bad calls
-  input.value = nameFromUrl;                   // keeps the search box in sync
-  history.pushState({}, "", `?q=${encodeURIComponent(nameFromUrl)}`);
-
-  const name = nameFromUrl || input.value.trim();
+async function runLookup() {
+  const name = input.value.trim();
   if (!name) return;
-
-  // Update URL with query
-  const newUrl = `${window.location.pathname}?q=${encodeURIComponent(name)}`;
-  window.history.pushState({ path: newUrl }, "", newUrl);
 
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
@@ -96,14 +80,14 @@ async function runLookup(nameFromUrl) {
     return;
   }
 
-  // 3. Fallback → universe/ids for characters
+  // 3. Fallback → use universe/ids for characters
   try {
     console.log("POSTing to universe/ids with:", [name]);
 
     const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify([name])
+      body: JSON.stringify([name]) // must be array of strings
     });
 
     if (!res.ok) {
@@ -139,42 +123,52 @@ async function runLookup(nameFromUrl) {
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
     outputDiv.style.display = "block"; 
   }
+  outputDiv.style.display = "block"; 
+}
+
+async function getAllianceName(id) {
+  const alliance = await (await fetch(`https://esi.evetech.net/alliances/${id}`)).json();
+  
+  console.log(alliance.name);
+  return alliance.name;
 }
 
 // ------------------ FORMAT OUTPUT ------------------
 function formatOutput(result) {
   if (!result) return "No results found.";
 
+  // Helper to format date as YYYY-MM-DD
   const formatDate = (iso) => iso ? iso.split("T")[0] : "N/A";
+
+  // Helper to format sec status to 2 decimals
   const formatSec = (sec) => sec !== undefined ? sec.toFixed(1) : "N/A";
 
   if (result.category === "character") {
     const char = result.details;
     const corp = result.corp;
     const alliance = result.alliance;
+    
+    console.log(result, result.details, result.corp, result.alliance)
+    console.log(char);
+    console.log(corp);
+    console.log(alliance);  
 
     return `
 <div class="lookup-result">
   <h2>Character</h2>
-  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" 
-       alt="${char.name}" class="portrait">
-
+  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" alt="${char.name}" class="portrait">
   <p><strong>${char.name}</strong></p>
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
   <hr>
   <h3>Corporation</h3>
-  <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" 
-       alt="${corp.name}" class="logo clickable" 
-       onclick="runLookup('${corp.name}')">
+  <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
   <p>${corp.name} [${corp.ticker}]</p>
 
   <h3>Alliance</h3>
   ${alliance ? `
-    <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" 
-         alt="${alliance.name}" class="logo clickable" 
-         onclick="runLookup('${alliance.name}')">
+    <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
     <p>${alliance.name} [${alliance.ticker}]</p>
   ` : "<p>None</p>"}
 
@@ -183,29 +177,30 @@ function formatOutput(result) {
     <h3>Description</h3>
     <p style="text-align: left;">${cleanDescription(char.description)}</p>
   </div>
-</div>`;
+</div>
+    `;
   }
 
   if (result.category === "corporation") {
     const corp = result.details;
+
+    console.log(result, result.details, result.corp, result.alliance)
+    console.log(corp);
+
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
-  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" 
-       alt="${corp.name}" class="logo clickable" 
-       onclick="runLookup('${corp.name}')">
-
+  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
-  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" 
-        alt="${corp.alliance}" class="logo clickable"
-        onclick="runLookup('${corp.getAllianceName(corp.alliance_id)}')">
+  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
   <p>${getAllianceName(corp.alliance_id) ?? "None"}</p>
-  <p><a href="${corp.url}" target="_blank">${corp.url || ""}</a></p>
+  <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <div class="corp-description">
     <h3>Description</h3>
     <p style="text-align: left;">${cleanDescription(corp.description)}</p>
   </div>
-</div>`;
+</div>
+    `;
   }
 
   if (result.category === "alliance") {
@@ -213,27 +208,15 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Alliance</h2>
-  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" 
-       alt="${alliance.name}" class="logo clickable" 
-       onclick="runLookup('${alliance.name}')">
-
+  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
   <p><strong>${alliance.name}</strong> [${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
-</div>`;
+</div>
+    `;
   }
 
   return JSON.stringify(result, null, 2);
 }
-
-// ------------------ INIT ON PAGE LOAD ------------------
-window.addEventListener("DOMContentLoaded", () => {
-  const params = new URLSearchParams(window.location.search);
-  const q = params.get("q");
-  if (q) {
-    input.value = q;
-    runLookup(q);
-  }
-});
 
 // Clean corporation description HTML
 function cleanDescription(raw) {
