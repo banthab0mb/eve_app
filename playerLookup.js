@@ -248,6 +248,12 @@ function cleanDescription(raw) {
     String.fromCharCode(parseInt(code, 16))
   );
 
+  // Clean escape sequences
+  cleaned = cleaned.replace(/\\'/g, "'");
+
+  // Remove leading u' if present
+  cleaned = cleaned.replace(/^u'/, "'"); // or remove it entirely
+
   // Normalize <br> to line breaks
   cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
 
