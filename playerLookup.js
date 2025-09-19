@@ -144,19 +144,25 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Character</h2>
-  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" alt="${char.name}" class="portrait">
+  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" 
+       alt="${char.name}" class="portrait">
+
   <p><strong>${char.name}</strong></p>
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
   <hr>
   <h3>Corporation</h3>
-  <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
+  <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" 
+       alt="${corp.name}" class="logo clickable" 
+       onclick="runLookup('${corp.name}')">
   <p>${corp.name} [${corp.ticker}]</p>
 
   <h3>Alliance</h3>
   ${alliance ? `
-    <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
+    <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" 
+         alt="${alliance.name}" class="logo clickable" 
+         onclick="runLookup('${alliance.name}')">
     <p>${alliance.name} [${alliance.ticker}]</p>
   ` : "<p>None</p>"}
 
@@ -173,7 +179,10 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Corporation</h2>
-  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
+  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" 
+       alt="${corp.name}" class="logo clickable" 
+       onclick="runLookup('${corp.name}')">
+
   <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
   <p><a href="${corp.url}" target="_blank">${corp.url || ""}</a></p>
   <div class="corp-description">
@@ -188,7 +197,10 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>Alliance</h2>
-  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
+  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" 
+       alt="${alliance.name}" class="logo clickable" 
+       onclick="runLookup('${alliance.name}')">
+
   <p><strong>${alliance.name}</strong> [${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
 </div>`;
@@ -206,7 +218,6 @@ window.addEventListener("DOMContentLoaded", () => {
     runLookup(q);
   }
 });
-
 
 // Clean corporation description HTML
 function cleanDescription(raw) {
