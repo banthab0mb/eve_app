@@ -194,7 +194,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
   <p><strong>${corp.name}</strong> [${corp.ticker}]</p>
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
-  <p>${getAllianceName(corp.alliance_id) ?? "None"}</p>
+  <p id="alliance-name-${corp.id}">Alliance Name</p>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <hr>
   <div class="corp-description">

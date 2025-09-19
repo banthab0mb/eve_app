@@ -97,5 +97,14 @@
       setInterval(updateEveTime, 1000);
 
     </script>
+    <script>
+      getAllianceName(corp.alliance_id)
+        .then(name => {
+          document.getElementById("alliance-name-${corp.id}").textContent = name ?? "None";
+        })
+        .catch(() => {
+          document.getElementById("alliance-name-${corp.id}").textContent = "None";
+        });
+    </script>
 </body>
 </html>
