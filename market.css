@@ -145,9 +145,39 @@ input, select, button {
   margin-bottom: 15px;
 }
 
+.market-page .market-container {
+  display: flex;
+  gap: 20px;
+}
+
+/* Sidebar */
+.market-sidebar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* Main content area */
+.market-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Item header */
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+/* Tabs */
 .tabs {
   display: flex;
-  gap: 5px;
+  gap: 10px;
   margin-bottom: 10px;
 }
 
@@ -156,28 +186,25 @@ input, select, button {
   cursor: pointer;
   background: #333;
   border: none;
-  color: #fff;
+  color: white;
 }
 
 .tab-btn.active {
   background: #378937;
 }
 
+/* Tab content */
 .tab-content {
   display: none;
   flex-direction: column;
+  gap: 10px;
 }
 
 .tab-content.active {
   display: flex;
 }
 
-.orders-list {
-  margin-bottom: 20px;
-  overflow-y: auto;
-  max-height: 400px;
-}
-
+/* Tables */
 table {
   width: 100%;
   border-collapse: collapse;
@@ -186,7 +213,7 @@ table {
 
 th, td {
   border: 1px solid #444;
-  padding: 6px;
+  padding: 8px;
 }
 
 th {
@@ -196,6 +223,12 @@ th {
 
 tr:nth-child(even) {
   background: #1e1e1e;
+}
+
+/* Chart container */
+#historyChart {
+  max-width: 100%;
+  margin-top: 20px;
 }
 
 /* Footer */

@@ -247,6 +247,43 @@ document.addEventListener("click", e=>{
   }
 });
 
+// Tab switching
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.tab).classList.add("active");
+  });
+});
+
+// Sortable tables
+function makeTableSortable(table) {
+  const headers = table.querySelectorAll("th");
+  headers.forEach((th, index) => {
+    let asc = true;
+    th.addEventListener("click", () => {
+      const tbody = table.querySelector("tbody");
+      const rows = Array.from(tbody.querySelectorAll("tr"));
+      rows.sort((a, b) => {
+        let aText = a.children[index].textContent.trim();
+        let bText = b.children[index].textContent.trim();
+        aText = parseFloat(aText.replace(/,/g, "")) || aText;
+        bText = parseFloat(bText.replace(/,/g, "")) || bText;
+        if (aText < bText) return asc ? -1 : 1;
+        if (aText > bText) return asc ? 1 : -1;
+        return 0;
+      });
+      asc = !asc;
+      rows.forEach(r => tbody.appendChild(r));
+    });
+  });
+}
+
+makeTableSortable(document.getElementById("buyOrdersTable"));
+makeTableSortable(document.getElementById("sellOrdersTable"));
+
 // Init
 window.onload = ()=>{
   loadRegions();
