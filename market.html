@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>EVE Tools - Home</title>
+  <link rel="stylesheet" href="home.css">
+</head>
+<body>
+  <header>
+  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="systemSearch.html">System Lookup</a>
+    <a href="route.html">Route Planner</a>
+    <a href="playerLookup.html">Lookup</a>
+    <a href="about.html">About</a>
+  </nav>
+  <div id="onlineCounter">Loading...</div>
+  <div id="eveTime">--:--</div>
+</header>
+
+  <main>
+    <h1>Market Lookup</h1>
+  
+        <div class="search-box">
+            <input type="text" id="itemInput" placeholder="Search item...">
+            <button id="searchBtn">Search</button>
+        </div>
+
+        <div id="results"></div>
+  </main>
+
+  <footer>
+    <p>Brought to you by <a href="https://evewho.com/character/2118260155" target="_blank">Erica Romero</a></p>
+    <p><a href="#" id="ccp-link">All EVE Related Materials are Property of CCP Games</p>
+    <div id="ccp-disclaimer" style="display:none;">
+      <p>
+        <a href="https://www.eveonline.com/" target="_blank">EVE Online</a> and the EVE logo are the registered trademarks of <a href="http://www.ccpgames.com/" target="_blank">CCP hf</a>. All rights are reserved worldwide. 
+        All other trademarks are the property of their respective owners. EVE Online, the EVE logo, EVE and all 
+        associated logos and designs are the intellectual property of CCP hf. All artwork, screenshots, characters, 
+        vehicles, storylines, world facts or other recognizable features of the intellectual property relating to these 
+        trademarks are likewise the intellectual property of CCP hf. CCP hf. has granted permission to this website to use 
+        EVE Online and all associated logos and designs for promotional and information purposes on its website but does 
+        not endorse, and is not in any way affiliated with this website. CCP is in no way responsible for the content on 
+        or functioning of this website, nor can it be liable for any damage arising from the use of this website.
+      </p>
+    </div>
+  </footer>
+  <script src= market.js></script>
+  <script>
+    // Toggle CCP disclaimer visibility
+    document.getElementById("ccp-link").addEventListener("click", (e) => {
+      e.preventDefault();
+      const disclaimer = document.getElementById("ccp-disclaimer");
+      disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
+    });
+  </script>
+  <script>
+        // Highlight current page
+        const navLinks = document.querySelectorAll('nav a');
+        const path = window.location.pathname.split('/').pop();
+
+        navLinks.forEach(link => {
+        if (link.getAttribute('href') === path || (path === "" && link.getAttribute('href') === "index.html")) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+        });
+
+        // Player count (top-right)
+        fetch("https://esi.evetech.net/latest/status/")
+        .then(res => res.json())
+        .then(data => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
+            playerCount.style.color = "#378937ff";
+        })
+        .catch(() => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = "Tranquility unreachable";
+            playerCount.style.color = "#9f3232ff";
+        });
+    </script>
+    <script>
+      function updateEveTime() {
+        const now = new Date();
+        const hours = String(now.getUTCHours()).padStart(2, "0");
+        const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+        document.getElementById("eveTime").textContent = `${hours}:${minutes}`;
+      }
+
+      updateEveTime();
+      setInterval(updateEveTime, 1000);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,176 @@
+/* Reset + Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #0d0d0d;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+@font-face {
+  font-family: 'Square721ExtendedBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
+}
+
+@font-face {
+  font-family: 'Shentox-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Shentox-Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
+}
+
+header, footer {
+  background: #111;
+  color: #ccc;
+  padding: 10px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
+
+header .app-title a { 
+  font-family: "Shentox-Regular", sans-serif !important;
+  font-size: 1.5rem; 
+  color: #fff; 
+  text-decoration: none; 
+}
+header .app-title a:hover { color: #fff; }
+
+nav {
+  flex: 1;
+  text-align: center;
+}
+
+nav a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav a.active, nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
+
+/* Main Content */
+main { 
+  flex: 1; 
+  padding: 20px; 
+  font-family: "Shentox-Regular", sans-serif !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container { max-width: 900px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important;}
+
+h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+body {
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+/* Wrap input + button neatly */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* Make sure the button doesn’t drift */
+.search-button {
+  padding: 8px 16px;
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+/* Output centered under the search bar */
+#output {
+  display: none;
+  text-align: center;
+  margin: 20px auto 0 auto;   /* auto left/right centers it */
+  max-width: 700px;
+  width: 100%;
+  padding: 10px;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+.search-box {
+  width: 250px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #333;
+  background: #1a1a1a;
+  color: #eee;
+  border-radius: 4px;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+/* Footer */
+footer {
+  border-top: 2px solid #222;
+  flex-shrink: 0;
+  flex-grow: 0;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  background: #111;
+  margin-top: auto;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+footer p { margin: 5px 0; }
+
+footer a { color: #888; text-decoration: none; font-weight: normal;}
+
+footer a:hover { color: #fff; }
+
+#onlineCounter {
+  margin-top: 6px;
+  padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
+}
+
+#eveTime {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ccc; /* lighter so it looks secondary */
+}
