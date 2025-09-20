@@ -35,19 +35,26 @@
     </div>
 
     <div id="results">
-      <table id="ordersTable">
-        <thead>
-          <tr>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Location</th>
-            <th>Expires In</th>
-          </tr>
-        </thead>
-        <tbody>
-          <!-- filled by JS -->
-        </tbody>
-      </table>
+      <div style="display: flex; gap: 20px; align-items: flex-start;">
+        <div style="flex: 1;">
+          <table id="ordersTable">
+            <thead>
+              <tr>
+                <th>Price</th>
+                <th>Volume</th>
+                <th>Location</th>
+                <th>Expires</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- Filled by JS -->
+            </tbody>
+          </table>
+        </div>
+        <div style="width: 128px; text-align: center;">
+          <img id="itemImage" src="" alt="Item Image" style="max-width: 128px;">
+        </div>
+      </div>
     </div>
 
     <div id="historyChartContainer">

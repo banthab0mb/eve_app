@@ -5,6 +5,7 @@ let itemsList = [];
 async function loadItems() {
   const res = await fetch("items.json");
   itemsList = await res.json();
+  console.log(`Loaded items.json. ${itemsList.length} items.`);
 }
 
 // Load regions from regions.json
@@ -12,6 +13,7 @@ async function loadRegions() {
   const res = await fetch("regions.json");
   const regions = await res.json();
   const regionSelect = document.getElementById("regionSelect");
+  console.log(`Loaded regions.json. ${regions.length} regions.`);
 
   // Add "All Regions" option
   const allOption = document.createElement("option");
@@ -209,6 +211,10 @@ async function handleSearch() {
   await renderOrders(orders);
 
   await renderHistoryChart(typeId, regionId);
+
+  const img = document.getElementById("itemImage");
+  img.src = `https://images.evetech.net/types/${typeId}/render?size=128`;
+  img.alt = itemName;
 }
 
 const itemInput = document.getElementById("itemInput");
