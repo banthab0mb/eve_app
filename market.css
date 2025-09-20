@@ -152,6 +152,26 @@ tr:nth-child(even) {
   margin: 40px auto;
 }
 
+.suggestions {
+  position: absolute;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 250px;
+  margin-top: 2px;
+  z-index: 1000;
+}
+
+.suggestions div {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
+  background: #333;
+}
+
 /* Footer */
 footer {
   border-top: 2px solid #222;

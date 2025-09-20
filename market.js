@@ -204,6 +204,49 @@ async function handleSearch() {
   await renderHistoryChart(typeId, regionId);
 }
 
+const itemInput = document.getElementById("itemInput");
+const suggestionsDiv = document.getElementById("suggestions");
+
+let typingTimeout = null;
+
+itemInput.addEventListener("input", () => {
+  clearTimeout(typingTimeout);
+  const query = itemInput.value.trim();
+  if (!query) {
+    suggestionsDiv.innerHTML = "";
+    return;
+  }
+
+  // small delay to avoid too many requests
+  typingTimeout = setTimeout(async () => {
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false&datasource=tranquility`);
+      const data = await res.json();
+      const matches = data.inventory_type || [];
+
+      suggestionsDiv.innerHTML = "";
+      matches.slice(0, 10).forEach(name => {
+        const div = document.createElement("div");
+        div.textContent = name;
+        div.addEventListener("click", () => {
+          itemInput.value = name;
+          suggestionsDiv.innerHTML = "";
+        });
+        suggestionsDiv.appendChild(div);
+      });
+    } catch (err) {
+      console.error("Autocomplete error:", err);
+    }
+  }, 250);
+});
+
+// Hide suggestions when clicking outside
+document.addEventListener("click", (e) => {
+  if (!suggestionsDiv.contains(e.target) && e.target !== itemInput) {
+    suggestionsDiv.innerHTML = "";
+  }
+});
+
 // Init
 window.onload = loadRegions;
 document.getElementById("searchBtn").addEventListener("click", handleSearch);

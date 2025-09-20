@@ -23,7 +23,9 @@
 
   <main>
     <div class="controls">
-      <input type="text" id="itemInput" placeholder="Enter item name">
+      <input type="text" id="itemInput" placeholder="Enter item name" autocomplete="off">
+      <div id="suggestions" class="suggestions"></div>
+
       <select id="regionSelect" class="styled-select"></select>
       <select id="orderTypeSelect">
         <option value="sell" selected>Sell Orders</option>
