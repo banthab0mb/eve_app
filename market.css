@@ -99,70 +99,57 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 body {
   font-family: "Shentox-Regular", sans-serif !important;
 }
-
-/* Wrap input + button neatly */
-.search-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
+.controls {
+  margin-bottom: 20px;
 }
 
-/* Make sure the button doesn’t drift */
-.search-button {
-  padding: 8px 16px;
-  background: #222;
-  color: #eee;
-  border: 1px solid #555;
-  border-radius: 4px;
-  cursor: pointer;
-  font-family: "Shentox-Regular", sans-serif !important;
+input, select, button {
+  margin: 0 5px;
+  padding: 6px;
 }
 
-/* Output centered under the search bar */
-#output {
-  display: none;
-  text-align: center;
-  margin: 20px auto 0 auto;   /* auto left/right centers it */
-  max-width: 700px;
-  width: 100%;
-  padding: 10px;
-  font-family: "Shentox-Regular", sans-serif !important;
-}
-
-.search-box {
-  width: 250px;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #333;
-  background: #1a1a1a;
-  color: #eee;
-  border-radius: 4px;
-  font-family: "Shentox-Regular", sans-serif !important;
-}
-
-/* Styled dropdown */
 .styled-select {
-  width: 260px;
-  padding: 5px;
+  width: 250px;
+  max-height: 120px; /* 5 visible rows */
+  overflow-y: auto;
   border-radius: 6px;
   border: 1px solid #555;
-  background-color: #1a1a1a;
+  background: #1a1a1a;
   color: #fff;
-  font-size: 14px;
-  cursor: pointer;
-  max-height: 120px; /* ~5 rows */
-  overflow-y: auto;
 }
 
-/* Scrollbar styling (Chrome/Edge/Safari) */
 .styled-select::-webkit-scrollbar {
   width: 8px;
 }
 .styled-select::-webkit-scrollbar-thumb {
   background: #444;
   border-radius: 4px;
+}
+
+table {
+  width: 90%;
+  max-width: 1000px;
+  margin: 0 auto;
+  border-collapse: collapse;
+  text-align: center;
+}
+
+th, td {
+  border: 1px solid #444;
+  padding: 8px;
+}
+
+th {
+  background: #333;
+}
+
+tr:nth-child(even) {
+  background: #1e1e1e;
+}
+
+#historyChartContainer {
+  max-width: 800px;
+  margin: 40px auto;
 }
 
 /* Footer */

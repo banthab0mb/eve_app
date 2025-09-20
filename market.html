@@ -22,17 +22,35 @@
 </header>
 
   <main>
-    <div class="search-box">
-      <input type="text" id="itemInput" placeholder="Enter item name (e.g. Probe)">
+    <div class="controls">
+      <input type="text" id="itemInput" placeholder="Enter item name">
+      <select id="regionSelect" class="styled-select"></select>
+      <select id="orderTypeSelect">
+        <option value="sell" selected>Sell Orders</option>
+        <option value="buy">Buy Orders</option>
+      </select>
       <button id="searchBtn">Search</button>
     </div>
 
-    <div class="region-box">
-      <label for="regionSelect">Select Region:</label>
-      <select id="regionSelect" class="styled-select"></select>
+    <div id="results">
+      <table id="ordersTable">
+        <thead>
+          <tr>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Location</th>
+            <th>Expires In</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filled by JS -->
+        </tbody>
+      </table>
     </div>
 
-    <div id="results"></div>
+    <div id="historyChartContainer">
+      <canvas id="historyChart"></canvas>
+    </div>
   </main>
 
   <footer>
