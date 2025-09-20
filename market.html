@@ -36,33 +36,24 @@
       <button id="searchBtn">Search</button>
     </aside>
 
-    <!-- Main content -->
-    <section class="market-content">
-      <div class="item-header">
-        <img id="itemImage" alt="Item Image">
-        <h2 id="itemTitle">Select an item</h2>
+  <main>
+    <section class="market-section">
+      <h2>Buy</h2>
+      <div class="market-list">
+        <!-- Buy items here -->
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <!-- etc -->
       </div>
+    </section>
 
-      <div class="tabs">
-        <button class="tab-btn active" data-tab="history">History</button>
-        <button class="tab-btn" data-tab="orders">Orders</button>
-      </div>
-
-      <div id="orders" class="tab-content">
-        <table id="ordersTable" class="sell-orders">
-          <thead>
-            <tr>
-              <th>Price</th>
-              <th>Volume</th>
-              <th>Location</th>
-              <th>Duration</th>
-            </tr>
-          </thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div id="history" class="tab-content active">
-        <canvas id="historyChart"></canvas>
+    <section class="market-section">
+      <h2>Sell</h2>
+      <div class="market-list">
+        <!-- Sell items here -->
+        <div class="item">Item 1</div>
+        <div class="item">Item 2</div>
+        <!-- etc -->
       </div>
     </section>
   </main>

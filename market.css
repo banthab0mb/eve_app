@@ -7,7 +7,6 @@ html, body {
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
-  padding-bottom: 60px;
 }
 
 @font-face {
@@ -41,7 +40,9 @@ header, footer {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
+header { 
+  border-bottom: 2px solid #222; 
+}
 
 header .app-title a { 
   font-family: "Shentox-Regular", sans-serif !important;
@@ -50,6 +51,15 @@ header .app-title a {
   text-decoration: none; 
 }
 header .app-title a:hover { color: #fff; }
+
+main {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  gap: 30px;
+  min-height: 0; /* ensures scrollable lists work properly */
+}
 
 nav {
   flex: 1;
@@ -87,9 +97,10 @@ a.active, a:hover {
 .market-container {
   display: flex;
   flex-direction: row;
-  height: 100vh;
+  height: 100%;
   background: #111;
   color: #ddd;
+  min-height: 0; /* allow inner flex scrolling */
 }
 
 /* Sidebar */
@@ -101,6 +112,7 @@ a.active, a:hover {
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  min-height: 0; /* fixes scrolling issues */
 }
 
 .market-sidebar input,
@@ -129,9 +141,32 @@ a.active, a:hover {
 /* Main content */
 .market-content {
   flex: 1;
-  padding: 20px;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  min-height: 0;
+}
+
+/* Buy/Sell sections stacked */
+.market-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.market-list {
+  max-height: calc(8 * 50px); /* 8 items visible */
+  overflow-y: auto;
+  border: 1px solid #333;
+  padding: 5px;
+  background: #1a1a1a;
+}
+
+.market-list .item {
+  height: 50px;
+  line-height: 50px;
+  padding: 0 10px;
+  border-bottom: 1px solid #222;
 }
 
 /* Item header */
@@ -145,7 +180,7 @@ a.active, a:hover {
 .item-header img {
   width: 64px;
   height: 64px;
-  display: none; /* hidden until JS shows it */
+  display: none;
 }
 
 .item-header h2 {
@@ -154,7 +189,11 @@ a.active, a:hover {
   font-weight: bold;
 }
 
-/* Tabs */
+#itemImage[src] {
+  display: block;
+}
+
+/* Tabs (if still needed) */
 .tabs {
   display: flex;
   border-bottom: 1px solid #444;
@@ -183,7 +222,6 @@ a.active, a:hover {
   background: #444;
 }
 
-/* Tab content */
 .tab-content {
   display: none;
   margin-top: 15px;
@@ -214,16 +252,7 @@ a.active, a:hover {
   max-height: 400px;
 }
 
-.item-header img {
-  width: 64px;
-  height: 64px;
-  display: none; /* stays hidden until JS shows */
-}
-
-#itemImage[src] {
-  display: block; /* if src is set, show */
-}
-
+/* Suggestions dropdown */
 #suggestions {
   position: absolute;
   background: #1a1a1a;
@@ -273,5 +302,5 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc; /* lighter so it looks secondary */
+  color: #ccc;
 }
