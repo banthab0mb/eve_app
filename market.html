@@ -25,7 +25,6 @@
     <div class="controls">
       <input type="text" id="itemInput" placeholder="Enter item name" autocomplete="off">
       <div id="suggestions" class="suggestions"></div>
-
       <select id="regionSelect" class="styled-select"></select>
       <select id="orderTypeSelect">
         <option value="sell" selected>Sell Orders</option>
@@ -48,25 +47,34 @@
 
       <!-- Orders Tab -->
       <div class="tab-content active" id="ordersTab">
-        <div class="orders-container">
-          <div class="orders-list">
-            <h3>Buy Orders</h3>
-            <table id="buyOrdersTable">
-              <thead>
-                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
-          <div class="orders-list">
-            <h3>Sell Orders</h3>
-            <table id="sellOrdersTable">
-              <thead>
-                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-              </thead>
-              <tbody></tbody>
-            </table>
-          </div>
+        <div class="orders-list">
+          <h3>Buy Orders</h3>
+          <table id="buyOrdersTable" class="sortable">
+            <thead>
+              <tr>
+                <th data-sort="number">Price</th>
+                <th data-sort="number">Volume</th>
+                <th data-sort="string">Location</th>
+                <th data-sort="string">Expires</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+
+        <div class="orders-list">
+          <h3>Sell Orders</h3>
+          <table id="sellOrdersTable" class="sortable">
+            <thead>
+              <tr>
+                <th data-sort="number">Price</th>
+                <th data-sort="number">Volume</th>
+                <th data-sort="string">Location</th>
+                <th data-sort="string">Expires</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
         </div>
       </div>
 
@@ -75,7 +83,6 @@
         <canvas id="historyChart"></canvas>
       </div>
     </div>
-
   </main>
 
   <footer>
@@ -142,6 +149,39 @@
       updateEveTime();
       setInterval(updateEveTime, 1000);
 
+    </script>
+    <script>
+      // Tabs
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+      });
+
+      // Sortable tables
+      document.querySelectorAll('.sortable th').forEach(th => {
+        th.addEventListener('click', () => {
+          const table = th.closest('table');
+          const tbody = table.querySelector('tbody');
+          const rows = Array.from(tbody.querySelectorAll('tr'));
+          const colIndex = Array.from(th.parentNode.children).indexOf(th);
+          const type = th.dataset.sort;
+          const asc = !th.classList.contains('asc');
+          rows.sort((a,b) => {
+            const aText = a.children[colIndex].textContent.replace(/,/g,'');
+            const bText = b.children[colIndex].textContent.replace(/,/g,'');
+            if(type==='number') return asc ? aText-bText : bText-aText;
+            return asc ? aText.localeCompare(bText) : bText.localeCompare(aText);
+          });
+          tbody.innerHTML = '';
+          rows.forEach(r=>tbody.appendChild(r));
+          th.classList.toggle('asc', asc);
+          th.classList.toggle('desc', !asc);
+        });
+      });
     </script>
 </body>
 </html>

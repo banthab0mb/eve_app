@@ -99,57 +99,43 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 body {
   font-family: "Shentox-Regular", sans-serif !important;
 }
+
 .controls {
   margin-bottom: 20px;
+  display: flex;
+  gap: 5px;
+  flex-wrap: wrap;
 }
 
 input, select, button {
-  margin: 0 5px;
   padding: 6px;
 }
 
 .styled-select {
-  width: 250px;
-  max-height: 120px; /* 5 visible rows */
-  overflow-y: auto;
-  border-radius: 6px;
-  border: 1px solid #555;
+  width: 200px;
   background: #1a1a1a;
   color: #fff;
-}
-
-.styled-select::-webkit-scrollbar {
-  width: 8px;
-}
-.styled-select::-webkit-scrollbar-thumb {
-  background: #444;
+  border: 1px solid #555;
   border-radius: 4px;
 }
 
-table {
-  width: 90%;
-  max-width: 1000px;
-  margin: 0 auto;
-  border-collapse: collapse;
-  text-align: center;
-}
-
-th, td {
+.suggestions {
+  position: absolute;
+  background: #1a1a1a;
   border: 1px solid #444;
-  padding: 8px;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 200px;
+  z-index: 1000;
 }
 
-th {
+.suggestions div {
+  padding: 5px;
+  cursor: pointer;
+}
+
+.suggestions div:hover {
   background: #333;
-}
-
-tr:nth-child(even) {
-  background: #1e1e1e;
-}
-
-#historyChartContainer {
-  max-width: 800px;
-  margin: 40px auto;
 }
 
 .item-header {
@@ -161,7 +147,7 @@ tr:nth-child(even) {
 
 .tabs {
   display: flex;
-  gap: 10px;
+  gap: 5px;
   margin-bottom: 10px;
 }
 
@@ -170,7 +156,7 @@ tr:nth-child(even) {
   cursor: pointer;
   background: #333;
   border: none;
-  color: white;
+  color: #fff;
 }
 
 .tab-btn.active {
@@ -186,35 +172,30 @@ tr:nth-child(even) {
   display: flex;
 }
 
-.orders-container {
-  display: flex;
-  gap: 20px;
-}
-
 .orders-list {
-  flex: 1;
+  margin-bottom: 20px;
   overflow-y: auto;
   max-height: 400px;
 }
 
-.suggestions {
-  position: absolute;
-  background: #1a1a1a;
-  border: 1px solid #444;
-  max-height: 150px;
-  overflow-y: auto;
-  width: 250px;
-  margin-top: 2px;
-  z-index: 1000;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
 }
 
-.suggestions div {
-  padding: 5px;
+th, td {
+  border: 1px solid #444;
+  padding: 6px;
+}
+
+th {
+  background: #333;
   cursor: pointer;
 }
 
-.suggestions div:hover {
-  background: #333;
+tr:nth-child(even) {
+  background: #1e1e1e;
 }
 
 /* Footer */
