@@ -22,47 +22,22 @@
 </header>
 
   <main>
-    <div class="market-container">
-        <!-- Sidebar -->
-        <div class="market-sidebar">
-          <input type="text" placeholder="Search item...">
-          <select>
-            <option>Region 1</option>
-            <option>Region 2</option>
-          </select>
-          <button>Search</button>
-        </div>
+    <div class="search-container">
+      <input type="text" id="searchBox" placeholder="Search item...">
+      <div id="suggestions"></div>
+    </div>
 
-        <!-- Main content -->
-        <div class="market-content">
-          <div class="item-header">
-            <img src="item.png" alt="Item">
-            <h2>Item Name</h2>
-          </div>
+    <div class="tabs">
+      <button class="tab-button" data-tab="history">History</button>
+      <button class="tab-button" data-tab="orders">Orders</button>
+    </div>
 
-          <!-- Tabs -->
-          <div class="tabs">
-            <button class="tab-btn active" data-tab="market-data">Market Data</button>
-            <button class="tab-btn" data-tab="price-history">Price History</button>
-          </div>
+    <div id="history" class="tab-content"></div>
+    <div id="orders" class="tab-content hidden"></div>
 
-          <!-- Tab content -->
-          <div id="market-data" class="tab-content active">
-            <table class="buy-orders">
-              <tr><th>Buy Price</th><th>Quantity</th></tr>
-              <tr><td>100</td><td>500</td></tr>
-            </table>
-            <table class="sell-orders">
-              <tr><th>Sell Price</th><th>Quantity</th></tr>
-              <tr><td>110</td><td>300</td></tr>
-            </table>
-          </div>
-
-          <div id="price-history" class="tab-content">
-            <canvas id="priceChart"></canvas>
-          </div>
-        </div>
-      </div>
+    <div class="item-image">
+      <img id="itemImage" style="display:none;" />
+    </div>
   </main>
 
   <footer>
@@ -82,7 +57,6 @@
     </div>
   </footer>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src= market.js></script>
   <script>
     // Toggle CCP disclaimer visibility
     document.getElementById("ccp-link").addEventListener("click", (e) => {
@@ -130,5 +104,6 @@
       setInterval(updateEveTime, 1000);
 
     </script>
+    <script src= market.js></script>
 </body>
 </html>

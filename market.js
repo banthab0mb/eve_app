@@ -6,30 +6,41 @@ const sortStates = { buyOrdersTable: {}, sellOrdersTable: {} };
 
 // Load items.json
 async function loadItems() {
-  const res = await fetch("items.json");
-  itemsList = await res.json();
-  console.log(`Loaded items.json. ${itemsList.length} items.`);
+  try {
+    const res = await fetch("items.json");
+    itemsList = await res.json();
+    console.log(`Loaded items.json. ${itemsList.length} items.`);
+  } catch (err) {
+    console.error("Failed to load items.json:", err);
+  }
 }
 
 // Load regions.json
 async function loadRegions() {
-  const res = await fetch("regions.json");
-  const regions = await res.json();
-  const regionSelect = document.getElementById("regionSelect");
-  console.log(`Loaded regions.json. ${regions.length} regions.`);
+  try {
+    const res = await fetch("regions.json");
+    const regions = await res.json();
+    const regionSelect = document.getElementById("regionSelect");
+    if (!regionSelect) return;
 
-  const allOption = document.createElement("option");
-  allOption.value = "all";
-  allOption.textContent = "All Regions";
-  regionSelect.appendChild(allOption);
+    console.log(`Loaded regions.json. ${regions.length} regions.`);
 
-  regions.sort((a, b) => a.name.localeCompare(b.name))
-         .forEach(region => {
-           const opt = document.createElement("option");
-           opt.value = region.region_id;
-           opt.textContent = region.name;
-           regionSelect.appendChild(opt);
-         });
+    const allOption = document.createElement("option");
+    allOption.value = "all";
+    allOption.textContent = "All Regions";
+    regionSelect.appendChild(allOption);
+
+    regions
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .forEach(region => {
+        const opt = document.createElement("option");
+        opt.value = region.region_id;
+        opt.textContent = region.name;
+        regionSelect.appendChild(opt);
+      });
+  } catch (err) {
+    console.error("Failed to load regions.json:", err);
+  }
 }
 
 // Get item ID from ESI
@@ -52,29 +63,38 @@ async function getItemId(name) {
 async function fetchOrders(typeId, regionId, orderType) {
   if (regionId !== "all") {
     try {
-      const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
+      const res = await fetch(
+        `https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`
+      );
       if (!res.ok) return [];
       const orders = await res.json();
-      orders.sort((a, b) => orderType === "sell" ? a.price - b.price : b.price - a.price);
+      orders.sort((a, b) => (orderType === "sell" ? a.price - b.price : b.price - a.price));
       return orders.slice(0, 20);
-    } catch { return []; }
+    } catch {
+      return [];
+    }
   }
 
+  // If "all regions"
   const regionsRes = await fetch("regions.json");
   const regions = await regionsRes.json();
 
   const allOrders = await Promise.all(
     regions.map(async r => {
       try {
-        const res = await fetch(`https://esi.evetech.net/latest/markets/${r.region_id}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
+        const res = await fetch(
+          `https://esi.evetech.net/latest/markets/${r.region_id}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`
+        );
         if (!res.ok) return [];
         return (await res.json()).map(order => ({ ...order, regionName: r.name }));
-      } catch { return []; }
+      } catch {
+        return [];
+      }
     })
   );
 
   const combined = allOrders.flat();
-  combined.sort((a, b) => orderType === "sell" ? a.price - b.price : b.price - a.price);
+  combined.sort((a, b) => (orderType === "sell" ? a.price - b.price : b.price - a.price));
   return combined.slice(0, 20);
 }
 
@@ -82,11 +102,15 @@ async function fetchOrders(typeId, regionId, orderType) {
 async function getStationName(id) {
   if (id < 1e9) {
     try {
-      const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${id}/?datasource=tranquility`);
+      const res = await fetch(
+        `https://esi.evetech.net/latest/universe/stations/${id}/?datasource=tranquility`
+      );
       if (!res.ok) return id;
       const data = await res.json();
       return data.name || id;
-    } catch { return id; }
+    } catch {
+      return id;
+    }
   } else {
     return `Structure ID: ${id}`;
   }
@@ -95,6 +119,7 @@ async function getStationName(id) {
 // Render orders table helper
 async function renderOrdersTable(orders, tableId) {
   const tbody = document.querySelector(`#${tableId} tbody`);
+  if (!tbody) return;
   tbody.innerHTML = "";
 
   for (const order of orders) {
@@ -114,6 +139,7 @@ async function renderOrdersTable(orders, tableId) {
 // Sorting tables
 function sortTable(tableId, columnIndex) {
   const table = document.getElementById(tableId);
+  if (!table) return;
   const tbody = table.querySelector("tbody");
   const rows = Array.from(tbody.querySelectorAll("tr"));
 
@@ -121,25 +147,28 @@ function sortTable(tableId, columnIndex) {
   const newOrder = prevOrder === "asc" ? "desc" : "asc";
   sortStates[tableId][columnIndex] = newOrder;
 
-  rows.sort((a,b)=>{
-    let aVal = a.children[columnIndex].textContent.replace(/,/g,'');
-    let bVal = b.children[columnIndex].textContent.replace(/,/g,'');
-    if(!isNaN(aVal) && !isNaN(bVal)) { aVal=parseFloat(aVal); bVal=parseFloat(bVal); }
-    if(aVal < bVal) return newOrder==="asc"? -1:1;
-    if(aVal > bVal) return newOrder==="asc"? 1:-1;
+  rows.sort((a, b) => {
+    let aVal = a.children[columnIndex].textContent.replace(/,/g, "");
+    let bVal = b.children[columnIndex].textContent.replace(/,/g, "");
+    if (!isNaN(aVal) && !isNaN(bVal)) {
+      aVal = parseFloat(aVal);
+      bVal = parseFloat(bVal);
+    }
+    if (aVal < bVal) return newOrder === "asc" ? -1 : 1;
+    if (aVal > bVal) return newOrder === "asc" ? 1 : -1;
     return 0;
   });
 
   tbody.innerHTML = "";
-  rows.forEach(r=>tbody.appendChild(r));
+  rows.forEach(r => tbody.appendChild(r));
 }
 
 // Add sorting events
-function addTableSorting(tableId){
+function addTableSorting(tableId) {
   const headers = document.querySelectorAll(`#${tableId} th`);
-  headers.forEach((th, idx)=>{
+  headers.forEach((th, idx) => {
     th.style.cursor = "pointer";
-    th.addEventListener("click", ()=>sortTable(tableId, idx));
+    th.addEventListener("click", () => sortTable(tableId, idx));
   });
 }
 
@@ -159,43 +188,76 @@ async function renderOrders(orders) {
 async function renderHistoryChart(typeId, regionId) {
   const canvas = document.getElementById("historyChart");
   if (!canvas || typeof Chart === "undefined") return;
-  if (historyChartInstance) { historyChartInstance.destroy(); historyChartInstance=null; }
+  if (historyChartInstance) {
+    historyChartInstance.destroy();
+    historyChartInstance = null;
+  }
 
   let historyData = [];
-  if(regionId==="all"){
+  if (regionId === "all") {
     const regionsRes = await fetch("regions.json");
     const regions = await regionsRes.json();
     const allHistory = await Promise.all(
-      regions.map(async r=>{
-        try{
-          const res = await fetch(`https://esi.evetech.net/latest/markets/${r.region_id}/history/?type_id=${typeId}&datasource=tranquility`);
-          if(!res.ok) return [];
-          return (await res.json()).map(d=>({date:d.date,average:d.average}));
-        }catch{return[];}
+      regions.map(async r => {
+        try {
+          const res = await fetch(
+            `https://esi.evetech.net/latest/markets/${r.region_id}/history/?type_id=${typeId}&datasource=tranquility`
+          );
+          if (!res.ok) return [];
+          return (await res.json()).map(d => ({ date: d.date, average: d.average }));
+        } catch {
+          return [];
+        }
       })
     );
     const combined = {};
-    allHistory.flat().forEach(entry=>{
-      if(!combined[entry.date]) combined[entry.date]=[];
+    allHistory.flat().forEach(entry => {
+      if (!combined[entry.date]) combined[entry.date] = [];
       combined[entry.date].push(entry.average);
     });
-    historyData = Object.keys(combined).sort().map(date=>({
-      date, average: combined[date].reduce((a,b)=>a+b,0)/combined[date].length
-    }));
+    historyData = Object.keys(combined)
+      .sort()
+      .map(date => ({
+        date,
+        average: combined[date].reduce((a, b) => a + b, 0) / combined[date].length
+      }));
   } else {
-    try{
-      const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`);
+    try {
+      const res = await fetch(
+        `https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`
+      );
       historyData = res.ok ? await res.json() : [];
-    }catch{historyData=[];}
+    } catch {
+      historyData = [];
+    }
   }
 
-  const labels = historyData.map(h=>h.date);
-  const prices = historyData.map(h=>h.average);
+  const labels = historyData.map(h => h.date);
+  const prices = historyData.map(h => h.average);
 
-  historyChartInstance = new Chart(canvas.getContext("2d"),{
-    type:'line',
-    data:{ labels, datasets:[{ label:'Average Price', data:prices, borderColor:'#378937', backgroundColor:'rgba(55,137,55,0.2)', fill:true, tension:0.2 }] },
-    options:{ responsive:true, plugins:{legend:{display:true}}, scales:{ x:{title:{display:true,text:'Date'}}, y:{title:{display:true,text:'ISK'}, beginAtZero:false} } }
+  historyChartInstance = new Chart(canvas.getContext("2d"), {
+    type: "line",
+    data: {
+      labels,
+      datasets: [
+        {
+          label: "Average Price",
+          data: prices,
+          borderColor: "#378937",
+          backgroundColor: "rgba(55,137,55,0.2)",
+          fill: true,
+          tension: 0.2
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: true } },
+      scales: {
+        x: { title: { display: true, text: "Date" } },
+        y: { title: { display: true, text: "ISK" }, beginAtZero: false }
+      }
+    }
   });
 }
 
@@ -205,49 +267,65 @@ async function handleSearch() {
   const regionId = document.getElementById("regionSelect").value;
   const orderType = document.getElementById("orderTypeSelect").value;
 
-  if(!itemName) return;
+  if (!itemName) return;
   const typeId = await getItemId(itemName);
-  if(!typeId) return alert("Item not found");
+  if (!typeId) return alert("Item not found");
 
   const orders = await fetchOrders(typeId, regionId, orderType);
   await renderOrders(orders);
   await renderHistoryChart(typeId, regionId);
 
-  const type = itemsList.find(i=>i.name===itemName);
+  const type = itemsList.find(i => i.name === itemName);
   const img = document.getElementById("itemImage");
-  if(type){ img.src=`https://images.evetech.net/types/${type.id}/icon`; img.alt=type.name; }
-  else{ img.src=""; img.alt="No image available"; }
+  if (img) {
+    if (type) {
+      img.src = `https://images.evetech.net/types/${type.id}/icon`;
+      img.alt = type.name;
+      img.style.display = "block";
+    } else {
+      img.src = "";
+      img.alt = "No image available";
+      img.style.display = "none";
+    }
+  }
 }
 
-// Autocomplete
+// --- AUTOCOMPLETE ---
 const itemInput = document.getElementById("itemInput");
 const suggestionsDiv = document.getElementById("suggestions");
 
-itemInput.addEventListener("input", ()=>{
-  const query = itemInput.value.trim().toLowerCase();
-  if(!query){ suggestionsDiv.innerHTML=""; return; }
+if (itemInput && suggestionsDiv) {
+  itemInput.addEventListener("input", () => {
+    const query = itemInput.value.trim().toLowerCase();
+    if (!query) {
+      suggestionsDiv.innerHTML = "";
+      return;
+    }
 
-  const matches = itemsList.filter(i=>i.name.toLowerCase().includes(query)).slice(0,10);
-  suggestionsDiv.innerHTML="";
-  matches.forEach(item=>{
-    const div=document.createElement("div");
-    div.textContent=item.name;
-    div.addEventListener("click", ()=>{
-      itemInput.value=item.name;
-      suggestionsDiv.innerHTML="";
+    const matches = itemsList
+      .filter(i => i.name.toLowerCase().includes(query))
+      .slice(0, 10);
+
+    suggestionsDiv.innerHTML = "";
+    matches.forEach(item => {
+      const div = document.createElement("div");
+      div.textContent = item.name;
+      div.addEventListener("click", () => {
+        itemInput.value = item.name;
+        suggestionsDiv.innerHTML = "";
+      });
+      suggestionsDiv.appendChild(div);
     });
-    suggestionsDiv.appendChild(div);
   });
-});
 
-// Hide suggestions on click outside
-document.addEventListener("click", e=>{
-  if(!suggestionsDiv.contains(e.target) && e.target!==itemInput){
-    suggestionsDiv.innerHTML="";
-  }
-});
+  document.addEventListener("click", e => {
+    if (!suggestionsDiv.contains(e.target) && e.target !== itemInput) {
+      suggestionsDiv.innerHTML = "";
+    }
+  });
+}
 
-// Tab switching
+// --- TAB SWITCHING ---
 document.querySelectorAll(".tab-btn").forEach(btn => {
   btn.addEventListener("click", () => {
     document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
@@ -258,35 +336,14 @@ document.querySelectorAll(".tab-btn").forEach(btn => {
   });
 });
 
-// Sortable tables
-function makeTableSortable(table) {
-  const headers = table.querySelectorAll("th");
-  headers.forEach((th, index) => {
-    let asc = true;
-    th.addEventListener("click", () => {
-      const tbody = table.querySelector("tbody");
-      const rows = Array.from(tbody.querySelectorAll("tr"));
-      rows.sort((a, b) => {
-        let aText = a.children[index].textContent.trim();
-        let bText = b.children[index].textContent.trim();
-        aText = parseFloat(aText.replace(/,/g, "")) || aText;
-        bText = parseFloat(bText.replace(/,/g, "")) || bText;
-        if (aText < bText) return asc ? -1 : 1;
-        if (aText > bText) return asc ? 1 : -1;
-        return 0;
-      });
-      asc = !asc;
-      rows.forEach(r => tbody.appendChild(r));
-    });
-  });
-}
-
-makeTableSortable(document.getElementById("buyOrdersTable"));
-makeTableSortable(document.getElementById("sellOrdersTable"));
-
 // Init
-window.onload = ()=>{
+window.onload = () => {
   loadRegions();
   loadItems();
 };
-document.getElementById("searchBtn").addEventListener("click", handleSearch);
+
+// Safe searchBtn binding
+const searchBtn = document.getElementById("searchBtn");
+if (searchBtn) {
+  searchBtn.addEventListener("click", handleSearch);
+}
