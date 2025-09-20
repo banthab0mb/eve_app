@@ -100,68 +100,50 @@ body {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-.controls {
-  margin-bottom: 20px;
+/* General layout */
+.market-container {
   display: flex;
-  gap: 5px;
-  flex-wrap: wrap;
-}
-
-input, select, button {
-  padding: 6px;
-}
-
-.styled-select {
-  width: 200px;
-  background: #1a1a1a;
-  color: #fff;
-  border: 1px solid #555;
-  border-radius: 4px;
-}
-
-.suggestions {
-  position: absolute;
-  background: #1a1a1a;
-  border: 1px solid #444;
-  max-height: 150px;
-  overflow-y: auto;
-  width: 200px;
-  z-index: 1000;
-}
-
-.suggestions div {
-  padding: 5px;
-  cursor: pointer;
-}
-
-.suggestions div:hover {
-  background: #333;
-}
-
-.item-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
-}
-
-.market-page .market-container {
-  display: flex;
-  gap: 20px;
+  flex-direction: row;
+  height: 100vh;
+  background: #111;
+  color: #ddd;
+  font-family: sans-serif;
 }
 
 /* Sidebar */
 .market-sidebar {
-  width: 250px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  flex-shrink: 0;
+  width: 220px;
+  background: #1a1a1a;
+  padding: 20px;
+  border-right: 1px solid #333;
 }
 
-/* Main content area */
+.market-sidebar input,
+.market-sidebar select,
+.market-sidebar button {
+  display: block;
+  width: 100%;
+  margin-bottom: 12px;
+  padding: 8px;
+  border: none;
+  border-radius: 5px;
+  background: #2a2a2a;
+  color: #ddd;
+}
+
+.market-sidebar button {
+  background: #3a3a3a;
+  cursor: pointer;
+}
+
+.market-sidebar button:hover {
+  background: #555;
+}
+
+/* Main content */
 .market-content {
   flex: 1;
+  padding: 20px;
   display: flex;
   flex-direction: column;
 }
@@ -170,65 +152,89 @@ input, select, button {
 .item-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 15px;
+  margin-bottom: 20px;
+}
+
+.item-header img {
+  width: 64px;
+  height: 64px;
+  margin-right: 15px;
+}
+
+.item-header h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
 }
 
 /* Tabs */
 .tabs {
   display: flex;
-  gap: 10px;
+  border-bottom: 1px solid #444;
   margin-bottom: 10px;
 }
 
 .tab-btn {
-  padding: 5px 10px;
+  flex: 1;
+  padding: 10px;
+  text-align: center;
   cursor: pointer;
-  background: #333;
+  background: #2a2a2a;
   border: none;
-  color: white;
+  outline: none;
+  color: #ccc;
+  transition: background 0.2s;
 }
 
 .tab-btn.active {
-  background: #378937;
+  background: #3a3a3a;
+  font-weight: bold;
+  color: #fff;
+}
+
+.tab-btn:hover {
+  background: #444;
 }
 
 /* Tab content */
 .tab-content {
   display: none;
-  flex-direction: column;
-  gap: 10px;
 }
 
 .tab-content.active {
-  display: flex;
+  display: block;
+  margin-top: 15px;
 }
 
 /* Tables */
-table {
+.buy-orders, .sell-orders {
   width: 100%;
   border-collapse: collapse;
-  text-align: center;
+  margin-bottom: 15px;
 }
 
-th, td {
+.buy-orders th, .sell-orders th,
+.buy-orders td, .sell-orders td {
   border: 1px solid #444;
-  padding: 8px;
+  padding: 6px;
+  text-align: left;
 }
 
-th {
-  background: #333;
-  cursor: pointer;
-}
-
-tr:nth-child(even) {
-  background: #1e1e1e;
-}
-
-/* Chart container */
+/* Chart */
 #historyChart {
-  max-width: 100%;
-  margin-top: 20px;
+  width: 100%;
+  max-height: 400px;
+}
+
+/* Suggestions */
+.suggestions {
+  position: absolute;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  max-height: 150px;
+  overflow-y: auto;
+  width: 250px;
+  z-index: 1000;
 }
 
 /* Footer */

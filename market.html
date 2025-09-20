@@ -21,55 +21,48 @@
   <div id="eveTime">--:--</div>
 </header>
 
-  <main class="market-page">
+  <main>
     <div class="market-container">
-      <!-- Sidebar -->
-      <aside class="market-sidebar">
-        <input type="text" id="itemInput" placeholder="Enter item name" autocomplete="off">
-        <div id="suggestions" class="suggestions"></div>
-
-        <select id="regionSelect" class="styled-select"></select>
-        <button id="searchBtn">Search</button>
-      </aside>
-
-      <!-- Main content -->
-      <section class="market-content">
-        <div class="item-header">
-          <img id="itemImage" src="" alt="Item Icon" style="width:64px;height:64px;">
-          <h2 id="itemName">Select an item</h2>
+        <!-- Sidebar -->
+        <div class="market-sidebar">
+          <input type="text" placeholder="Search item...">
+          <select>
+            <option>Region 1</option>
+            <option>Region 2</option>
+          </select>
+          <button>Search</button>
         </div>
 
-        <!-- Tabs -->
-        <div class="tabs">
-          <button class="tab-btn active" data-tab="ordersTab">Orders</button>
-          <button class="tab-btn" data-tab="chartTab">Price History</button>
-        </div>
+        <!-- Main content -->
+        <div class="market-content">
+          <div class="item-header">
+            <img src="item.png" alt="Item">
+            <h2>Item Name</h2>
+          </div>
 
-        <!-- Orders Tab -->
-        <div class="tab-content active" id="ordersTab">
-          <h3>Buy Orders</h3>
-          <table id="buyOrdersTable">
-            <thead>
-              <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
+          <!-- Tabs -->
+          <div class="tabs">
+            <button class="tab-btn active" data-tab="market-data">Market Data</button>
+            <button class="tab-btn" data-tab="price-history">Price History</button>
+          </div>
 
-          <h3>Sell Orders</h3>
-          <table id="sellOrdersTable">
-            <thead>
-              <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-            </thead>
-            <tbody></tbody>
-          </table>
-        </div>
+          <!-- Tab content -->
+          <div id="market-data" class="tab-content active">
+            <table class="buy-orders">
+              <tr><th>Buy Price</th><th>Quantity</th></tr>
+              <tr><td>100</td><td>500</td></tr>
+            </table>
+            <table class="sell-orders">
+              <tr><th>Sell Price</th><th>Quantity</th></tr>
+              <tr><td>110</td><td>300</td></tr>
+            </table>
+          </div>
 
-        <!-- Chart Tab -->
-        <div class="tab-content" id="chartTab">
-          <canvas id="historyChart"></canvas>
+          <div id="price-history" class="tab-content">
+            <canvas id="priceChart"></canvas>
+          </div>
         </div>
-      </section>
-    </div>
+      </div>
   </main>
 
   <footer>
