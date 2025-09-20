@@ -1,3 +1,5 @@
+let historyChartInstance = null;
+
 // Load regions from regions.json
 async function loadRegions() {
   const res = await fetch("regions.json");
@@ -114,10 +116,15 @@ async function renderHistoryChart(typeId, regionId) {
   const canvas = document.getElementById("historyChart");
   if (!canvas || typeof Chart === "undefined") return;
 
+  // destroy previous chart if exists
+  if (historyChartInstance) {
+    historyChartInstance.destroy();
+    historyChartInstance = null;
+  }
+
   let historyData = [];
 
   if (regionId === "all") {
-    // fetch history for all regions and average
     const regionsRes = await fetch("regions.json");
     const regions = await regionsRes.json();
 
@@ -145,11 +152,9 @@ async function renderHistoryChart(typeId, regionId) {
     }));
 
   } else {
-    // single region
     try {
       const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`);
-      if (!res.ok) historyData = [];
-      else historyData = await res.json();
+      historyData = res.ok ? await res.json() : [];
     } catch {
       historyData = [];
     }
@@ -158,7 +163,7 @@ async function renderHistoryChart(typeId, regionId) {
   const labels = historyData.map(h => h.date);
   const prices = historyData.map(h => h.average);
 
-  new Chart(canvas.getContext("2d"), {
+  historyChartInstance = new Chart(canvas.getContext("2d"), {
     type: 'line',
     data: {
       labels,
