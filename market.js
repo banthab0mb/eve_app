@@ -212,9 +212,16 @@ async function handleSearch() {
 
   await renderHistoryChart(typeId, regionId);
 
+  const type = itemsList.find(i => i.name === itemName);
   const img = document.getElementById("itemImage");
-  img.src = `https://images.evetech.net/types/${typeId}/render?size=128`;
-  img.alt = itemName;
+
+  if (type) {
+    img.src = `https://images.evetech.net/types/${type.id}/icon`;
+    img.alt = type.name;
+  } else {
+    img.src = "";
+    img.alt = "No image available";
+  }
 }
 
 const itemInput = document.getElementById("itemInput");
