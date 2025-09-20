@@ -12,8 +12,11 @@ searchBtn.addEventListener("click", () => {
   resultsDiv.innerHTML = "<p>Searching...</p>";
 
   // Step 1: Search for item ID
-  fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false`)
-    .then(res => res.json())
+  fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false&datasource=tranquility`)
+    .then(async res => {
+      if (!res.ok) throw new Error(`Search failed: ${res.status}`);
+      return res.json();
+    })
     .then(data => {
       if (!data.inventory_type || data.inventory_type.length === 0) {
         resultsDiv.innerHTML = `<p>No items found for "${query}".</p>`;
@@ -23,10 +26,13 @@ searchBtn.addEventListener("click", () => {
       const typeId = data.inventory_type[0];
 
       // Step 2: Fetch market orders in Jita
-      fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=sell&type_id=${typeId}`)
-        .then(res => res.json())
+      return fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=sell&type_id=${typeId}&datasource=tranquility`)
+        .then(async res => {
+          if (!res.ok) throw new Error(`Market fetch failed: ${res.status}`);
+          return res.json();
+        })
         .then(orders => {
-          if (!orders || orders.length === 0) {
+          if (!Array.isArray(orders) || orders.length === 0) {
             resultsDiv.innerHTML = "<p>No market data found.</p>";
             return;
           }
@@ -36,8 +42,11 @@ searchBtn.addEventListener("click", () => {
           const cheapest = orders[0];
 
           // Step 3: Look up station name
-          fetch(`https://esi.evetech.net/latest/universe/stations/${cheapest.location_id}/`)
-            .then(res => res.json())
+          return fetch(`https://esi.evetech.net/latest/universe/stations/${cheapest.location_id}/?datasource=tranquility`)
+            .then(async res => {
+              if (!res.ok) throw new Error(`Station fetch failed: ${res.status}`);
+              return res.json();
+            })
             .then(station => {
               resultsDiv.innerHTML = `
                 <h2>Cheapest Sell Order for "${query}"</h2>
