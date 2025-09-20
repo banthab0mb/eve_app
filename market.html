@@ -21,23 +21,51 @@
   <div id="eveTime">--:--</div>
 </header>
 
-  <main>
-    <div class="search-container">
-      <input type="text" id="searchBox" placeholder="Search item...">
-      <div id="suggestions"></div>
-    </div>
+  <main class="market-container">
+    <!-- Sidebar -->
+    <aside class="market-sidebar">
+      <input type="text" id="itemInput" placeholder="Search item...">
+      <div id="suggestions" class="suggestions"></div>
 
-    <div class="tabs">
-      <button class="tab-button" data-tab="history">History</button>
-      <button class="tab-button" data-tab="orders">Orders</button>
-    </div>
+      <select id="regionSelect"></select>
+      <select id="orderTypeSelect">
+        <option value="sell">Sell Orders</option>
+        <option value="buy">Buy Orders</option>
+      </select>
 
-    <div id="history" class="tab-content"></div>
-    <div id="orders" class="tab-content hidden"></div>
+      <button id="searchBtn">Search</button>
+    </aside>
 
-    <div class="item-image">
-      <img id="itemImage" style="display:none;" />
-    </div>
+    <!-- Main content -->
+    <section class="market-content">
+      <div class="item-header">
+        <img id="itemImage" alt="Item Image">
+        <h2 id="itemTitle">Select an item</h2>
+      </div>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="history">History</button>
+        <button class="tab-btn" data-tab="orders">Orders</button>
+      </div>
+
+      <div id="history" class="tab-content active">
+        <canvas id="historyChart"></canvas>
+      </div>
+
+      <div id="orders" class="tab-content">
+        <table id="ordersTable" class="sell-orders">
+          <thead>
+            <tr>
+              <th>Price</th>
+              <th>Volume</th>
+              <th>Location</th>
+              <th>Duration</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
   <footer>

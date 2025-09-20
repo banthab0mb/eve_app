@@ -213,14 +213,23 @@ a.active, a:hover {
   max-height: 400px;
 }
 
-/* Suggestions */
-.suggestions {
+.item-header img {
+  width: 64px;
+  height: 64px;
+  display: none; /* stays hidden until JS shows */
+}
+
+#itemImage[src] {
+  display: block; /* if src is set, show */
+}
+
+#suggestions {
   position: absolute;
   background: #1a1a1a;
   border: 1px solid #444;
   max-height: 150px;
   overflow-y: auto;
-  width: calc(100% - 40px); /* fits inside sidebar input */
+  width: calc(100% - 40px);
   z-index: 1000;
 }
 
