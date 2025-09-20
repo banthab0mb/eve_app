@@ -2,70 +2,99 @@ const searchBtn = document.getElementById("searchBtn");
 const itemInput = document.getElementById("itemInput");
 const resultsDiv = document.getElementById("results");
 
-// Hardcode Jita (The Forge region = 10000002) for now
+// region id for Jita (The Forge)
 const REGION_ID = 10000002;
 
-searchBtn.addEventListener("click", () => {
+// function to turn a name into an ID
+async function resolveNameToId(name) {
+  const res = await fetch("https://esi.evetech.net/latest/universe/ids/?datasource=tranquility", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify([name])
+  });
+  if (!res.ok) throw new Error("id lookup failed");
+  const data = await res.json();
+  // just grab the first match in inventory_type
+  if (data.inventory_types && data.inventory_types.length > 0) {
+    return data.inventory_types[0].id;
+  }
+  return null;
+}
+
+// function to get cheapest sell and highest buy
+async function getMarketOrders(typeId) {
+  // sell orders
+  const sellRes = await fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=sell&type_id=${typeId}&datasource=tranquility`);
+  if (!sellRes.ok) throw new Error("sell orders failed");
+  const sells = await sellRes.json();
+
+  // buy orders
+  const buyRes = await fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=buy&type_id=${typeId}&datasource=tranquility`);
+  if (!buyRes.ok) throw new Error("buy orders failed");
+  const buys = await buyRes.json();
+
+  // sort them
+  sells.sort((a, b) => a.price - b.price); // low to high
+  buys.sort((a, b) => b.price - a.price);  // high to low
+
+  return {
+    cheapestSell: sells[0] || null,
+    highestBuy: buys[0] || null
+  };
+}
+
+// function to lookup station name
+async function getStationName(stationId) {
+  const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
+  if (!res.ok) return stationId; // fallback
+  const data = await res.json();
+  return data.name || stationId;
+}
+
+// main button event
+searchBtn.addEventListener("click", async () => {
   const query = itemInput.value.trim();
   if (!query) return;
 
   resultsDiv.innerHTML = "<p>Searching...</p>";
 
-  // Step 1: Search for item ID
-  fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false&datasource=tranquility`)
-    .then(async res => {
-      if (!res.ok) throw new Error(`Search failed: ${res.status}`);
-      return res.json();
-    })
-    .then(data => {
-      if (!data.inventory_type || data.inventory_type.length === 0) {
-        resultsDiv.innerHTML = `<p>No items found for "${query}".</p>`;
-        return;
-      }
+  try {
+    // get typeId
+    const typeId = await resolveNameToId(query);
+    if (!typeId) {
+      resultsDiv.innerHTML = `<p>No item found for "${query}".</p>`;
+      return;
+    }
 
-      const typeId = data.inventory_type[0];
+    // get market data
+    const { cheapestSell, highestBuy } = await getMarketOrders(typeId);
 
-      // Step 2: Fetch market orders in Jita
-      return fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=sell&type_id=${typeId}&datasource=tranquility`)
-        .then(async res => {
-          if (!res.ok) throw new Error(`Market fetch failed: ${res.status}`);
-          return res.json();
-        })
-        .then(orders => {
-          if (!Array.isArray(orders) || orders.length === 0) {
-            resultsDiv.innerHTML = "<p>No market data found.</p>";
-            return;
-          }
+    if (!cheapestSell && !highestBuy) {
+      resultsDiv.innerHTML = "<p>No market orders found.</p>";
+      return;
+    }
 
-          // Sort by price
-          orders.sort((a, b) => a.price - b.price);
-          const cheapest = orders[0];
+    // get station names (async both)
+    const sellStation = cheapestSell ? await getStationName(cheapestSell.location_id) : null;
+    const buyStation = highestBuy ? await getStationName(highestBuy.location_id) : null;
 
-          // Step 3: Look up station name
-          return fetch(`https://esi.evetech.net/latest/universe/stations/${cheapest.location_id}/?datasource=tranquility`)
-            .then(async res => {
-              if (!res.ok) throw new Error(`Station fetch failed: ${res.status}`);
-              return res.json();
-            })
-            .then(station => {
-              resultsDiv.innerHTML = `
-                <h2>Cheapest Sell Order for "${query}"</h2>
-                <p><strong>Price:</strong> ${cheapest.price.toLocaleString()} ISK</p>
-                <p><strong>Location:</strong> ${station.name}</p>
-              `;
-            })
-            .catch(() => {
-              resultsDiv.innerHTML = `
-                <h2>Cheapest Sell Order for "${query}"</h2>
-                <p><strong>Price:</strong> ${cheapest.price.toLocaleString()} ISK</p>
-                <p><strong>Station ID:</strong> ${cheapest.location_id}</p>
-                <p><em>(Could not fetch station name)</em></p>
-              `;
-            });
-        });
-    })
-    .catch(err => {
-      console.error(err);
-      resultsDiv.innerHTML = "<p>Error fetching market data.</p>";
-    });
+    // output
+    resultsDiv.innerHTML = `
+      <h2>Market for "${query}"</h2>
+      ${cheapestSell ? `
+        <h3>Cheapest Sell</h3>
+        <p><strong>Price:</strong> ${cheapestSell.price.toLocaleString()} ISK</p>
+        <p><strong>Location:</strong> ${sellStation}</p>
+      ` : "<p>No sell orders.</p>"}
+
+      ${highestBuy ? `
+        <h3>Highest Buy</h3>
+        <p><strong>Price:</strong> ${highestBuy.price.toLocaleString()} ISK</p>
+        <p><strong>Location:</strong> ${buyStation}</p>
+      ` : "<p>No buy orders.</p>"}
+    `;
+  } catch (err) {
+    console.error(err);
+    resultsDiv.innerHTML = "<p>Error fetching market data.</p>";
+  }
 });
