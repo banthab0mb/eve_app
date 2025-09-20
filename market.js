@@ -1,5 +1,12 @@
 let historyChartInstance = null;
 
+let itemsList = [];
+
+async function loadItems() {
+  const res = await fetch("items.json");
+  itemsList = await res.json();
+}
+
 // Load regions from regions.json
 async function loadRegions() {
   const res = await fetch("regions.json");
@@ -207,43 +214,27 @@ async function handleSearch() {
 const itemInput = document.getElementById("itemInput");
 const suggestionsDiv = document.getElementById("suggestions");
 
-let typingTimeout = null;
-
 itemInput.addEventListener("input", () => {
-  clearTimeout(typingTimeout);
-  const query = itemInput.value.trim();
+  const query = itemInput.value.trim().toLowerCase();
   if (!query) {
     suggestionsDiv.innerHTML = "";
     return;
   }
 
-  typingTimeout = setTimeout(async () => {
-    try {
-      const res = await fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false&datasource=tranquility`);
-      
-      if (!res.ok) {
-        suggestionsDiv.innerHTML = ""; // clear suggestions on 404
-        return;
-      }
+  const matches = itemsList
+    .filter(i => i.name.toLowerCase().includes(query))
+    .slice(0, 10); // show top 10 matches
 
-      const data = await res.json();
-      const matches = data.inventory_type || [];
-
+  suggestionsDiv.innerHTML = "";
+  matches.forEach(item => {
+    const div = document.createElement("div");
+    div.textContent = item.name;
+    div.addEventListener("click", () => {
+      itemInput.value = item.name;
       suggestionsDiv.innerHTML = "";
-      matches.slice(0, 10).forEach(name => {
-        const div = document.createElement("div");
-        div.textContent = name;
-        div.addEventListener("click", () => {
-          itemInput.value = name;
-          suggestionsDiv.innerHTML = "";
-        });
-        suggestionsDiv.appendChild(div);
-      });
-    } catch (err) {
-      console.error("Autocomplete error:", err);
-      suggestionsDiv.innerHTML = "";
-    }
-  }, 250);
+    });
+    suggestionsDiv.appendChild(div);
+  });
 });
 
 // Hide suggestions when clicking outside
@@ -254,5 +245,8 @@ document.addEventListener("click", (e) => {
 });
 
 // Init
-window.onload = loadRegions;
+window.onload = () => {
+  loadRegions();
+  loadItems();
+};
 document.getElementById("searchBtn").addEventListener("click", handleSearch);
