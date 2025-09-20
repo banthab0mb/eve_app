@@ -217,10 +217,15 @@ itemInput.addEventListener("input", () => {
     return;
   }
 
-  // small delay to avoid too many requests
   typingTimeout = setTimeout(async () => {
     try {
       const res = await fetch(`https://esi.evetech.net/latest/search/?categories=inventory_type&search=${encodeURIComponent(query)}&strict=false&datasource=tranquility`);
+      
+      if (!res.ok) {
+        suggestionsDiv.innerHTML = ""; // clear suggestions on 404
+        return;
+      }
+
       const data = await res.json();
       const matches = data.inventory_type || [];
 
@@ -236,6 +241,7 @@ itemInput.addEventListener("input", () => {
       });
     } catch (err) {
       console.error("Autocomplete error:", err);
+      suggestionsDiv.innerHTML = "";
     }
   }, 250);
 });
