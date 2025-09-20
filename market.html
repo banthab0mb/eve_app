@@ -35,31 +35,47 @@
     </div>
 
     <div id="results">
-      <div style="display: flex; gap: 20px; align-items: flex-start;">
-        <div style="flex: 1;">
-          <table id="ordersTable">
-            <thead>
-              <tr>
-                <th>Price</th>
-                <th>Volume</th>
-                <th>Location</th>
-                <th>Expires</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- Filled by JS -->
-            </tbody>
-          </table>
+      <div class="item-header">
+        <img id="itemImage" src="" alt="Item Icon" style="width:64px;height:64px;">
+        <h2 id="itemName">Select an item</h2>
+      </div>
+
+      <!-- Tabs -->
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="ordersTab">Orders</button>
+        <button class="tab-btn" data-tab="chartTab">Price History</button>
+      </div>
+
+      <!-- Orders Tab -->
+      <div class="tab-content active" id="ordersTab">
+        <div class="orders-container">
+          <div class="orders-list">
+            <h3>Buy Orders</h3>
+            <table id="buyOrdersTable">
+              <thead>
+                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+          <div class="orders-list">
+            <h3>Sell Orders</h3>
+            <table id="sellOrdersTable">
+              <thead>
+                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
         </div>
-        <div style="width: 128px; text-align: center;">
-          <img id="itemImage" src="" alt="Item Image" style="max-width: 128px;">
-        </div>
+      </div>
+
+      <!-- Chart Tab -->
+      <div class="tab-content" id="chartTab">
+        <canvas id="historyChart"></canvas>
       </div>
     </div>
 
-    <div id="historyChartContainer">
-      <canvas id="historyChart"></canvas>
-    </div>
   </main>
 
   <footer>

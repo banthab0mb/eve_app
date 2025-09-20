@@ -152,6 +152,51 @@ tr:nth-child(even) {
   margin: 40px auto;
 }
 
+.item-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.tab-btn {
+  padding: 5px 10px;
+  cursor: pointer;
+  background: #333;
+  border: none;
+  color: white;
+}
+
+.tab-btn.active {
+  background: #378937;
+}
+
+.tab-content {
+  display: none;
+  flex-direction: column;
+}
+
+.tab-content.active {
+  display: flex;
+}
+
+.orders-container {
+  display: flex;
+  gap: 20px;
+}
+
+.orders-list {
+  flex: 1;
+  overflow-y: auto;
+  max-height: 400px;
+}
+
 .suggestions {
   position: absolute;
   background: #1a1a1a;

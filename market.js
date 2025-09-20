@@ -1,35 +1,35 @@
 let historyChartInstance = null;
-
 let itemsList = [];
 
+// Track sort order for tables
+const sortStates = { buyOrdersTable: {}, sellOrdersTable: {} };
+
+// Load items.json
 async function loadItems() {
   const res = await fetch("items.json");
   itemsList = await res.json();
   console.log(`Loaded items.json. ${itemsList.length} items.`);
 }
 
-// Load regions from regions.json
+// Load regions.json
 async function loadRegions() {
   const res = await fetch("regions.json");
   const regions = await res.json();
   const regionSelect = document.getElementById("regionSelect");
   console.log(`Loaded regions.json. ${regions.length} regions.`);
 
-  // Add "All Regions" option
   const allOption = document.createElement("option");
   allOption.value = "all";
   allOption.textContent = "All Regions";
   regionSelect.appendChild(allOption);
 
-  // Sort and add other regions
-  regions
-    .sort((a, b) => a.name.localeCompare(b.name))
-    .forEach(region => {
-      const opt = document.createElement("option");
-      opt.value = region.region_id;
-      opt.textContent = region.name;
-      regionSelect.appendChild(opt);
-    });
+  regions.sort((a, b) => a.name.localeCompare(b.name))
+         .forEach(region => {
+           const opt = document.createElement("option");
+           opt.value = region.region_id;
+           opt.textContent = region.name;
+           regionSelect.appendChild(opt);
+         });
 }
 
 // Get item ID from ESI
@@ -50,7 +50,6 @@ async function getItemId(name) {
 
 // Fetch top 20 orders
 async function fetchOrders(typeId, regionId, orderType) {
-  // Single region
   if (regionId !== "all") {
     try {
       const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
@@ -58,12 +57,9 @@ async function fetchOrders(typeId, regionId, orderType) {
       const orders = await res.json();
       orders.sort((a, b) => orderType === "sell" ? a.price - b.price : b.price - a.price);
       return orders.slice(0, 20);
-    } catch {
-      return [];
-    }
+    } catch { return []; }
   }
 
-  // All regions
   const regionsRes = await fetch("regions.json");
   const regions = await regionsRes.json();
 
@@ -73,9 +69,7 @@ async function fetchOrders(typeId, regionId, orderType) {
         const res = await fetch(`https://esi.evetech.net/latest/markets/${r.region_id}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
         if (!res.ok) return [];
         return (await res.json()).map(order => ({ ...order, regionName: r.name }));
-      } catch {
-        return [];
-      }
+      } catch { return []; }
     })
   );
 
@@ -84,7 +78,7 @@ async function fetchOrders(typeId, regionId, orderType) {
   return combined.slice(0, 20);
 }
 
-// Get station or structure name
+// Get station/structure name
 async function getStationName(id) {
   if (id < 1e9) {
     try {
@@ -92,23 +86,20 @@ async function getStationName(id) {
       if (!res.ok) return id;
       const data = await res.json();
       return data.name || id;
-    } catch {
-      return id;
-    }
+    } catch { return id; }
   } else {
     return `Structure ID: ${id}`;
   }
 }
 
-// Render orders table
-async function renderOrders(orders) {
-  const tbody = document.querySelector("#ordersTable tbody");
+// Render orders table helper
+async function renderOrdersTable(orders, tableId) {
+  const tbody = document.querySelector(`#${tableId} tbody`);
   tbody.innerHTML = "";
 
   for (const order of orders) {
     const loc = order.regionName ? order.regionName : await getStationName(order.location_id);
     const expires = order.duration ? `${order.duration} days` : "-";
-
     const row = document.createElement("tr");
     row.innerHTML = `
       <td>${order.price.toLocaleString()}</td>
@@ -120,79 +111,91 @@ async function renderOrders(orders) {
   }
 }
 
+// Sorting tables
+function sortTable(tableId, columnIndex) {
+  const table = document.getElementById(tableId);
+  const tbody = table.querySelector("tbody");
+  const rows = Array.from(tbody.querySelectorAll("tr"));
+
+  const prevOrder = sortStates[tableId][columnIndex] || "asc";
+  const newOrder = prevOrder === "asc" ? "desc" : "asc";
+  sortStates[tableId][columnIndex] = newOrder;
+
+  rows.sort((a,b)=>{
+    let aVal = a.children[columnIndex].textContent.replace(/,/g,'');
+    let bVal = b.children[columnIndex].textContent.replace(/,/g,'');
+    if(!isNaN(aVal) && !isNaN(bVal)) { aVal=parseFloat(aVal); bVal=parseFloat(bVal); }
+    if(aVal < bVal) return newOrder==="asc"? -1:1;
+    if(aVal > bVal) return newOrder==="asc"? 1:-1;
+    return 0;
+  });
+
+  tbody.innerHTML = "";
+  rows.forEach(r=>tbody.appendChild(r));
+}
+
+// Add sorting events
+function addTableSorting(tableId){
+  const headers = document.querySelectorAll(`#${tableId} th`);
+  headers.forEach((th, idx)=>{
+    th.style.cursor = "pointer";
+    th.addEventListener("click", ()=>sortTable(tableId, idx));
+  });
+}
+
+// Render both buy/sell tables
+async function renderOrders(orders) {
+  const buyOrders = orders.filter(o => o.is_buy_order);
+  const sellOrders = orders.filter(o => !o.is_buy_order);
+
+  await renderOrdersTable(buyOrders, "buyOrdersTable");
+  await renderOrdersTable(sellOrders, "sellOrdersTable");
+
+  addTableSorting("buyOrdersTable");
+  addTableSorting("sellOrdersTable");
+}
+
 // Render history chart
 async function renderHistoryChart(typeId, regionId) {
   const canvas = document.getElementById("historyChart");
   if (!canvas || typeof Chart === "undefined") return;
-
-  // destroy previous chart if exists
-  if (historyChartInstance) {
-    historyChartInstance.destroy();
-    historyChartInstance = null;
-  }
+  if (historyChartInstance) { historyChartInstance.destroy(); historyChartInstance=null; }
 
   let historyData = [];
-
-  if (regionId === "all") {
+  if(regionId==="all"){
     const regionsRes = await fetch("regions.json");
     const regions = await regionsRes.json();
-
     const allHistory = await Promise.all(
-      regions.map(async r => {
-        try {
+      regions.map(async r=>{
+        try{
           const res = await fetch(`https://esi.evetech.net/latest/markets/${r.region_id}/history/?type_id=${typeId}&datasource=tranquility`);
-          if (!res.ok) return [];
-          return (await res.json()).map(day => ({ date: day.date, average: day.average }));
-        } catch {
-          return [];
-        }
+          if(!res.ok) return [];
+          return (await res.json()).map(d=>({date:d.date,average:d.average}));
+        }catch{return[];}
       })
     );
-
     const combined = {};
-    allHistory.flat().forEach(entry => {
-      if (!combined[entry.date]) combined[entry.date] = [];
+    allHistory.flat().forEach(entry=>{
+      if(!combined[entry.date]) combined[entry.date]=[];
       combined[entry.date].push(entry.average);
     });
-
-    historyData = Object.keys(combined).sort().map(date => ({
-      date,
-      average: combined[date].reduce((a,b)=>a+b,0)/combined[date].length
+    historyData = Object.keys(combined).sort().map(date=>({
+      date, average: combined[date].reduce((a,b)=>a+b,0)/combined[date].length
     }));
-
   } else {
-    try {
+    try{
       const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`);
       historyData = res.ok ? await res.json() : [];
-    } catch {
-      historyData = [];
-    }
+    }catch{historyData=[];}
   }
 
-  const labels = historyData.map(h => h.date);
-  const prices = historyData.map(h => h.average);
+  const labels = historyData.map(h=>h.date);
+  const prices = historyData.map(h=>h.average);
 
-  historyChartInstance = new Chart(canvas.getContext("2d"), {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        label: 'Average Price',
-        data: prices,
-        borderColor: '#378937',
-        backgroundColor: 'rgba(55,137,55,0.2)',
-        fill: true,
-        tension: 0.2
-      }]
-    },
-    options: {
-      responsive: true,
-      plugins: { legend: { display: true } },
-      scales: {
-        x: { title: { display: true, text: 'Date' } },
-        y: { title: { display: true, text: 'ISK' }, beginAtZero: false }
-      }
-    }
+  historyChartInstance = new Chart(canvas.getContext("2d"),{
+    type:'line',
+    data:{ labels, datasets:[{ label:'Average Price', data:prices, borderColor:'#378937', backgroundColor:'rgba(55,137,55,0.2)', fill:true, tension:0.2 }] },
+    options:{ responsive:true, plugins:{legend:{display:true}}, scales:{ x:{title:{display:true,text:'Date'}}, y:{title:{display:true,text:'ISK'}, beginAtZero:false} } }
   });
 }
 
@@ -202,63 +205,50 @@ async function handleSearch() {
   const regionId = document.getElementById("regionSelect").value;
   const orderType = document.getElementById("orderTypeSelect").value;
 
-  if (!itemName) return;
-
+  if(!itemName) return;
   const typeId = await getItemId(itemName);
-  if (!typeId) return alert("Item not found");
+  if(!typeId) return alert("Item not found");
 
   const orders = await fetchOrders(typeId, regionId, orderType);
   await renderOrders(orders);
-
   await renderHistoryChart(typeId, regionId);
 
-  const type = itemsList.find(i => i.name === itemName);
+  const type = itemsList.find(i=>i.name===itemName);
   const img = document.getElementById("itemImage");
-
-  if (type) {
-    img.src = `https://images.evetech.net/types/${type.id}/icon`;
-    img.alt = type.name;
-  } else {
-    img.src = "";
-    img.alt = "No image available";
-  }
+  if(type){ img.src=`https://images.evetech.net/types/${type.id}/icon`; img.alt=type.name; }
+  else{ img.src=""; img.alt="No image available"; }
 }
 
+// Autocomplete
 const itemInput = document.getElementById("itemInput");
 const suggestionsDiv = document.getElementById("suggestions");
 
-itemInput.addEventListener("input", () => {
+itemInput.addEventListener("input", ()=>{
   const query = itemInput.value.trim().toLowerCase();
-  if (!query) {
-    suggestionsDiv.innerHTML = "";
-    return;
-  }
+  if(!query){ suggestionsDiv.innerHTML=""; return; }
 
-  const matches = itemsList
-    .filter(i => i.name.toLowerCase().includes(query))
-    .slice(0, 10); // show top 10 matches
-
-  suggestionsDiv.innerHTML = "";
-  matches.forEach(item => {
-    const div = document.createElement("div");
-    div.textContent = item.name;
-    div.addEventListener("click", () => {
-      itemInput.value = item.name;
-      suggestionsDiv.innerHTML = "";
+  const matches = itemsList.filter(i=>i.name.toLowerCase().includes(query)).slice(0,10);
+  suggestionsDiv.innerHTML="";
+  matches.forEach(item=>{
+    const div=document.createElement("div");
+    div.textContent=item.name;
+    div.addEventListener("click", ()=>{
+      itemInput.value=item.name;
+      suggestionsDiv.innerHTML="";
     });
     suggestionsDiv.appendChild(div);
   });
 });
 
-// Hide suggestions when clicking outside
-document.addEventListener("click", (e) => {
-  if (!suggestionsDiv.contains(e.target) && e.target !== itemInput) {
-    suggestionsDiv.innerHTML = "";
+// Hide suggestions on click outside
+document.addEventListener("click", e=>{
+  if(!suggestionsDiv.contains(e.target) && e.target!==itemInput){
+    suggestionsDiv.innerHTML="";
   }
 });
 
 // Init
-window.onload = () => {
+window.onload = ()=>{
   loadRegions();
   loadItems();
 };
