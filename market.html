@@ -22,14 +22,17 @@
 </header>
 
   <main>
-    <h1>Market Lookup</h1>
-  
-        <div class="search-box">
-            <input type="text" id="itemInput" placeholder="Search item...">
-            <button id="searchBtn">Search</button>
-        </div>
+    <div class="search-box">
+      <input type="text" id="itemInput" placeholder="Enter item name (e.g. Probe)">
+      <button id="searchBtn">Search</button>
+    </div>
 
-        <div id="results"></div>
+    <div class="region-box">
+      <label for="regionSelect">Select Region:</label>
+      <select id="regionSelect" class="styled-select"></select>
+    </div>
+
+    <div id="results"></div>
   </main>
 
   <footer>

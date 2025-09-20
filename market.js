@@ -1,100 +1,103 @@
-const searchBtn = document.getElementById("searchBtn");
-const itemInput = document.getElementById("itemInput");
-const resultsDiv = document.getElementById("results");
+// load regions from regions.json
+async function loadRegions() {
+  const res = await fetch("regions.json");
+  const regions = await res.json();
 
-// region id for Jita (The Forge)
-const REGION_ID = 10000002;
+  const regionSelect = document.getElementById("regionSelect");
+  regions
+    .sort((a, b) => a.name.localeCompare(b.name))
+    .forEach(region => {
+      const opt = document.createElement("option");
+      opt.value = region.region_id;
+      opt.textContent = region.name;
+      regionSelect.appendChild(opt);
+    });
+}
 
-// function to turn a name into an ID
-async function resolveNameToId(name) {
-  const res = await fetch("https://esi.evetech.net/latest/universe/ids/?datasource=tranquility", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify([name])
-  });
-  if (!res.ok) throw new Error("id lookup failed");
-  const data = await res.json();
-  // just grab the first match in inventory_type
-  if (data.inventory_types && data.inventory_types.length > 0) {
-    return data.inventory_types[0].id;
+// look up item ID from name
+async function getItemId(itemName) {
+  try {
+    const res = await fetch("https://esi.evetech.net/latest/universe/ids/?datasource=tranquility", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([itemName])
+    });
+    if (!res.ok) throw new Error("Item not found");
+    const data = await res.json();
+    return data.inventory_types?.[0]?.id || null;
+  } catch (err) {
+    console.error("Error fetching item ID:", err);
+    return null;
   }
-  return null;
 }
 
-// function to get cheapest sell and highest buy
-async function getMarketOrders(typeId) {
-  // sell orders
-  const sellRes = await fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=sell&type_id=${typeId}&datasource=tranquility`);
-  if (!sellRes.ok) throw new Error("sell orders failed");
-  const sells = await sellRes.json();
+// fetch cheapest order in region
+async function getCheapestOrder(itemId, regionId) {
+  try {
+    const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=sell&type_id=${itemId}&datasource=tranquility`);
+    if (!res.ok) throw new Error("Failed to fetch market orders");
+    const orders = await res.json();
+    if (!orders.length) return null;
 
-  // buy orders
-  const buyRes = await fetch(`https://esi.evetech.net/latest/markets/${REGION_ID}/orders/?order_type=buy&type_id=${typeId}&datasource=tranquility`);
-  if (!buyRes.ok) throw new Error("buy orders failed");
-  const buys = await buyRes.json();
-
-  // sort them
-  sells.sort((a, b) => a.price - b.price); // low to high
-  buys.sort((a, b) => b.price - a.price);  // high to low
-
-  return {
-    cheapestSell: sells[0] || null,
-    highestBuy: buys[0] || null
-  };
+    orders.sort((a, b) => a.price - b.price);
+    return orders[0];
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    return null;
+  }
 }
 
-// function to lookup station name
+// get station/structure name if possible
 async function getStationName(stationId) {
-  const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
-  if (!res.ok) return stationId; // fallback
-  const data = await res.json();
-  return data.name || stationId;
+  if (stationId < 1000000000) {
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
+      if (!res.ok) return stationId;
+      const data = await res.json();
+      return data.name || stationId;
+    } catch {
+      return stationId;
+    }
+  } else {
+    return `Structure ID: ${stationId}`;
+  }
 }
 
-// main button event
-searchBtn.addEventListener("click", async () => {
-  const query = itemInput.value.trim();
-  if (!query) return;
+// main search handler
+async function handleSearch() {
+  const itemName = document.getElementById("itemInput").value.trim();
+  const regionId = document.getElementById("regionSelect").value;
+  const resultsDiv = document.getElementById("results");
+
+  if (!itemName) {
+    resultsDiv.innerHTML = "<p>Please enter an item name.</p>";
+    return;
+  }
 
   resultsDiv.innerHTML = "<p>Searching...</p>";
 
-  try {
-    // get typeId
-    const typeId = await resolveNameToId(query);
-    if (!typeId) {
-      resultsDiv.innerHTML = `<p>No item found for "${query}".</p>`;
-      return;
-    }
-
-    // get market data
-    const { cheapestSell, highestBuy } = await getMarketOrders(typeId);
-
-    if (!cheapestSell && !highestBuy) {
-      resultsDiv.innerHTML = "<p>No market orders found.</p>";
-      return;
-    }
-
-    // get station names (async both)
-    const sellStation = cheapestSell ? await getStationName(cheapestSell.location_id) : null;
-    const buyStation = highestBuy ? await getStationName(highestBuy.location_id) : null;
-
-    // output
-    resultsDiv.innerHTML = `
-      <h2>Market for "${query}"</h2>
-      ${cheapestSell ? `
-        <h3>Cheapest Sell</h3>
-        <p><strong>Price:</strong> ${cheapestSell.price.toLocaleString()} ISK</p>
-        <p><strong>Location:</strong> ${sellStation}</p>
-      ` : "<p>No sell orders.</p>"}
-
-      ${highestBuy ? `
-        <h3>Highest Buy</h3>
-        <p><strong>Price:</strong> ${highestBuy.price.toLocaleString()} ISK</p>
-        <p><strong>Location:</strong> ${buyStation}</p>
-      ` : "<p>No buy orders.</p>"}
-    `;
-  } catch (err) {
-    console.error(err);
-    resultsDiv.innerHTML = "<p>Error fetching market data.</p>";
+  const itemId = await getItemId(itemName);
+  if (!itemId) {
+    resultsDiv.innerHTML = `<p>Item not found: ${itemName}</p>`;
+    return;
   }
-});
+
+  const cheapest = await getCheapestOrder(itemId, regionId);
+  if (!cheapest) {
+    resultsDiv.innerHTML = `<p>No market orders found for ${itemName} in this region.</p>`;
+    return;
+  }
+
+  const stationName = await getStationName(cheapest.location_id);
+
+  resultsDiv.innerHTML = `
+    <h3>Cheapest ${itemName}</h3>
+    <p><strong>Price:</strong> ${cheapest.price.toLocaleString()} ISK</p>
+    <p><strong>Location:</strong> ${stationName}</p>
+    <p><strong>Volume Remaining:</strong> ${cheapest.volume_remain}</p>
+  `;
+}
+
+// init
+document.getElementById("searchBtn").addEventListener("click", handleSearch);
+window.onload = loadRegions;
