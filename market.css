@@ -262,7 +262,7 @@ a.active, a:hover {
 /* Suggestions below search box */
 .suggestions {
   position: absolute;
-  top: 100%;
+  top: 50px;
   left: 0;
   width: 100%;
   background: #1a1a1a;
