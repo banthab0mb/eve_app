@@ -133,6 +133,7 @@ a.active, a:hover {
   border-right: 1px solid #333;
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .market-sidebar input,
