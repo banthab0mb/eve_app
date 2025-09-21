@@ -102,22 +102,15 @@ async function getStationName(id) {
 
 // Render orders table
 async function renderOrders(orders) {
-  const tbody = document.querySelector("#ordersTable tbody");
-  tbody.innerHTML = "";
+  const container = document.querySelector(".market-section .market-list");
+  container.innerHTML = "";
+  orders.forEach(order => {
+    const div = document.createElement("div");
+    div.className = "item";
+    div.textContent = `${order.price} ISK — ${order.volume_remain} — ${order.location_id}`;
+    container.appendChild(div);
+  });
 
-  for (const order of orders) {
-    const loc = order.regionName ? order.regionName : await getStationName(order.location_id);
-    const expires = order.duration ? `${order.duration} days` : "-";
-
-    const row = document.createElement("tr");
-    row.innerHTML = `
-      <td>${order.price.toLocaleString()}</td>
-      <td>${order.volume_remain}</td>
-      <td>${loc}</td>
-      <td>${expires}</td>
-    `;
-    tbody.appendChild(row);
-  }
 }
 
 // Render history chart
