@@ -203,7 +203,7 @@ async function fetchOrders(typeId, regionId, orderType) {
   const regionIds = regionsList.map(r => r.region_id).filter(Boolean);
   const results = [];
   // batch size to avoid too many parallel fetches (reduce rate limit risk)
-  const batchSize = 12;
+  const batchSize = 200;
   for (let i = 0; i < regionIds.length; i += batchSize) {
     const batch = regionIds.slice(i, i + batchSize);
     const promises = batch.map(rid => fetchOrdersForRegion(typeId, rid, orderType));
@@ -246,7 +246,7 @@ async function getStationName(locationId) {
    --------------------- */
 function formatNumber(n) { return Number(n).toLocaleString(); }
 
-async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 40) {
+async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 400) {
   const tbody = $(tbodyId);
   if (!tbody) return;
   tbody.innerHTML = '';
@@ -354,7 +354,6 @@ async function performSearch() {
     if (!typeId) { alert('Item not found'); return; }
 
     // header info
-    // header info
     const itemNameEl = $('itemName');
     const itemImageEl = $('itemImage');
 
@@ -379,8 +378,8 @@ async function performSearch() {
     ]);
 
     // Render tables (visible rows limited by CSS; we still slice to 60)
-    await renderOrders(buyOrders, 'buyOrdersBody', 'buy', 60);
-    await renderOrders(sellOrders, 'sellOrdersBody', 'sell', 60);
+    await renderOrders(buyOrders, 'buyOrdersBody', 'buy');
+    await renderOrders(sellOrders, 'sellOrdersBody', 'sell');
 
     // update history (always fetch so chart is ready)
     await renderHistoryChart(typeId, regionId);
