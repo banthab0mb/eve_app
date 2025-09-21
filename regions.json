@@ -11,7 +11,6 @@
   {"region_id": 10000011, "name": "Great Wildlands"},
   {"region_id": 10000012, "name": "Curse"},
   {"region_id": 10000013, "name": "Malpais"},
-  {"region_id": 10000014, "name": "Catch"},
   {"region_id": 10000015, "name": "Venal"},
   {"region_id": 10000016, "name": "Lonetrek"},
   {"region_id": 10000018, "name": "The Spire"},
@@ -52,10 +51,8 @@
   {"region_id": 10000056, "name": "Oasa"},
   {"region_id": 10000057, "name": "Cobalt Edge"},
   {"region_id": 10000058, "name": "Perrigen Falls"},
-  {"region_id": 10000059, "name": "Malpais"},
   {"region_id": 10000060, "name": "Catch"},
   {"region_id": 10000061, "name": "Delve"},
   {"region_id": 10000062, "name": "Tenerifis"},
-  {"region_id": 10000063, "name": "Immensea"},
   {"region_id": 10000064, "name": "Feythabolis"}
 ]
