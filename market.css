@@ -183,37 +183,71 @@ a.active, a:hover {
 .tab-content.active { display: block; }
 
 /* Tables */
-.table-wrapper {
-  max-height: 220px;
-  overflow-y: auto;
-  margin-bottom: 15px;
-}
-.buy-orders, .sell-orders {
+/* Tables */
+.orders-table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 0.9rem;
-}
-.buy-orders th, .sell-orders th,
-.buy-orders td, .sell-orders td {
-  border: 1px solid #444;
-  padding: 6px;
-  text-align: left;
-}
-.buy-orders tr:nth-child(even),
-.sell-orders tr:nth-child(even) {
-  background: #1c1c1c;
+  margin-bottom: 20px;
 }
 
-/* Suggestions dropdown */
-#suggestions {
-  position: absolute;
+.orders-table th,
+.orders-table td {
+  font-size: 13px;
+  padding: 6px 8px;
+  border-bottom: 1px solid #333;
+  text-align: left;
+}
+
+.orders-table th {
+  background: #222;
+  color: #eee;
+}
+
+.orders-table tr:nth-child(even) {
   background: #1a1a1a;
-  border: 1px solid #444;
-  max-height: 150px;
+}
+
+/* Scrollable wrappers */
+.table-wrapper {
+  max-height: 250px;   /* controls visible rows */
   overflow-y: auto;
-  width: 180px;
+  border: 1px solid #333;
+  border-radius: 4px;
+}
+
+/* Dark scrollbars */
+.table-wrapper {
+  scrollbar-width: thin;
+  scrollbar-color: #555 #1a1a1a;
+}
+
+.table-wrapper::-webkit-scrollbar {
+  width: 8px;
+}
+
+.table-wrapper::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background-color: #555;
+  border-radius: 4px;
+}
+
+/* Suggestions below search box */
+.suggestions {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
   z-index: 1000;
 }
+
 .suggestions div {
   padding: 6px 8px;
   cursor: pointer;

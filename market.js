@@ -1,11 +1,3 @@
-/* market.js
-   - Uses items.json and regions.json for suggestions/regions
-   - Queries ESI for orders/history
-   - Renders buy & sell tables (scrollable ~8 rows)
-   - Shows item image from images.evetech.net
-   - Defensive: checks DOM nodes, caches station names, avoids null errors
-*/
-
 let itemsList = [];
 let regionsList = [];
 const stationCache = new Map();
@@ -15,8 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   initElements();
   loadRegions();
   loadItems();
-  startEveTime();
-  fetchPlayerCount();
 });
 
 function $(id) { return document.getElementById(id); }
@@ -273,7 +263,9 @@ async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 40
   const slice = orders.slice(0, maxDisplay);
 
   for (const o of slice) {
-    const locName = o.regionName ? o.regionName : await getStationName(o.location_id);
+    let station = await getStationName(o.location_id);
+    let region = o.regionName || '';
+    const locName = region ? `${station} (${region})` : station;
     const expires = o.duration ? `${o.duration}d` : '-';
     const tr = document.createElement('tr');
     tr.innerHTML = `
