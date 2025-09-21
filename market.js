@@ -1,72 +1,85 @@
-/* market.js - full behavior: suggestions, all-regions, buy/sell, history, safe DOM checks */
+/* market.js
+   - Uses items.json and regions.json for suggestions/regions
+   - Queries ESI for orders/history
+   - Renders buy & sell tables (scrollable ~8 rows)
+   - Shows item image from images.evetech.net
+   - Defensive: checks DOM nodes, caches station names, avoids null errors
+*/
 
-let historyChartInstance = null;
 let itemsList = [];
 let regionsList = [];
 const stationCache = new Map();
+let historyChart = null;
 
 document.addEventListener('DOMContentLoaded', () => {
-  initUI();
+  initElements();
   loadRegions();
   loadItems();
   startEveTime();
   fetchPlayerCount();
 });
 
-function initUI() {
-  // elements
-  const itemInput = document.getElementById('itemInput');
-  const suggestions = document.getElementById('suggestions');
-  const searchBtn = document.getElementById('searchBtn');
-  const tabBtns = document.querySelectorAll('.tab-btn');
+function $(id) { return document.getElementById(id); }
 
-  // suggestions handling
-  itemInput.addEventListener('input', onItemInput);
+function initElements() {
+  const itemInput = $('itemInput');
+  const suggestions = $('suggestions');
+  const searchBtn = $('searchBtn');
+
+  // suggestions: live from itemsList
+  itemInput.addEventListener('input', (e) => {
+    showSuggestions(e.target.value.trim());
+  });
+
+  // keyboard: Enter -> search, Esc -> close suggestions
   itemInput.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { hideSuggestions(); }
     if (e.key === 'Enter') { e.preventDefault(); performSearch(); hideSuggestions(); }
+    if (e.key === 'Escape') hideSuggestions();
   });
 
-  document.addEventListener('click', (e) => {
-    if (!document.getElementById('itemInput')) return;
-    if (!suggestions.contains(e.target) && e.target !== itemInput) {
-      hideSuggestions();
-    }
+  // click outside to hide suggestions
+  document.addEventListener('click', (ev) => {
+    const s = $('suggestions');
+    if (!s) return;
+    if (!s.contains(ev.target) && ev.target !== $('itemInput')) hideSuggestions();
   });
 
-  searchBtn.addEventListener('click', () => { performSearch(); });
+  // search button
+  if (searchBtn) searchBtn.addEventListener('click', () => { performSearch(); });
 
   // tabs
-  tabBtns.forEach(b => {
-    b.addEventListener('click', (ev) => {
-      document.querySelectorAll('.tab-btn').forEach(x => x.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', (ev) => {
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
       ev.currentTarget.classList.add('active');
-      const tab = ev.currentTarget.dataset.tab;
-      document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-      const el = document.getElementById(tab);
-      if (el) el.classList.add('active');
+      document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
+      const tabId = ev.currentTarget.dataset.tab;
+      const target = $(tabId);
+      if (target) target.classList.add('active');
     });
   });
 
   // CCP disclaimer toggle
-  const ccpLink = document.getElementById('ccp-link');
-  if (ccpLink) {
-    ccpLink.addEventListener('click', (e) => {
-      e.preventDefault();
-      const disc = document.getElementById('ccp-disclaimer');
-      if (disc) disc.style.display = disc.style.display === 'none' || !disc.style.display ? 'block' : 'none';
-    });
-  }
+  const ccpLink = $('ccp-link');
+  if (ccpLink) ccpLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    const disc = $('ccp-disclaimer');
+    if (!disc) return;
+    disc.style.display = disc.style.display === 'block' ? 'none' : 'block';
+  });
 }
 
-/* ---- Data loaders ---- */
+/* ---------------------
+   Load static files
+   --------------------- */
 async function loadItems() {
   try {
     const res = await fetch('items.json');
+    if (!res.ok) throw new Error('items.json not found');
     itemsList = await res.json();
-    console.log('Loaded items.json', itemsList.length);
+    console.log(`Loaded items.json (${itemsList.length})`);
   } catch (err) {
-    console.warn('Failed to load items.json', err);
+    console.warn('Could not load items.json:', err);
     itemsList = [];
   }
 }
@@ -74,79 +87,86 @@ async function loadItems() {
 async function loadRegions() {
   try {
     const res = await fetch('regions.json');
+    if (!res.ok) throw new Error('regions.json not found');
     regionsList = await res.json();
+    regionsList.sort((a,b) => (a.name||'').localeCompare(b.name||''));
   } catch (err) {
-    console.warn('Failed to load regions.json', err);
+    console.warn('Could not load regions.json:', err);
     regionsList = [];
   }
 
-  const regionSelect = document.getElementById('regionSelect');
+  const regionSelect = $('regionSelect');
   if (!regionSelect) return;
-
-  // Clear then add "All Regions" then sorted list
   regionSelect.innerHTML = '';
-  const all = document.createElement('option');
-  all.value = 'all';
-  all.textContent = 'All Regions';
-  regionSelect.appendChild(all);
+  const allOpt = document.createElement('option');
+  allOpt.value = 'all';
+  allOpt.textContent = 'All Regions';
+  regionSelect.appendChild(allOpt);
 
-  regionsList.sort((a,b) => (a.name||'').localeCompare(b.name||'')).forEach(r => {
-    const o = document.createElement('option');
-    o.value = String(r.region_id);
-    o.textContent = r.name;
-    regionSelect.appendChild(o);
+  regionsList.forEach(r => {
+    const opt = document.createElement('option');
+    opt.value = String(r.region_id);
+    opt.textContent = r.name;
+    regionSelect.appendChild(opt);
   });
 
-  // default keep All Regions selected
   regionSelect.value = 'all';
 }
 
-/* ---- Suggestions ---- */
-function onItemInput(e) {
-  const q = e.target.value.trim().toLowerCase();
-  const suggestions = document.getElementById('suggestions');
-  if (!suggestions) return;
-  if (!q) { suggestions.style.display = 'none'; suggestions.innerHTML = ''; return; }
+/* ---------------------
+   Suggestions UI
+   --------------------- */
+function showSuggestions(query) {
+  const box = $('suggestions');
+  const input = $('itemInput');
+  if (!box || !input) return;
+
+  const q = (query || '').toLowerCase();
+  if (!q) { box.style.display = 'none'; box.innerHTML = ''; return; }
 
   const matches = itemsList
-    .filter(it => it.name.toLowerCase().includes(q))
+    .filter(it => it.name && it.name.toLowerCase().includes(q))
     .slice(0, 12);
 
-  suggestions.innerHTML = '';
+  box.innerHTML = '';
   matches.forEach(it => {
     const div = document.createElement('div');
     div.textContent = it.name;
-    div.addEventListener('click', () => {
-      const input = document.getElementById('itemInput');
+    div.addEventListener('click', async () => {
       input.value = it.name;
       hideSuggestions();
-      // optional: trigger search immediately on click
-      // performSearch();
+      await performSearch(); // search immediately on click
     });
-    suggestions.appendChild(div);
+    box.appendChild(div);
   });
 
   if (matches.length) {
-    // position suggestions under input
-    const inputRect = document.getElementById('itemInput').getBoundingClientRect();
-    suggestions.style.display = 'block';
-    suggestions.style.left = inputRect.left + 'px';
-    suggestions.style.top = (inputRect.bottom + window.scrollY) + 'px';
-    suggestions.style.width = (inputRect.width) + 'px';
-    suggestions.setAttribute('aria-hidden', 'false');
+    // position inside sidebar (CSS already handles left/right)
+    box.style.display = 'block';
+    box.setAttribute('aria-hidden', 'false');
   } else {
-    suggestions.style.display = 'none';
+    box.style.display = 'none';
   }
 }
 
 function hideSuggestions() {
-  const suggestions = document.getElementById('suggestions');
-  if (suggestions) { suggestions.style.display = 'none'; suggestions.innerHTML = ''; suggestions.setAttribute('aria-hidden','true'); }
+  const box = $('suggestions');
+  if (!box) return;
+  box.style.display = 'none';
+  box.innerHTML = '';
+  box.setAttribute('aria-hidden', 'true');
 }
 
-/* ---- ESI helpers ---- */
+/* ---------------------
+   ESI helpers
+   --------------------- */
 async function getItemId(name) {
-  // tolerant parsing of ESI universe/ids result
+  if (!name) return null;
+  // Try local items.json first (case-insensitive exact match)
+  const found = itemsList.find(i => i.name && i.name.toLowerCase() === name.toLowerCase());
+  if (found && found.id) return found.id;
+
+  // fallback to ESI universe/ids lookup
   try {
     const res = await fetch('https://esi.evetech.net/latest/universe/ids/?datasource=tranquility', {
       method: 'POST',
@@ -155,12 +175,14 @@ async function getItemId(name) {
     });
     if (!res.ok) return null;
     const data = await res.json();
-    // possible keys: inventory_types, types, type_ids, type
+    // support various response shapes
     if (Array.isArray(data.inventory_types) && data.inventory_types.length) return data.inventory_types[0].id;
     if (Array.isArray(data.types) && data.types.length) return data.types[0].id;
-    // search for first object with id
-    for (const k in data) {
-      if (Array.isArray(data[k]) && data[k].length && data[k][0] && typeof data[k][0].id === 'number') return data[k][0].id;
+    // search arrays for id
+    for (const k of Object.keys(data || {})) {
+      if (Array.isArray(data[k]) && data[k].length && data[k][0] && typeof data[k][0].id === 'number') {
+        return data[k][0].id;
+      }
     }
     return null;
   } catch (err) {
@@ -169,67 +191,73 @@ async function getItemId(name) {
   }
 }
 
-async function fetchOrders(typeId, regionId, orderType) {
-  if (!typeId) return [];
-  // fetch for a single region
-  if (regionId && regionId !== 'all') {
-    try {
-      const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
-      if (!res.ok) return [];
-      const orders = await res.json();
-      return orders;
-    } catch (err) {
-      return [];
-    }
+async function fetchOrdersForRegion(typeId, regionId, orderType) {
+  try {
+    const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
+    if (!res.ok) return [];
+    const arr = await res.json();
+    return arr.map(o => ({ ...o, regionId }));
+  } catch (err) {
+    return [];
   }
-
-  // all regions: parallel-ish (map -> Promise.all)
-  const regionIds = regionsList.map(r => r.region_id).filter(Boolean);
-  const allResults = await Promise.all(regionIds.map(async rid => {
-    try {
-      const r = await fetch(`https://esi.evetech.net/latest/markets/${rid}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
-      if (!r.ok) return [];
-      const arr = await r.json();
-      // annotate region name if available
-      const region = regionsList.find(x => String(x.region_id) === String(rid));
-      return arr.map(o => ({ ...o, regionName: region ? region.name : undefined }));
-    } catch (e) {
-      return [];
-    }
-  }));
-
-  return allResults.flat();
 }
 
-async function getStationName(id) {
-  if (!id) return 'Unknown';
-  if (stationCache.has(id)) return stationCache.get(id);
+async function fetchOrders(typeId, regionId, orderType) {
+  if (!typeId) return [];
+
+  if (regionId && regionId !== 'all') {
+    return await fetchOrdersForRegion(typeId, regionId, orderType);
+  }
+
+  // All regions: aggregate. Limit concurrency to avoid blasting ESI too hard
+  const regionIds = regionsList.map(r => r.region_id).filter(Boolean);
+  const results = [];
+  // batch size to avoid too many parallel fetches (reduce rate limit risk)
+  const batchSize = 12;
+  for (let i = 0; i < regionIds.length; i += batchSize) {
+    const batch = regionIds.slice(i, i + batchSize);
+    const promises = batch.map(rid => fetchOrdersForRegion(typeId, rid, orderType));
+    const batchResults = await Promise.all(promises);
+    batchResults.forEach(arr => results.push(...arr));
+  }
+  // attach region name where available
+  results.forEach(o => {
+    const r = regionsList.find(rr => String(rr.region_id) === String(o.regionId));
+    if (r) o.regionName = r.name;
+  });
+
+  return results;
+}
+
+async function getStationName(locationId) {
+  if (!locationId) return 'Unknown';
+  if (stationCache.has(locationId)) return stationCache.get(locationId);
+
   try {
-    if (id < 1e9) {
-      const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${id}/?datasource=tranquility`);
-      if (!res.ok) { stationCache.set(id, String(id)); return String(id); }
+    if (locationId < 1e9) {
+      const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${locationId}/?datasource=tranquility`);
+      if (!res.ok) { stationCache.set(locationId, String(locationId)); return String(locationId); }
       const data = await res.json();
-      stationCache.set(id, data.name || String(id));
-      return data.name || String(id);
+      stationCache.set(locationId, data.name || String(locationId));
+      return data.name || String(locationId);
     } else {
-      const s = `Structure ${id}`;
-      stationCache.set(id, s);
+      const s = `Structure ${locationId}`;
+      stationCache.set(locationId, s);
       return s;
     }
   } catch (err) {
-    stationCache.set(id, String(id));
-    return String(id);
+    stationCache.set(locationId, String(locationId));
+    return String(locationId);
   }
 }
 
-/* ---- Render ---- */
-function clearTable(tbodyId) {
-  const t = document.getElementById(tbodyId);
-  if (t) t.innerHTML = '';
-}
+/* ---------------------
+   Render functions
+   --------------------- */
+function formatNumber(n) { return Number(n).toLocaleString(); }
 
-async function renderOrders(orders, tbodyId, limit = 20, orderType = 'sell') {
-  const tbody = document.getElementById(tbodyId);
+async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 40) {
+  const tbody = $(tbodyId);
   if (!tbody) return;
   tbody.innerHTML = '';
 
@@ -240,151 +268,154 @@ async function renderOrders(orders, tbodyId, limit = 20, orderType = 'sell') {
     return;
   }
 
-  // sort: sells ascending price, buys descending
-  orders.sort((a,b) => orderType === 'sell' ? a.price - b.price : b.price - a.price);
-  const limited = orders.slice(0, limit);
+  // sort and slice: sells ascending, buys descending
+  orders.sort((a, b) => orderType === 'sell' ? a.price - b.price : b.price - a.price);
+  const slice = orders.slice(0, maxDisplay);
 
-  for (const o of limited) {
-    const loc = o.regionName || await getStationName(o.location_id);
+  for (const o of slice) {
+    const locName = o.regionName ? o.regionName : await getStationName(o.location_id);
     const expires = o.duration ? `${o.duration}d` : '-';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${Number(o.price).toLocaleString()}</td>
+      <td>${formatNumber(o.price)}</td>
       <td>${o.volume_remain}</td>
-      <td title="${loc}">${loc}</td>
+      <td title="${locName}">${locName}</td>
       <td>${expires}</td>
     `;
     tbody.appendChild(tr);
   }
 }
 
-/* history chart */
+/* ---------------------
+   History chart
+   --------------------- */
 async function renderHistoryChart(typeId, regionId) {
-  const canvas = document.getElementById('historyChart');
+  const canvas = $('historyChart');
   if (!canvas || typeof Chart === 'undefined') return;
-
-  if (historyChartInstance) { historyChartInstance.destroy(); historyChartInstance = null; }
+  if (historyChart) { historyChart.destroy(); historyChart = null; }
 
   let historyData = [];
+
   try {
     if (regionId === 'all') {
-      // average across regions (simple approach)
+      // aggregate across regions
       const regionIds = regionsList.map(r => r.region_id);
-      const allHist = await Promise.all(regionIds.map(async rid => {
-        try {
-          const res = await fetch(`https://esi.evetech.net/latest/markets/${rid}/history/?type_id=${typeId}&datasource=tranquility`);
-          if (!res.ok) return [];
-          return await res.json();
-        } catch (e) { return []; }
-      }));
-
-      // merge by date
-      const map = {};
-      allHist.flat().forEach(entry => {
-        if (!entry || !entry.date) return;
-        map[entry.date] = map[entry.date] || [];
-        map[entry.date].push(entry.average || 0);
-      });
-      historyData = Object.keys(map).sort().map(d => ({ date: d, average: map[d].reduce((a,b)=>a+b,0)/map[d].length }));
+      const aggregated = {};
+      const batchSize = 12;
+      for (let i = 0; i < regionIds.length; i += batchSize) {
+        const batch = regionIds.slice(i, i + batchSize);
+        const promises = batch.map(rid => fetch(`https://esi.evetech.net/latest/markets/${rid}/history/?type_id=${typeId}&datasource=tranquility`).then(res => res.ok ? res.json().catch(()=>[]) : []));
+        const batchResults = await Promise.all(promises);
+        batchResults.flat().forEach(entry => {
+          if (!entry || !entry.date) return;
+          aggregated[entry.date] = aggregated[entry.date] || [];
+          aggregated[entry.date].push(entry.average || 0);
+        });
+      }
+      historyData = Object.keys(aggregated).sort().map(d => ({ date: d, average: aggregated[d].reduce((a,b)=>a+b,0)/aggregated[d].length }));
     } else {
       const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`);
       historyData = res.ok ? await res.json() : [];
     }
   } catch (err) {
+    console.warn('History fetch error', err);
     historyData = [];
   }
 
   const labels = historyData.map(h => h.date);
-  const prices = historyData.map(h => h.average);
+  const data = historyData.map(h => h.average);
 
-  historyChartInstance = new Chart(canvas.getContext('2d'), {
+  historyChart = new Chart(canvas.getContext('2d'), {
     type: 'line',
     data: {
       labels,
       datasets: [{
         label: 'Average Price',
-        data: prices,
+        data,
         borderColor: '#378937',
-        backgroundColor: 'rgba(55,137,55,0.18)',
+        backgroundColor: 'rgba(55,137,55,0.15)',
         fill: true,
-        tension: 0.2
+        tension: 0.15
       }]
     },
-    options: { responsive: true, maintainAspectRatio: false }
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } }
+    }
   });
 }
 
-/* ---- Search orchestration ---- */
+/* ---------------------
+   Orchestration: Search
+   --------------------- */
 async function performSearch() {
-  const input = document.getElementById('itemInput');
-  const regionSelect = document.getElementById('regionSelect');
-  const orderTypeSelect = document.getElementById('orderTypeSelect');
-
+  const input = $('itemInput');
+  const regionSelect = $('regionSelect');
+  const searchBtn = $('searchBtn');
   if (!input) return;
-  const itemName = input.value.trim();
-  if (!itemName) return;
+  const q = input.value.trim();
+  if (!q) return;
 
-  const regionId = regionSelect ? regionSelect.value : 'all';
-  const orderFilter = orderTypeSelect ? orderTypeSelect.value : 'both';
-
-  // UI: disable while fetching
-  const btn = document.getElementById('searchBtn');
-  if (btn) { btn.disabled = true; btn.textContent = 'Searching...'; }
+  if (searchBtn) { searchBtn.disabled = true; searchBtn.textContent = 'Searching...'; }
 
   try {
-    const typeId = await getItemId(itemName);
-    if (!typeId) {
-      alert('Item not found.');
-      return;
+    const typeId = await getItemId(q);
+    if (!typeId) { alert('Item not found'); return; }
+
+    // header info
+    const itemNameEl = $('itemName');
+    const itemImageEl = $('itemImage');
+    if (itemNameEl) itemNameEl.textContent = q;
+    if (itemImageEl) {
+      itemImageEl.src = `https://images.evetech.net/types/${typeId}/icon`;
+      itemImageEl.alt = q;
+      itemImageEl.style.display = 'block';
     }
 
-    // header + image
-    const itemNameEl = document.getElementById('itemName');
-    const imgEl = document.getElementById('itemImage');
-    if (itemNameEl) itemNameEl.textContent = itemName;
-    if (imgEl) {
-      imgEl.src = `https://images.evetech.net/types/${typeId}/icon`;
-      imgEl.alt = itemName;
-    }
+    const regionId = regionSelect ? regionSelect.value : 'all';
 
-    // fetch orders
-    const buys = (orderFilter === 'buy' || orderFilter === 'both') ? await fetchOrders(typeId, regionId, 'buy') : [];
-    const sells = (orderFilter === 'sell' || orderFilter === 'both') ? await fetchOrders(typeId, regionId, 'sell') : [];
+    // fetch buy + sell (all regions if selected)
+    const [buyOrders, sellOrders] = await Promise.all([
+      fetchOrders(typeId, regionId, 'buy'),
+      fetchOrders(typeId, regionId, 'sell')
+    ]);
 
-    // render into tables with limit ~20 but visible 8 rows via CSS
-    await renderOrders(buys, 'buyOrdersBody', 40, 'buy');
-    await renderOrders(sells, 'sellOrdersBody', 40, 'sell');
+    // Render tables (visible rows limited by CSS; we still slice to 60)
+    await renderOrders(buyOrders, 'buyOrdersBody', 'buy', 60);
+    await renderOrders(sellOrders, 'sellOrdersBody', 'sell', 60);
 
-    // render history into chart (show history tab when user clicks)
+    // update history (always fetch so chart is ready)
     await renderHistoryChart(typeId, regionId);
+
   } catch (err) {
-    console.error('Search failed', err);
+    console.error('Search error', err);
     alert('Search failed — check console for details.');
   } finally {
-    if (btn) { btn.disabled = false; btn.textContent = 'Search'; }
+    if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
   }
 }
 
-/* ---- small utilities ---- */
-function startEveTime() {
-  const el = document.getElementById('eveTime');
+/* ---------------------
+   Small utilities
+   --------------------- */
+function startEveTime(){
+  const el = $('eveTime');
   if (!el) return;
-  function tick() {
+  function tick(){
     const now = new Date();
-    const hh = String(now.getUTCHours()).padStart(2,'0');
-    const mm = String(now.getUTCMinutes()).padStart(2,'0');
-    el.textContent = `${hh}:${mm} UTC`;
+    el.textContent = `${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')} UTC`;
   }
   tick();
-  setInterval(tick, 1000 * 30);
+  setInterval(tick, 30*1000);
 }
 
-async function fetchPlayerCount() {
-  const el = document.getElementById('onlineCounter');
+async function fetchPlayerCount(){
+  const el = $('onlineCounter');
   if (!el) return;
   try {
     const res = await fetch('https://esi.evetech.net/latest/status/');
-    if (!res.ok) throw new Error('nope');
+    if (!res.ok) throw new Error('no status');
     const data = await res.json();
     if (typeof data.players === 'number') {
       el.textContent = data.players.toLocaleString();
@@ -392,7 +423,7 @@ async function fetchPlayerCount() {
     } else {
       el.textContent = 'Tranquility';
     }
-  } catch {
+  } catch (err) {
     el.textContent = 'Tranquility unreachable';
     el.style.color = '#9f3232';
   }

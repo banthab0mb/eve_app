@@ -23,31 +23,19 @@
 
   <div class="market-container">
     <aside class="market-sidebar">
-      <label for="itemInput" class="sr-only">Item</label>
-      <input type="text" id="itemInput" placeholder="Search item..." autocomplete="off" />
+      <input id="itemInput" type="text" placeholder="Search item..." autocomplete="off" />
       <div id="suggestions" class="suggestions" aria-hidden="true"></div>
 
-      <select id="regionSelect" aria-label="Region">
-        <!-- populated by JS; default 'All Regions' inserted -->
-      </select>
-
-      <div class="order-type-row">
-        <label for="orderTypeSelect">Show</label>
-        <select id="orderTypeSelect">
-          <option value="both">Buy & Sell</option>
-          <option value="sell">Sell only</option>
-          <option value="buy">Buy only</option>
-        </select>
-      </div>
+      <select id="regionSelect" aria-label="Region"></select>
 
       <button id="searchBtn">Search</button>
     </aside>
 
     <main class="market-content" role="main">
       <div class="item-header">
-        <img id="itemImage" src="" alt="" />
-        <div>
-          <h2 id="itemName">No item selected</h2>
+        <img id="itemImage" alt="" />
+        <div class="item-title-wrap">
+          <h1 id="itemName">Select an item</h1>
           <div id="itemMeta" class="muted small"></div>
         </div>
       </div>
@@ -57,35 +45,27 @@
         <button class="tab-btn" data-tab="historyTab">History</button>
       </div>
 
-      <div id="ordersTab" class="tab-content active">
-        <section class="market-section">
-          <h3 class="section-title">Buy Orders</h3>
-          <div class="market-list" id="buyListWrap">
-            <table class="orders-table">
-              <thead>
-                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-              </thead>
-              <tbody id="buyOrdersBody"></tbody>
-            </table>
-          </div>
-        </section>
+      <section id="ordersTab" class="tab-content active">
+        <h2 class="section-title">Buy Orders</h2>
+        <div class="table-wrapper">
+          <table class="orders-table">
+            <thead><tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr></thead>
+            <tbody id="buyOrdersBody"></tbody>
+          </table>
+        </div>
 
-        <section class="market-section">
-          <h3 class="section-title">Sell Orders</h3>
-          <div class="market-list" id="sellListWrap">
-            <table class="orders-table">
-              <thead>
-                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
-              </thead>
-              <tbody id="sellOrdersBody"></tbody>
-            </table>
-          </div>
-        </section>
-      </div>
+        <h2 class="section-title">Sell Orders</h2>
+        <div class="table-wrapper">
+          <table class="orders-table">
+            <thead><tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr></thead>
+            <tbody id="sellOrdersBody"></tbody>
+          </table>
+        </div>
+      </section>
 
-      <div id="historyTab" class="tab-content">
+      <section id="historyTab" class="tab-content">
         <canvas id="historyChart"></canvas>
-      </div>
+      </section>
     </main>
   </div>
 
