@@ -75,12 +75,6 @@ links {
   flex: 1;
 }
 
-links a {
-  color: #aaa;
-  text-decoration: none;
-  font-weight: bold;
-}
-
 links a { color: #888; text-decoration: none; }
 
 links a:hover { color: #fff; }
