@@ -370,8 +370,8 @@ async function performSearch() {
     ]);
 
     // Render tables (visible rows limited by CSS)
-    await renderOrders(sellOrders, 'buyOrdersBody', 'sell');
-    await renderOrders(buyOrders, 'sellOrdersBody', 'buy');
+    await renderOrders(sellOrders, 'sellOrdersBody', 'sell');
+    await renderOrders(buyOrders, 'buyOrdersBody', 'buy');
 
     // update history (always fetch so chart is ready)
     await renderHistoryChart(typeId, regionId);
