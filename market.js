@@ -59,9 +59,7 @@ function initElements() {
   });
 }
 
-/* ---------------------
-   Load static files
-   --------------------- */
+//Load static files
 async function loadItems() {
   try {
     const res = await fetch('items.json');
@@ -103,9 +101,7 @@ async function loadRegions() {
   regionSelect.value = 'all';
 }
 
-/* ---------------------
-   Suggestions UI
-   --------------------- */
+// Suggestions UI
 function showSuggestions(query) {
   const box = $('suggestions');
   const input = $('itemInput');
@@ -147,9 +143,7 @@ function hideSuggestions() {
   box.setAttribute('aria-hidden', 'true');
 }
 
-/* ---------------------
-   ESI helpers
-   --------------------- */
+// ESI helpers
 async function getItemId(name) {
   if (!name) return null;
   // Try local items.json first (case-insensitive exact match)
@@ -241,9 +235,7 @@ async function getStationName(locationId) {
   }
 }
 
-/* ---------------------
-   Render functions
-   --------------------- */
+// Render functions
 function formatNumber(n) { return Number(n).toLocaleString(); }
 
 async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 400) {
@@ -278,9 +270,7 @@ async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 40
   }
 }
 
-/* ---------------------
-   History chart
-   --------------------- */
+// History chart
 async function renderHistoryChart(typeId, regionId) {
   const canvas = $('historyChart');
   if (!canvas || typeof Chart === 'undefined') return;
@@ -373,13 +363,13 @@ async function performSearch() {
 
     // fetch buy + sell (all regions if selected)
     const [buyOrders, sellOrders] = await Promise.all([
-      fetchOrders(typeId, regionId, 'buy'),
-      fetchOrders(typeId, regionId, 'sell')
+      fetchOrders(typeId, regionId, 'sell'),
+      fetchOrders(typeId, regionId, 'buy')
     ]);
 
     // Render tables (visible rows limited by CSS; we still slice to 60)
-    await renderOrders(buyOrders, 'buyOrdersBody', 'buy');
-    await renderOrders(sellOrders, 'sellOrdersBody', 'sell');
+    await renderOrders(buyOrders, 'buyOrdersBody', 'sell');
+    await renderOrders(sellOrders, 'sellOrdersBody', 'buy');
 
     // update history (always fetch so chart is ready)
     await renderHistoryChart(typeId, regionId);
