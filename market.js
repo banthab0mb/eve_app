@@ -7,6 +7,8 @@ document.addEventListener('DOMContentLoaded', () => {
   initElements();
   loadRegions();
   loadItems();
+  makeTableSortable('buyOrdersBody');
+  makeTableSortable('sellOrdersBody');
 });
 
 function $(id) { return document.getElementById(id); }
@@ -380,4 +382,54 @@ async function performSearch() {
   } finally {
     if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
   }
+}
+
+// Table sorting
+function makeTableSortable(tbodyId) {
+  const tbody = document.getElementById(tbodyId);
+  if (!tbody) return;
+
+  const table = tbody.closest('table');
+  if (!table) return;
+
+  const headers = table.querySelectorAll('th');
+  headers.forEach((th, index) => {
+    th.style.cursor = 'pointer';
+    th.addEventListener('click', () => {
+      sortTableByColumn(tbody, index, headers);
+    });
+  });
+}
+
+function sortTableByColumn(tbody, colIndex, headers) {
+  const rows = Array.from(tbody.querySelectorAll('tr'));
+  const ascending = tbody.getAttribute('data-sort-col') != colIndex || tbody.getAttribute('data-sort-asc') === 'false';
+
+  // sort rows
+  rows.sort((a, b) => {
+    const aText = a.children[colIndex].textContent.replace(/,/g, '');
+    const bText = b.children[colIndex].textContent.replace(/,/g, '');
+
+    const aNum = parseFloat(aText);
+    const bNum = parseFloat(bText);
+    if (!isNaN(aNum) && !isNaN(bNum)) {
+      return ascending ? aNum - bNum : bNum - aNum;
+    }
+    return ascending ? aText.localeCompare(bText) : bText.localeCompare(aText);
+  });
+
+  // re-add rows
+  rows.forEach(r => tbody.appendChild(r));
+
+  // save sort state
+  tbody.setAttribute('data-sort-col', colIndex);
+  tbody.setAttribute('data-sort-asc', ascending);
+
+  // update arrows
+  headers.forEach((h, i) => {
+    h.textContent = h.textContent.replace(/[\u25B2\u25BC]/g, ''); // remove arrows
+    if (i === colIndex) {
+      h.textContent += ascending ? ' \u25B2' : ' \u25BC'; // ▲ or ▼
+    }
+  });
 }
