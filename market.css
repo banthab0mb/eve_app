@@ -59,6 +59,7 @@ main {
   padding: 20px;
   gap: 30px;
   min-height: 0; /* ensures scrollable lists work properly */
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 nav {
@@ -104,6 +105,7 @@ a.active, a:hover {
   border-radius: 4px;
   cursor: pointer;
   transition: background 0.2s, color 0.2s, border 0.2s;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 #searchBtn:hover {
@@ -123,6 +125,7 @@ a.active, a:hover {
   flex: 1;
   background: #111;
   color: #ddd;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* Sidebar */
@@ -271,6 +274,7 @@ a.active, a:hover {
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 .suggestions div {
