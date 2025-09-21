@@ -338,9 +338,7 @@ async function renderHistoryChart(typeId, regionId) {
   });
 }
 
-/* ---------------------
-   Orchestration: Search
-   --------------------- */
+// Search logic
 async function performSearch() {
   const input = $('itemInput');
   const regionSelect = $('regionSelect');
@@ -356,14 +354,21 @@ async function performSearch() {
     if (!typeId) { alert('Item not found'); return; }
 
     // header info
+    // header info
     const itemNameEl = $('itemName');
     const itemImageEl = $('itemImage');
-    if (itemNameEl) itemNameEl.textContent = q;
+
+    // find the item in itemsList by typeId
+    const foundItem = itemsList.find(it => it.id === typeId);
+    const itemName = foundItem ? foundItem.name : q; // fallback to typed query
+
+    if (itemNameEl) itemNameEl.textContent = itemName;
     if (itemImageEl) {
       itemImageEl.src = `https://images.evetech.net/types/${typeId}/icon`;
-      itemImageEl.alt = q;
+      itemImageEl.alt = itemName;
       itemImageEl.style.display = 'block';
     }
+
 
     const regionId = regionSelect ? regionSelect.value : 'all';
 

@@ -93,6 +93,30 @@ a.active, a:hover {
 
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
+#searchBtn {
+  background: #222;
+  color: #eee;
+  border: 1px solid #333;
+  padding: 6px 12px;
+  margin-left: 6px;
+  font-family: "Shentox-Regular", sans-serif;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, border 0.2s;
+}
+
+#searchBtn:hover {
+  background: #333;
+  color: #fff;
+  border: 1px solid #555;
+}
+
+#searchBtn:active {
+  background: #111;
+  border: 1px solid #666;
+}
+
 /* Market Container Layout */
 .market-container {
   display: flex;
