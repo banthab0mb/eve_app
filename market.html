@@ -21,40 +21,73 @@
   <div id="eveTime">--:--</div>
 </header>
 
-  <main class="market-container">
-    <!-- Sidebar -->
+  <div class="market-container">
     <aside class="market-sidebar">
-      <input type="text" id="itemInput" placeholder="Search item...">
-      <div id="suggestions" class="suggestions"></div>
+      <label for="itemInput" class="sr-only">Item</label>
+      <input type="text" id="itemInput" placeholder="Search item..." autocomplete="off" />
+      <div id="suggestions" class="suggestions" aria-hidden="true"></div>
 
-      <select id="regionSelect"></select>
-      <select id="orderTypeSelect">
-        <option value="sell">Sell Orders</option>
-        <option value="buy">Buy Orders</option>
+      <select id="regionSelect" aria-label="Region">
+        <!-- populated by JS; default 'All Regions' inserted -->
       </select>
+
+      <div class="order-type-row">
+        <label for="orderTypeSelect">Show</label>
+        <select id="orderTypeSelect">
+          <option value="both">Buy & Sell</option>
+          <option value="sell">Sell only</option>
+          <option value="buy">Buy only</option>
+        </select>
+      </div>
 
       <button id="searchBtn">Search</button>
     </aside>
-    <section class="market-section">
-      <h2>Buy</h2>
-      <div class="market-list">
-        <!-- Buy items here -->
-        <div class="item">Item 1</div>
-        <div class="item">Item 2</div>
-        <!-- etc -->
-      </div>
-    </section>
 
-    <section class="market-section">
-      <h2>Sell</h2>
-      <div class="market-list">
-        <!-- Sell items here -->
-        <div class="item">Item 1</div>
-        <div class="item">Item 2</div>
-        <!-- etc -->
+    <main class="market-content" role="main">
+      <div class="item-header">
+        <img id="itemImage" src="" alt="" />
+        <div>
+          <h2 id="itemName">No item selected</h2>
+          <div id="itemMeta" class="muted small"></div>
+        </div>
       </div>
-    </section>
-  </main>
+
+      <div class="tabs">
+        <button class="tab-btn active" data-tab="ordersTab">Orders</button>
+        <button class="tab-btn" data-tab="historyTab">History</button>
+      </div>
+
+      <div id="ordersTab" class="tab-content active">
+        <section class="market-section">
+          <h3 class="section-title">Buy Orders</h3>
+          <div class="market-list" id="buyListWrap">
+            <table class="orders-table">
+              <thead>
+                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
+              </thead>
+              <tbody id="buyOrdersBody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section class="market-section">
+          <h3 class="section-title">Sell Orders</h3>
+          <div class="market-list" id="sellListWrap">
+            <table class="orders-table">
+              <thead>
+                <tr><th>Price</th><th>Volume</th><th>Location</th><th>Expires</th></tr>
+              </thead>
+              <tbody id="sellOrdersBody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <div id="historyTab" class="tab-content">
+        <canvas id="historyChart"></canvas>
+      </div>
+    </main>
+  </div>
 
   <footer>
     <p>Brought to you by <a href="https://evewho.com/character/2118260155" target="_blank">Erica Romero</a></p>
