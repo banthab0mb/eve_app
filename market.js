@@ -364,14 +364,14 @@ async function performSearch() {
     const regionId = regionSelect ? regionSelect.value : 'all';
 
     // fetch buy + sell (all regions if selected)
-    const [buyOrders, sellOrders] = await Promise.all([
+    const [sellOrders, buyOrders] = await Promise.all([
       fetchOrders(typeId, regionId, 'sell'),
       fetchOrders(typeId, regionId, 'buy')
     ]);
 
-    // Render tables (visible rows limited by CSS; we still slice to 60)
-    await renderOrders(buyOrders, 'buyOrdersBody', 'sell');
-    await renderOrders(sellOrders, 'sellOrdersBody', 'buy');
+    // Render tables (visible rows limited by CSS)
+    await renderOrders(sellOrders, 'buyOrdersBody', 'sell');
+    await renderOrders(buyOrders, 'sellOrdersBody', 'buy');
 
     // update history (always fetch so chart is ready)
     await renderHistoryChart(typeId, regionId);
