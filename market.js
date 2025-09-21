@@ -395,36 +395,3 @@ async function performSearch() {
     if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
   }
 }
-
-/* ---------------------
-   Small utilities
-   --------------------- */
-function startEveTime(){
-  const el = $('eveTime');
-  if (!el) return;
-  function tick(){
-    const now = new Date();
-    el.textContent = `${String(now.getUTCHours()).padStart(2,'0')}:${String(now.getUTCMinutes()).padStart(2,'0')} UTC`;
-  }
-  tick();
-  setInterval(tick, 30*1000);
-}
-
-async function fetchPlayerCount(){
-  const el = $('onlineCounter');
-  if (!el) return;
-  try {
-    const res = await fetch('https://esi.evetech.net/latest/status/');
-    if (!res.ok) throw new Error('no status');
-    const data = await res.json();
-    if (typeof data.players === 'number') {
-      el.textContent = data.players.toLocaleString();
-      el.style.color = '#378937';
-    } else {
-      el.textContent = 'Tranquility';
-    }
-  } catch (err) {
-    el.textContent = 'Tranquility unreachable';
-    el.style.color = '#9f3232';
-  }
-}
