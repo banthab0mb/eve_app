@@ -263,8 +263,8 @@ async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 40
     const expires = o.duration ? `${o.duration}d` : '-';
     const tr = document.createElement('tr');
     tr.innerHTML = `
-      <td>${formatNumber(o.price)}</td>
       <td>${o.volume_remain}</td>
+      <td>${formatNumber(o.price)}</td>
       <td title="${locName}">${locName}</td>
       <td>${expires}</td>
     `;
