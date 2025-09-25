@@ -65,11 +65,6 @@
     "ticker": "KAWA"
   },
   {
-    "id": 99000137,
-    "name": "Renaissance Federation",
-    "ticker": "RF"
-  },
-  {
     "id": 99000138,
     "name": "Ded End Conglomerates",
     "ticker": "DECO"
@@ -5280,11 +5275,6 @@
     "ticker": "LAWLZ"
   },
   {
-    "id": 99008501,
-    "name": "Student Safety",
-    "ticker": "STUD"
-  },
-  {
     "id": 99008506,
     "name": "Queens of the South",
     "ticker": "QUEEN"
@@ -9930,11 +9920,6 @@
     "ticker": "LIFE."
   },
   {
-    "id": 99011945,
-    "name": "Star Flame Alliance",
-    "ticker": "SF"
-  },
-  {
     "id": 99011952,
     "name": "Of Essence",
     "ticker": "ESSNC"
@@ -12085,11 +12070,6 @@
     "ticker": "RINDU"
   },
   {
-    "id": 99013000,
-    "name": "Caldari Tactical Operations Command",
-    "ticker": "C-TOC"
-  },
-  {
     "id": 99013003,
     "name": "Solid Try",
     "ticker": "MEH"
@@ -12143,11 +12123,6 @@
     "id": 99013020,
     "name": "PI R A T",
     "ticker": "PRT04"
-  },
-  {
-    "id": 99013022,
-    "name": "Sirius Rock Strippers",
-    "ticker": "SIRS"
   },
   {
     "id": 99013023,
@@ -12273,11 +12248,6 @@
     "id": 99013082,
     "name": "Dex Middleway's Florida Resort",
     "ticker": "GATOR"
-  },
-  {
-    "id": 99013084,
-    "name": "Sentinel.",
-    "ticker": "SNT"
   },
   {
     "id": 99013086,
@@ -13360,11 +13330,6 @@
     "ticker": "PEACE"
   },
   {
-    "id": 99013521,
-    "name": "RS Rangers",
-    "ticker": "XRSRX"
-  },
-  {
     "id": 99013524,
     "name": "AV0IDLINGS",
     "ticker": "AV0ID"
@@ -13540,11 +13505,6 @@
     "ticker": "I315I"
   },
   {
-    "id": 99013595,
-    "name": "The Hidden Boom",
-    "ticker": "BLOPA"
-  },
-  {
     "id": 99013597,
     "name": "Rixa Ipsis",
     "ticker": "RIXA"
@@ -13578,11 +13538,6 @@
     "id": 99013611,
     "name": "Final Sun Fighter Federation",
     "ticker": "FSFF"
-  },
-  {
-    "id": 99013612,
-    "name": "T O P S H E L F",
-    "ticker": "ABV"
   },
   {
     "id": 99013613,
@@ -14650,11 +14605,6 @@
     "ticker": "SXFK"
   },
   {
-    "id": 99014034,
-    "name": "Goslings",
-    "ticker": "GOS"
-  },
-  {
     "id": 99014035,
     "name": "Watatsumi Alliance",
     "ticker": "FISHY"
@@ -15170,11 +15120,6 @@
     "ticker": "90995"
   },
   {
-    "id": 99014199,
-    "name": "Interstellar Aliance",
-    "ticker": "IA"
-  },
-  {
     "id": 99014201,
     "name": "Citadel Syndicate",
     "ticker": "CTDEL"
@@ -15355,11 +15300,6 @@
     "ticker": "GWC"
   },
   {
-    "id": 99014256,
-    "name": "The Kraken's Lair",
-    "ticker": "RLYEH"
-  },
-  {
     "id": 99014258,
     "name": "Simply Spaceships",
     "ticker": "SMPLS"
@@ -15368,11 +15308,6 @@
     "id": 99014259,
     "name": "Die Neandertal Abstammung",
     "ticker": "DNA"
-  },
-  {
-    "id": 99014260,
-    "name": "New Eden Center for Equal Housing Development",
-    "ticker": "NEHUD"
   },
   {
     "id": 99014261,
@@ -15625,11 +15560,6 @@
     "ticker": "CGS"
   },
   {
-    "id": 99014326,
-    "name": "an Alliance",
-    "ticker": "XXXXX"
-  },
-  {
     "id": 99014327,
     "name": "Ganja Mining Shipwright Gang",
     "ticker": "GANJA"
@@ -15643,11 +15573,6 @@
     "id": 99014329,
     "name": "Blue Sun Alliance",
     "ticker": "BLUSU"
-  },
-  {
-    "id": 99014330,
-    "name": "Pandemic Northern Legion",
-    "ticker": "NCPL"
   },
   {
     "id": 99014331,
@@ -15703,11 +15628,6 @@
     "id": 99014342,
     "name": "Magic Carpet Ride",
     "ticker": "MAGIC"
-  },
-  {
-    "id": 99014343,
-    "name": "Bad Intent.",
-    "ticker": "HEIST"
   },
   {
     "id": 99014344,
@@ -15928,6 +15848,106 @@
     "id": 99014389,
     "name": "THE ADAM STARK",
     "ticker": "STARK"
+  },
+  {
+    "id": 99014390,
+    "name": "The Kraken's Lair",
+    "ticker": "RLYEH"
+  },
+  {
+    "id": 99014391,
+    "name": "Howitzers and Champagne",
+    "ticker": "HOW"
+  },
+  {
+    "id": 99014392,
+    "name": "Sirens of New Eden",
+    "ticker": "SIREN"
+  },
+  {
+    "id": 99014393,
+    "name": "Iron Legion United",
+    "ticker": "IRL"
+  },
+  {
+    "id": 99014394,
+    "name": "NEW EDEN CIRCUS",
+    "ticker": "NECIR"
+  },
+  {
+    "id": 99014395,
+    "name": "Kure's Yukikaze",
+    "ticker": "KYK"
+  },
+  {
+    "id": 99014396,
+    "name": "RS Rangers",
+    "ticker": "XRSRX"
+  },
+  {
+    "id": 99014397,
+    "name": "Burn the Blues",
+    "ticker": "BTB-H"
+  },
+  {
+    "id": 99014398,
+    "name": "Bloodlust.",
+    "ticker": "BAAL"
+  },
+  {
+    "id": 99014399,
+    "name": "Third Leg Alliance",
+    "ticker": "THRD"
+  },
+  {
+    "id": 99014400,
+    "name": "Heretic Nation",
+    "ticker": "HRESY"
+  },
+  {
+    "id": 99014401,
+    "name": "Republic Dragon Riders Legion",
+    "ticker": "REPDR"
+  },
+  {
+    "id": 99014402,
+    "name": "Plenitude Alliance",
+    "ticker": "PLENI"
+  },
+  {
+    "id": 99014403,
+    "name": "The Novatic Conglomerate",
+    "ticker": "TNC"
+  },
+  {
+    "id": 99014404,
+    "name": "Martyrs of the Belt Alliance",
+    "ticker": "MOTBA"
+  },
+  {
+    "id": 99014405,
+    "name": "Zalvarians Alliance",
+    "ticker": "ZALV"
+  },
+  {
+    "id": 99014406,
+    "name": "Best Friends Legion",
+    "ticker": "BFL"
+  },
+  {
+    "id": 99014407,
+    "name": "I.Z.N.A.N.K.A.",
+    "ticker": "IZ-KZ"
+  },
+  {
+    "id": 99014408,
+    "name": "Intergalactic Industrial Introverts",
+    "ticker": "III"
+  },
+  {
+    "id": 99014409,
+    "name": "SavageCrew",
+    "ticker": "SAVAG"
   },
   {
     "id": 117383987,
