@@ -123,6 +123,9 @@
         // Remove .html
         path = path.replace(/\.html$/, "");
 
+        // Change "route" to "route-planner"
+        path = path.replace(/route$/, "route-planner");
+
         // Update URL without reloading
         history.replaceState(null, "", path);
       })();
