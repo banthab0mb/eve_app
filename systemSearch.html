@@ -103,5 +103,20 @@
       setInterval(updateEveTime, 1000);
 
     </script>
+    <script>
+      // Run on page load
+      (function() {
+        let path = window.location.pathname;
+
+        // Remove .html
+        path = path.replace(/\.html$/, "");
+
+        // Change "systemSearch" to "system-search"
+        path = path.replace(/systemSearch$/, "system-search");
+
+        // Update URL without reloading
+        history.replaceState(null, "", path);
+      })();
+    </script>
 </body>
 </html>
