@@ -182,7 +182,36 @@
     return new Promise(resolve => setTimeout(resolve, ms));
   }
 
+    const CACHE_TTL = 60 * 60 * 1000; // 1 hour
+  const CACHE_KEY = "killCache";
+
+  // Load cache from localStorage
+  function loadKillCache() {
+    return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}");
+  }
+
+  // Save cache to localStorage
+  function saveKillCache(cache) {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cache));
+  }
+
+  // Clear cache (manual command)
+  window.clearKillCache = function() {
+    localStorage.removeItem(CACHE_KEY);
+    console.log("Kill cache cleared!");
+  };
+
+  // Lookup with caching
   async function getPvpKills(systemId) {
+    const now = Date.now();
+    let killCache = loadKillCache();
+
+    // check cache first
+    if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+      console.log(`Using cached kills for system ID ${systemId}`);
+      return killCache[systemId].kills;
+    }
+
     try {
       const res = await fetch(
         `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
@@ -197,10 +226,13 @@
       const kills = await res.json();
       if (!Array.isArray(kills)) return 0;
 
-      // Only count real PvP (zkb.npc === false)
-      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
-      return pvpKills.length;
+      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
 
+      // update cache
+      killCache[systemId] = { time: now, kills: pvpKills };
+      saveKillCache(killCache);
+
+      return pvpKills;
     } catch (err) {
       console.error("zKill fetch failed", err);
       return 0;

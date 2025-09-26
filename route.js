@@ -243,6 +243,7 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
 
   // check cache
   if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+    console.log(`Using cached kills for system ID ${systemId}`);
     return killCache[systemId].kills;
   }
 
