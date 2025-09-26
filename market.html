@@ -134,21 +134,6 @@
       setInterval(updateEveTime, 1000);
 
     </script>
-    <script>
-      // Run on page load
-      (function() {
-        let path = window.location.pathname;
-
-        // Remove .html
-        path = path.replace(/\.html$/, "");
-        
-        // Change "market" to "market-browser"
-        path = path.replace(/market$/, "market-browser");
-
-        // Update URL without reloading
-        history.replaceState(null, "", path);
-      })();
-    </script>
     <script src= market.js></script>
 </body>
 </html>
