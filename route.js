@@ -230,7 +230,22 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+// load cache from localStorage (or start fresh)
+let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour in ms
+
+function saveCache() {
+  localStorage.setItem("killCache", JSON.stringify(killCache));
+}
+
 async function getPvpKills(systemId, retries = 3, delay = 1000) {
+  const now = Date.now();
+
+  // check cache
+  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+    return killCache[systemId].kills;
+  }
+
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       const res = await fetch(
@@ -243,10 +258,8 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
         }
       );
 
-      // Check for rate limiting
       if (res.status === 429) {
         console.warn(`Rate limited on ${systemId}, attempt ${attempt}/${retries}`);
-        // exponential backoff
         await sleep(delay * attempt);
         continue;
       }
@@ -254,15 +267,19 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
       const kills = await res.json();
       if (!Array.isArray(kills)) return 0;
 
-      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
-      return pvpKills.length;
+      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
+
+      // update cache
+      killCache[systemId] = { time: now, kills: pvpKills };
+      saveCache();
+
+      return pvpKills;
     } catch (err) {
       console.error(`zKill fetch failed for ${systemId}, attempt ${attempt}`, err);
-      await sleep(delay * attempt); // backoff on error
+      await sleep(delay * attempt);
     }
   }
 
-  console.error(`Failed to fetch kills for ${systemId} after ${retries} retries`);
   return 0;
 }
 
