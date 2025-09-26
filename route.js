@@ -219,7 +219,7 @@ restoreAvoidList();
 // Save avoid list whenever tags change
 const observer = new MutationObserver(() => {
   const avoids = Array.from(avoidContainer.querySelectorAll(".avoid-tag"))
-    .map(tag => tag.textContent.replace("×", "").trim())
+    .map(tag => tag.textContent.replace("x", "").trim())
     .filter(v => v !== "");
   localStorage.setItem("avoid-list", JSON.stringify(avoids));
 });
@@ -230,48 +230,67 @@ function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-async function getPvpKills(systemId) {
-  try {
-    const res = await fetch(
-      `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
-      {
-        headers: {
-          "Accept-Encoding": "gzip",
-          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+async function getPvpKills(systemId, retries = 3, delay = 1000) {
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(
+        `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
+        {
+          headers: {
+            "Accept-Encoding": "gzip",
+            "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+          }
         }
+      );
+
+      // Check for rate limiting
+      if (res.status === 429) {
+        console.warn(`Rate limited on ${systemId}, attempt ${attempt}/${retries}`);
+        // exponential backoff
+        await sleep(delay * attempt);
+        continue;
       }
-    );
 
-    const kills = await res.json();
-    if (!Array.isArray(kills)) return 0;
+      const kills = await res.json();
+      if (!Array.isArray(kills)) return 0;
 
-    // Only count real PvP (zkb.npc === false)
-    const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
-    return pvpKills.length;
-  } catch (err) {
-    console.error("zKill fetch failed", err);
-    return 0;
+      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc);
+      return pvpKills.length;
+    } catch (err) {
+      console.error(`zKill fetch failed for ${systemId}, attempt ${attempt}`, err);
+      await sleep(delay * attempt); // backoff on error
+    }
   }
+
+  console.error(`Failed to fetch kills for ${systemId} after ${retries} retries`);
+  return 0;
 }
 
-// Get kills for a whole route (with 500ms delay between calls)
-async function getRouteKills(route) {
+// Route fetch with batching and adaptive backoff
+async function getRouteKills(route, batchSize = 5, delay = 1000) {
   console.log("getRouteKills called");
   const result = {};
-  for (let i = 0; i < route.length; i++) {
-    const sysId = route[i];
-    const system = systems.find(s => s.system_id === sysId);
-//  const systemName = system ? system.system : sysId; // fallback to ID if not found
 
-    // show progress in the UI
-    routeOutput.innerHTML = `<p>Fetching jump #${i+1}...</p>`;
+  for (let i = 0; i < route.length; i += batchSize) {
+    const batch = route.slice(i, i + batchSize);
 
-    result[sysId] = await getPvpKills(sysId);
-    await sleep(500); // polite delay
+    routeOutput.innerHTML = `<p>Fetching jumps ${i + 1}-${i + batch.length} of ${route.length}...</p>`;
+
+    const batchResults = await Promise.all(
+      batch.map(async (sysId) => [sysId, await getPvpKills(sysId, 5, delay)])
+    );
+
+    for (const [sysId, kills] of batchResults) {
+      result[sysId] = kills;
+    }
+
+    if (i + batchSize < route.length) {
+      await sleep(delay); // polite gap between batches
+    }
   }
+
   return result;
 }
-
 
 // Plan route
 routeBtn.addEventListener("click", async () => {
