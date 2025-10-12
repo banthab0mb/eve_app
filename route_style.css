@@ -290,7 +290,7 @@ footer a:hover { color: #fff; }
   transition: filter 0.3s ease;
 }
 
-.github-icon:hover {
+.github-icon:hover .github-icon {
   filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(120%) !important;
 }
 
