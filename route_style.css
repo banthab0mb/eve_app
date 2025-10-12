@@ -268,3 +268,33 @@ footer a:hover { color: #fff; }
   font-size: 0.9em;
   color: #ccc; /* lighter so it looks secondary */
 }
+
+/* GitHub Icon */
+.github-link {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.github-link:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.github-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%);
+  transition: filter 0.3s ease;
+}
+
+.github-icon:hover {
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(120%);
+}
+
+/* Make sure footer can hold absolutely positioned elements */
+footer {
+  position: relative;
+}
