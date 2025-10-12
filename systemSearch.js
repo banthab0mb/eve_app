@@ -18,6 +18,7 @@
   }
 
   let systems = [];
+  let systemsLoaded = false;
   let currentFocus = -1;
 
   // Load systems.json
@@ -25,7 +26,16 @@
     .then(res => res.json())
     .then(data => {
       systems = data;
+      systemsLoaded = true;
       console.log('systems.json loaded, systems:', systems.length);
+
+      // Auto-run if ?system= in URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const sysFromURL = urlParams.get('system');
+      if (sysFromURL) {
+        input.value = sysFromURL;
+        runLookup();
+      }
     })
     .catch(err => console.error('Failed to load systems.json:', err));
 
@@ -44,7 +54,7 @@
     return "sec-null";
   }
 
-  // Suggestions
+  // Suggestions helpers
   function hideSuggestions() {
     suggestionsDiv.innerHTML = '';
     suggestionsDiv.style.display = 'none';
@@ -59,7 +69,7 @@
     suggestionsDiv.innerHTML = '';
     currentFocus = -1;
 
-    if (!query || !systems || !systems.length) {
+    if (!query || !systemsLoaded) {
       hideSuggestions();
       return;
     }
@@ -153,10 +163,6 @@
   lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
-  function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   const CACHE_TTL = 60 * 60 * 1000;
   const CACHE_KEY = "killCache";
 
@@ -196,12 +202,12 @@
     const name = input.value.trim().toLowerCase();
     if (!name) return;
 
-    updateURL(name);
-
-    if (!systems || !systems.length) {
-      outputDiv.innerHTML = '<p>Systems data still loading, try again in a moment.</p>';
+    if (!systemsLoaded) {
+      outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>';
       return;
     }
+
+    updateURL(name);
 
     const system = systems.find(s => s.system.toLowerCase() === name);
     if (!system) {
@@ -239,13 +245,5 @@
     const params = new URLSearchParams(window.location.search);
     params.set('system', systemName);
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
-  }
-
-  // Auto-run if ?system= in URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const sysFromURL = urlParams.get('system');
-  if (sysFromURL) {
-    input.value = sysFromURL;
-    runLookup();
   }
 })();
