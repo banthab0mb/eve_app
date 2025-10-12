@@ -29,7 +29,7 @@ function escapeHtml(text) {
 let alliances = [];
 let corporations = [];
 
-// Load jsons
+// Load JSONs
 fetch('alliances.json')
   .then(res => res.json())
   .then(data => {
@@ -49,6 +49,11 @@ fetch('corporations.json')
 async function runLookup() {
   const name = input.value.trim();
   if (!name) return;
+
+  // Update URL without reloading
+  const params = new URLSearchParams(window.location.search);
+  params.set('q', name);
+  history.replaceState(null, '', `${window.location.pathname}?${params.toString()}`);
 
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
@@ -93,7 +98,7 @@ async function runLookup() {
     const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify([name]) // must be array of strings
+      body: JSON.stringify([name])
     });
 
     if (!res.ok) {
@@ -136,8 +141,7 @@ async function runLookup() {
 async function getAllianceInfo(id) {
   const response = await fetch(`https://esi.evetech.net/latest/alliances/${id}`);
   const alliance = await response.json();
-  console.log(alliance);                    
-  return alliance; // contains both name and ticker
+  return alliance;
 }
 
 async function renderAllianceInfo(corp) {
@@ -157,21 +161,13 @@ async function renderAllianceInfo(corp) {
 function formatOutput(result) {
   if (!result) return "No results found.";
 
-  // Helper to format date as YYYY-MM-DD
   const formatDate = (iso) => iso ? iso.split("T")[0] : "N/A";
-
-  // Helper to format sec status to 2 decimals
   const formatSec = (sec) => sec !== undefined ? sec.toFixed(1) : "N/A";
 
   if (result.category === "character") {
     const char = result.details;
     const corp = result.corp;
     const alliance = result.alliance;
-    
-    console.log(result, result.details, result.corp, result.alliance)
-    console.log(char);
-    console.log(corp);
-    console.log(alliance);  
 
     return `
 <div class="lookup-result">
@@ -206,11 +202,6 @@ function formatOutput(result) {
 
   if (result.category === "corporation") {
     const corp = result.details;
-
-    console.log(result, result.details, result.corp, result.alliance)
-    console.log(corp);
-    console.log(renderAllianceInfo(corp));
-      
     renderAllianceInfo(corp);
     return `
 <div class="lookup-result">
@@ -247,45 +238,27 @@ function formatOutput(result) {
 // Clean corporation description HTML
 function cleanDescription(raw) {
   if (!raw) return "No description.";
-
   let cleaned = raw;
 
-  // Decode unicode escapes
   cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) =>
     String.fromCharCode(parseInt(code, 16))
   );
 
-  // Clean escape sequences
   cleaned = cleaned.replace(/\\'/g, "'");
-
-  // Remove leading u' if present
-  cleaned = cleaned.replace(/^u'/, ""); // or remove it entirely
-
-  // Normalize <br> to line breaks
+  cleaned = cleaned.replace(/^u'/, "");
   cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-
-  // Convert <loc><a> and plain <a> to clickable links
   cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
   cleaned = cleaned.replace(/<loc>((?:<a href="[^"]+">[^<]*<\/a>\s*)+)<\/loc>/gi, (_, links) => links);
   cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
-
-  // Scale down font sizes (e.g. size="18" → style="font-size:1.2rem")
   cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
     const scaled = Math.min(Math.max(parseInt(size), 10), 18);
     const rem = (scaled - 8) * 0.05 + 1;
     return `<font${pre} style="font-size:${rem}rem"${post}>`;
   });
 
-  // Preserve allowed tags
   const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
-  cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag, attrs) => {
-    return allowedTags.includes(tag.toLowerCase()) ? match : "";
-  });
-
-  // Clean up whitespace
+  cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => allowedTags.includes(tag.toLowerCase()) ? match : "");
   cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
-
-  // Wrap each line in <p>
   return cleaned
     .split("\n")
     .map(line => line.trim())
@@ -330,6 +303,7 @@ function hideSuggestions() {
   suggestionsDiv.style.display = 'none';
   currentFocus = -1;
 }
+
 function setActive(items) {
   items.forEach(i => i.classList.remove('active'));
   if (currentFocus > -1 && items[currentFocus]) items[currentFocus].classList.add('active');
@@ -346,3 +320,13 @@ document.addEventListener('click', (ev) => {
 // Button trigger
 lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
 lookupBtn.addEventListener('click', runLookup);
+
+// ------------------ URL INIT ------------------
+window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get('q');
+  if (query && input) {
+    input.value = query;
+    runLookup();
+  }
+});
