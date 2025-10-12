@@ -75,44 +75,42 @@ main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !impor
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
+/* UPDATED SEARCH BOXES ONLY */
 .route-search {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  position: relative;
-}
-
-.route-search .search-group {
+  gap: 15px;
   width: 100%;
-  max-width: 300px; 
-  border-bottom: none;
+  max-width: 300px;
+  margin: 0 auto;
 }
 
 .search-group {
+  width: 100%;
   position: relative;
-  flex: 1;
-  border-bottom: none;
 }
 
 .search-group input {
   width: 100%;
-  padding: 8px;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #333;
-  color: #eee;
-  background: #1a1a1a;
   border-radius: 4px;
-  box-sizing: border-box;
-  outline: none;
-  box-shadow: none;
+  background: #1a1a1a;
+  color: #eee;
   font-family: "Shentox-Regular", sans-serif !important;
-  border-bottom: none;
+  outline: none;
 }
 
-/* Suggestions dropdown */
+.search-group input:focus {
+  border-color: #555;
+}
+
+/* Suggestions dropdown stays the same as your original */
 .suggestions {
   position: absolute;
-  top: 100%;   /* directly under input */
+  top: 100%;
   left: 0;
   right: 0;
   background: #fff;
@@ -163,7 +161,7 @@ tr:nth-child(even) { background: #141414; }
 .route-options-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* small spacing between radios, avoid container, and button */
+  gap: 6px;
 }
 
 .route-options {
@@ -183,9 +181,9 @@ tr:nth-child(even) { background: #141414; }
 
 .avoid-container {
   display: flex;
-  flex-wrap: wrap; /* so tags wrap if too many */
+  flex-wrap: wrap;
   gap: 5px;
-  align-items: center; /* vertically center tags and input */
+  align-items: center;
   margin: 0;
 }
 
@@ -211,7 +209,7 @@ tr:nth-child(even) { background: #141414; }
 .avoid-container .search-group {
   display: inline-flex;
   flex: 1;
-  min-width: 120px; /* or whatever fits */
+  min-width: 120px;
 }
 
 .avoid-container input {
@@ -266,7 +264,7 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc; /* lighter so it looks secondary */
+  color: #ccc;
   width: 8ch;
 }
 
@@ -294,7 +292,7 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important; /* pure white on hover */
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Make sure footer can hold absolutely positioned elements */
