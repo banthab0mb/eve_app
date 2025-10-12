@@ -11,29 +11,22 @@ body:
       label: Describe the bug
       description: Report the issue you're experiencing.
       value: |-
-        Title:
-        A short, clear summary of the issue.
+        ### Title:
+        _A short, clear summary of the issue._
 
-        Description:
-        A detailed explanation of what's going wrong.
+        ### Description:
+        _A detailed explanation of what's going wrong._
 
-        Steps to Reproduce:
+        ### Steps to Reproduce:
+        _How did you get the error to occur?_
 
-        Go to '…'
+        ### Expected Behavior:
+        _What you thought should happen._
 
-        Click on '…'
+        ### Actual Behavior:
+        _What actually happened._
 
-        Scroll down to '…'
-
-        See error
-
-        Expected Behavior:
-        What you thought should happen.
-
-        Actual Behavior:
-        What actually happened.
-
-        Additional Context:
-        Anything else that might help identify or reproduce the issue.
+        ### Additional Context:
+        _Anything else that might help identify or reproduce the issue._
     validations:
       required: true
