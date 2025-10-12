@@ -33,7 +33,9 @@ header, footer {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
+header { 
+  border-bottom: 2px solid #222;
+}
 
 header .app-title a { 
   font-family: "Shentox-Regular", sans-serif !important;
@@ -45,11 +47,19 @@ header .app-title a:hover { color: #fff; }
 
 nav { flex: 1; text-align: center; }
 
-nav a { color: #aaa; margin: 0 15px; text-decoration: none; font-weight: bold; }
-nav a.active, nav a:hover { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+nav a, nav f {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
 
-nav f { color: #aaa; margin: 0 15px; text-decoration: none; font-weight: bold; }
-nav f.active, nav f:hover { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+nav a.active, nav a:hover,
+nav f.active, nav f:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
 
 links {
   flex: 1;
@@ -75,6 +85,7 @@ main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !impor
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
+/* Search Boxes */
 .route-search {
   display: flex;
   flex-direction: column;
@@ -86,26 +97,30 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 .route-search .search-group {
   width: 100%;
   max-width: 300px; 
-  border-bottom: none;
 }
 
 .search-group {
   position: relative;
   flex: 1;
-  border-bottom: none;
 }
 
 .search-group input {
   width: 100%;
   padding: 8px;
   border: 1px solid #333;
-  color: #eee;
   background: #1a1a1a;
   border-radius: 4px;
   box-sizing: border-box;
   outline: none;
   box-shadow: none;
   font-family: "Shentox-Regular", sans-serif !important;
+  color: #eee;
+}
+
+/* Remove focus underline/lines */
+.search-group input:focus {
+  outline: none;
+  box-shadow: none;
   border-bottom: none;
 }
 
@@ -163,7 +178,7 @@ tr:nth-child(even) { background: #141414; }
 .route-options-wrapper {
   display: flex;
   flex-direction: column;
-  gap: 6px; /* small spacing between radios, avoid container, and button */
+  gap: 6px;
 }
 
 .route-options {
@@ -183,9 +198,9 @@ tr:nth-child(even) { background: #141414; }
 
 .avoid-container {
   display: flex;
-  flex-wrap: wrap; /* so tags wrap if too many */
+  flex-wrap: wrap;
   gap: 5px;
-  align-items: center; /* vertically center tags and input */
+  align-items: center;
   margin: 0;
 }
 
@@ -211,7 +226,7 @@ tr:nth-child(even) { background: #141414; }
 .avoid-container .search-group {
   display: inline-flex;
   flex: 1;
-  min-width: 120px; /* or whatever fits */
+  min-width: 120px;
 }
 
 .avoid-container input {
@@ -249,6 +264,7 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
+  position: relative;
 }
 
 footer p { margin: 5px 0; }
@@ -266,7 +282,7 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc; /* lighter so it looks secondary */
+  color: #ccc;
   width: 8ch;
 }
 
@@ -294,10 +310,5 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important; /* pure white on hover */
-}
-
-/* Make sure footer can hold absolutely positioned elements */
-footer {
-  position: relative;
+  filter: brightness(0) invert(1) !important;
 }
