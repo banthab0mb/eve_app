@@ -273,8 +273,8 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
 
 // Update URL to match current inputs
 const urlParams = new URLSearchParams(window.location.search);
-urlParams.set('origin', originName);
-urlParams.set('dest', destName);
+urlParams.set('origin', originInput);
+urlParams.set('dest', destInput);
 
 // optional: add avoid systems to URL
 if (avoidIds.length) {
