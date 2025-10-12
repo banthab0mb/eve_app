@@ -173,6 +173,7 @@ footer a:hover { color: #fff; }
   margin-top: 6px;
   font-size: 0.9em;
   color: #ccc; /* lighter so it looks secondary */
+  width: 8ch;
 }
 
 /* GitHub Icon */

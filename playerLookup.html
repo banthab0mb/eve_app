@@ -109,11 +109,12 @@
         const now = new Date();
         const hours = String(now.getUTCHours()).padStart(2, "0");
         const minutes = String(now.getUTCMinutes()).padStart(2, "0");
-        document.getElementById("eveTime").textContent = `${hours}:${minutes}`;
+        const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+        document.getElementById("eveTime").textContent = `${hours}:${minutes}:${seconds}`;
       }
 
       updateEveTime();
-      setInterval(updateEveTime, 1000);
+      setInterval(updateEveTime, .5);
 
     </script>
 </body>

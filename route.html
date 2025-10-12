@@ -122,16 +122,19 @@
           if (playerCount) playerCount.textContent = "Tranquility unreachable";
           playerCount.style.color = "#9f3232ff";
       });
-
-    function updateEveTime() {
-      const now = new Date();
-      const hours = String(now.getUTCHours()).padStart(2, "0");
-      const minutes = String(now.getUTCMinutes()).padStart(2, "0");
-      document.getElementById("eveTime").textContent = `${hours}:${minutes}`;
-    }
-
-    updateEveTime();
-    setInterval(updateEveTime, 1000);
   </script>
+    <script>
+      function updateEveTime() {
+        const now = new Date();
+        const hours = String(now.getUTCHours()).padStart(2, "0");
+        const minutes = String(now.getUTCMinutes()).padStart(2, "0");
+        const seconds = String(now.getUTCSeconds()).padStart(2, "0");
+        document.getElementById("eveTime").textContent = `${hours}:${minutes}:${seconds}`;
+      }
+
+      updateEveTime();
+      setInterval(updateEveTime, .5);
+
+    </script>
 </body>
 </html>

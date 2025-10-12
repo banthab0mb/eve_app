@@ -314,6 +314,7 @@ footer a:hover { color: #fff; }
   margin-top: 6px;
   font-size: 0.9em;
   color: #ccc;
+  width: 8ch;
 }
 
 /* GitHub Icon */
