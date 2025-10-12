@@ -1,0 +1,39 @@
+name: "Bug Report"
+title: "[Bug Report] "
+description: "Report the issue you're experiencing."
+projects: []
+labels:
+  - Bug
+body:
+  - type: textarea
+    id: textarea-0
+    attributes:
+      label: Describe the bug
+      description: Report the issue you're experiencing.
+      value: |-
+        Title:
+        A short, clear summary of the issue.
+
+        Description:
+        A detailed explanation of what's going wrong.
+
+        Steps to Reproduce:
+
+        Go to '…'
+
+        Click on '…'
+
+        Scroll down to '…'
+
+        See error
+
+        Expected Behavior:
+        What you thought should happen.
+
+        Actual Behavior:
+        What actually happened.
+
+        Additional Context:
+        Anything else that might help identify or reproduce the issue.
+    validations:
+      required: true
