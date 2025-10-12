@@ -282,21 +282,20 @@ footer a:hover { color: #fff; }
   border-bottom: none;
 }
 
-.github-link:hover .github-icon {
+.github-link:hover {
   opacity: 1;
   transform: translateY(-2px);
-  filter: brightness(0) invert(1) !important; 
 }
 
-.github-icon {
+.github-link .github-icon {
   width: 24px;
   height: 24px;
   filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%);
   transition: filter 0.3s ease;
 }
 
-.github-icon:hover .github-icon {
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(120%) !important;
+.github-link:hover .github-icon {
+  filter: brightness(0) invert(1) !important; /* pure white on hover */
 }
 
 /* Make sure footer can hold absolutely positioned elements */
