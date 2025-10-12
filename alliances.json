@@ -8326,8 +8326,8 @@
   },
   {
     "id": 99010991,
-    "name": "IG Farben Aktiengessellschaft Alliance",
-    "ticker": "0"
+    "name": "New Eden Alliance 99010991",
+    "ticker": "NEA91"
   },
   {
     "id": 99010992,
@@ -17493,5 +17493,170 @@
     "id": 2077084692,
     "name": "The OORT Cloud",
     "ticker": "OORT"
+  },
+  {
+    "id": 99014410,
+    "name": "Callao Cartel",
+    "ticker": "CPPS"
+  },
+  {
+    "id": 99014411,
+    "name": "Double D and M",
+    "ticker": "TTAAM"
+  },
+  {
+    "id": 99014412,
+    "name": "Blood Alcohol Content.",
+    "ticker": "BAC"
+  },
+  {
+    "id": 99014414,
+    "name": "Merchanting Industry Finance Philanthropy Alliance",
+    "ticker": "ME"
+  },
+  {
+    "id": 99014415,
+    "name": "Iron Rose.",
+    "ticker": "IRON"
+  },
+  {
+    "id": 99014416,
+    "name": "Black Hole Syndicatum",
+    "ticker": "BHS"
+  },
+  {
+    "id": 99014417,
+    "name": "Song of the Dragon",
+    "ticker": "SONG"
+  },
+  {
+    "id": 99014418,
+    "name": "The Freeport Project",
+    "ticker": "TFP"
+  },
+  {
+    "id": 99014419,
+    "name": "Seals on the rocks",
+    "ticker": "SLS"
+  },
+  {
+    "id": 99014420,
+    "name": "Safe Word Pending",
+    "ticker": "SFW"
+  },
+  {
+    "id": 99014421,
+    "name": "YUZUSOFT.",
+    "ticker": "YUZU"
+  },
+  {
+    "id": 99014422,
+    "name": "Djibouti Holdings",
+    "ticker": "DH"
+  },
+  {
+    "id": 99014423,
+    "name": "Delve Housing Authority",
+    "ticker": "HOUZ"
+  },
+  {
+    "id": 99014424,
+    "name": "The Chronic Cartel",
+    "ticker": "-THC-"
+  },
+  {
+    "id": 99014425,
+    "name": "Wormhole State",
+    "ticker": "STATE"
+  },
+  {
+    "id": 99014426,
+    "name": "The Crab Attack Team",
+    "ticker": "KRAB."
+  },
+  {
+    "id": 99014427,
+    "name": "Itty Bitty Asteroid Academy",
+    "ticker": "BITTY"
+  },
+  {
+    "id": 99014428,
+    "name": "Drunk Band",
+    "ticker": "DRNK"
+  },
+  {
+    "id": 99014429,
+    "name": "La pelle du sel",
+    "ticker": "TAUNT"
+  },
+  {
+    "id": 99014430,
+    "name": "Microwave Mining",
+    "ticker": "MICRO"
+  },
+  {
+    "id": 99014431,
+    "name": "Just Lizard",
+    "ticker": "LIZRD"
+  },
+  {
+    "id": 99014432,
+    "name": "SkyWorkers Alliance",
+    "ticker": "SKYWO"
+  },
+  {
+    "id": 99014433,
+    "name": "ECTrade NPSI",
+    "ticker": "ECT"
+  },
+  {
+    "id": 99014434,
+    "name": "Warlock Industries Cinematics",
+    "ticker": "VIDEO"
+  },
+  {
+    "id": 99014436,
+    "name": "Nothing More.",
+    "ticker": "NM"
+  },
+  {
+    "id": 99014438,
+    "name": "Core Consortium",
+    "ticker": "CRC"
+  },
+  {
+    "id": 99014439,
+    "name": "The Yorkshire Trading Company",
+    "ticker": "YTC"
+  },
+  {
+    "id": 99014440,
+    "name": "Stellar Architects",
+    "ticker": "-SA-"
+  },
+  {
+    "id": 99014441,
+    "name": "Tech 3 Dregs.",
+    "ticker": "T3D"
+  },
+  {
+    "id": 99014442,
+    "name": "Mice Kitchen Lab. Alliance",
+    "ticker": "MICE"
+  },
+  {
+    "id": 99014443,
+    "name": "GooDnesS of the UniverSe",
+    "ticker": "DVMRU"
+  },
+  {
+    "id": 99014444,
+    "name": "New Autistic Tactical Order",
+    "ticker": "NATO"
+  },
+  {
+    "id": 99014445,
+    "name": "Rolled Out.",
+    "ticker": "ROLL."
   }
 ]
