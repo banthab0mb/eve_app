@@ -1,11 +1,19 @@
+/* Reset + Layout */
 html, body {
   height: 100%;
   margin: 0;
-  font-family: "Shentox-Regular", sans-serif !important;
+  font-family: Arial, sans-serif;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
+}
+
+@font-face {
+  font-family: 'Square721ExtendedBold';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
 }
 
 @font-face {
@@ -32,9 +40,7 @@ header, footer {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-header { 
-  border-bottom: 2px solid #222;
-}
+header { border-bottom: 2px solid #222; }
 
 header .app-title a { 
   font-family: "Shentox-Regular", sans-serif !important;
@@ -45,31 +51,19 @@ header .app-title a {
 
 header .app-title a:hover { color: #fff; }
 
-nav { flex: 1; text-align: center; }
+nav {
+  flex: 1;
+  text-align: center;
+}
 
-nav a, nav f {
+nav a {
   color: #aaa;
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
 }
 
-nav a.active, nav a:hover,
-nav f.active, nav f:hover {
-  color: #fff;
-  border-bottom: 2px solid #fff;
-  padding-bottom: 2px;
-}
-
-links { flex: 1; }
-
-links a {
-  color: #aaa;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-links a.active, links a:hover {
+nav a.active, nav a:hover {
   color: #fff;
   border-bottom: 2px solid #fff;
   padding-bottom: 2px;
@@ -77,79 +71,44 @@ links a.active, links a:hover {
 
 #onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
+/* Main Content */
 main { 
   flex: 1; 
   padding: 20px; 
   font-family: "Shentox-Regular", sans-serif !important;
-}
-
-.container { 
-  max-width: 600px; 
-  margin: 0 auto; 
-  font-family: "Shentox-Regular", sans-serif !important;
-}
-
-h2 { 
-  margin-bottom: 15px; 
-  border-bottom: 1px solid #333; 
-  padding-bottom: 5px; 
-}
-
-.route-search {
-  display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 10px;
-  position: relative;
 }
 
-.route-search .search-group {
-  width: 100%;
-  max-width: 300px; 
-}
+h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
-.search-group {
-  position: relative;
-  flex: 1;
-}
-
-.search-group input,
-.avoid-container input,
-input[type="search"],
-textarea {
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #333 !important;
-  border-bottom: none !important;
-  border-radius: 4px;
-  box-sizing: border-box;
-  outline: none !important;
-  box-shadow: none !important;
+body {
   font-family: "Shentox-Regular", sans-serif !important;
-  color: #eee !important;
-  background: #1a1a1a !important;
-  -webkit-appearance: none !important;
-  -moz-appearance: none !important;
-  appearance: none !important;
 }
 
-.search-group input:focus,
-.avoid-container input:focus,
-input[type="search"]:focus,
-textarea:focus {
-  outline: none !important;
-  box-shadow: none !important;
-  border-bottom: none !important;
+/* Route Search Boxes (Player Lookup style) */
+.route-search .search-group input {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  color: #eee;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  outline: none;
+  box-shadow: none;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
-input[type="search"]::-webkit-search-decoration,
-input[type="search"]::-webkit-search-cancel-button,
-input[type="search"]::-webkit-search-results-button,
-input[type="search"]::-webkit-search-results-decoration {
-  display: none;
+.route-search .search-group input:focus,
+.route-search .search-group input:hover {
+  border: 1px solid #333;
+  box-shadow: none;
 }
 
-.suggestions {
+/* Suggestions dropdown */
+.route-search .search-group .suggestions {
   position: absolute;
   top: 100%;
   left: 0;
@@ -163,14 +122,31 @@ input[type="search"]::-webkit-search-results-decoration {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-.suggestions .suggestion {
+.route-search .search-group .suggestions .suggestion {
   padding: 5px 10px;
   cursor: pointer;
 }
 
-.suggestions .suggestion:hover,
-.suggestions .active {
+.route-search .search-group .suggestions .suggestion:hover,
+.route-search .search-group .suggestions .active {
   background-color: #eee;
+}
+
+/* Route options */
+.route-options-wrapper {
+  margin-top: 20px;
+}
+
+.route-options {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.flag-select label {
+  margin-right: 10px;
+  font-family: "Shentox-Regular", sans-serif !important;
+  color: #ccc;
 }
 
 #routeBtn {
@@ -180,77 +156,19 @@ input[type="search"]::-webkit-search-results-decoration {
   border: 1px solid #555;
   border-radius: 4px;
   cursor: pointer;
-  align-self: flex-start;
-  margin: 0;
+  font-family: "Shentox-Regular", sans-serif !important;
+  margin-top: 10px;
+}
+
+/* Output */
+#total-jumps,
+#route-output {
+  margin-top: 20px;
+  color: #ccc;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-#routeBtn:hover { background: #333; }
-
-.suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
-
-table { 
-  width: 100%; 
-  border-collapse: collapse; 
-  margin-top: 15px; 
-  font-size: 0.9rem; 
-}
-
-th, td { border: 1px solid #333; padding: 8px; text-align: center; }
-
-th { background: #1a1a1a; }
-tr:nth-child(even) { background: #141414; }
-
-.route-options-wrapper { display: flex; flex-direction: column; gap: 6px; }
-.route-options { display: flex; flex-direction: column; gap: 4px; margin: 0; }
-
-.flag-select { display: flex; gap: 15px; font-size: 0.9rem; }
-.flag-select input { margin-right: 5px; }
-
-.avoid-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  align-items: center;
-  margin: 0;
-}
-
-.avoid-tag {
-  display: inline-flex;
-  align-items: center;
-  padding: 2px 6px;
-  background-color: #333;
-  color: #fff;
-  border-radius: 3px;
-  font-size: 0.9em;
-}
-
-.avoid-tag .remove-btn {
-  margin-left: 4px;
-  background: none;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.avoid-container .search-group { display: inline-flex; flex: 1; min-width: 120px; }
-.avoid-container input { flex: 1; min-width: 120px; padding: 4px; }
-
-.sec-blue { color: #2e74dc; }
-.sec-lighter-blue { color: #3c9ced; }
-.sec-high-blue { color: #4bcef4; }
-.sec-sea { color:#60daa6; }
-.sec-green { color:#71e452; }
-.sec-yellow { color: #eeff8a; }
-.sec-low { color: #dc6c09; }
-.sec-rorange { color: #d1440d; }
-.sec-red { color: #bc1116; }
-.sec-purple { color: #6e221a; }
-.sec-null { color: #8f2f69; }
-
-.kills-high { color: #f00; }
-
+/* Footer */
 footer {
   border-top: 2px solid #222;
   flex-shrink: 0;
@@ -263,11 +181,12 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
-  position: relative;
 }
 
 footer p { margin: 5px 0; }
-footer a { color: #888; text-decoration: none; }
+
+footer a { color: #888; text-decoration: none; font-weight: normal; }
+
 footer a:hover { color: #fff; }
 
 #onlineCounter {
@@ -276,19 +195,29 @@ footer a:hover { color: #fff; }
   font-family: "Shentox-Medium", sans-serif !important;
 }
 
-#eveTime { margin-top: 6px; font-size: 0.9em; color: #ccc; width: 8ch; }
+#eveTime {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ccc;
+  width: 8ch;
+}
 
+/* GitHub Icon */
 .github-link {
   position: absolute;
   right: 20px;
   bottom: 15px;
   opacity: 0.7;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
-  border-bottom: none;
+  text-decoration: none !important;
+  border-bottom: none !important;
 }
 
-.github-link:hover { opacity: 1; transform: translateY(-2px); }
+.github-link:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  padding-bottom: 0 !important;
+}
 
 .github-link .github-icon {
   width: 24px;
@@ -297,4 +226,9 @@ footer a:hover { color: #fff; }
   transition: filter 0.3s ease;
 }
 
-.github-link:hover .github-icon { filter: brightness(0) invert(1) !important; }
+.github-link:hover .github-icon {
+  filter: brightness(0) invert(1) !important;
+}
+
+/* Make sure footer can hold absolutely positioned elements */
+footer { position: relative; }
