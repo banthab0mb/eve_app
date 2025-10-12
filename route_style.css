@@ -101,18 +101,20 @@ main {
   border-color: #555;
 }
 
+/* Suggestions dropdown */
 .suggestions {
   display: none;
   position: absolute;
-  top: 100%;
+  top: 100%;   /* directly under input */
   left: 0;
   right: 0;
-  background: #1a1a1a;
-  border: 1px solid #333;
+  width: 100%; /* match input width */
+  background: #fff;
+  border: 1px solid #ccc;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  color: #eee;
+  color: #000;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
@@ -123,7 +125,7 @@ main {
 
 .suggestions .suggestion:hover,
 .suggestions .active {
-  background-color: #333;
+  background-color: #eee;
 }
 
 .route-options-wrapper {
