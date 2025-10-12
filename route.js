@@ -26,7 +26,7 @@ function getSystemId(name) {
   return system ? system.system_id : null;
 }
 
-// Get color value for security status
+// Security status classes
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -41,7 +41,7 @@ function secClass(sec) {
   return "sec-null";
 }
 
-// Get kills in the system
+// Kills in the system
 function getKills(systemId) {
   const entry = systemKills.find(s => s.system_id === systemId);
   return entry ? entry.ship_kills : 0;
@@ -58,7 +58,6 @@ function addAvoidTag(systemName) {
   const sysId = getSystemId(systemName);
   if (!sysId) return;
 
-  // Prevent duplicates
   if (getAvoidIds().includes(String(sysId))) return;
 
   const tag = document.createElement("span");
@@ -69,12 +68,14 @@ function addAvoidTag(systemName) {
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "×";
   removeBtn.classList.add("remove-btn");
-  removeBtn.addEventListener("click", () => tag.remove());
+  removeBtn.addEventListener("click", () => {
+    tag.remove();
+    saveAvoidList();
+  });
 
   tag.appendChild(removeBtn);
   avoidContainer.insertBefore(tag, avoidContainer.querySelector(".search-group:last-child"));
-
-  saveAvoidList(); // save immediately
+  saveAvoidList();
 }
 
 // Create new avoid input
@@ -109,7 +110,9 @@ function createAvoidInput(value = "") {
 
   input.addEventListener("input", () => {
     const lastInput = avoidContainer.querySelector("input:last-child");
-    if (input === lastInput && input.value.trim() !== "") createAvoidInput();
+    if (input === lastInput && input.value.trim() !== "") {
+      createAvoidInput();
+    }
   });
 
   input.addEventListener("blur", () => {
@@ -140,12 +143,8 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
       div.classList.add("suggestion");
       div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
       div.addEventListener("click", () => {
-        if (isAvoid) {
-          addAvoidTag(s.system);
-          input.value = "";
-        } else {
-          input.value = s.system;
-        }
+        if (isAvoid) addAvoidTag(s.system);
+        else input.value = s.system;
         suggestionsDiv.innerHTML = "";
         suggestionsDiv.style.display = "none";
       });
@@ -175,7 +174,6 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
         const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
         if (isAvoid) addAvoidTag(systemName);
         else input.value = systemName;
-        input.value = isAvoid ? "" : input.value;
         suggestionsDiv.innerHTML = "";
       }
     }
@@ -195,7 +193,7 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
 
-// Remember last chosen route flag
+// --- Remember last chosen route flag ---
 const flagRadios = document.querySelectorAll("input[name='route-flag']");
 const savedFlag = localStorage.getItem("route-flag");
 if (savedFlag) {
@@ -208,49 +206,48 @@ flagRadios.forEach(radio => {
   });
 });
 
-// Persistent avoids
+// Restore avoid list
 function restoreAvoidList() {
   const stored = JSON.parse(localStorage.getItem("avoid-list") || "[]");
-  stored.forEach(name => addAvoidTag(name));
+  if (stored.length) stored.forEach(name => addAvoidTag(name));
   createAvoidInput();
 }
+restoreAvoidList();
+
 function saveAvoidList() {
   const avoids = Array.from(avoidContainer.querySelectorAll(".avoid-tag"))
-    .map(tag => tag.textContent.replace("×","").trim())
+    .map(tag => tag.textContent.replace("×", "").trim())
     .filter(v => v !== "");
   localStorage.setItem("avoid-list", JSON.stringify(avoids));
 }
-const observer = new MutationObserver(saveAvoidList);
-observer.observe(avoidContainer, { childList: true, subtree: true });
-restoreAvoidList();
 
 // Sleep helper
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-// Kill cache
+// load cache from localStorage (or start fresh)
 let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
-const CACHE_TTL = 60 * 60 * 1000;
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour in ms
 function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
 
 async function getPvpKills(systemId, retries = 3, delay = 1000) {
   const now = Date.now();
-  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
+  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+    return killCache[systemId].kills;
+  }
 
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
-      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
-        headers: {
-          "Accept-Encoding": "gzip",
-          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
-        }
-      });
-
-      if (res.status === 429) { await sleep(delay * attempt); continue; }
-
+      const res = await fetch(
+        `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
+        { headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" } }
+      );
+      if (res.status === 429) {
+        await sleep(delay * attempt);
+        continue;
+      }
       const kills = await res.json();
       if (!Array.isArray(kills)) return 0;
       const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
-
       killCache[systemId] = { time: now, kills: pvpKills };
       saveCache();
       return pvpKills;
@@ -268,7 +265,7 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
     const batch = route.slice(i, i + batchSize);
     routeOutput.innerHTML = `<p>Fetching jumps ${i + 1}-${i + batch.length} of ${route.length}...</p>`;
     const batchResults = await Promise.all(batch.map(async sysId => [sysId, await getPvpKills(sysId, 5, delay)]));
-    for (const [sysId, kills] of batchResults) result[sysId] = kills;
+    batchResults.forEach(([sysId, kills]) => result[sysId] = kills);
     if (i + batchSize < route.length) await sleep(delay);
   }
   return result;
@@ -284,7 +281,10 @@ routeBtn.addEventListener("click", async () => {
   const destId = getSystemId(destName);
   const avoidIds = getAvoidIds();
 
-  if (!originId || !destId) { routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; return; }
+  if (!originId || !destId) {
+    routeOutput.innerHTML = "<p>Origin or destination system not found!</p>";
+    return;
+  }
 
   const flag = document.querySelector("input[name='route-flag']:checked").value;
   routeOutput.innerHTML = "<p>Fetching route...</p>";
@@ -295,31 +295,33 @@ routeBtn.addEventListener("click", async () => {
 
     const res = await fetch(url);
     const routeData = await res.json();
-    if (!routeData || !routeData.length) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
+    if (!routeData || !routeData.length) {
+      routeOutput.innerHTML = "<p>No route found.</p>";
+      return;
+    }
+
+    const routeKills = await getRouteKills(routeData);
 
     let html = `<table>
       <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
 
-    const routeKills = await getRouteKills(routeData);
-
-    for (let i = 0; i < routeData.length; i++) {
-      const sysId = routeData[i];
+    routeData.forEach((sysId, i) => {
       const system = systems.find(s => s.system_id === sysId);
-      if (!system) continue;
+      if (!system) return;
 
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
       const kills = routeKills[sysId] || 0;
-      const killClass = (kills >= 5) ? 'kills-high' : "";
+      const killClass = kills >= 5 ? "kills-high" : "";
 
       html += `<tr>
         <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
+        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
-    }
+    });
 
     totalJumps.innerHTML = `Total Jumps: ${routeData.length}`;
     html += "</table>";
@@ -329,3 +331,14 @@ routeBtn.addEventListener("click", async () => {
     routeOutput.innerHTML = "<p>Error fetching route.</p>";
   }
 });
+
+// Populate origin/destination from URL
+function populateFromURL() {
+  const params = new URLSearchParams(window.location.search);
+  const origin = params.get("origin");
+  const dest = params.get("dest");
+  if (origin) originInput.value = origin;
+  if (dest) destInput.value = dest;
+  if (origin || dest) routeBtn.click();
+}
+populateFromURL();
