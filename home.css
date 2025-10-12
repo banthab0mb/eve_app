@@ -148,12 +148,13 @@ footer a:hover { color: #fff; }
 .github-link:hover .github-icon {
   opacity: 1;
   transform: translateY(-2px);
+  filter: invert(100%) !important;
 }
 
 .github-icon {
   width: 24px;
   height: 24px;
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%);
+  filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%);
   transition: filter 0.3s ease;
 }
 
