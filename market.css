@@ -325,7 +325,7 @@ footer a:hover { color: #fff; }
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.github-link:hover {
+.github-link:hover .github-icon {
   opacity: 1;
   transform: translateY(-2px);
 }
