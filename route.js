@@ -139,20 +139,25 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
 
     matches.forEach(s => {
-      const div = document.createElement("div");
-      div.classList.add("suggestion");
-      div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-      div.addEventListener("click", () => {
-        if (isAvoid) {
-          addAvoidTag(s.system);
-          input.value = "";
-        } else {
-          input.value = s.system;
-        }
-        suggestionsDiv.innerHTML = "";
-      });
-      suggestionsDiv.appendChild(div);
+    const div = document.createElement("div");
+    div.classList.add("suggestion");
+    div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
+    div.addEventListener("click", () => {
+      if (isAvoid) {
+        addAvoidTag(s.system);
+        input.value = "";
+      } else {
+        input.value = s.system;
+      }
+      suggestionsDiv.innerHTML = "";
+      suggestionsDiv.style.display = "none";
     });
+    suggestionsDiv.appendChild(div);
+  });
+
+  // Show or hide suggestions
+  suggestionsDiv.style.display = matches.length ? "block" : "none";
+
   });
 
   input.addEventListener("keydown", e => {
