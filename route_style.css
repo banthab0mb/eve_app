@@ -116,6 +116,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   background: #fff;
   border: 1px solid #ccc;
   max-height: 200px;
+  max-width: 300px;
   overflow-y: auto;
   z-index: 1000;
   color: #000;
@@ -152,10 +153,29 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 .suggestion span.region { font-style: italic; color: #555; margin-left: 5px; }
 
 /* Table */
-table { width: 100%; border-collapse: collapse; margin-top: 15px; font-size: 0.9rem; }
-th, td { border: 1px solid #333; padding: 8px; text-align: center; }
-th { background: #1a1a1a; }
-tr:nth-child(even) { background: #141414; }
+table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  margin-top: 15px; 
+  font-size: 0.9rem; 
+  max-width: 700 px;
+  table-layout: auto;
+}
+
+th, td { 
+  white-space: nowrap;
+  border: 1px solid #333; 
+  padding: 8px; 
+  text-align: center; 
+}
+
+th { 
+  background: #1a1a1a; 
+}
+
+tr:nth-child(even) { 
+  background: #141414; 
+}
 
 /* Route options */
 .route-options-wrapper {
