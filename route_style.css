@@ -291,7 +291,7 @@ footer a:hover { color: #fff; }
 }
 
 .github-icon:hover {
-  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(120%);
+  filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(120%) !important;
 }
 
 /* Make sure footer can hold absolutely positioned elements */
