@@ -148,6 +148,7 @@ footer a:hover { color: #fff; }
 .github-link:hover .github-icon {
   opacity: 1;
   transform: translateY(-2px);
+  filter: brightness(0) invert(1) !important; 
 }
 
 .github-icon {
