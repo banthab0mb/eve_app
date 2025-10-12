@@ -271,6 +271,24 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
   return result;
 }
 
+// Update URL to match current inputs
+const urlParams = new URLSearchParams(window.location.search);
+urlParams.set('origin', originName);
+urlParams.set('dest', destName);
+
+// optional: add avoid systems to URL
+if (avoidIds.length) {
+  urlParams.set('avoid', avoidIds.map(id => {
+    const sys = systems.find(s => s.system_id == id);
+    return sys ? sys.system : '';
+  }).join(','));
+} else {
+  urlParams.delete('avoid');
+}
+
+// update browser URL without reloading
+history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
+
 // Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
