@@ -10,13 +10,6 @@ html, body {
 }
 
 @font-face {
-  font-family: 'Square721ExtendedBold';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
-}
-
-@font-face {
   font-family: 'Shentox-Regular';
   font-style: normal;
   font-weight: normal;
@@ -43,7 +36,6 @@ header, footer {
 header { border-bottom: 2px solid #222; }
 
 header .app-title a { 
-  font-family: "Shentox-Regular", sans-serif !important;
   font-size: 1.5rem; 
   color: #fff; 
   text-decoration: none; 
@@ -69,78 +61,77 @@ nav a.active, nav a:hover {
   padding-bottom: 2px;
 }
 
-#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
-
-/* Main Content */
 main { 
   flex: 1; 
   padding: 20px; 
-  font-family: "Shentox-Regular", sans-serif !important;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
-
-body {
-  font-family: "Shentox-Regular", sans-serif !important;
+.route-search {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  width: 100%;
+  max-width: 300px; /* same as player lookup input */
+  margin: 0 auto;
 }
 
-/* Route Search Boxes (Player Lookup style) */
-.route-search .search-group input {
+.search-group {
+  width: 100%;
+  position: relative;
+}
+
+.search-group input {
   width: 100%;
   padding: 10px;
   font-size: 16px;
-  color: #eee;
-  background: #1a1a1a;
   border: 1px solid #333;
   border-radius: 4px;
-  outline: none;
-  box-shadow: none;
+  background: #1a1a1a;
+  color: #eee;
   font-family: "Shentox-Regular", sans-serif !important;
+  outline: none;
 }
 
-.route-search .search-group input:focus,
-.route-search .search-group input:hover {
-  border: 1px solid #333;
-  box-shadow: none;
+.search-group input:focus {
+  border-color: #555;
 }
 
-/* Suggestions dropdown */
-.route-search .search-group .suggestions {
+.suggestions {
+  display: none;
   position: absolute;
   top: 100%;
   left: 0;
   right: 0;
-  background: #fff;
-  border: 1px solid #ccc;
+  background: #1a1a1a;
+  border: 1px solid #333;
   max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
-  color: #000;
+  color: #eee;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-.route-search .search-group .suggestions .suggestion {
+.suggestions .suggestion {
   padding: 5px 10px;
   cursor: pointer;
 }
 
-.route-search .search-group .suggestions .suggestion:hover,
-.route-search .search-group .suggestions .active {
-  background-color: #eee;
+.suggestions .suggestion:hover,
+.suggestions .active {
+  background-color: #333;
 }
 
-/* Route options */
 .route-options-wrapper {
   margin-top: 20px;
-}
-
-.route-options {
   display: flex;
-  gap: 20px;
-  flex-wrap: wrap;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
 .flag-select label {
@@ -157,22 +148,31 @@ body {
   border-radius: 4px;
   cursor: pointer;
   font-family: "Shentox-Regular", sans-serif !important;
-  margin-top: 10px;
 }
 
-/* Output */
 #total-jumps,
 #route-output {
   margin-top: 20px;
   color: #ccc;
+  text-align: center;
   font-family: "Shentox-Regular", sans-serif !important;
 }
+
+.sec-blue { color: #2e74dc; } /* 1.0 */
+.sec-lighter-blue { color: #3c9ced; } /* 0.9 */
+.sec-high-blue { color: #4bcef4; } /* 0.8 */
+.sec-sea { color:#60daa6; } /* 0.7 */
+.sec-green { color:#71e452; } /* 0.6 */
+.sec-yellow { color: #eeff8a; } /* 0.5 */
+.sec-low { color: #dc6c09; } /* 0.4 */
+.sec-rorange { color: #d1440d; } /* 0.3 */
+.sec-red { color: #bc1116; } /* 0.2 */
+.sec-purple { color: #6e221a; } /* 0.1 */
+.sec-null { color: #8f2f69; } /* 0 >= */
 
 /* Footer */
 footer {
   border-top: 2px solid #222;
-  flex-shrink: 0;
-  flex-grow: 0;
   text-align: center;
   flex-direction: column;
   display: flex;
@@ -180,12 +180,11 @@ footer {
   padding: 15px 20px;
   background: #111;
   margin-top: auto;
-  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 footer p { margin: 5px 0; }
 
-footer a { color: #888; text-decoration: none; font-weight: normal; }
+footer a { color: #888; text-decoration: none; }
 
 footer a:hover { color: #fff; }
 
@@ -229,6 +228,3 @@ footer a:hover { color: #fff; }
 .github-link:hover .github-icon {
   filter: brightness(0) invert(1) !important;
 }
-
-/* Make sure footer can hold absolutely positioned elements */
-footer { position: relative; }
