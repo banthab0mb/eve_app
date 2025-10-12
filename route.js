@@ -26,7 +26,7 @@ function getSystemId(name) {
   return system ? system.system_id : null;
 }
 
-// Security status classes
+// Get color value for security status
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -41,7 +41,7 @@ function secClass(sec) {
   return "sec-null";
 }
 
-// Kills in the system
+// Get kills in the system
 function getKills(systemId) {
   const entry = systemKills.find(s => s.system_id === systemId);
   return entry ? entry.ship_kills : 0;
@@ -58,6 +58,7 @@ function addAvoidTag(systemName) {
   const sysId = getSystemId(systemName);
   if (!sysId) return;
 
+  // Prevent duplicates
   if (getAvoidIds().includes(String(sysId))) return;
 
   const tag = document.createElement("span");
@@ -68,14 +69,10 @@ function addAvoidTag(systemName) {
   const removeBtn = document.createElement("button");
   removeBtn.textContent = "×";
   removeBtn.classList.add("remove-btn");
-  removeBtn.addEventListener("click", () => {
-    tag.remove();
-    saveAvoidList();
-  });
+  removeBtn.addEventListener("click", () => tag.remove());
 
   tag.appendChild(removeBtn);
   avoidContainer.insertBefore(tag, avoidContainer.querySelector(".search-group:last-child"));
-  saveAvoidList();
 }
 
 // Create new avoid input
@@ -97,6 +94,7 @@ function createAvoidInput(value = "") {
 
   setupAutocomplete(input, suggestionsDiv.id = "avoid-suggestions-" + Date.now(), true);
 
+  // On Enter, add system as avoid tag
   input.addEventListener("keydown", e => {
     if (e.key === "Enter") {
       e.preventDefault();
@@ -108,6 +106,7 @@ function createAvoidInput(value = "") {
     }
   });
 
+  // Add next input dynamically when typing in last box
   input.addEventListener("input", () => {
     const lastInput = avoidContainer.querySelector("input:last-child");
     if (input === lastInput && input.value.trim() !== "") {
@@ -115,6 +114,7 @@ function createAvoidInput(value = "") {
     }
   });
 
+  // Remove empty inputs on blur if more than one
   input.addEventListener("blur", () => {
     if (input.value.trim() === "" && avoidContainer.querySelectorAll(".search-group").length > 1) {
       group.remove();
@@ -143,15 +143,16 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
       div.classList.add("suggestion");
       div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
       div.addEventListener("click", () => {
-        if (isAvoid) addAvoidTag(s.system);
-        else input.value = s.system;
+        if (isAvoid) {
+          addAvoidTag(s.system);
+          input.value = "";
+        } else {
+          input.value = s.system;
+        }
         suggestionsDiv.innerHTML = "";
-        suggestionsDiv.style.display = "none";
       });
       suggestionsDiv.appendChild(div);
     });
-
-    suggestionsDiv.style.display = matches.length ? "block" : "none";
   });
 
   input.addEventListener("keydown", e => {
@@ -174,6 +175,7 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
         const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
         if (isAvoid) addAvoidTag(systemName);
         else input.value = systemName;
+        input.value = isAvoid ? "" : input.value;
         suggestionsDiv.innerHTML = "";
       }
     }
@@ -206,7 +208,7 @@ flagRadios.forEach(radio => {
   });
 });
 
-// Restore avoid list
+// Initialize first avoid input and restore saved avoids
 function restoreAvoidList() {
   const stored = JSON.parse(localStorage.getItem("avoid-list") || "[]");
   if (stored.length) stored.forEach(name => addAvoidTag(name));
@@ -214,24 +216,34 @@ function restoreAvoidList() {
 }
 restoreAvoidList();
 
-function saveAvoidList() {
+// Save avoid list whenever tags change
+const observer = new MutationObserver(() => {
   const avoids = Array.from(avoidContainer.querySelectorAll(".avoid-tag"))
-    .map(tag => tag.textContent.replace("×", "").trim())
+    .map(tag => tag.textContent.replace("x", "").trim())
     .filter(v => v !== "");
   localStorage.setItem("avoid-list", JSON.stringify(avoids));
-}
+});
+observer.observe(avoidContainer, { childList: true, subtree: true });
 
-// Sleep helper
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+// Sleep helper for rate limiting
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 // load cache from localStorage (or start fresh)
 let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
 const CACHE_TTL = 60 * 60 * 1000; // 1 hour in ms
-function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
+
+function saveCache() {
+  localStorage.setItem("killCache", JSON.stringify(killCache));
+}
 
 async function getPvpKills(systemId, retries = 3, delay = 1000) {
   const now = Date.now();
+
+  // check cache
   if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+    console.log(`Using cached kills for system ID ${systemId}`);
     return killCache[systemId].kills;
   }
 
@@ -239,55 +251,64 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
     try {
       const res = await fetch(
         `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
-        { headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" } }
+        {
+          headers: {
+            "Accept-Encoding": "gzip",
+            "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+          }
+        }
       );
+
       if (res.status === 429) {
+        console.warn(`Rate limited on ${systemId}, attempt ${attempt}/${retries}`);
         await sleep(delay * attempt);
         continue;
       }
+
       const kills = await res.json();
       if (!Array.isArray(kills)) return 0;
+
       const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
+
+      // update cache
       killCache[systemId] = { time: now, kills: pvpKills };
       saveCache();
+
       return pvpKills;
     } catch (err) {
+      console.error(`zKill fetch failed for ${systemId}, attempt ${attempt}`, err);
       await sleep(delay * attempt);
     }
   }
+
   return 0;
 }
 
-// Route fetch with batching
+// Route fetch with batching and adaptive backoff
 async function getRouteKills(route, batchSize = 5, delay = 1000) {
+  console.log("getRouteKills called");
   const result = {};
+
   for (let i = 0; i < route.length; i += batchSize) {
     const batch = route.slice(i, i + batchSize);
+
     routeOutput.innerHTML = `<p>Fetching jumps ${i + 1}-${i + batch.length} of ${route.length}...</p>`;
-    const batchResults = await Promise.all(batch.map(async sysId => [sysId, await getPvpKills(sysId, 5, delay)]));
-    batchResults.forEach(([sysId, kills]) => result[sysId] = kills);
-    if (i + batchSize < route.length) await sleep(delay);
+
+    const batchResults = await Promise.all(
+      batch.map(async (sysId) => [sysId, await getPvpKills(sysId, 5, delay)])
+    );
+
+    for (const [sysId, kills] of batchResults) {
+      result[sysId] = kills;
+    }
+
+    if (i + batchSize < route.length) {
+      await sleep(delay); // polite gap between batches
+    }
   }
+
   return result;
 }
-
-// Update URL to match current inputs
-const urlParams = new URLSearchParams(window.location.search);
-urlParams.set('origin', originInput);
-urlParams.set('dest', destInput);
-
-// optional: add avoid systems to URL
-if (avoidIds.length) {
-  urlParams.set('avoid', avoidIds.map(id => {
-    const sys = systems.find(s => s.system_id == id);
-    return sys ? sys.system : '';
-  }).join(','));
-} else {
-  urlParams.delete('avoid');
-}
-
-// update browser URL without reloading
-history.replaceState(null, '', `${window.location.pathname}?${urlParams.toString()}`);
 
 // Plan route
 routeBtn.addEventListener("click", async () => {
@@ -313,24 +334,31 @@ routeBtn.addEventListener("click", async () => {
 
     const res = await fetch(url);
     const routeData = await res.json();
+
     if (!routeData || !routeData.length) {
       routeOutput.innerHTML = "<p>No route found.</p>";
       return;
     }
 
+    let html = `<table>
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
+
+
     const routeKills = await getRouteKills(routeData);
 
-    let html = `<table>
-      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
-
-    routeData.forEach((sysId, i) => {
+    for (let i = 0; i < routeData.length; i++) {
+      const sysId = routeData[i];
+      console.log (sysId);
       const system = systems.find(s => s.system_id === sysId);
-      if (!system) return;
+      if (!system) continue;
 
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
+
+      // Get kills
       const kills = routeKills[sysId] || 0;
-      const killClass = kills >= 5 ? "kills-high" : "";
+      // Determine if highlighting is needed for kill amount
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
       html += `<tr>
         <td><b>${i + 1}</b></td>
@@ -339,7 +367,7 @@ routeBtn.addEventListener("click", async () => {
         <td><span class="${killClass}"><b>${kills}</b></span></td>
         <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
-    });
+    }
 
     totalJumps.innerHTML = `Total Jumps: ${routeData.length}`;
     html += "</table>";
@@ -349,14 +377,3 @@ routeBtn.addEventListener("click", async () => {
     routeOutput.innerHTML = "<p>Error fetching route.</p>";
   }
 });
-
-// Populate origin/destination from URL
-function populateFromURL() {
-  const params = new URLSearchParams(window.location.search);
-  const origin = params.get("origin");
-  const dest = params.get("dest");
-  if (origin) originInput.value = origin;
-  if (dest) destInput.value = dest;
-  if (origin || dest) routeBtn.click();
-}
-populateFromURL();
