@@ -43,6 +43,7 @@ header .app-title a {
   color: #fff; 
   text-decoration: none; 
 }
+
 header .app-title a:hover { color: #fff; }
 
 nav { flex: 1; text-align: center; }
@@ -115,19 +116,25 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   box-shadow: none;
   font-family: "Shentox-Regular", sans-serif !important;
   color: #eee;
+
+  /* Remove unwanted browser styling */
+  border-bottom: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
 }
 
-/* Remove focus underline/lines */
+/* Remove focus outline and shadow */
 .search-group input:focus {
-  outline: none;
-  box-shadow: none;
-  border-bottom: none;
+  outline: none !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
 }
 
 /* Suggestions dropdown */
 .suggestions {
   position: absolute;
-  top: 100%;   /* directly under input */
+  top: 100%;
   left: 0;
   right: 0;
   background: #fff;
@@ -233,20 +240,29 @@ tr:nth-child(even) { background: #141414; }
   flex: 1;
   min-width: 120px;
   padding: 4px;
+  border: 1px solid #333;
+  border-bottom: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: #1a1a1a;
+  color: #eee;
 }
 
 /* Security colors */
-.sec-blue { color: #2e74dc; } /* 1.0 */
-.sec-lighter-blue { color: #3c9ced; } /* 0.9 */
-.sec-high-blue { color: #4bcef4; } /* 0.8 */
-.sec-sea { color:#60daa6; } /* 0.7 */
-.sec-green { color:#71e452; } /* 0.6 */
-.sec-yellow { color: #eeff8a; } /* 0.5 */
-.sec-low { color: #dc6c09; } /* 0.4 */
-.sec-rorange { color: #d1440d; } /* 0.3 */
-.sec-red { color: #bc1116; } /* 0.2 */
-.sec-purple { color: #6e221a; } /* 0.1 */
-.sec-null { color: #8f2f69; } /* 0 >= */
+.sec-blue { color: #2e74dc; }
+.sec-lighter-blue { color: #3c9ced; }
+.sec-high-blue { color: #4bcef4; }
+.sec-sea { color:#60daa6; }
+.sec-green { color:#71e452; }
+.sec-yellow { color: #eeff8a; }
+.sec-low { color: #dc6c09; }
+.sec-rorange { color: #d1440d; }
+.sec-red { color: #bc1116; }
+.sec-purple { color: #6e221a; }
+.sec-null { color: #8f2f69; }
 
 /* High kills color */
 .kills-high { color: #f00; }
