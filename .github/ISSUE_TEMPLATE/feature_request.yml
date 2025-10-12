@@ -1,0 +1,10 @@
+name: "Feature Request"
+description: "Suggest a new feature for EVE App"
+labels: ["Feature Request"]
+body:
+  - type: textarea
+    id: idea
+    attributes:
+      label: "Describe your idea"
+      description: "Tell us what you'd like to see added."
+      placeholder: "It would be great if..."
