@@ -230,7 +230,7 @@ routeBtn.addEventListener("click", async () => {
 
   try {
     // Build URL for EVE Scout v2 API
-    let url = `https://api.eve-scout.com/v2/public/routes?from=${encodeURIComponent(originName)}&to=${encodeURIComponent(destName)}&mode=${mode}`;
+    let url = `https://api.eve-scout.com/v2/public/routes?from=${originName}&to=${destName}&mode=${mode}`;
 
     const res = await fetch(url);
     const routeData = await res.json();
