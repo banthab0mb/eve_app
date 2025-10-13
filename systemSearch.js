@@ -107,10 +107,8 @@
       const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/172800/`);
       const killsData = await res.json();
 
-      const shipKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id !== null && k.victim.ship_type_id !== 0 && k.victim.ship_type_id !== undefined && k.victim.ship_type_id_category !== 6).length;
-
-      const podKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id_category === 6).length; // 6 = Capsule
-
+      const shipKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id_category !== 6).length;
+      const podKills = killsData.filter(k => k.victim?.ship_type_id_category === 6).length; // 6 = Capsule
       const npcKills = killsData.filter(k => k.zkb?.npc).length;
 
       const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
@@ -174,7 +172,6 @@
           const sData = await sRes.json();
           const ownerName = await fetchCorporation(sData.owner);
 
-          // type_id from the ESI response
           let typeName = "Unknown";
           switch(sData.type_id){
             case 3: typeName = "Outpost"; break;
@@ -185,7 +182,6 @@
             case 8: typeName = "Assembly Plant"; break;
             case 9: typeName = "Trade Hub"; break;
             case 10: typeName = "Moon Mining Facility"; break;
-            default: typeName = `Type ${sData.type_id}`; break;
           }
 
           return {
@@ -228,8 +224,8 @@
     const stations = await fetchStations(systemObj.system_id);
 
     const planets = sysDetails.planets?.length ?? 0;
-    const moons = sysDetails.moons?.length ?? 0;
-    const belts = sysDetails.asteroid_belts?.length ?? 0;
+    const moons = sysDetails.planets?.reduce((sum, p) => sum + (p.moons?.length || 0), 0);
+    const belts = sysDetails.planets?.reduce((sum, p) => sum + (p.asteroid_belts?.length || 0), 0);
 
     outputDiv.innerHTML = `
       <div class="system-container">
@@ -247,7 +243,7 @@
 
           <h3>Stations</h3>
           <table id="stationsTable">
-            <tr><th>Name</th><th>Owner</th><th>Type</th><th>Services</th></tr>
+            <tr><th>Name</th><th>Owner</th><th>Services</th></tr>
             ${stations.map(s => `<tr>
               <td>${s.name}</td>
               <td>${s.owner}</td>
