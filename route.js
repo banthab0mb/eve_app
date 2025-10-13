@@ -258,10 +258,20 @@ routeBtn.addEventListener("click", async () => {
 
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
+  // determine selected route mode
+  const selectedRadio = document.querySelector("input[name='route-flag']:checked");
+  let mode = selectedRadio ? selectedRadio.value : "shortest";
+
+  // disable wormholes for secure and gates-only
+  const allowWormholes = !(mode === "secure" || mode === "shortest-gates-only");
+
   try {
-    const routeIds = await computeRouteWithWormholes(originId, destId);
+    buildGraph();
+    if (allowWormholes) await addWormholes();
+
+    const routeIds = shortestPath(originId, destId);
     if (!routeIds) {
-      routeOutput.innerHTML = "<p>No route found (even with wormholes).</p>";
+      routeOutput.innerHTML = `<p>No route found${allowWormholes ? " (even with wormholes)." : " (wormholes disabled)."}</p>`;
       return;
     }
 
@@ -282,7 +292,7 @@ routeBtn.addEventListener("click", async () => {
       const endHighlight = highlight ? '</span>' : '';
 
       html += `<tr>
-        <td><b>${i + 1}</b></td>
+        <td><b>${i}</b></td>
         <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
