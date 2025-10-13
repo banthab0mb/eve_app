@@ -3,7 +3,6 @@ const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
 const totalJumps = document.getElementById("total-jumps");
-const avoidContainer = document.getElementById("avoid-container");
 
 let systems = [];
 let systemKills = [];
@@ -47,83 +46,8 @@ function getKills(systemId) {
   return entry ? entry.ship_kills : 0;
 }
 
-// Collect avoidance IDs
-function getAvoidIds() {
-  const tags = avoidContainer.querySelectorAll(".avoid-tag");
-  return Array.from(tags).map(tag => tag.dataset.id);
-}
-
-// Add avoidance tag + new input
-function addAvoidTag(systemName) {
-  const sysId = getSystemId(systemName);
-  if (!sysId) return;
-
-  // Prevent duplicates
-  if (getAvoidIds().includes(String(sysId))) return;
-
-  const tag = document.createElement("span");
-  tag.classList.add("avoid-tag");
-  tag.textContent = systemName;
-  tag.dataset.id = sysId;
-
-  const removeBtn = document.createElement("button");
-  removeBtn.textContent = "×";
-  removeBtn.classList.add("remove-btn");
-  removeBtn.addEventListener("click", () => tag.remove());
-
-  tag.appendChild(removeBtn);
-  avoidContainer.insertBefore(tag, avoidContainer.querySelector(".search-group:last-child"));
-}
-
-// Create new avoid input
-function createAvoidInput(value = "") {
-  const group = document.createElement("div");
-  group.classList.add("search-group");
-
-  const input = document.createElement("input");
-  input.type = "text";
-  input.placeholder = "Avoid system";
-  input.value = value;
-
-  const suggestionsDiv = document.createElement("div");
-  suggestionsDiv.classList.add("suggestions");
-
-  group.appendChild(input);
-  group.appendChild(suggestionsDiv);
-  avoidContainer.appendChild(group);
-
-  setupAutocomplete(input, suggestionsDiv.id = "avoid-suggestions-" + Date.now(), true);
-
-  // On Enter, add system as avoid tag
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      const val = input.value.trim();
-      if (val) {
-        addAvoidTag(val);
-        input.value = "";
-      }
-    }
-  });
-
-  // Add next input dynamically when typing in last box
-  input.addEventListener("input", () => {
-    const lastInput = avoidContainer.querySelector("input:last-child");
-    if (input === lastInput && input.value.trim() !== "") {
-      createAvoidInput();
-    }
-  });
-
-  // Remove empty inputs on blur if more than one
-  input.addEventListener("blur", () => {
-    if (input.value.trim() === "" && avoidContainer.querySelectorAll(".search-group").length > 1) {
-      group.remove();
-    }
-  });
-}
-
 // Autocomplete setup
-function setupAutocomplete(input, suggestionsId, isAvoid = false) {
+function setupAutocomplete(input, suggestionsId) {
   const suggestionsDiv = document.getElementById(suggestionsId) || document.createElement("div");
   suggestionsDiv.classList.add("suggestions");
   if (!suggestionsDiv.id) suggestionsDiv.id = suggestionsId;
@@ -143,12 +67,7 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
     div.classList.add("suggestion");
     div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
     div.addEventListener("click", () => {
-      if (isAvoid) {
-        addAvoidTag(s.system);
-        input.value = "";
-      } else {
-        input.value = s.system;
-      }
+      input.value = s.system;
       suggestionsDiv.innerHTML = "";
       suggestionsDiv.style.display = "none";
     });
@@ -178,9 +97,7 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
       e.preventDefault();
       if (currentFocus > -1) {
         const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
-        if (isAvoid) addAvoidTag(systemName);
-        else input.value = systemName;
-        input.value = isAvoid ? "" : input.value;
+        input.value = systemName;
         suggestionsDiv.innerHTML = "";
       }
     }
@@ -199,36 +116,6 @@ function setupAutocomplete(input, suggestionsId, isAvoid = false) {
 // Initialize autocomplete for origin/dest
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
-
-// --- Remember last chosen route flag ---
-const flagRadios = document.querySelectorAll("input[name='route-flag']");
-const savedFlag = localStorage.getItem("route-flag");
-if (savedFlag) {
-  const radio = document.querySelector(`input[name='route-flag'][value='${savedFlag}']`);
-  if (radio) radio.checked = true;
-}
-flagRadios.forEach(radio => {
-  radio.addEventListener("change", () => {
-    localStorage.setItem("route-flag", radio.value);
-  });
-});
-
-// Initialize first avoid input and restore saved avoids
-function restoreAvoidList() {
-  const stored = JSON.parse(localStorage.getItem("avoid-list") || "[]");
-  if (stored.length) stored.forEach(name => addAvoidTag(name));
-  createAvoidInput();
-}
-restoreAvoidList();
-
-// Save avoid list whenever tags change
-const observer = new MutationObserver(() => {
-  const avoids = Array.from(avoidContainer.querySelectorAll(".avoid-tag"))
-    .map(tag => tag.textContent.replace("x", "").trim())
-    .filter(v => v !== "");
-  localStorage.setItem("avoid-list", JSON.stringify(avoids));
-});
-observer.observe(avoidContainer, { childList: true, subtree: true });
 
 // Sleep helper for rate limiting
 function sleep(ms) {
@@ -316,6 +203,7 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
 }
 
 // Plan route
+// Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
@@ -323,19 +211,26 @@ routeBtn.addEventListener("click", async () => {
 
   const originId = getSystemId(originName);
   const destId = getSystemId(destName);
-  const avoidIds = getAvoidIds();
 
   if (!originId || !destId) {
     routeOutput.innerHTML = "<p>Origin or destination system not found!</p>";
     return;
   }
 
+  // Get mode from radio
+  const selectedRadio = document.querySelector("input[name='route-flag']:checked");
+  let mode = "shortest"; // default
+  if (selectedRadio) {
+    if (selectedRadio.value === "secure") mode = "safer";
+    else if (selectedRadio.value === "shortest") mode = "shortest";
+    else if (selectedRadio.value === "shortest-gates-only") mode = "shortest-gates";
+  }
+
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
     // Build URL for EVE Scout v2 API
-    let url = `https://api.eve-scout.com/v2/public/routes?from=${originId}&to=${destId}&mode=shortest`;
-    if (avoidIds.length) url += `&avoid=${avoidIds.join(",")}`;
+    let url = `https://api.eve-scout.com/v2/public/routes?from=${encodeURIComponent(originName)}&to=${encodeURIComponent(destName)}&mode=${mode}`;
 
     const res = await fetch(url);
     const routeData = await res.json();
