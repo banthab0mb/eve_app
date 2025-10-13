@@ -23,7 +23,6 @@
       }
     });
 
-  // Security class
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -38,7 +37,6 @@
     return "sec-null";
   }
 
-  // Suggestions
   function hideSuggestions() { suggestionsDiv.style.display = 'none'; currentFocus = -1; }
   function showSuggestionsContainer() { suggestionsDiv.style.display = 'block'; }
 
@@ -105,39 +103,62 @@
     if(cache[systemId] && now - cache[systemId].time < CACHE_TTL) return cache[systemId].data;
 
     try {
-      // Fetch kills from zKill
+      // zKillboard kills
       const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/172800/`);
       const killsData = await res.json();
 
-      // Fetch jumps from ESI
-      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
-      const jumpsAll = await jumpsRes.json();
+      const shipKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id !== null && k.victim.ship_type_id !== 0 && k.victim.ship_type_id !== undefined && k.victim.ship_type_id_category !== 6).length;
 
-      const jumpsObj = jumpsAll.find(j => j.system_id === systemId);
-      const totalJumps = jumpsObj?.ship_jumps ?? 0;
-
-      const shipKills = killsData.filter(k => {
-        const typeId = k.victim?.ship_type_id;
-        return typeId && ![670,671,672,673,674,675,676,677,678,679].includes(typeId);
-      }).length;
-
-      const podKills = killsData.filter(k => {
-        const typeId = k.victim?.ship_type_id;
-        return typeId && [670,671,672,673,674,675,676,677,678,679].includes(typeId);
-      }).length;
+      const podKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id_category === 6).length; // 6 = Capsule
 
       const npcKills = killsData.filter(k => k.zkb?.npc).length;
 
-      const data = { jumps1h: Math.floor(totalJumps/48), jumps24h: totalJumps, shipKills, podKills, npcKills };
+      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
+      const jumpsAll = await jumpsRes.json();
+      const jumpsObj = jumpsAll.find(j => j.system_id === systemId);
+      const totalJumps = jumpsObj?.ship_jumps ?? 0;
 
+      const data = { jumps1h: Math.floor(totalJumps/48), jumps24h: totalJumps, shipKills, podKills, npcKills };
       cache[systemId] = { time: now, data };
       saveKillCache(cache);
 
       return data;
 
-    } catch(err) {
+    } catch(err){
       console.error(err);
-      return { jumps1h: 0, jumps24h: 0, shipKills: 0, podKills: 0, npcKills: 0 };
+      return { jumps1h:0, jumps24h:0, shipKills:0, podKills:0, npcKills:0 };
+    }
+  }
+
+  async function fetchSystemDetails(systemId){
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/?datasource=tranquility`);
+      return await res.json();
+    } catch(e){
+      console.error(e);
+      return {};
+    }
+  }
+
+  async function fetchFaction(factionId){
+    if(!factionId) return "None";
+    try{
+      const res = await fetch(`https://esi.evetech.net/latest/universe/factions/${factionId}/?datasource=tranquility`);
+      const f = await res.json();
+      return f.name ?? "Unknown";
+    }catch{
+      return "Unknown";
+    }
+  }
+
+  async function fetchCorporation(corpId){
+    if(!corpId) return "Unknown";
+    try{
+      const res = await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/?datasource=tranquility`);
+      const c = await res.json();
+      return c.name ?? "Unknown";
+    }catch{
+      return "Unknown";
     }
   }
 
@@ -147,72 +168,82 @@
       const data = await res.json();
       if(!data.stations) return [];
 
-      const stationsFull = await Promise.all(data.stations.map(async stationId => {
+      const stationsFull = await Promise.all(data.stations.map(async id => {
         try {
-          const sRes = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
-          return await sRes.json();
-        } catch(e) {
+          const sRes = await fetch(`https://esi.evetech.net/latest/universe/stations/${id}/?datasource=tranquility`);
+          const sData = await sRes.json();
+          const ownerName = await fetchCorporation(sData.owner);
+
+          // type_id from the ESI response
+          let typeName = "Unknown";
+          switch(sData.type_id){
+            case 3: typeName = "Outpost"; break;
+            case 4: typeName = "Starbase"; break;
+            case 5: typeName = "Citadel"; break;
+            case 6: typeName = "Engineering Complex"; break;
+            case 7: typeName = "Refinery"; break;
+            case 8: typeName = "Assembly Plant"; break;
+            case 9: typeName = "Trade Hub"; break;
+            case 10: typeName = "Moon Mining Facility"; break;
+            default: typeName = `Type ${sData.type_id}`; break;
+          }
+
+          return {
+            name: sData.name ?? "Unknown",
+            owner: ownerName,
+            type: typeName,
+            services: sData.services?.join(", ") ?? "None"
+          };
+        } catch(e){
           console.error("Station fetch error", e);
-          return { name: "Unknown", owner: "Unknown", type_id: 0, services: [] };
+          return { name:"Unknown", owner:"Unknown", type:"Unknown", services:"None" };
         }
       }));
 
-      return stationsFull.map(s => ({
-        name: s.name || "Unknown",
-        owner: s.owner ?? "Unknown",
-        type: s.type_id ?? "Unknown",
-        services: s.services?.join(", ") || "Unknown"
-      }));
-
-    } catch(err) {
+      return stationsFull;
+    } catch(err){
       console.error(err);
       return [];
     }
   }
 
-  async function runLookup() {
+  async function runLookup(){
     const name = input.value.trim().toLowerCase();
-    if(!name){ return; }
-    if(!systemsLoaded){ 
-        outputDiv.innerHTML = '<p>Systems data still loading...</p>'; 
-        return; 
-    }
+    if(!name) return;
+    if(!systemsLoaded){ outputDiv.innerHTML = '<p>Systems data still loading...</p>'; return; }
 
     updateURL(name);
 
-    const system = systems.find(s => s.system.toLowerCase() === name);
-    if(!system){
-        outputDiv.innerHTML = `<p>System "${input.value}" not found!</p>`; 
-        return;
-    }
+    const systemObj = systems.find(s => s.system.toLowerCase() === name);
+    if(!systemObj){ outputDiv.innerHTML = `<p>System "${input.value}" not found!</p>`; return; }
 
-    outputDiv.innerHTML = `<p>Fetching data for <b>${system.system}</b>...</p>`;
+    outputDiv.innerHTML = `<p>Fetching data for <b>${systemObj.system}</b>...</p>`;
 
-    // Security
-    const sec = parseFloat(system.security_status.toFixed(1));
-    const cls = secClass(sec);
+    const sysDetails = await fetchSystemDetails(systemObj.system_id);
+    const sec = parseFloat(sysDetails.security_status ?? 0);
+    const secCls = secClass(sec);
+    const factionName = await fetchFaction(sysDetails.faction_id);
 
-    // Fetch 48h kills and jumps
-    const data = await fetchSystemData(system.system_id);
+    const data = await fetchSystemData(systemObj.system_id);
+    const stations = await fetchStations(systemObj.system_id);
 
-    // Fetch stations
-    const stations = await fetchStations(system.system_id);
+    const planets = sysDetails.planets?.length ?? 0;
+    const moons = sysDetails.moons?.length ?? 0;
+    const belts = sysDetails.asteroid_belts?.length ?? 0;
 
-    // Generate table
     outputDiv.innerHTML = `
       <div class="system-container">
         <div class="system-info">
           <table id="systemInfoTable">
-            <tr><th>Name</th><td>${system.system}</td><th>Planets</th><td>${system.planets || 0}</td></tr>
-            <tr><th>Region</th><td>${system.region || "Unknown"}</td><th>Moons</th><td>${system.moons || 0}</td></tr>
-            <tr><th>Constellation</th><td>${system.constellation || "Unknown"}</td><th>Belts/Icebelts</th><td>${(system.belts||0)+ (system.icebelts||0)}</td></tr>
-            <tr><th>Security Level</th><td>${sec}</td><th>Security Class</th><td>${cls}</td></tr>
-            <tr><th>Faction</th><td colspan="3">${system.faction || "None"}</td></tr>
+            <tr><th>Name</th><td>${sysDetails.name}</td><th>Planets</th><td>${planets}</td></tr>
+            <tr><th>Region</th><td>${systemObj.region}</td><th>Moons</th><td>${moons}</td></tr>
+            <tr><th>Constellation</th><td>${systemObj.constellation}</td><th>Belts/Icebelts</th><td>${belts}</td></tr>
+            <tr><th>Security Level</th><td class="${secCls}">${sec}</td><th>Security Class</th><td>${secCls}</td></tr>
+            <tr><th>Faction</th><td colspan="3">${factionName}</td></tr>
             <tr><th>Jumps 1h / 24h</th><td colspan="3">${data.jumps1h} / ${data.jumps24h}</td></tr>
-            <tr><th>Ship Kills</th><td colspan="3">${data.shipKills} / ${data.shipKills}</td></tr>
-            <tr><th>NPC Kills</th><td colspan="3">${data.npcKills} / ${data.npcKills}</td></tr>
-            <tr><th>Pod Kills</th><td colspan="3">${data.podKills} / ${data.podKills}</td></tr>
-            <tr><th>Minerals</th><td colspan="3">Unknown</td></tr>
+            <tr><th>Ship Kills</th><td colspan="3">${data.shipKills}</td></tr>
+            <tr><th>NPC Kills</th><td colspan="3">${data.npcKills}</td></tr>
+            <tr><th>Pod Kills</th><td colspan="3">${data.podKills}</td></tr>
           </table>
 
           <h3>Stations</h3>
