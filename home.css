@@ -128,6 +128,11 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 .feature-box h3 { margin-top: 0; margin-bottom: 8px; color: #1e88e5; }
 
+h3 nav {
+  flex: 1;
+  text-align: center;
+}
+
 h3 nav a {
   color: #aaa;
   margin: 0 15px;
