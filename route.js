@@ -5,7 +5,6 @@ const routeOutput = document.getElementById("route-output");
 const totalJumps = document.getElementById("total-jumps");
 
 let systems = [];
-let systemKills = [];
 let stargates = [];
 
 // Load static data
@@ -13,12 +12,6 @@ Promise.all([
   fetch("systems.json").then(r => r.json()).then(data => systems = data),
   fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
 ]).catch(err => console.error("Failed to load JSON:", err));
-
-// Load system kills
-fetch("https://esi.evetech.net/latest/universe/system_kills/")
-  .then(r => r.json())
-  .then(data => systemKills = data)
-  .catch(err => console.error("Failed to load system kills:", err));
 
 // Helper: get system ID
 function getSystemId(name) {
@@ -39,12 +32,6 @@ function secClass(sec) {
   if (sec >= 0.2) return "sec-red";
   if (sec >= 0.1) return "sec-purple";
   return "sec-null";
-}
-
-// Get kills from static ESI data
-function getKills(systemId) {
-  const entry = systemKills.find(s => s.system_id === systemId);
-  return entry ? entry.ship_kills : 0;
 }
 
 // Autocomplete
@@ -104,7 +91,7 @@ let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
 const CACHE_TTL = 60 * 60 * 1000;
 function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
 
-// Fetch PvP kills (parallel & cached)
+// Fetch PvP kills only from zKill
 async function getPvpKills(systemId) {
   const now = Date.now();
   if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
@@ -113,17 +100,20 @@ async function getPvpKills(systemId) {
     const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
       headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
     });
-    if (!res.ok) return 0;
+    if (!res.ok) return killCache[systemId]?.kills || 0;
     const kills = await res.json();
-    if (!Array.isArray(kills)) return 0;
+    if (!Array.isArray(kills)) return killCache[systemId]?.kills || 0;
+
     const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
     killCache[systemId] = { time: now, kills: pvpKills };
     saveCache();
     return pvpKills;
-  } catch { return 0; }
+  } catch {
+    return killCache[systemId]?.kills || 0;
+  }
 }
 
-// Build graph
+// Build stargate graph
 let whGraph = {};
 function buildGraph() {
   whGraph = {};
@@ -165,7 +155,7 @@ function shortestPath(startId, endId) {
   return null;
 }
 
-// Compute route button
+// Compute route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
@@ -188,9 +178,8 @@ routeBtn.addEventListener("click", async () => {
     const routeIds = shortestPath(originId, destId);
     if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
 
-    // Fetch all kills in parallel
-    const killPromises = routeIds.map(id => getPvpKills(id));
-    const killResults = await Promise.all(killPromises);
+    // Fetch all zKill kills in parallel
+    const killResults = await Promise.all(routeIds.map(id => getPvpKills(id)));
     const routeKills = {};
     routeIds.forEach((id, i) => routeKills[id] = killResults[i]);
 
@@ -210,7 +199,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><span class="links"><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></span></td>
+        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
     });
     html += "</table>";
