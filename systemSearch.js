@@ -242,7 +242,17 @@
 
       const killClass = (pvpKills >= 5) ? 'kills-high' : "";
 
-      document.querySelector(".charts-wrapper").style.display = "flex";
+      const graphContainer = document.getElementById("graphContainer");
+      if (graphContainer) {
+        graphContainer.style.display = "flex";
+      } else {
+        console.warn("graphContainer missing in DOM");
+      }
+
+      const systemInfoTable = document.getElementById("systemInfoTable");
+      if (systemInfoTable) {
+        systemInfoTable.closest(".system-info").style.display = "block";
+      }
 
       outputDiv.querySelector("#systemInfoTable").innerHTML = `
         <tr><th>Name</th><td>${escapeHtml(system.system)}</td></tr>
