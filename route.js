@@ -236,45 +236,45 @@ routeBtn.addEventListener("click", async () => {
     const routeData = await res.json();
 
     console.log(routeData);
-
-    if (!routeData || !routeData.length) {
-      routeOutput.innerHTML = "<p>No route found.</p>";
-      return;
+    const routeArray = routeData.route; // array of system objects
+    if (!routeArray || !routeArray.length) {
+        routeOutput.innerHTML = "<p>No route found.</p>";
+        return;
     }
+
+    const routeIds = routeArray.map(s => s.system_id);
+    const routeKills = await getRouteKills(routeIds);
 
     let html = `<table>
-      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
 
+    for (let i = 0; i < routeArray.length; i++) {
+        const systemObj = routeArray[i];
+        const sysId = systemObj.system_id;
+        const system = systems.find(s => s.system_id === sysId);
+        if (!system) continue;
 
-    const routeKills = await getRouteKills(routeData);
+        const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+        const cls = secClass(sec);
 
-    for (let i = 0; i < routeData.length; i++) {
-      const sysId = routeData[i];
-      console.log (sysId);
-      const system = systems.find(s => s.system_id === sysId);
-      if (!system) continue;
+        const kills = routeKills[sysId] || 0;
+        const killClass = (kills >= 5) ? 'kills-high' : "";
 
-      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
-      const cls = secClass(sec);
+        const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
 
-      const kills = routeKills[sysId] || 0;
-      const killClass = (kills >= 5) ? 'kills-high' : "";
-
-      // Highlight Thera and Turnur
-      const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
-
-      html += `<tr ${specialStyle}>
-        <td><b>${i + 1}</b></td>
-        <td>${system.system} <span class="region">(${system.region})</span></td>
-        <td class="${cls}"><b>${sec}</b></td>
-        <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
-      </tr>`;
+        html += `<tr ${specialStyle}>
+          <td><b>${i + 1}</b></td>
+          <td>${system.system} <span class="region">(${system.region})</span></td>
+          <td class="${cls}"><b>${sec}</b></td>
+          <td><span class="${killClass}"><b>${kills}</b></span></td>
+          <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
+        </tr>`;
     }
 
-    totalJumps.innerHTML = `Total Jumps: ${(routeData.length) - 1}`;
+    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
     html += "</table>";
     routeOutput.innerHTML = html;
+
 
   } catch (err) {
     console.error(err);
