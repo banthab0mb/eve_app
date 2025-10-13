@@ -211,6 +211,7 @@ function buildGraph() {
   systems.forEach(s => {
     whGraph[s.system_id] = s.neighbors || []; // assuming systems.json has a 'neighbors' array of system_ids
   });
+  console.log("Graph built from systems.json:", whGraph);
 }
 
 // Fetch Thera/Turnur signatures and add wormhole edges
@@ -222,21 +223,24 @@ async function addWormholes() {
     if (sig.signature_type === 'wormhole' && sig.completed && sig.remaining_hours > 1) {
       const from = sig.out_system_id;
       const to = sig.in_system_id;
+      console.log("Wormhole found:", { from, to, wh_exits_outward: sig.wh_exits_outward });
 
       if (!whGraph[from]) whGraph[from] = [];
-      whGraph[from].push(to); // wormhole edge
+      whGraph[from].push(to);
 
-      // optionally bidirectional if K162 exits inward
       if (sig.wh_exits_outward) {
         if (!whGraph[to]) whGraph[to] = [];
         whGraph[to].push(from);
       }
     }
   });
+
+  console.log("Graph after adding wormholes:", whGraph);
 }
 
 // Simple BFS shortest path including wormholes
 function shortestPath(startId, endId) {
+  console.log("Computing shortest path from", startId, "to", endId);
   const queue = [[startId]];
   const visited = new Set();
 
@@ -244,7 +248,10 @@ function shortestPath(startId, endId) {
     const path = queue.shift();
     const node = path[path.length - 1];
 
-    if (node === endId) return path;
+    if (node === endId) {
+      console.log("Path found:", path);
+      return path;
+    }
 
     if (!visited.has(node)) {
       visited.add(node);
@@ -253,6 +260,7 @@ function shortestPath(startId, endId) {
       });
     }
   }
+  console.log("No path found between", startId, "and", endId);
   return null; // no path
 }
 
@@ -299,12 +307,9 @@ routeBtn.addEventListener("click", async () => {
     let html = `<table>
       <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
 
-    for (let i = 0; i < routeArray.length; i++) {
-      const systemObj = routeArray[i];
-      const sysId = systemObj.system_id;
-
-      // fallback to API system object if local systems.json doesn't have it
-      const system = systems.find(s => s.system_id === sysId) || systemObj;
+    for (let i = 0; i < routeIds.length; i++) {
+      const sysId = routeIds[i];
+      const system = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
 
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
@@ -315,8 +320,8 @@ routeBtn.addEventListener("click", async () => {
       const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
 
       html += `<tr ${specialStyle}>
-        <td><b>${i}</b></td>
-        <td>${system.system || system.system_name} <span class="region">(${system.region || system.region_name})</span></td>
+        <td><b>${i + 1}</b></td>
+        <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
         <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
