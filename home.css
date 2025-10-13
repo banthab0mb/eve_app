@@ -60,6 +60,7 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
+  margin-left: auto; /* keeps it on the right on PC */
 }
 
 header .app-title a {
@@ -87,12 +88,11 @@ header .app-title a:hover { color: #fff; }
 }
 
 nav {
-  flex: 1;
-  text-align: center;
-  display: flex;
+  display: flex !important;
   justify-content: center;
   align-items: center;
   gap: 15px;
+  flex: 1;
 }
 
 nav a {
@@ -121,8 +121,8 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 /* Features on home page */
 .features { 
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* two columns */
-  gap: 20px; /* space between items */
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
   margin-top: 20px;
   padding: 20px;
 }
@@ -227,8 +227,7 @@ footer a:hover { color: #fff; }
     gap: 15px;
   }
 
-  header {
-    flex-wrap: nowrap;
-    justify-content: space-between;
+  .header-right {
+    margin-left: 0; /* stay next to title on mobile */
   }
 }
