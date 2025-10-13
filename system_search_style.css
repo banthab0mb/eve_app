@@ -275,7 +275,7 @@ footer a:hover { color: #fff; }
 
   .search-container { width: 100%; }
 
-  .search-box { width: 100%; }
+  .search-box { width: 90%; }
 
   table { font-size: 0.8rem; }
 }

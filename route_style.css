@@ -255,6 +255,13 @@ tr:nth-child(even) { background: #141414; }
   padding: 4px;
 }
 
+/* Highlighted system */
+.highlight-system {
+  color: yellow;
+  font-weight: bold;
+}
+
+
 /* Security colors */
 .sec-blue { color: #2e74dc; }
 .sec-lighter-blue { color: #3c9ced; }
@@ -270,6 +277,22 @@ tr:nth-child(even) { background: #141414; }
 
 /* High kills color */
 .kills-high { color: #f00; }
+
+links {
+  flex: 1;
+}
+
+links a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+links a.active, links a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
 
 /* Footer */
 footer {
