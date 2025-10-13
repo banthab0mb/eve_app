@@ -238,9 +238,8 @@
             <tr><th>Name</th><td>${sysDetails.name}</td><th>Planets</th><td>${planets}</td></tr>
             <tr><th>Region</th><td>${systemObj.region}</td><th>Moons</th><td>${moons}</td></tr>
             <tr><th>Constellation</th><td>${systemObj.constellation}</td><th>Belts/Icebelts</th><td>${belts}</td></tr>
-            <tr><th>Security Level</th><td class="${secCls}">${sec}</td><th>Security Class</th><td>${secCls}</td></tr>
-            <tr><th>Faction</th><td colspan="3">${factionName}</td></tr>
-            <tr><th>Jumps 1h / 24h</th><td colspan="3">${data.jumps1h} / ${data.jumps24h}</td></tr>
+            <tr><th>Security Level</th><td class="${secCls}">${sec.toFixed(1)}</td><th>Faction</th><td colspan="3">${factionName}</td></tr>
+            <tr><th>Jumps 1h</th><td colspan="3">${data.jumps1h}</td></tr>
             <tr><th>Ship Kills</th><td colspan="3">${data.shipKills}</td></tr>
             <tr><th>NPC Kills</th><td colspan="3">${data.npcKills}</td></tr>
             <tr><th>Pod Kills</th><td colspan="3">${data.podKills}</td></tr>
@@ -252,7 +251,6 @@
             ${stations.map(s => `<tr>
               <td>${s.name}</td>
               <td>${s.owner}</td>
-              <td>${s.type}</td>
               <td>${s.services}</td>
             </tr>`).join('')}
           </table>
