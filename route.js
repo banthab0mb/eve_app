@@ -203,7 +203,6 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
 }
 
 // Plan route
-// Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
@@ -237,9 +236,9 @@ routeBtn.addEventListener("click", async () => {
 
     console.log(routeData);
     const routeArray = routeData.route; // array of system objects
-    if (!routeArray || !routeArray.length) {
-        routeOutput.innerHTML = "<p>No route found.</p>";
-        return;
+    if (!routeData || !routeData.route || !routeData.route.length) {
+    routeOutput.innerHTML = "<p>No route found.</p>";
+    return;
     }
 
     const routeIds = routeArray.map(s => s.system_id);
