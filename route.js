@@ -330,53 +330,55 @@ routeBtn.addEventListener("click", async () => {
     return;
   }
 
-  const flag = document.querySelector("input[name='route-flag']:checked").value;
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    let url = `https://esi.evetech.net/latest/route/${originId}/${destId}?flag=${flag}`;
+    // Build URL for EVE Scout v2 API
+    let url = `https://api.eve-scout.com/v2/public/routes?from=${originId}&to=${destId}&mode=shortest`;
     if (avoidIds.length) url += `&avoid=${avoidIds.join(",")}`;
 
     const res = await fetch(url);
     const routeData = await res.json();
 
-    if (!routeData || !routeData.length) {
+    if (!routeData || !routeData.route || !routeData.route.length) {
       routeOutput.innerHTML = "<p>No route found.</p>";
       return;
     }
 
+    const routeIds = routeData.route.map(s => s.system_id);
+
     let html = `<table>
-      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
 
+    const routeKills = await getRouteKills(routeIds);
 
-    const routeKills = await getRouteKills(routeData);
-
-    for (let i = 0; i < routeData.length; i++) {
-      const sysId = routeData[i];
-      console.log (sysId);
+    for (let i = 0; i < routeIds.length; i++) {
+      const sysId = routeIds[i];
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
 
-      // Get kills
       const kills = routeKills[sysId] || 0;
-      // Determine if highlighting is needed for kill amount
       const killClass = (kills >= 5) ? 'kills-high' : "";
 
-      html += `<tr>
+      // Highlight Thera and Turnur
+      const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
+
+      html += `<tr ${specialStyle}>
         <td><b>${i + 1}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
+        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
       </tr>`;
     }
 
-    totalJumps.innerHTML = `Total Jumps: ${routeData.length}`;
+    totalJumps.innerHTML = `Total Jumps: ${(routeIds.length) - 1}`;
     html += "</table>";
     routeOutput.innerHTML = html;
+
   } catch (err) {
     console.error(err);
     routeOutput.innerHTML = "<p>Error fetching route.</p>";
