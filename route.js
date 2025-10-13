@@ -231,24 +231,26 @@ routeBtn.addEventListener("click", async () => {
   try {
     // Build URL for EVE Scout v2 API
     let url = `https://api.eve-scout.com/v2/public/routes?from=${originName}&to=${destName}&mode=${mode}`;
-
+    console.log(url);
     const res = await fetch(url);
     const routeData = await res.json();
 
-    if (!routeData || !routeData.route || !routeData.route.length) {
+    console.log(routeData);
+
+    if (!routeData || !routeData.length) {
       routeOutput.innerHTML = "<p>No route found.</p>";
       return;
     }
 
-    const routeIds = routeData.route.map(s => s.system_id);
-
     let html = `<table>
-      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
+      <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr><tr>`;
 
-    const routeKills = await getRouteKills(routeIds);
 
-    for (let i = 0; i < routeIds.length; i++) {
-      const sysId = routeIds[i];
+    const routeKills = await getRouteKills(routeData);
+
+    for (let i = 0; i < routeData.length; i++) {
+      const sysId = routeData[i];
+      console.log (sysId);
       const system = systems.find(s => s.system_id === sysId);
       if (!system) continue;
 
