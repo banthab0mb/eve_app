@@ -1,25 +1,15 @@
 (() => {
-  // Assign elements
-  const input = document.querySelector('#systemName') || document.querySelector('.search-box');
-  const suggestionsDiv =
-    (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
-    document.getElementById('suggestions') ||
-    document.getElementById('suggestions-box') ||
-    document.querySelector('.suggestions');
-  const lookupBtn =
-    document.getElementById('lookupBtn') ||
-    document.querySelector('.search-button') ||
-    document.querySelector('button.search-button') ||
-    document.querySelector('button');
-  const outputDiv = document.getElementById('output') || document.querySelector('.output');
-
-  if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
-    console.warn('systemSearch.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
-  }
+  const input = document.querySelector('#systemName');
+  const suggestionsDiv = document.getElementById('suggestions');
+  const lookupBtn = document.getElementById('lookupBtn');
+  const outputDiv = document.getElementById('output');
 
   let systems = [];
   let systemsLoaded = false;
   let currentFocus = -1;
+
+  // Chart instances
+  let jumpsChart, npcKillsChart, shipKillsChart, podKillsChart;
 
   // Load systems.json
   fetch('systems.json')
@@ -27,19 +17,16 @@
     .then(data => {
       systems = data;
       systemsLoaded = true;
-      console.log('systems.json loaded:', systems.length);
 
-      // Auto-run if ?system= in URL
       const urlParams = new URLSearchParams(window.location.search);
       const sysFromURL = urlParams.get('system');
       if (sysFromURL) {
         input.value = sysFromURL;
         runLookup();
       }
-    })
-    .catch(err => console.error('Failed to load systems.json:', err));
+    });
 
-  // Security color helper
+  // Security class
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -55,33 +42,16 @@
   }
 
   // Suggestions
-  function hideSuggestions() {
-    suggestionsDiv.innerHTML = '';
-    suggestionsDiv.style.display = 'none';
-    currentFocus = -1;
-  }
-  function showSuggestionsContainer() {
-    suggestionsDiv.style.display = 'block';
-  }
+  function hideSuggestions() { suggestionsDiv.style.display = 'none'; currentFocus = -1; }
+  function showSuggestionsContainer() { suggestionsDiv.style.display = 'block'; }
 
   function renderSuggestions(query) {
-    if (!suggestionsDiv || !input) return;
+    if (!query || !systemsLoaded) { hideSuggestions(); return; }
+    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 12);
+    if (!matches.length) { hideSuggestions(); return; }
+
     suggestionsDiv.innerHTML = '';
     currentFocus = -1;
-
-    if (!query || !systemsLoaded) {
-      hideSuggestions();
-      return;
-    }
-
-    const matches = systems
-      .filter(s => s.system.toLowerCase().startsWith(query))
-      .slice(0, 12);
-
-    if (!matches.length) {
-      hideSuggestions();
-      return;
-    }
 
     const rect = input.getBoundingClientRect();
     suggestionsDiv.style.minWidth = `${rect.width}px`;
@@ -90,9 +60,7 @@
       const div = document.createElement('div');
       div.className = 'suggestion';
       div.setAttribute('data-idx', idx);
-      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
-      div.style.cursor = 'pointer';
-
+      div.innerHTML = `${s.system} <span class="region">(${s.region || 'Unknown'})</span>`;
       div.addEventListener('mousedown', (ev) => {
         ev.preventDefault();
         input.value = s.system;
@@ -106,166 +74,147 @@
     showSuggestionsContainer();
   }
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;')
-      .replace(/'/g, '&#039;');
-  }
-
   input.addEventListener('input', () => renderSuggestions(input.value.trim().toLowerCase()));
-  input.addEventListener('keydown', (e) => {
+  input.addEventListener('keydown', e => {
     const items = suggestionsDiv.querySelectorAll('.suggestion');
-    if (e.key === 'ArrowDown') {
-      if (!items.length) return;
-      currentFocus = (currentFocus + 1) % items.length;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === 'ArrowUp') {
-      if (!items.length) return;
-      currentFocus = (currentFocus - 1 + items.length) % items.length;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === 'Escape') {
-      hideSuggestions();
-    } else if (e.key === 'Enter') {
+    if (e.key === 'ArrowDown') { currentFocus = (currentFocus + 1) % items.length; setActive(items); e.preventDefault(); }
+    else if (e.key === 'ArrowUp') { currentFocus = (currentFocus - 1 + items.length) % items.length; setActive(items); e.preventDefault(); }
+    else if (e.key === 'Escape') hideSuggestions();
+    else if (e.key === 'Enter') {
       if (currentFocus > -1 && items.length) {
         e.preventDefault();
         const chosen = items[currentFocus];
-        if (chosen) {
-          input.value = chosen.textContent.replace(/\s\(.+\)$/, '').trim();
-          hideSuggestions();
-          updateURL(input.value);
-          return;
-        }
+        if (chosen) { input.value = chosen.textContent.replace(/\s\(.+\)$/, '').trim(); hideSuggestions(); updateURL(input.value); return; }
       }
       e.preventDefault();
       runLookup();
     }
   });
 
-  function setActive(items) {
-    items.forEach(i => i.classList.remove('active'));
-    if (currentFocus > -1 && items[currentFocus]) items[currentFocus].classList.add('active');
-    const active = items[currentFocus];
-    if (active) active.scrollIntoView({ block: 'nearest' });
-  }
+  function setActive(items) { items.forEach(i => i.classList.remove('active')); if (currentFocus > -1) items[currentFocus].classList.add('active'); }
 
-  document.addEventListener('click', (ev) => {
-    if (!input) return;
-    if (ev.target === input || suggestionsDiv.contains(ev.target)) return;
-    hideSuggestions();
-  });
-
-  lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
+  document.addEventListener('click', ev => { if (ev.target !== input && !suggestionsDiv.contains(ev.target)) hideSuggestions(); });
   lookupBtn.addEventListener('click', runLookup);
 
-  // Cache helpers
   const CACHE_TTL = 60 * 60 * 1000;
   const CACHE_KEY = "killCache";
   function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
   function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
 
-  window.clearKillCache = () => {
-    localStorage.removeItem(CACHE_KEY);
-    console.log("Kill cache cleared!");
-  };
+  window.clearKillCache = () => { localStorage.removeItem(CACHE_KEY); console.log("Kill cache cleared!"); };
 
-  // zKill fetch
-  async function getPvpKills(systemId) {
+  // zKill fetch for 48h
+  const past48h = 48*3600; // seconds
+
+  const podTypeIds = [670, 671, 672, 673, 674, 675, 676, 677, 678, 679]; // all capsule types
+
+  async function fetchSystemData(systemId){
     const now = Date.now();
-    let killCache = loadKillCache();
-    if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
-      return killCache[systemId].kills;
-    }
+    let cache = loadKillCache();
+    if(cache[systemId] && now - cache[systemId].time < CACHE_TTL) return cache[systemId].data;
+
     try {
-      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
-        headers: {
-          "Accept-Encoding": "gzip",
-          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
+      // Fetch kills from zKill
+      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/${past48h}/`);
+      const killsData = await res.json();
+
+      // Fetch jumps from ESI
+      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
+      const jumpsAll = await jumpsRes.json();
+      const jumpsObj = jumpsAll.find(j=>j.system_id===systemId);
+      const totalJumps = jumpsObj?.ship_jumps || 0;
+
+      // Initialize 48h bins
+      const jumps = Array(48).fill(0);
+      const npc = Array(48).fill(0);
+      const ship = Array(48).fill(0);
+      const pod = Array(48).fill(0);
+
+      const nowMs = Date.now();
+
+      // Distribute kills into hourly bins
+      killsData.forEach(k => {
+        const ts = new Date(k.killmail_time).getTime();
+        const hourAgo = Math.floor((nowMs - ts)/(1000*3600));
+        if(hourAgo < 48){
+          const idx = 47 - hourAgo;
+          if(k.victim.ship_type_id && podTypeIds.includes(k.victim.ship_type_id)) pod[idx]++;
+          else if(k.zkb?.npc) npc[idx]++;
+          else ship[idx]++;
         }
       });
-      const kills = await res.json();
-      const pvpKills = Array.isArray(kills) ? kills.filter(k => k.zkb && !k.zkb.npc).length : 0;
-      killCache[systemId] = { time: now, kills: pvpKills };
-      saveKillCache(killCache);
-      return pvpKills;
-    } catch (err) {
-      console.error("zKill fetch failed", err);
-      return 0;
+
+      // Distribute jumps evenly into 48h bins (rough estimate)
+      const jumpsPerHour = Math.floor(totalJumps / 48);
+      for(let i=0;i<48;i++) jumps[i] = jumpsPerHour;
+
+      cache[systemId] = {time: now, data:{jumps,npc,ship,pod}};
+      saveKillCache(cache);
+      return cache[systemId].data;
+
+    } catch(err) {
+      console.error(err);
+      return {jumps:Array(48).fill(0), npc:Array(48).fill(0), ship:Array(48).fill(0), pod:Array(48).fill(0)};
     }
   }
 
-  // Chart instances
-  let jumpsChart, npcKillsChart, shipKillsChart, podKillsChart;
+  function createLineChart(ctx, label, data, color){
+    return new Chart(ctx, {
+      type: 'line',
+      data: { labels: Array.from({length:48},(_,i)=>i), datasets:[{label,data,borderColor:color,backgroundColor:color+'33',fill:true,tension:0.3}] },
+      options:{
+        responsive:true,
+        plugins:{legend:{display:true}},
+        scales:{
+          x:{title:{display:true,text:'Hours ago',color:'#ccc'},ticks:{color:'#ccc',callback:function(val,index){
+            const hour = 47-index;
+            if(hour%8===2 || hour===0) return hour+'h'; return '';
+          }}},
+          y:{beginAtZero:true,ticks:{color:'#ccc'}}
+        }
+      }
+    });
+  }
 
-  async function runLookup() {
+  async function renderCharts48h(systemId){
+    const data = await fetchSystemData(systemId);
+    const ctxJ = document.getElementById('jumpsChart');
+    const ctxN = document.getElementById('npcKillsChart');
+    const ctxS = document.getElementById('shipKillsChart');
+    const ctxP = document.getElementById('podKillsChart');
+
+    [jumpsChart,npcKillsChart,shipKillsChart,podKillsChart].forEach(c=>c?.destroy?.());
+
+    jumpsChart = createLineChart(ctxJ,'Jumps Last 48h',data.jumps,'#4bcef4');
+    npcKillsChart = createLineChart(ctxN,'NPC Kills Last 48h',data.npc,'#60daa6');
+    shipKillsChart = createLineChart(ctxS,'Ship Kills Last 48h',data.ship,'#dc6c09');
+    podKillsChart = createLineChart(ctxP,'Pod Kills Last 48h',data.pod,'#bc1116');
+  }
+
+  async function runLookup(){
     const name = input.value.trim().toLowerCase();
-    if (!name) return;
-
-    if (!systemsLoaded) {
-      outputDiv.innerHTML = '<p>Systems data still loading...</p>';
-      return;
-    }
+    if(!name){ return; }
+    if(!systemsLoaded){ outputDiv.innerHTML='<p>Systems data still loading...</p>'; return; }
 
     updateURL(name);
-    const system = systems.find(s => s.system.toLowerCase() === name);
-    if (!system) {
-      outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found!</p>`;
-      return;
-    }
+    const system = systems.find(s=>s.system.toLowerCase()===name);
+    if(!system){ outputDiv.innerHTML=`<p>System "${input.value}" not found!</p>`; return; }
 
-    outputDiv.innerHTML = `<p>Fetching system data for <b>${escapeHtml(system.system)}</b>...</p>`;
+    outputDiv.innerHTML=`<p>Fetching data for <b>${system.system}</b>...</p>`;
 
-    try {
-      const [jumpsRes, killsRes] = await Promise.all([
-        fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility'),
-        fetch('https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility')
-      ]);
+    const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+    const cls = secClass(sec);
 
-      const jumpsData = await jumpsRes.json();
-      const killsData = await killsRes.json();
-
-      const systemJumpsObj = jumpsData.find(j => j.system_id === system.system_id);
-      const systemKillsObj = killsData.find(k => k.system_id === system.system_id);
-
-      const jumps = systemJumpsObj ? systemJumpsObj.ship_jumps || 0 : 0;
-      const npcKills = systemKillsObj ? systemKillsObj.npc_kills || 0 : 0;
-      const shipKills = systemKillsObj ? systemKillsObj.ship_kills || 0 : 0;
-      const podKills = systemKillsObj ? systemKillsObj.pod_kills || 0 : 0;
-
-      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
-      const cls = secClass(sec);
-      const pvpKills = await getPvpKills(system.system_id);
-
-      const killClass = (pvpKills >= 5) ? 'kills-high' : "";
-
-      const graphContainer = document.getElementById("graphContainer");
-      if (graphContainer) {
-        graphContainer.style.display = "flex";
-      } else {
-        console.warn("graphContainer missing in DOM");
-      }
-
-      const systemInfoTable = document.getElementById("systemInfoTable");
-      if (systemInfoTable) {
-        systemInfoTable.closest(".system-info").style.display = "block";
-      }
-
-      outputDiv.innerHTML = `
+    outputDiv.innerHTML=`
       <div class="system-info">
         <table id="systemInfoTable">
-          <tr><th>Name</th><td>${escapeHtml(system.system)}</td></tr>
-          <tr><th>Constellation</th><td>${escapeHtml(system.constellation || 'Unknown')}</td></tr>
-          <tr><th>Region</th><td>${escapeHtml(system.region || 'Unknown')}</td></tr>
+          <tr><th>Name</th><td>${system.system}</td></tr>
+          <tr><th>Constellation</th><td>${system.constellation||'Unknown'}</td></tr>
+          <tr><th>Region</th><td>${system.region||'Unknown'}</td></tr>
           <tr><th>Security Status</th><td class="${cls}">${sec}</td></tr>
-          <tr><th>Kills (last hour)</th><td class="${killClass}">${pvpKills}</td></tr>
-          <tr><th>Jumps (last hour)</th><td>${jumps}</td></tr>
         </table>
       </div>
-      <div id="graphContainer" class="graphs">
+      <div class="charts-wrapper" id="graphContainer">
         <canvas id="jumpsChart"></canvas>
         <canvas id="npcKillsChart"></canvas>
         <canvas id="shipKillsChart"></canvas>
@@ -273,54 +222,10 @@
       </div>
     `;
 
-      renderCharts(jumps, npcKills, shipKills, podKills);
-    } catch (err) {
-      console.error(err);
-      outputDiv.innerHTML = '<p>Error fetching data. See console.</p>';
-    }
+    renderCharts48h(system.system_id);
   }
 
-  function renderCharts(jumps, npcKills, shipKills, podKills) {
-    const config = (label, data, color) => ({
-      type: 'bar',
-      data: {
-        labels: [label],
-        datasets: [{
-          data: [data],
-          backgroundColor: color,
-        }]
-      },
-      options: {
-        scales: {
-          x: { display: false },
-          y: { beginAtZero: true, ticks: { color: '#ccc' } }
-        },
-        plugins: { legend: { display: false } },
-      }
-    });
-
-    if (!window.Chart) {
-      const script = document.createElement('script');
-      script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
-      script.onload = () => renderCharts(jumps, npcKills, shipKills, podKills);
-      document.body.appendChild(script);
-      return;
-    }
-
-    const ctxJumps = document.getElementById('jumpsChart');
-    const ctxNpc = document.getElementById('npcKillsChart');
-    const ctxShip = document.getElementById('shipKillsChart');
-    const ctxPod = document.getElementById('podKillsChart');
-
-    [jumpsChart, npcKillsChart, shipKillsChart, podKillsChart].forEach(c => c?.destroy?.());
-
-    jumpsChart = new Chart(ctxJumps, config('Jumps Last 48h', jumps, '#4bcef4'));
-    npcKillsChart = new Chart(ctxNpc, config('NPC Kills Last 48h', npcKills, '#60daa6'));
-    shipKillsChart = new Chart(ctxShip, config('Ship Kills Last 48h', shipKills, '#dc6c09'));
-    podKillsChart = new Chart(ctxPod, config('Pod Kills Last 48h', podKills, '#bc1116'));
-  }
-
-  function updateURL(systemName) {
+  function updateURL(systemName){
     const params = new URLSearchParams(window.location.search);
     params.set('system', systemName);
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
