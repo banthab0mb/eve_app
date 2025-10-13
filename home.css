@@ -9,16 +9,7 @@ html, body {
   flex-direction: column;
 }
 
-/* Header & Footer */
-header, footer {
-  background: #111;
-  color: #ccc;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
+/* Fonts */
 @font-face {
   font-family: 'Square721ExtendedBold';
   font-style: normal;
@@ -40,14 +31,16 @@ header, footer {
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
+/* Header */
 header {
-  border-bottom: 2px solid #222;
-  font-family: "Shentox-Regular", sans-serif !important;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: nowrap;
+  position: relative;
+  border-bottom: 2px solid #222;
+  font-family: "Shentox-Regular", sans-serif !important;
+  padding: 10px 20px;
 }
 
 .header-left {
@@ -60,7 +53,7 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-left: auto; /* keeps it on the right on PC */
+  margin-left: auto; /* pushes to far right on PC */
 }
 
 header .app-title a {
@@ -71,7 +64,7 @@ header .app-title a {
 
 header .app-title a:hover { color: #fff; }
 
-/* Nav */
+/* Hamburger */
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -87,29 +80,28 @@ header .app-title a:hover { color: #fff; }
   border-radius: 2px;
 }
 
-nav {
-  display: flex !important;
+/* Top navigation */
+nav.top-nav {
+  display: flex;
   justify-content: center;
   align-items: center;
   gap: 15px;
   flex: 1;
 }
 
-nav a {
+nav.top-nav a {
   color: #aaa;
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
-  display: block;
 }
 
-nav a.active, nav a:hover {
+nav.top-nav a.active,
+nav.top-nav a:hover {
   color: #fff;
   border-bottom: 2px solid #fff;
   padding-bottom: 2px;
 }
-
-#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
 
 /* Main Content */
 main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
@@ -198,13 +190,16 @@ footer a:hover { color: #fff; }
   filter: brightness(0) invert(1) !important;
 }
 
+/* Player count small adjustments */
+#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
+
 /* Responsive / Mobile */
 @media (max-width: 768px) {
   .nav-toggle {
     display: flex;
   }
 
-  nav {
+  nav.top-nav {
     display: none;
     flex-direction: column;
     gap: 10px;
@@ -217,17 +212,17 @@ footer a:hover { color: #fff; }
     z-index: 999;
   }
 
-  nav.active {
+  nav.top-nav.active {
     display: flex;
   }
 
-  .features {
-    grid-template-columns: 1fr; /* stack features vertically */
-    padding: 10px;
-    gap: 15px;
+  .header-right {
+    margin-left: 0; /* next to title on mobile */
   }
 
-  .header-right {
-    margin-left: 0; /* stay next to title on mobile */
+  .features {
+    grid-template-columns: 1fr; /* stack vertically */
+    padding: 10px;
+    gap: 15px;
   }
 }
