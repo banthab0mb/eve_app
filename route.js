@@ -228,19 +228,18 @@ routeBtn.addEventListener("click", async () => {
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    // Build URL for EVE Scout v2 API
     let url = `https://api.eve-scout.com/v2/public/routes?from=${originName}&to=${destName}&mode=${mode}`;
     console.log(url);
     const res = await fetch(url);
     const routeData = await res.json();
 
     console.log(routeData);
-    const routeArray = routeData.route; // array of system objects
-    if (!routeData || !routeData.route || !routeData.route.length) {
-    routeOutput.innerHTML = "<p>No route found.</p>";
-    return;
+    if (!routeData || !routeData.length || !routeData[0].route || !routeData[0].route.length) {
+      routeOutput.innerHTML = "<p>No route found.</p>";
+      return;
     }
 
+    const routeArray = routeData[0].route; // array of system objects
     const routeIds = routeArray.map(s => s.system_id);
     const routeKills = await getRouteKills(routeIds);
 
@@ -248,32 +247,32 @@ routeBtn.addEventListener("click", async () => {
       <tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills (last hour)</th><th>zKillboard</th></tr>`;
 
     for (let i = 0; i < routeArray.length; i++) {
-        const systemObj = routeArray[i];
-        const sysId = systemObj.system_id;
-        const system = systems.find(s => s.system_id === sysId);
-        if (!system) continue;
+      const systemObj = routeArray[i];
+      const sysId = systemObj.system_id;
 
-        const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
-        const cls = secClass(sec);
+      // fallback to API system object if local systems.json doesn't have it
+      const system = systems.find(s => s.system_id === sysId) || systemObj;
 
-        const kills = routeKills[sysId] || 0;
-        const killClass = (kills >= 5) ? 'kills-high' : "";
+      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+      const cls = secClass(sec);
 
-        const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
+      const kills = routeKills[sysId] || 0;
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
-        html += `<tr ${specialStyle}>
-          <td><b>${i + 1}</b></td>
-          <td>${system.system} <span class="region">(${system.region})</span></td>
-          <td class="${cls}"><b>${sec}</b></td>
-          <td><span class="${killClass}"><b>${kills}</b></span></td>
-          <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
-        </tr>`;
+      const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
+
+      html += `<tr ${specialStyle}>
+        <td><b>${i + 1}</b></td>
+        <td>${system.system || system.system_name} <span class="region">(${system.region || system.region_name})</span></td>
+        <td class="${cls}"><b>${sec}</b></td>
+        <td><span class="${killClass}"><b>${kills}</b></span></td>
+        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
+      </tr>`;
     }
 
     totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
     html += "</table>";
     routeOutput.innerHTML = html;
-
 
   } catch (err) {
     console.error(err);
