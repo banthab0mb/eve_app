@@ -23,6 +23,7 @@
       }
     });
 
+  // Security class
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -37,6 +38,7 @@
     return "sec-null";
   }
 
+  // Suggestions
   function hideSuggestions() { suggestionsDiv.style.display = 'none'; currentFocus = -1; }
   function showSuggestionsContainer() { suggestionsDiv.style.display = 'block'; }
 
@@ -47,6 +49,7 @@
 
     suggestionsDiv.innerHTML = '';
     currentFocus = -1;
+
     const rect = input.getBoundingClientRect();
     suggestionsDiv.style.minWidth = `${rect.width}px`;
 
@@ -86,6 +89,7 @@
   });
 
   function setActive(items) { items.forEach(i => i.classList.remove('active')); if (currentFocus > -1) items[currentFocus].classList.add('active'); }
+
   document.addEventListener('click', ev => { if (ev.target !== input && !suggestionsDiv.contains(ev.target)) hideSuggestions(); });
   lookupBtn.addEventListener('click', runLookup);
 
@@ -93,7 +97,6 @@
   const CACHE_KEY = "killCache";
   function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
   function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
-
   window.clearKillCache = () => { localStorage.removeItem(CACHE_KEY); console.log("Kill cache cleared!"); };
 
   async function fetchSystemData(systemId){
@@ -102,97 +105,127 @@
     if(cache[systemId] && now - cache[systemId].time < CACHE_TTL) return cache[systemId].data;
 
     try {
+      // Fetch kills from zKill
       const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/172800/`);
       const killsData = await res.json();
 
+      // Fetch jumps from ESI
       const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
       const jumpsAll = await jumpsRes.json();
+
       const jumpsObj = jumpsAll.find(j => j.system_id === systemId);
       const totalJumps = jumpsObj?.ship_jumps ?? 0;
 
-      const shipKills = killsData.filter(k => !k.victim.ship_type_id || ![670,671,672,673,674,675,676,677,678,679].includes(k.victim.ship_type_id)).length;
-      const podKills = killsData.filter(k => k.victim.ship_type_id && [670,671,672,673,674,675,676,677,678,679].includes(k.victim.ship_type_id)).length;
+      const shipKills = killsData.filter(k => {
+        const typeId = k.victim?.ship_type_id;
+        return typeId && ![670,671,672,673,674,675,676,677,678,679].includes(typeId);
+      }).length;
+
+      const podKills = killsData.filter(k => {
+        const typeId = k.victim?.ship_type_id;
+        return typeId && [670,671,672,673,674,675,676,677,678,679].includes(typeId);
+      }).length;
+
       const npcKills = killsData.filter(k => k.zkb?.npc).length;
 
-      const result = { jumps1h: Math.floor(totalJumps/48), jumps24h: totalJumps, shipKills, podKills, npcKills };
-      cache[systemId] = { data: result, time: now };
+      const data = { jumps1h: Math.floor(totalJumps/48), jumps24h: totalJumps, shipKills, podKills, npcKills };
+
+      cache[systemId] = { time: now, data };
       saveKillCache(cache);
-      return result;
+
+      return data;
+
     } catch(err) {
       console.error(err);
-      return { jumps1h:0,jumps24h:0,shipKills:0,podKills:0,npcKills:0 };
+      return { jumps1h: 0, jumps24h: 0, shipKills: 0, podKills: 0, npcKills: 0 };
     }
   }
 
-  async function fetchESISystem(systemId){
+  async function fetchStations(systemId){
     try {
-      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/`);
-      if(!res.ok) throw new Error("ESI fetch failed");
-      return await res.json();
-    } catch(err){
-      console.error("Error fetching ESI system:", err);
-      return null;
+      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/?datasource=tranquility`);
+      const data = await res.json();
+      if(!data.stations) return [];
+
+      const stationsFull = await Promise.all(data.stations.map(async stationId => {
+        try {
+          const sRes = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
+          return await sRes.json();
+        } catch(e) {
+          console.error("Station fetch error", e);
+          return { name: "Unknown", owner: "Unknown", type_id: 0, services: [] };
+        }
+      }));
+
+      return stationsFull.map(s => ({
+        name: s.name || "Unknown",
+        owner: s.owner ?? "Unknown",
+        type: s.type_id ?? "Unknown",
+        services: s.services?.join(", ") || "Unknown"
+      }));
+
+    } catch(err) {
+      console.error(err);
+      return [];
     }
   }
 
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
     if(!name){ return; }
-    if(!systemsLoaded){ outputDiv.innerHTML = '<p>Systems data still loading...</p>'; return; }
+    if(!systemsLoaded){ 
+        outputDiv.innerHTML = '<p>Systems data still loading...</p>'; 
+        return; 
+    }
 
     updateURL(name);
+
     const system = systems.find(s => s.system.toLowerCase() === name);
-    if(!system){ outputDiv.innerHTML = `<p>System "${input.value}" not found!</p>`; return; }
+    if(!system){
+        outputDiv.innerHTML = `<p>System "${input.value}" not found!</p>`; 
+        return;
+    }
 
     outputDiv.innerHTML = `<p>Fetching data for <b>${system.system}</b>...</p>`;
 
+    // Security
     const sec = parseFloat(system.security_status.toFixed(1));
     const cls = secClass(sec);
 
+    // Fetch 48h kills and jumps
     const data = await fetchSystemData(system.system_id);
-    const esiData = await fetchESISystem(system.system_id);
 
-    let planets = 0, moons = 0, belts = 0, stations = [];
-    if(esiData){
-      planets = esiData.planets?.length || 0;
-      moons = esiData.planets?.reduce((sum,p)=>sum + (p.moons?.length||0),0);
-      belts = esiData.planets?.reduce((sum,p)=>sum + (p.asteroid_belts?.length||0),0);
-      stations = esiData.stations || [];
-    }
+    // Fetch stations
+    const stations = await fetchStations(system.system_id);
 
-    const minerals = system.minerals?.join(", ") || "Unknown";
-
-    // Generate system table
+    // Generate table
     outputDiv.innerHTML = `
       <div class="system-container">
-        <table id="systemInfoTable">
-          <tr><th>Name</th><td>${system.system}</td><th>Planets</th><td>${planets}</td></tr>
-          <tr><th>Region</th><td>${system.region}</td><th>Moons</th><td>${moons}</td></tr>
-          <tr><th>Constellation</th><td>${system.constellation}</td><th>Belts/Icebelts</th><td>${belts}</td></tr>
-          <tr><th>Security Level</th><td>${sec}</td><th>Security Class</th><td>${cls}</td></tr>
-          <tr><th>Faction</th><td colspan="3">None</td></tr>
-          <tr><th>Jumps 1h / 24h</th><td colspan="3">${data.jumps1h} / ${data.jumps24h}</td></tr>
-          <tr><th>Ship Kills</th><td colspan="3">${data.shipKills} / ${data.shipKills}</td></tr>
-          <tr><th>NPC Kills</th><td colspan="3">${data.npcKills} / ${data.npcKills}</td></tr>
-          <tr><th>Pod Kills</th><td colspan="3">${data.podKills} / ${data.podKills}</td></tr>
-          <tr><th>Minerals</th><td colspan="3">${minerals}</td></tr>
-        </table>
+        <div class="system-info">
+          <table id="systemInfoTable">
+            <tr><th>Name</th><td>${system.system}</td><th>Planets</th><td>${system.planets || 0}</td></tr>
+            <tr><th>Region</th><td>${system.region || "Unknown"}</td><th>Moons</th><td>${system.moons || 0}</td></tr>
+            <tr><th>Constellation</th><td>${system.constellation || "Unknown"}</td><th>Belts/Icebelts</th><td>${(system.belts||0)+ (system.icebelts||0)}</td></tr>
+            <tr><th>Security Level</th><td>${sec}</td><th>Security Class</th><td>${cls}</td></tr>
+            <tr><th>Faction</th><td colspan="3">${system.faction || "None"}</td></tr>
+            <tr><th>Jumps 1h / 24h</th><td colspan="3">${data.jumps1h} / ${data.jumps24h}</td></tr>
+            <tr><th>Ship Kills</th><td colspan="3">${data.shipKills} / ${data.shipKills}</td></tr>
+            <tr><th>NPC Kills</th><td colspan="3">${data.npcKills} / ${data.npcKills}</td></tr>
+            <tr><th>Pod Kills</th><td colspan="3">${data.podKills} / ${data.podKills}</td></tr>
+            <tr><th>Minerals</th><td colspan="3">Unknown</td></tr>
+          </table>
 
-        <h3>Stations / Outposts [${stations.length}]</h3>
-        <table id="stationsTable">
-          <tr>
-            <th>Name</th>
-            <th>Owner</th>
-            <th>Services</th>
-            <th>Type</th>
-          </tr>
-          ${stations.map(s=>`<tr>
-            <td>${s.name || s.system_id}</td>
-            <td>${s.owner || "Unknown"}</td>
-            <td>${s.services || "Unknown"}</td>
-            <td>${s.type || "Unknown"}</td>
-          </tr>`).join('')}
-        </table>
+          <h3>Stations</h3>
+          <table id="stationsTable">
+            <tr><th>Name</th><th>Owner</th><th>Type</th><th>Services</th></tr>
+            ${stations.map(s => `<tr>
+              <td>${s.name}</td>
+              <td>${s.owner}</td>
+              <td>${s.type}</td>
+              <td>${s.services}</td>
+            </tr>`).join('')}
+          </table>
+        </div>
       </div>
     `;
   }
