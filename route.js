@@ -8,31 +8,25 @@ let systems = [];
 let systemKills = [];
 let stargates = [];
 
-// Load systems.json
-fetch("systems.json")
-  .then(res => res.json())
-  .then(data => systems = data)
-  .catch(err => console.error("Failed to load systems.json:", err));
-
-// Load stargates.json (new!)
-fetch("stargates.json")
-  .then(res => res.json())
-  .then(data => stargates = data)
-  .catch(err => console.error("Failed to load stargates.json:", err));
+// Load static data
+Promise.all([
+  fetch("systems.json").then(r => r.json()).then(data => systems = data),
+  fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
+]).catch(err => console.error("Failed to load JSON:", err));
 
 // Load system kills
 fetch("https://esi.evetech.net/latest/universe/system_kills/")
-  .then(res => res.json())
+  .then(r => r.json())
   .then(data => systemKills = data)
   .catch(err => console.error("Failed to load system kills:", err));
 
-// Helper: get system ID from name
+// Helper: get system ID
 function getSystemId(name) {
   const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
   return system ? system.system_id : null;
 }
 
-// Get color value for security status
+// Security color
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -47,13 +41,13 @@ function secClass(sec) {
   return "sec-null";
 }
 
-// Get kills in the system
+// Get kills from static ESI data
 function getKills(systemId) {
   const entry = systemKills.find(s => s.system_id === systemId);
   return entry ? entry.ship_kills : 0;
 }
 
-// Autocomplete setup
+// Autocomplete
 function setupAutocomplete(input, suggestionsId) {
   const suggestionsDiv = document.getElementById(suggestionsId) || document.createElement("div");
   suggestionsDiv.classList.add("suggestions");
@@ -88,24 +82,9 @@ function setupAutocomplete(input, suggestionsId) {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
 
-    if (e.key === "ArrowDown") {
-      currentFocus++;
-      if (currentFocus >= items.length) currentFocus = 0;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === "ArrowUp") {
-      currentFocus--;
-      if (currentFocus < 0) currentFocus = items.length - 1;
-      setActive(items);
-      e.preventDefault();
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (currentFocus > -1) {
-        const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
-        input.value = systemName;
-        suggestionsDiv.innerHTML = "";
-      }
-    }
+    if (e.key === "ArrowDown") { currentFocus++; if (currentFocus >= items.length) currentFocus = 0; setActive(items); e.preventDefault(); }
+    else if (e.key === "ArrowUp") { currentFocus--; if (currentFocus < 0) currentFocus = items.length - 1; setActive(items); e.preventDefault(); }
+    else if (e.key === "Enter") { e.preventDefault(); if (currentFocus > -1) { const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); input.value = systemName; suggestionsDiv.innerHTML = ""; } }
   });
 
   function setActive(items) {
@@ -113,95 +92,48 @@ function setupAutocomplete(input, suggestionsId) {
     if (currentFocus > -1) items[currentFocus].classList.add("active");
   }
 
-  document.addEventListener("click", e => {
-    if (e.target !== input) suggestionsDiv.innerHTML = "";
-  });
+  document.addEventListener("click", e => { if (e.target !== input) suggestionsDiv.innerHTML = ""; });
 }
 
 // Initialize autocomplete
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
 
-// Sleep helper
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-// Cache setup
+// Cache
 let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
 const CACHE_TTL = 60 * 60 * 1000;
-function saveCache() {
-  localStorage.setItem("killCache", JSON.stringify(killCache));
-}
+function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
 
-// Fetch PvP kills (zKill)
-async function getPvpKills(systemId, retries = 3, delay = 1000) {
+// Fetch PvP kills (parallel & cached)
+async function getPvpKills(systemId) {
   const now = Date.now();
+  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
 
-  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
-    return killCache[systemId].kills;
-  }
-
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const res = await fetch(
-        `https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`,
-        {
-          headers: {
-            "Accept-Encoding": "gzip",
-            "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
-          }
-        }
-      );
-
-      if (res.status === 429) {
-        await sleep(delay * attempt);
-        continue;
-      }
-
-      const kills = await res.json();
-      if (!Array.isArray(kills)) return 0;
-
-      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
-
-      killCache[systemId] = { time: now, kills: pvpKills };
-      saveCache();
-
-      return pvpKills;
-    } catch {
-      await sleep(delay * attempt);
-    }
-  }
-
-  return 0;
+  try {
+    const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
+      headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
+    });
+    if (!res.ok) return 0;
+    const kills = await res.json();
+    if (!Array.isArray(kills)) return 0;
+    const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
+    killCache[systemId] = { time: now, kills: pvpKills };
+    saveCache();
+    return pvpKills;
+  } catch { return 0; }
 }
 
-// Route kills with batching
-async function getRouteKills(route, batchSize = 5, delay = 1000) {
-  const result = {};
-  for (let i = 0; i < route.length; i += batchSize) {
-    const batch = route.slice(i, i + batchSize);
-    const batchResults = await Promise.all(batch.map(async id => [id, await getPvpKills(id, 5, delay)]));
-    for (const [sysId, kills] of batchResults) result[sysId] = kills;
-    if (i + batchSize < route.length) await sleep(delay);
-  }
-  return result;
-}
-
-// Graph for routes
+// Build graph
 let whGraph = {};
-
-// Build base graph using stargates.json
 function buildGraph() {
   whGraph = {};
   stargates.forEach(g => {
     if (!whGraph[g.from_system]) whGraph[g.from_system] = [];
     whGraph[g.from_system].push(g.to_system);
   });
-  console.log("Graph built from stargates.json:", Object.keys(whGraph).length);
 }
 
-// Add wormhole edges (Thera + Turnur)
+// Add wormholes
 async function addWormholes() {
   const thera = await fetch("https://api.eve-scout.com/v2/public/signatures?system_name=thera").then(r => r.json());
   const turnur = await fetch("https://api.eve-scout.com/v2/public/signatures?system_name=turnur").then(r => r.json());
@@ -215,14 +147,12 @@ async function addWormholes() {
       whGraph[to].push(from);
     }
   });
-  console.log("Added wormholes to graph");
 }
 
 // BFS shortest path
 function shortestPath(startId, endId) {
   const queue = [[startId]];
   const visited = new Set();
-
   while (queue.length) {
     const path = queue.shift();
     const node = path[path.length - 1];
@@ -235,14 +165,7 @@ function shortestPath(startId, endId) {
   return null;
 }
 
-// Full route computation
-async function computeRouteWithWormholes(originId, destId) {
-  buildGraph();
-  await addWormholes();
-  return shortestPath(originId, destId);
-}
-
-// Route button logic
+// Compute route button
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
@@ -250,19 +173,12 @@ routeBtn.addEventListener("click", async () => {
 
   const originId = getSystemId(originName);
   const destId = getSystemId(destName);
-
-  if (!originId || !destId) {
-    routeOutput.innerHTML = "<p>Origin or destination system not found!</p>";
-    return;
-  }
+  if (!originId || !destId) { routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; return; }
 
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
-  // determine selected route mode
   const selectedRadio = document.querySelector("input[name='route-flag']:checked");
-  let mode = selectedRadio ? selectedRadio.value : "shortest";
-
-  // disable wormholes for secure and gates-only
+  const mode = selectedRadio ? selectedRadio.value : "shortest";
   const allowWormholes = !(mode === "secure" || mode === "shortest-gates-only");
 
   try {
@@ -270,25 +186,23 @@ routeBtn.addEventListener("click", async () => {
     if (allowWormholes) await addWormholes();
 
     const routeIds = shortestPath(originId, destId);
-    if (!routeIds) {
-      routeOutput.innerHTML = `<p>No route found${allowWormholes ? " (even with wormholes)." : " (wormholes disabled)."}</p>`;
-      return;
-    }
+    if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
 
-    const routeKills = await getRouteKills(routeIds);
+    // Fetch all kills in parallel
+    const killPromises = routeIds.map(id => getPvpKills(id));
+    const killResults = await Promise.all(killPromises);
+    const routeKills = {};
+    routeIds.forEach((id, i) => routeKills[id] = killResults[i]);
+
+    // Build table
     let html = `<table><tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills</th><th>zKill</th></tr>`;
-
-    for (let i = 0; i < routeIds.length; i++) {
-      const sysId = routeIds[i];
+    routeIds.forEach((sysId, i) => {
       const system = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
-      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+      const sec = parseFloat(system.security_status).toFixed(1);
       const cls = secClass(sec);
       const kills = routeKills[sysId] || 0;
       const killClass = kills >= 5 ? "kills-high" : "";
-      const highlight =
-        (system.system === "Thera" || system.system === "Turnur")
-          ? '<span class="highlight-system">'
-          : '';
+      const highlight = (system.system === "Thera" || system.system === "Turnur") ? '<span class="highlight-system">' : '';
       const endHighlight = highlight ? '</span>' : '';
 
       html += `<tr>
@@ -296,12 +210,11 @@ routeBtn.addEventListener("click", async () => {
         <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
+        <td><span class="links"><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></span></td>
       </tr>`;
-    }
-
-    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
+    });
     html += "</table>";
+    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
     routeOutput.innerHTML = html;
 
   } catch (err) {
