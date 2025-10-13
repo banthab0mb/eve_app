@@ -19,7 +19,7 @@ function getSystemId(name) {
   return system ? system.system_id : null;
 }
 
-// Security color
+// Security colors
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -49,7 +49,6 @@ function setupAutocomplete(input, suggestionsId) {
     if (!query) return;
 
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
-
     matches.forEach(s => {
       const div = document.createElement("div");
       div.classList.add("suggestion");
@@ -61,17 +60,15 @@ function setupAutocomplete(input, suggestionsId) {
       });
       suggestionsDiv.appendChild(div);
     });
-
     suggestionsDiv.style.display = matches.length ? "block" : "none";
   });
 
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
-
     if (e.key === "ArrowDown") { currentFocus++; if (currentFocus >= items.length) currentFocus = 0; setActive(items); e.preventDefault(); }
     else if (e.key === "ArrowUp") { currentFocus--; if (currentFocus < 0) currentFocus = items.length - 1; setActive(items); e.preventDefault(); }
-    else if (e.key === "Enter") { e.preventDefault(); if (currentFocus > -1) { const systemName = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); input.value = systemName; suggestionsDiv.innerHTML = ""; } }
+    else if (e.key === "Enter") { e.preventDefault(); if (currentFocus > -1) { input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); suggestionsDiv.innerHTML = ""; } }
   });
 
   function setActive(items) {
@@ -82,38 +79,47 @@ function setupAutocomplete(input, suggestionsId) {
   document.addEventListener("click", e => { if (e.target !== input) suggestionsDiv.innerHTML = ""; });
 }
 
-// Initialize autocomplete
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
+
+// Sleep helper
+function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
 // Cache
 let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
 const CACHE_TTL = 60 * 60 * 1000;
 function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
 
-// Fetch PvP kills only from zKill
-async function getPvpKills(systemId) {
+// Fetch PvP kills (zKill)
+async function getPvpKills(systemId, retries = 3, delay = 1000) {
   const now = Date.now();
   if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
 
-  try {
-    const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
-      headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
-    });
-    if (!res.ok) return killCache[systemId]?.kills || 0;
-    const kills = await res.json();
-    if (!Array.isArray(kills)) return killCache[systemId]?.kills || 0;
-
-    const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
-    killCache[systemId] = { time: now, kills: pvpKills };
-    saveCache();
-    return pvpKills;
-  } catch {
-    return killCache[systemId]?.kills || 0;
+  for (let attempt = 1; attempt <= retries; attempt++) {
+    try {
+      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
+        headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
+      });
+      if (!res.ok) await sleep(delay * attempt);
+      const kills = await res.json();
+      if (!Array.isArray(kills)) return 0;
+      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
+      killCache[systemId] = { time: now, kills: pvpKills };
+      saveCache();
+      return pvpKills;
+    } catch { await sleep(delay * attempt); }
   }
+  return 0;
 }
 
-// Build stargate graph
+// Route kills sequential (mobile-safe)
+async function getRouteKills(route) {
+  const result = {};
+  for (let id of route) result[id] = await getPvpKills(id);
+  return result;
+}
+
+// Build graph
 let whGraph = {};
 function buildGraph() {
   whGraph = {};
@@ -155,7 +161,7 @@ function shortestPath(startId, endId) {
   return null;
 }
 
-// Compute route
+// Route button
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
   const destName = destInput.value.trim();
@@ -166,7 +172,6 @@ routeBtn.addEventListener("click", async () => {
   if (!originId || !destId) { routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; return; }
 
   routeOutput.innerHTML = "<p>Fetching route...</p>";
-
   const selectedRadio = document.querySelector("input[name='route-flag']:checked");
   const mode = selectedRadio ? selectedRadio.value : "shortest";
   const allowWormholes = !(mode === "secure" || mode === "shortest-gates-only");
@@ -178,14 +183,11 @@ routeBtn.addEventListener("click", async () => {
     const routeIds = shortestPath(originId, destId);
     if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
 
-    // Fetch all zKill kills in parallel
-    const killResults = await Promise.all(routeIds.map(id => getPvpKills(id)));
-    const routeKills = {};
-    routeIds.forEach((id, i) => routeKills[id] = killResults[i]);
+    const routeKills = await getRouteKills(routeIds);
 
-    // Build table
     let html = `<table><tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills</th><th>zKill</th></tr>`;
-    routeIds.forEach((sysId, i) => {
+    for (let i = 0; i < routeIds.length; i++) {
+      const sysId = routeIds[i];
       const system = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
       const sec = parseFloat(system.security_status).toFixed(1);
       const cls = secClass(sec);
@@ -193,7 +195,6 @@ routeBtn.addEventListener("click", async () => {
       const killClass = kills >= 5 ? "kills-high" : "";
       const highlight = (system.system === "Thera" || system.system === "Turnur") ? '<span class="highlight-system">' : '';
       const endHighlight = highlight ? '</span>' : '';
-
       html += `<tr>
         <td><b>${i}</b></td>
         <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
@@ -201,7 +202,7 @@ routeBtn.addEventListener("click", async () => {
         <td><span class="${killClass}"><b>${kills}</b></span></td>
         <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
-    });
+    }
     html += "</table>";
     totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
     routeOutput.innerHTML = html;
