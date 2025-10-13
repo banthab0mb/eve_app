@@ -161,7 +161,7 @@
   function createLineChart(ctx, label, data, color){
     return new Chart(ctx, {
       type: 'line',
-      data: { labels: Array.from({length:48},(_,i)=>i), datasets:[{label,data,borderColor:color,backgroundColor:color+'33',fill:true,tension:0.3}] },
+      data: { labels: Array.from({length:48}, (_,i) => 47-i), datasets:[{label,data,borderColor:color,backgroundColor:color+'33',fill:true,tension:0.3}] },
       options:{
         responsive:true,
         plugins:{legend:{display:true}},
@@ -178,6 +178,7 @@
 
   async function renderCharts48h(systemId){
     const data = await fetchSystemData(systemId);
+    console.log(data);
     const ctxJ = document.getElementById('jumpsChart');
     const ctxN = document.getElementById('npcKillsChart');
     const ctxS = document.getElementById('shipKillsChart');
