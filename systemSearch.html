@@ -36,17 +36,18 @@
 
 
   <!-- Page Content -->
-<main>
-  <div class="search-container">
-    <input type="text" id="systemName" class="search-box" placeholder="Type system name">
-    <div class="suggestions" id="suggestions"></div>
-  </div>
-  <button class="search-button" id="lookupBtn">Search</button>
-
-  <div id="output">
-    <!-- System info table inserted by JS -->
-  </div>
-</main>
+  <main>
+    <div class="search-container">
+      <input type="text" 
+            id="systemName" 
+            class="search-box" 
+            placeholder="Type system name">
+      <div class="suggestions" id="suggestions"></div>
+    </div>
+    <button class="search-button" id="lookupBtn">Search</button>
+    <div id="output"></div>
+    </div>
+  </main>
 
   <footer>
     <p>Brought to you by <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=erica+romero" target="_blank">Erica Romero</a></p>
@@ -71,8 +72,9 @@
          class="github-icon">
     </a>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
+
+  <script src="systemSearch.js"></script>
+    <script>
     // Toggle CCP disclaimer visibility
     document.getElementById("ccp-link").addEventListener("click", (e) => {
       e.preventDefault();
@@ -120,6 +122,5 @@
       setInterval(updateEveTime, .5);
 
     </script>
-    <script src="systemSearch.js"></script>
 </body>
 </html>

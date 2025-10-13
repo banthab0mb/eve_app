@@ -1,8 +1,21 @@
 (() => {
-  const input = document.querySelector('#systemName');
-  const suggestionsDiv = document.getElementById('suggestions');
-  const lookupBtn = document.getElementById('lookupBtn');
-  const outputDiv = document.getElementById('output');
+  // Assign elements
+  const input = document.querySelector('#systemName') || document.querySelector('.search-box');
+  const suggestionsDiv =
+    (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
+    document.getElementById('suggestions') ||
+    document.getElementById('suggestions-box') ||
+    document.querySelector('.suggestions');
+  const lookupBtn =
+    document.getElementById('lookupBtn') ||
+    document.querySelector('.search-button') ||
+    document.querySelector('button.search-button') ||
+    document.querySelector('button');
+  const outputDiv = document.getElementById('output') || document.querySelector('.output');
+
+  if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
+    console.warn('systemSearch.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
+  }
 
   let systems = [];
   let systemsLoaded = false;
@@ -14,15 +27,19 @@
     .then(data => {
       systems = data;
       systemsLoaded = true;
+      console.log('systems.json loaded, systems:', systems.length);
 
+      // Auto-run if ?system= in URL
       const urlParams = new URLSearchParams(window.location.search);
       const sysFromURL = urlParams.get('system');
       if (sysFromURL) {
         input.value = sysFromURL;
         runLookup();
       }
-    });
+    })
+    .catch(err => console.error('Failed to load systems.json:', err));
 
+  // Security status color helper
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -37,16 +54,34 @@
     return "sec-null";
   }
 
-  function hideSuggestions() { suggestionsDiv.style.display = 'none'; currentFocus = -1; }
-  function showSuggestionsContainer() { suggestionsDiv.style.display = 'block'; }
+  // Suggestions helpers
+  function hideSuggestions() {
+    suggestionsDiv.innerHTML = '';
+    suggestionsDiv.style.display = 'none';
+    currentFocus = -1;
+  }
+  function showSuggestionsContainer() {
+    suggestionsDiv.style.display = 'block';
+  }
 
   function renderSuggestions(query) {
-    if (!query || !systemsLoaded) { hideSuggestions(); return; }
-    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 12);
-    if (!matches.length) { hideSuggestions(); return; }
-
+    if (!suggestionsDiv || !input) return;
     suggestionsDiv.innerHTML = '';
     currentFocus = -1;
+
+    if (!query || !systemsLoaded) {
+      hideSuggestions();
+      return;
+    }
+
+    const matches = systems
+      .filter(s => s.system.toLowerCase().startsWith(query))
+      .slice(0, 12);
+
+    if (!matches.length) {
+      hideSuggestions();
+      return;
+    }
 
     const rect = input.getBoundingClientRect();
     suggestionsDiv.style.minWidth = `${rect.width}px`;
@@ -55,7 +90,9 @@
       const div = document.createElement('div');
       div.className = 'suggestion';
       div.setAttribute('data-idx', idx);
-      div.innerHTML = `${s.system} <span class="region">(${s.region || 'Unknown'})</span>`;
+      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
+      div.style.cursor = 'pointer';
+
       div.addEventListener('mousedown', (ev) => {
         ev.preventDefault();
         input.value = s.system;
@@ -69,196 +106,144 @@
     showSuggestionsContainer();
   }
 
+  function escapeHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
   input.addEventListener('input', () => renderSuggestions(input.value.trim().toLowerCase()));
-  input.addEventListener('keydown', e => {
+
+  input.addEventListener('keydown', (e) => {
     const items = suggestionsDiv.querySelectorAll('.suggestion');
-    if (e.key === 'ArrowDown') { currentFocus = (currentFocus + 1) % items.length; setActive(items); e.preventDefault(); }
-    else if (e.key === 'ArrowUp') { currentFocus = (currentFocus - 1 + items.length) % items.length; setActive(items); e.preventDefault(); }
-    else if (e.key === 'Escape') hideSuggestions();
-    else if (e.key === 'Enter') {
+    if (e.key === 'ArrowDown') {
+      if (!items.length) return;
+      currentFocus = (currentFocus + 1) % items.length;
+      setActive(items);
+      e.preventDefault();
+    } else if (e.key === 'ArrowUp') {
+      if (!items.length) return;
+      currentFocus = (currentFocus - 1 + items.length) % items.length;
+      setActive(items);
+      e.preventDefault();
+    } else if (e.key === 'Escape') {
+      hideSuggestions();
+    } else if (e.key === 'Enter') {
       if (currentFocus > -1 && items.length) {
         e.preventDefault();
         const chosen = items[currentFocus];
-        if (chosen) { input.value = chosen.textContent.replace(/\s\(.+\)$/, '').trim(); hideSuggestions(); updateURL(input.value); return; }
+        if (chosen) {
+          input.value = chosen.textContent.replace(/\s\(.+\)$/, '').trim();
+          hideSuggestions();
+          updateURL(input.value);
+          return;
+        }
       }
       e.preventDefault();
       runLookup();
     }
   });
 
-  function setActive(items) { items.forEach(i => i.classList.remove('active')); if (currentFocus > -1) items[currentFocus].classList.add('active'); }
+  function setActive(items) {
+    items.forEach(i => i.classList.remove('active'));
+    if (currentFocus > -1 && items[currentFocus]) items[currentFocus].classList.add('active');
+    const active = items[currentFocus];
+    if (active) active.scrollIntoView({ block: 'nearest' });
+  }
 
-  document.addEventListener('click', ev => { if (ev.target !== input && !suggestionsDiv.contains(ev.target)) hideSuggestions(); });
+  document.addEventListener('click', (ev) => {
+    if (!input) return;
+    if (ev.target === input || suggestionsDiv.contains(ev.target)) return;
+    hideSuggestions();
+  });
+
+  lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
   const CACHE_TTL = 60 * 60 * 1000;
   const CACHE_KEY = "killCache";
+
   function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
   function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
-  window.clearKillCache = () => { localStorage.removeItem(CACHE_KEY); console.log("Kill cache cleared!"); };
 
-  async function fetchSystemData(systemId){
+  window.clearKillCache = () => {
+    localStorage.removeItem(CACHE_KEY);
+    console.log("Kill cache cleared!");
+  };
+
+  async function getPvpKills(systemId) {
     const now = Date.now();
-    let cache = loadKillCache();
-    if(cache[systemId] && now - cache[systemId].time < CACHE_TTL) return cache[systemId].data;
-
+    let killCache = loadKillCache();
+    if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
+      return killCache[systemId].kills;
+    }
     try {
-      // zKillboard kills
-      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/172800/`);
-      const killsData = await res.json();
-
-      const shipKills = killsData.filter(k => k.victim?.ship_type_id && k.victim.ship_type_id_category !== 6).length;
-      const podKills = killsData.filter(k => k.victim?.ship_type_id_category === 6).length; // 6 = Capsule
-      const npcKills = killsData.filter(k => k.zkb?.npc).length;
-
-      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
-      const jumpsAll = await jumpsRes.json();
-      const jumpsObj = jumpsAll.find(j => j.system_id === systemId);
-      const totalJumps = jumpsObj?.ship_jumps ?? 0;
-
-      const data = { jumps1h: Math.floor(totalJumps/48), jumps24h: totalJumps, shipKills, podKills, npcKills };
-      cache[systemId] = { time: now, data };
-      saveKillCache(cache);
-
-      return data;
-
-    } catch(err){
-      console.error(err);
-      return { jumps1h:0, jumps24h:0, shipKills:0, podKills:0, npcKills:0 };
-    }
-  }
-
-  async function fetchSystemDetails(systemId){
-    try {
-      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/?datasource=tranquility`);
-      return await res.json();
-    } catch(e){
-      console.error(e);
-      return {};
-    }
-  }
-
-  async function fetchFaction(factionId){
-    if(!factionId) return "None";
-    try{
-      const res = await fetch(`https://esi.evetech.net/latest/universe/factions/${factionId}/?datasource=tranquility`);
-      const f = await res.json();
-      return f.name ?? "Unknown";
-    }catch{
-      return "Unknown";
-    }
-  }
-
-  async function fetchCorporation(corpId){
-    if(!corpId) return "Unknown";
-    try{
-      const res = await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/?datasource=tranquility`);
-      const c = await res.json();
-      return c.name ?? "Unknown";
-    }catch{
-      return "Unknown";
-    }
-  }
-
-  async function fetchStations(systemId){
-    try {
-      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/?datasource=tranquility`);
-      const data = await res.json();
-      if(!data.stations) return [];
-
-      const stationsFull = await Promise.all(data.stations.map(async id => {
-        try {
-          const sRes = await fetch(`https://esi.evetech.net/latest/universe/stations/${id}/?datasource=tranquility`);
-          const sData = await sRes.json();
-          const ownerName = await fetchCorporation(sData.owner);
-
-          let typeName = "Unknown";
-          switch(sData.type_id){
-            case 3: typeName = "Outpost"; break;
-            case 4: typeName = "Starbase"; break;
-            case 5: typeName = "Citadel"; break;
-            case 6: typeName = "Engineering Complex"; break;
-            case 7: typeName = "Refinery"; break;
-            case 8: typeName = "Assembly Plant"; break;
-            case 9: typeName = "Trade Hub"; break;
-            case 10: typeName = "Moon Mining Facility"; break;
-          }
-
-          return {
-            name: sData.name ?? "Unknown",
-            owner: ownerName,
-            type: typeName,
-            services: sData.services?.join(", ") ?? "None"
-          };
-        } catch(e){
-          console.error("Station fetch error", e);
-          return { name:"Unknown", owner:"Unknown", type:"Unknown", services:"None" };
+      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
+        headers: {
+          "Accept-Encoding": "gzip",
+          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
         }
-      }));
-
-      return stationsFull;
-    } catch(err){
-      console.error(err);
-      return [];
+      });
+      const kills = await res.json();
+      const pvpKills = Array.isArray(kills) ? kills.filter(k => k.zkb && !k.zkb.npc).length : 0;
+      killCache[systemId] = { time: now, kills: pvpKills };
+      saveKillCache(killCache);
+      return pvpKills;
+    } catch (err) {
+      console.error("zKill fetch failed", err);
+      return 0;
     }
   }
 
-  async function runLookup(){
+  async function runLookup() {
     const name = input.value.trim().toLowerCase();
-    if(!name) return;
-    if(!systemsLoaded){ outputDiv.innerHTML = '<p>Systems data still loading...</p>'; return; }
+    if (!name) return;
+
+    if (!systemsLoaded) {
+      outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>';
+      return;
+    }
 
     updateURL(name);
 
-    const systemObj = systems.find(s => s.system.toLowerCase() === name);
-    if(!systemObj){ outputDiv.innerHTML = `<p>System "${input.value}" not found!</p>`; return; }
+    const system = systems.find(s => s.system.toLowerCase() === name);
+    if (!system) {
+      outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found!</p>`;
+      return;
+    }
 
-    outputDiv.innerHTML = `<p>Fetching data for <b>${systemObj.system}</b>...</p>`;
+    outputDiv.innerHTML = `<p>Fetching kills and jumps for <b>${escapeHtml(system.system)}</b>...</p>`;
 
-    const sysDetails = await fetchSystemDetails(systemObj.system_id);
-    const sec = parseFloat(sysDetails.security_status ?? 0);
-    const secCls = secClass(sec);
-    const factionName = await fetchFaction(sysDetails.faction_id);
+    try {
+      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
+      const jumpsData = await jumpsRes.json();
+      const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
+      const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
+      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+      const cls = secClass(sec);
+      const kills = await getPvpKills(system.system_id);
+      const killClass = (kills >= 5) ? 'kills-high' : "";
 
-    const data = await fetchSystemData(systemObj.system_id);
-    const stations = await fetchStations(systemObj.system_id);
-
-    const planets = sysDetails.planets?.length ?? 0;
-    const moons = sysDetails.planets?.reduce((sum, p) => sum + (p.moons?.length || 0), 0);
-    const belts = sysDetails.planets?.reduce((sum, p) => sum + (p.asteroid_belts?.length || 0), 0);
-
-    outputDiv.innerHTML = `
-      <div class="system-container">
-        <div class="system-info">
-          <table id="systemInfoTable">
-            <tr><th>Name</th><td>${sysDetails.name}</td><th>Planets</th><td>${planets}</td></tr>
-            <tr><th>Region</th><td>${systemObj.region}</td><th>Moons</th><td>${moons}</td></tr>
-            <tr><th>Constellation</th><td>${systemObj.constellation}</td><th>Belts/Icebelts</th><td>${belts}</td></tr>
-            <tr><th>Security Level</th><td class="${secCls}">${sec.toFixed(1)}</td><th>Faction</th><td colspan="3">${factionName}</td></tr>
-            <tr><th>Jumps 1h</th><td colspan="3">${data.jumps1h}</td></tr>
-            <tr><th>Ship Kills</th><td colspan="3">${data.shipKills}</td></tr>
-            <tr><th>NPC Kills</th><td colspan="3">${data.npcKills}</td></tr>
-            <tr><th>Pod Kills</th><td colspan="3">${data.podKills}</td></tr>
-          </table>
-
-          <h3>Stations</h3>
-          <table id="stationsTable">
-            <tr><th>Name</th><th>Owner</th><th>Services</th></tr>
-            ${stations.map(s => `<tr>
-              <td>${s.name}</td>
-              <td>${s.owner}</td>
-              <td>${s.services}</td>
-            </tr>`).join('')}
-          </table>
-        </div>
-      </div>
-    `;
+      outputDiv.innerHTML = `
+        <p><b>Name:</b> ${escapeHtml(system.system)}</p>
+        <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
+        <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
+        <p><b>Security Status:</b> <span class="${cls}">${sec}</span></p>
+        <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
+        <p><b>Jumps (last hour):</b> ${jumps}</p>
+      `;
+    } catch (err) {
+      console.error(err);
+      outputDiv.innerHTML = '<p>Error fetching kills/jumps. See console.</p>';
+    }
   }
 
-  function updateURL(systemName){
+  function updateURL(systemName) {
     const params = new URLSearchParams(window.location.search);
     params.set('system', systemName);
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
   }
-
 })();
