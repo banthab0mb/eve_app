@@ -128,6 +128,31 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 .feature-box h3 { margin-top: 0; margin-bottom: 8px; color: #1e88e5; }
 
+h3 nav a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h3 nav a.active, nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+h3 a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h3 a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
 /* Footer */
 footer {
   border-top: 2px solid #222;
