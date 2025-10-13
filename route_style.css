@@ -51,6 +51,15 @@ nav a.active, nav a:hover { color: #fff; border-bottom: 2px solid #fff; padding-
 nav f { color: #aaa; margin: 0 15px; text-decoration: none; font-weight: bold; }
 nav f.active, nav f:hover { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
 
+.highlight-system {
+  color: yellow;
+  font-weight: bold;
+}
+.sig {
+  color: #9cf;
+  font-size: 0.9em;
+}
+
 links {
   flex: 1;
 }

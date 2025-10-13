@@ -275,14 +275,18 @@ routeBtn.addEventListener("click", async () => {
       const cls = secClass(sec);
       const kills = routeKills[sysId] || 0;
       const killClass = kills >= 5 ? "kills-high" : "";
-      const highlight = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : "";
+      const highlight =
+        (system.system === "Thera" || system.system === "Turnur")
+          ? '<span class="highlight-system">'
+          : '';
+      const endHighlight = highlight ? '</span>' : '';
 
-      html += `<tr ${highlight}>
+      html += `<tr>
         <td><b>${i + 1}</b></td>
-        <td>${system.system} <span class="region">(${system.region})</span></td>
+        <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
+        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
     }
 
