@@ -52,7 +52,7 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 /* Search Box and Suggestions */
 .search-container {
-  position: relative; /* parent for absolute suggestions */
+  position: relative;
   display: inline-block;
 }
 
@@ -82,14 +82,14 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 /* Suggestions dropdown */
 .suggestions {
   position: absolute;
-  top: 100%;  /* directly below the search box */
+  top: 100%;
   left: 0;
-  right: 0;   /* same width as search box */
+  right: 0;
   background: #fff;
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-  z-index: 10; /* floats above button */
-  display: none; /* hidden by default */
+  z-index: 10;
+  display: none;
   color: #000;
 }
 
@@ -127,17 +127,17 @@ th { background: #1a1a1a; }
 tr:nth-child(even) { background: #141414; }
 
 /* Security colors */
-.sec-blue {color: #2e74dc; } /* 1.0 */
-.sec-lighter-blue {color: #3c9ced; } /* 0.9 */
-.sec-high-blue {color: #4bcef4; } /* 0.8 */
-.sec-sea { color:#60daa6; } /* 0.7 */
-.sec-green {color:#71e452; } /* 0.6 */
-.sec-yellow { color: #eeff8a; } /* 0.5 */
-.sec-low { color: #dc6c09; } /* 0.4 */
-.sec-rorange { color: #d1440d; } /* 0.3 */
-.sec-red { color: #bc1116; } /* 0.2 */
-.sec-purple { color: #6e221a; } /* 0.1 */
-.sec-null { color: #8f2f69; } /* 0 >= */
+.sec-blue {color: #2e74dc; } 
+.sec-lighter-blue {color: #3c9ced; } 
+.sec-high-blue {color: #4bcef4; } 
+.sec-sea { color:#60daa6; } 
+.sec-green {color:#71e452; } 
+.sec-yellow { color: #eeff8a; } 
+.sec-low { color: #dc6c09; } 
+.sec-rorange { color: #d1440d; } 
+.sec-red { color: #bc1116; } 
+.sec-purple { color: #6e221a; } 
+.sec-null { color: #8f2f69; } 
 
 /* Kills color */
 .kills-high { color: #f00; }
@@ -172,7 +172,7 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc; /* lighter so it looks secondary */
+  color: #ccc;
   width: 8ch;
 }
 
@@ -200,10 +200,40 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important; /* pure white on hover */
+  filter: brightness(0) invert(1) !important;
 }
 
-/* Make sure footer can hold absolutely positioned elements */
 footer {
   position: relative;
+}
+
+.system-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.system-info {
+  flex: 1;
+  min-width: 250px;
+}
+
+.charts-wrapper {
+  display: none; /* hidden until search */
+  flex: 2;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-around;
+}
+
+.charts-wrapper canvas {
+  background: #111;
+  border: 1px solid #222;
+  border-radius: 8px;
+  padding: 10px;
+  width: 45%;
+  max-width: 300px;
+  height: 200px;
 }

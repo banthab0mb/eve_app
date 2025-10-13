@@ -27,7 +27,7 @@
     .then(data => {
       systems = data;
       systemsLoaded = true;
-      console.log('systems.json loaded, systems:', systems.length);
+      console.log('systems.json loaded:', systems.length);
 
       // Auto-run if ?system= in URL
       const urlParams = new URLSearchParams(window.location.search);
@@ -39,7 +39,7 @@
     })
     .catch(err => console.error('Failed to load systems.json:', err));
 
-  // Security status color helper
+  // Security color helper
   function secClass(sec) {
     if (sec >= 1) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
@@ -54,7 +54,7 @@
     return "sec-null";
   }
 
-  // Suggestions helpers
+  // Suggestions
   function hideSuggestions() {
     suggestionsDiv.innerHTML = '';
     suggestionsDiv.style.display = 'none';
@@ -116,7 +116,6 @@
   }
 
   input.addEventListener('input', () => renderSuggestions(input.value.trim().toLowerCase()));
-
   input.addEventListener('keydown', (e) => {
     const items = suggestionsDiv.querySelectorAll('.suggestion');
     if (e.key === 'ArrowDown') {
@@ -163,9 +162,9 @@
   lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
+  // Cache helpers
   const CACHE_TTL = 60 * 60 * 1000;
   const CACHE_KEY = "killCache";
-
   function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
   function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
 
@@ -174,6 +173,7 @@
     console.log("Kill cache cleared!");
   };
 
+  // zKill fetch
   async function getPvpKills(systemId) {
     const now = Date.now();
     let killCache = loadKillCache();
@@ -198,47 +198,106 @@
     }
   }
 
+  // Chart instances
+  let jumpsChart, npcKillsChart, shipKillsChart, podKillsChart;
+
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
     if (!name) return;
 
     if (!systemsLoaded) {
-      outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>';
+      outputDiv.innerHTML = '<p>Systems data still loading...</p>';
       return;
     }
 
     updateURL(name);
-
     const system = systems.find(s => s.system.toLowerCase() === name);
     if (!system) {
       outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found!</p>`;
       return;
     }
 
-    outputDiv.innerHTML = `<p>Fetching kills and jumps for <b>${escapeHtml(system.system)}</b>...</p>`;
+    outputDiv.innerHTML = `<p>Fetching system data for <b>${escapeHtml(system.system)}</b>...</p>`;
 
     try {
-      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
+      const [jumpsRes, killsRes] = await Promise.all([
+        fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility'),
+        fetch('https://esi.evetech.net/latest/universe/system_kills/?datasource=tranquility')
+      ]);
+
       const jumpsData = await jumpsRes.json();
-      const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
-      const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
+      const killsData = await killsRes.json();
+
+      const systemJumpsObj = jumpsData.find(j => j.system_id === system.system_id);
+      const systemKillsObj = killsData.find(k => k.system_id === system.system_id);
+
+      const jumps = systemJumpsObj ? systemJumpsObj.ship_jumps || 0 : 0;
+      const npcKills = systemKillsObj ? systemKillsObj.npc_kills || 0 : 0;
+      const shipKills = systemKillsObj ? systemKillsObj.ship_kills || 0 : 0;
+      const podKills = systemKillsObj ? systemKillsObj.pod_kills || 0 : 0;
+
       const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
       const cls = secClass(sec);
-      const kills = await getPvpKills(system.system_id);
-      const killClass = (kills >= 5) ? 'kills-high' : "";
+      const pvpKills = await getPvpKills(system.system_id);
 
-      outputDiv.innerHTML = `
-        <p><b>Name:</b> ${escapeHtml(system.system)}</p>
-        <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
-        <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
-        <p><b>Security Status:</b> <span class="${cls}">${sec}</span></p>
-        <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
-        <p><b>Jumps (last hour):</b> ${jumps}</p>
+      const killClass = (pvpKills >= 5) ? 'kills-high' : "";
+
+      document.querySelector(".charts-wrapper").style.display = "flex";
+
+      outputDiv.querySelector("#systemInfoTable").innerHTML = `
+        <tr><th>Name</th><td>${escapeHtml(system.system)}</td></tr>
+        <tr><th>Constellation</th><td>${escapeHtml(system.constellation || 'Unknown')}</td></tr>
+        <tr><th>Region</th><td>${escapeHtml(system.region || 'Unknown')}</td></tr>
+        <tr><th>Security Status</th><td class="${cls}">${sec}</td></tr>
+        <tr><th>Kills (last hour)</th><td class="${killClass}">${pvpKills}</td></tr>
+        <tr><th>Jumps (last hour)</th><td>${jumps}</td></tr>
       `;
+
+      renderCharts(jumps, npcKills, shipKills, podKills);
     } catch (err) {
       console.error(err);
-      outputDiv.innerHTML = '<p>Error fetching kills/jumps. See console.</p>';
+      outputDiv.innerHTML = '<p>Error fetching data. See console.</p>';
     }
+  }
+
+  function renderCharts(jumps, npcKills, shipKills, podKills) {
+    const config = (label, data, color) => ({
+      type: 'bar',
+      data: {
+        labels: [label],
+        datasets: [{
+          data: [data],
+          backgroundColor: color,
+        }]
+      },
+      options: {
+        scales: {
+          x: { display: false },
+          y: { beginAtZero: true, ticks: { color: '#ccc' } }
+        },
+        plugins: { legend: { display: false } },
+      }
+    });
+
+    if (!window.Chart) {
+      const script = document.createElement('script');
+      script.src = 'https://cdn.jsdelivr.net/npm/chart.js';
+      script.onload = () => renderCharts(jumps, npcKills, shipKills, podKills);
+      document.body.appendChild(script);
+      return;
+    }
+
+    const ctxJumps = document.getElementById('jumpsChart');
+    const ctxNpc = document.getElementById('npcKillsChart');
+    const ctxShip = document.getElementById('shipKillsChart');
+    const ctxPod = document.getElementById('podKillsChart');
+
+    [jumpsChart, npcKillsChart, shipKillsChart, podKillsChart].forEach(c => c?.destroy?.());
+
+    jumpsChart = new Chart(ctxJumps, config('Jumps Last 48h', jumps, '#4bcef4'));
+    npcKillsChart = new Chart(ctxNpc, config('NPC Kills Last 48h', npcKills, '#60daa6'));
+    shipKillsChart = new Chart(ctxShip, config('Ship Kills Last 48h', shipKills, '#dc6c09'));
+    podKillsChart = new Chart(ctxPod, config('Pod Kills Last 48h', podKills, '#bc1116'));
   }
 
   function updateURL(systemName) {
@@ -246,4 +305,5 @@
     params.set('system', systemName);
     window.history.replaceState({}, '', `${window.location.pathname}?${params}`);
   }
+
 })();
