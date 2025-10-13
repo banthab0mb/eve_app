@@ -254,14 +254,24 @@
         systemInfoTable.closest(".system-info").style.display = "block";
       }
 
-      outputDiv.querySelector("#systemInfoTable").innerHTML = `
-        <tr><th>Name</th><td>${escapeHtml(system.system)}</td></tr>
-        <tr><th>Constellation</th><td>${escapeHtml(system.constellation || 'Unknown')}</td></tr>
-        <tr><th>Region</th><td>${escapeHtml(system.region || 'Unknown')}</td></tr>
-        <tr><th>Security Status</th><td class="${cls}">${sec}</td></tr>
-        <tr><th>Kills (last hour)</th><td class="${killClass}">${pvpKills}</td></tr>
-        <tr><th>Jumps (last hour)</th><td>${jumps}</td></tr>
-      `;
+      outputDiv.innerHTML = `
+      <div class="system-info">
+        <table id="systemInfoTable">
+          <tr><th>Name</th><td>${escapeHtml(system.system)}</td></tr>
+          <tr><th>Constellation</th><td>${escapeHtml(system.constellation || 'Unknown')}</td></tr>
+          <tr><th>Region</th><td>${escapeHtml(system.region || 'Unknown')}</td></tr>
+          <tr><th>Security Status</th><td class="${cls}">${sec}</td></tr>
+          <tr><th>Kills (last hour)</th><td class="${killClass}">${pvpKills}</td></tr>
+          <tr><th>Jumps (last hour)</th><td>${jumps}</td></tr>
+        </table>
+      </div>
+      <div id="graphContainer" class="graphs">
+        <canvas id="jumpsChart"></canvas>
+        <canvas id="npcKillsChart"></canvas>
+        <canvas id="shipKillsChart"></canvas>
+        <canvas id="podKillsChart"></canvas>
+      </div>
+    `;
 
       renderCharts(jumps, npcKills, shipKills, podKills);
     } catch (err) {

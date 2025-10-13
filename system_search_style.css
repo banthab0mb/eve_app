@@ -221,8 +221,7 @@ footer {
 }
 
 .charts-wrapper {
-  display: none; /* hidden until search */
-  flex: 2;
+  display: flex;
   flex-wrap: wrap;
   gap: 20px;
   justify-content: space-around;
