@@ -202,6 +202,67 @@ async function getRouteKills(route, batchSize = 5, delay = 1000) {
   return result;
 }
 
+// --- Wormhole support --- //
+let whGraph = {}; // system_id -> array of connected system_ids (including wormholes)
+
+// Build graph from systems.json (normal gates)
+function buildGraph() {
+  whGraph = {};
+  systems.forEach(s => {
+    whGraph[s.system_id] = s.neighbors || []; // assuming systems.json has a 'neighbors' array of system_ids
+  });
+}
+
+// Fetch Thera/Turnur signatures and add wormhole edges
+async function addWormholes() {
+  const theraSignatures = await fetch('https://api.eve-scout.com/v2/public/signatures?system_name=thera').then(r => r.json());
+  const turnurSignatures = await fetch('https://api.eve-scout.com/v2/public/signatures?system_name=turnur').then(r => r.json());
+
+  [...theraSignatures, ...turnurSignatures].forEach(sig => {
+    if (sig.signature_type === 'wormhole' && sig.completed && sig.remaining_hours > 1) {
+      const from = sig.out_system_id;
+      const to = sig.in_system_id;
+
+      if (!whGraph[from]) whGraph[from] = [];
+      whGraph[from].push(to); // wormhole edge
+
+      // optionally bidirectional if K162 exits inward
+      if (sig.wh_exits_outward) {
+        if (!whGraph[to]) whGraph[to] = [];
+        whGraph[to].push(from);
+      }
+    }
+  });
+}
+
+// Simple BFS shortest path including wormholes
+function shortestPath(startId, endId) {
+  const queue = [[startId]];
+  const visited = new Set();
+
+  while (queue.length) {
+    const path = queue.shift();
+    const node = path[path.length - 1];
+
+    if (node === endId) return path;
+
+    if (!visited.has(node)) {
+      visited.add(node);
+      (whGraph[node] || []).forEach(neighbor => {
+        queue.push([...path, neighbor]);
+      });
+    }
+  }
+  return null; // no path
+}
+
+// Rebuild graph and add wormholes before computing route
+async function computeRouteWithWormholes(originId, destId) {
+  buildGraph();
+  await addWormholes();
+  return shortestPath(originId, destId);
+}
+
 // Plan route
 routeBtn.addEventListener("click", async () => {
   const originName = originInput.value.trim();
@@ -228,19 +289,11 @@ routeBtn.addEventListener("click", async () => {
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
-    let url = `https://api.eve-scout.com/v2/public/routes?from=${originName}&to=${destName}&mode=${mode}`;
-    console.log(url);
-    const res = await fetch(url);
-    const routeData = await res.json();
-
-    console.log(routeData);
-    if (!routeData || !routeData.length || !routeData[0].route || !routeData[0].route.length) {
-      routeOutput.innerHTML = "<p>No route found.</p>";
+    const routeIds = await computeRouteWithWormholes(originId, destId);
+    if (!routeIds) {
+      routeOutput.innerHTML = "<p>No route found (even with wormholes).</p>";
       return;
     }
-
-    const routeArray = routeData[0].route; // array of system objects
-    const routeIds = routeArray.map(s => s.system_id);
     const routeKills = await getRouteKills(routeIds);
 
     let html = `<table>
@@ -262,11 +315,11 @@ routeBtn.addEventListener("click", async () => {
       const specialStyle = (system.system === "Thera" || system.system === "Turnur") ? 'style="color: yellow;"' : '';
 
       html += `<tr ${specialStyle}>
-        <td><b>${i + 1}</b></td>
+        <td><b>${i}</b></td>
         <td>${system.system || system.system_name} <span class="region">(${system.region || system.region_name})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></td>
+        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
       </tr>`;
     }
 
