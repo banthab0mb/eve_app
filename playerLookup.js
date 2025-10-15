@@ -191,6 +191,7 @@ function formatOutput(result) {
     ` : "<p>None</p>"}
   </div>
   </div>
+  <p><a href="https://zkillboard.com/character/${result.id}" target="_blank">zKillboard</a></p>
   <hr>
   <div class="char-description">
     <h3>Description</h3>
@@ -211,6 +212,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
   <div id="alliance-name"></div>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
+  <p><a href="https://zkillboard.com/corporation/${result.id}" target="_blank">zKillboard</a></p>
   <hr>
   <div class="corp-description">
     <h3>Description</h3>
@@ -228,6 +230,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
   <p>[${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
+  <p><a href="https://zkillboard.com/alliance/${result.id}" target="_blank">zKillboard</a></p>
 </div>
     `;
   }
