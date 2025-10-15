@@ -8326,8 +8326,8 @@
   },
   {
     "id": 99010991,
-    "name": "New Eden Alliance 99010991",
-    "ticker": "NEA91"
+    "name": "Vereinigte Stahlwerke AG",
+    "ticker": "VS AG"
   },
   {
     "id": 99010992,
@@ -17658,5 +17658,45 @@
     "id": 99014445,
     "name": "Rolled Out.",
     "ticker": "ROLL."
+  },
+  {
+    "id": 99014446,
+    "name": "N'Sink",
+    "ticker": "NSINK"
+  },
+  {
+    "id": 99014447,
+    "name": "High Grade Skill Issue",
+    "ticker": "HGSI"
+  },
+  {
+    "id": 99014448,
+    "name": "Forge Consortium",
+    "ticker": "FORG"
+  },
+  {
+    "id": 99014449,
+    "name": "underclocker..",
+    "ticker": "UNDER"
+  },
+  {
+    "id": 99014450,
+    "name": "Sunffed 0ut",
+    "ticker": "BB C"
+  },
+  {
+    "id": 99014451,
+    "name": "Societas Ineffabilis",
+    "ticker": "SOC."
+  },
+  {
+    "id": 99014452,
+    "name": "Gooseswarm Federation",
+    "ticker": "PRINT"
+  },
+  {
+    "id": 99014453,
+    "name": "Spoonswarm Federation",
+    "ticker": "SPNF"
   }
 ]

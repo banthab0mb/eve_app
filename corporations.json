@@ -41961,8 +41961,8 @@
   },
   {
     "id": 98486305,
-    "name": "New Eden Corporation 98486305",
-    "ticker": "NE305"
+    "name": "Mannesmann AG",
+    "ticker": "Manns"
   },
   {
     "id": 98322254,
@@ -87833,5 +87833,365 @@
     "id": 1739363101,
     "name": "OORt Cloud Research",
     "ticker": "ORTCR"
+  },
+  {
+    "id": 98610763,
+    "name": "Dig Dug Incorporated",
+    "ticker": "DUGCO"
+  },
+  {
+    "id": 98813305,
+    "name": "E N E M Y",
+    "ticker": "POKEP"
+  },
+  {
+    "id": 98813739,
+    "name": "History of the Moon",
+    "ticker": "GSKYO"
+  },
+  {
+    "id": 98815521,
+    "name": "ONL - HOLDING AND BANKING",
+    "ticker": "ONLHB"
+  },
+  {
+    "id": 98815648,
+    "name": "The Undaed Order",
+    "ticker": "UDAED"
+  },
+  {
+    "id": 98815625,
+    "name": "Speaker for the Dead",
+    "ticker": "BELZ"
+  },
+  {
+    "id": 98815485,
+    "name": "The High Ground.",
+    "ticker": "ELEV."
+  },
+  {
+    "id": 98759243,
+    "name": "Da zdravstvuet pervoe maya",
+    "ticker": "DZPM"
+  },
+  {
+    "id": 98642573,
+    "name": "AVCI KONSEYI",
+    "ticker": "AV-CI"
+  },
+  {
+    "id": 98724837,
+    "name": "Wishful Thinking Faculty",
+    "ticker": "WATFU"
+  },
+  {
+    "id": 98765540,
+    "name": "Bravais Incorporated",
+    "ticker": "BRA-I"
+  },
+  {
+    "id": 98780348,
+    "name": "Tekitsus Technophile Technocracy",
+    "ticker": "TITET"
+  },
+  {
+    "id": 98681706,
+    "name": "NonToxic Cloud",
+    "ticker": "NONTO"
+  },
+  {
+    "id": 98814986,
+    "name": "Delta Task Force",
+    "ticker": "DTF0"
+  },
+  {
+    "id": 98463744,
+    "name": "Viel-Vieles-Allerlei oHG",
+    "ticker": "V-V-A"
+  },
+  {
+    "id": 98815456,
+    "name": "501th-Fleet",
+    "ticker": "50150"
+  },
+  {
+    "id": 98652273,
+    "name": "Awaken1ng",
+    "ticker": "AW4KE"
+  },
+  {
+    "id": 98686675,
+    "name": "Never Not Sandbag",
+    "ticker": "S.BAG"
+  },
+  {
+    "id": 98758926,
+    "name": "Flatpack inc",
+    "ticker": "FLATP"
+  },
+  {
+    "id": 98812614,
+    "name": "Knights of Autumn.",
+    "ticker": "DRE4D"
+  },
+  {
+    "id": 98500897,
+    "name": "Broken Rubbers Adoption Agency",
+    "ticker": "BR4A"
+  },
+  {
+    "id": 98696913,
+    "name": "UPG",
+    "ticker": "U P G"
+  },
+  {
+    "id": 98562898,
+    "name": "Bennett'S BAD Bois",
+    "ticker": "BSBAD"
+  },
+  {
+    "id": 98815495,
+    "name": "Tropic Lightning",
+    "ticker": "25ID"
+  },
+  {
+    "id": 98749182,
+    "name": "Diversified Industry Coalition of Kangaroos",
+    "ticker": "D1COK"
+  },
+  {
+    "id": 98815482,
+    "name": "BLK OPS CORP",
+    "ticker": "BOPSD"
+  },
+  {
+    "id": 98812612,
+    "name": "Autumn Inc.",
+    "ticker": "ATMN."
+  },
+  {
+    "id": 98786400,
+    "name": "Blood of Pator",
+    "ticker": "ORALP"
+  },
+  {
+    "id": 98784488,
+    "name": "The Unspooken Ones",
+    "ticker": "TU1HO"
+  },
+  {
+    "id": 98735707,
+    "name": "Rockwall Mining Industries Inc.",
+    "ticker": "RMII2"
+  },
+  {
+    "id": 98763136,
+    "name": "Misriah Industry Materials Group",
+    "ticker": "MIMGC"
+  },
+  {
+    "id": 98813119,
+    "name": "Oat-kin",
+    "ticker": "OAT-K"
+  },
+  {
+    "id": 98802585,
+    "name": "Mice Kitchen",
+    "ticker": "MICE4"
+  },
+  {
+    "id": 98812694,
+    "name": "CrYsTaL Holding",
+    "ticker": "CRYTL"
+  },
+  {
+    "id": 98091702,
+    "name": "Vongola Ru5",
+    "ticker": "VR5"
+  },
+  {
+    "id": 98178065,
+    "name": "Ferocem Ursus Finance Group",
+    "ticker": "F.U.F"
+  },
+  {
+    "id": 98501686,
+    "name": "MGLA Nasledniki",
+    "ticker": "MGLAN"
+  },
+  {
+    "id": 98578379,
+    "name": "New-Amarr-Family",
+    "ticker": "ONAFO"
+  },
+  {
+    "id": 98624963,
+    "name": "Very-Wild-Cherry",
+    "ticker": "VWCH"
+  },
+  {
+    "id": 98629021,
+    "name": "Gold-Gold-Gold-club",
+    "ticker": "G G G"
+  },
+  {
+    "id": 98630593,
+    "name": "Liberty - Freedom - Corporation",
+    "ticker": "L-F-C"
+  },
+  {
+    "id": 98634002,
+    "name": "OREO Deep-Mining-Corporation",
+    "ticker": "OREOM"
+  },
+  {
+    "id": 98655141,
+    "name": "i.. Miloserdie ..i",
+    "ticker": "MSRD"
+  },
+  {
+    "id": 98655278,
+    "name": "Jovian Mission",
+    "ticker": "JOVM"
+  },
+  {
+    "id": 98672953,
+    "name": "S.H.T.O.R.M",
+    "ticker": "SHTRM"
+  },
+  {
+    "id": 98680508,
+    "name": "Gro Zza",
+    "ticker": "GROZZ"
+  },
+  {
+    "id": 98683160,
+    "name": "DenisMo FamiLy",
+    "ticker": "DMFLY"
+  },
+  {
+    "id": 98717016,
+    "name": "OdinOKayA ZhRiTsA",
+    "ticker": "ODZH"
+  },
+  {
+    "id": 98726837,
+    "name": "V lesu Rodilas' Yolochka - Svideteli Novogo Goda",
+    "ticker": "VLRY"
+  },
+  {
+    "id": 98740248,
+    "name": "Guardians Of The Galaxy RU5 - Space Rangers",
+    "ticker": "GGSR"
+  },
+  {
+    "id": 98758426,
+    "name": "Black Side Club",
+    "ticker": "BLCSC"
+  },
+  {
+    "id": 98759088,
+    "name": "D.I.O.N.I.S",
+    "ticker": "DION."
+  },
+  {
+    "id": 98759609,
+    "name": "Project Svyataya Meduza",
+    "ticker": "PRJSM"
+  },
+  {
+    "id": 98780874,
+    "name": "A.S.T.R.A. corp.",
+    "ticker": ".O O."
+  },
+  {
+    "id": 98780964,
+    "name": "OchEn' ZLoE DoBrO",
+    "ticker": ".ZD."
+  },
+  {
+    "id": 98798056,
+    "name": "DVM25",
+    "ticker": "DVM25"
+  },
+  {
+    "id": 98807707,
+    "name": "MDV-Generation",
+    "ticker": "MDVG"
+  },
+  {
+    "id": 98813418,
+    "name": "Avva-Prime Spy Centr",
+    "ticker": "A-PSC"
+  },
+  {
+    "id": 98754174,
+    "name": "Wallys Consolidated LP",
+    "ticker": "WALLP"
+  },
+  {
+    "id": 98759244,
+    "name": "Somalian Institute for Halal Piracy",
+    "ticker": "JDAM."
+  },
+  {
+    "id": 98815617,
+    "name": "Rashycrack Tribe",
+    "ticker": "RDBUT"
+  },
+  {
+    "id": 504861663,
+    "name": "Lol and Order",
+    "ticker": "-LNO-"
+  },
+  {
+    "id": 98815541,
+    "name": "Its Brawlhalla Baby",
+    "ticker": "DJFC"
+  },
+  {
+    "id": 98815542,
+    "name": "Plexaholics Anonymous",
+    "ticker": "PHAMS"
+  },
+  {
+    "id": 98804321,
+    "name": "Zorya Integrated Guidens",
+    "ticker": "GL0TA"
+  },
+  {
+    "id": 98312560,
+    "name": "Omega Industrial Group",
+    "ticker": "OIDG"
+  },
+  {
+    "id": 98815693,
+    "name": "Underclocker.",
+    "ticker": "ONANN"
+  },
+  {
+    "id": 98807731,
+    "name": "uuuuusssssbbbb Corporation",
+    "ticker": "YYJIS"
+  },
+  {
+    "id": 98815703,
+    "name": "Nirman Works",
+    "ticker": "NRMN."
+  },
+  {
+    "id": 98815327,
+    "name": "The Count of Monte Christ0",
+    "ticker": "TC0MC"
+  },
+  {
+    "id": 98815710,
+    "name": "Spoon holdings",
+    "ticker": "V0RK"
+  },
+  {
+    "id": 98624281,
+    "name": "Hundred Acre Wood",
+    "ticker": "ROOH"
   }
 ]
