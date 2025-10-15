@@ -234,7 +234,7 @@
         <p><b>Security Status:</b> <span class="${cls}">${sec}</span></p>
         <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
         <p><b>Jumps (last hour):</b> ${jumps}</p>
-        <p><b><a href="https://zkillboard.com/system/${system.system_id}">zKillboard</a></p>
+        <p><b><a href="https://zkillboard.com/system/${system.system_id}" target="_blank">zKillboard</a></p>
       `;
     } catch (err) {
       console.error(err);
