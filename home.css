@@ -2,7 +2,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: "Shentox-Regular", sans-serif !important;
+  font-family: "Shentox-Regular", sans-serif;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
@@ -191,6 +191,7 @@ footer a:hover { color: #fff; }
   font-size: 0.9em;
   color: #ccc;
   width: 8ch;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* GitHub Icon */
