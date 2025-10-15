@@ -7,6 +7,8 @@ on:
 
 jobs:
   update-json:
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
 
     steps:
