@@ -2,7 +2,7 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
