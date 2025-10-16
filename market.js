@@ -240,7 +240,7 @@ async function getStationName(locationId) {
 // Render functions
 function formatNumber(n) { return Number(n).toLocaleString(); }
 
-async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 400) {
+async function renderOrders(orders, tbodyId, orderType = 'sell', maxDisplay = 100) {
   const tbody = $(tbodyId);
   if (!tbody) return;
   tbody.innerHTML = '';

@@ -2,23 +2,14 @@
 html, body {
   height: 100%;
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: "Shentox-Regular", sans-serif;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
 }
 
-/* Header & Footer */
-header, footer {
-  background: #111;
-  color: #ccc;
-  padding: 10px 20px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
+/* Fonts */
 @font-face {
   font-family: 'Square721ExtendedBold';
   font-style: normal;
@@ -40,9 +31,29 @@ header, footer {
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
+/* Header */
 header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  position: relative;
   border-bottom: 2px solid #222;
   font-family: "Shentox-Regular", sans-serif !important;
+  padding: 10px 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* pushes to far right on PC */
 }
 
 header .app-title a {
@@ -53,19 +64,40 @@ header .app-title a {
 
 header .app-title a:hover { color: #fff; }
 
-nav {
-  flex: 1;
-  text-align: center;
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
 }
 
-nav a {
+.nav-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #aaa;
+  border-radius: 2px;
+}
+
+/* Top navigation */
+nav.top-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+nav.top-nav a {
   color: #aaa;
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
 }
 
-nav a.active, nav a:hover {
+nav.top-nav a.active,
+nav.top-nav a:hover {
   color: #fff;
   border-bottom: 2px solid #fff;
   padding-bottom: 2px;
@@ -164,4 +196,24 @@ footer a:hover { color: #fff; }
 /* Make sure footer can hold absolutely positioned elements */
 footer {
   position: relative;
+}
+
+/* Responsive / Mobile */
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+
+  nav.top-nav {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background: #111;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 999;
+  }
+
+  nav.top-nav.active { display: flex; }
 }
