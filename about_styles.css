@@ -1,8 +1,8 @@
-/* Reset + Layout */
+/* Base Reset + Layout */
 html, body {
   height: 100%;
   margin: 0;
-  font-family: "Shentox-Regular", sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
   background: #0d0d0d;
   color: #e0e0e0;
   display: flex;
@@ -10,13 +10,6 @@ html, body {
 }
 
 /* Fonts */
-@font-face {
-  font-family: 'Square721ExtendedBold';
-  font-style: normal;
-  font-weight: normal;
-  src: local('Square 721 Extended Bold'), url('fonts/Square-721-Extended-Bold.otf') format('opentype');
-}
-
 @font-face {
   font-family: 'Shentox-Regular';
   font-style: normal;
@@ -53,7 +46,7 @@ header {
   display: flex;
   align-items: center;
   gap: 15px;
-  margin-left: auto; /* pushes to far right on PC */
+  margin-left: auto; /* far right on PC */
 }
 
 header .app-title a {
@@ -105,66 +98,151 @@ nav.top-nav a:hover {
 
 /* Main Content */
 main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
-
-.container { max-width: 900px; margin: 0 auto; }
+.container { max-width: 600px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important; }
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
-/* Features on home page */
-.features { 
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
+body {
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+/* Wrap input + button neatly */
+.search-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
   margin-top: 20px;
-  padding: 20px;
 }
 
-.feature-box {
-  background: #1a1a1a;
-  padding: 15px;
-  border-radius: 6px;
+/* Make sure the button doesn’t drift */
+.search-button {
+  padding: 8px 16px;
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+/* Output centered under the search bar */
+#output {
+  display: none;
+  text-align: center;
+  margin: 20px auto 0 auto;   /* auto left/right centers it */
+  max-width: 700px;
+  width: 100%;
+  padding: 10px;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+.search-box {
+  width: 250px;
+  padding: 10px;
+  font-size: 16px;
   border: 1px solid #333;
+  background: #1a1a1a;
+  color: #eee;
+  border-radius: 4px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
-.feature-box h3 { margin-top: 0; margin-bottom: 8px; color: #1e88e5; }
+/* Suggestions dropdown */
+.suggestions {
+  display: none;
+  position: absolute;
+  top: 100%;   /* directly under input */
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  color: #000;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
 
-h3 nav {
-  flex: 1;
+.suggestions .suggestion {
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.suggestions .suggestion:hover,
+.suggestions .active {
+  background-color: #eee;
+}
+
+.lookup-result {
+  max-width: 700px;
+  text-align: center;
+  margin: 30px auto;
+  background: #1a1a1a;   /* optional: dark card background */
+  padding: 20px;
+  border-radius: 10px;
+  color: #ccc;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+.lookup-result img {
+  display: block;
+  margin: 10px auto;
+  border-radius: 8px;
+}
+.lookup-result h2, .lookup-result h3 {
+  margin: 10px 0 5px;
   text-align: center;
 }
 
-h3 nav a {
-  color: #aaa;
-  margin: 0 15px;
-  text-decoration: none;
-  font-weight: bold;
+.corp-description {
+  margin-top: 15px;
+  text-align: left !important;
 }
 
-h3 nav a.active, nav a:hover {
-  color: #fff;
-  border-bottom: 2px solid #fff;
-  padding-bottom: 2px;
+.char-description {
+  margin-top: 15px;
+  text-align: left !important;
 }
 
-h3 a {
-  color: #aaa;
-  text-decoration: none;
-  font-weight: bold;
+.char-affiliations {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  margin: 40px auto;
+  flex-wrap: wrap;
+  max-width: 800px;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
-h3 a.active, a:hover {
-  color: #fff;
-  border-bottom: 2px solid #fff;
-  padding-bottom: 2px;
+.char-affiliations .corp-info,
+.char-affiliations .alliance-info {
+  flex: 1 1 300px;
+  min-width: 280px;
+  text-align: center;
+  padding: 0;
+  border: none;
+  box-shadow: none;
+  background: none;
+  font-family: sans-serif;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
-links {
-  flex: 1;
+/* Target images directly */
+.char-affiliations .corp-info img,
+.char-affiliations .alliance-info img {
+  display: block;
+  margin: 0 auto 10px;
+  max-width: 100px;
 }
 
-links a { color: #aaa; text-decoration: none; }
-
-links a:hover { color: #fff; }
+hr {
+  border: none;
+  height: 1px;
+  background-color: #ccc; /* or any color you prefer */
+  margin: 30px 0;
+}
 
 /* Footer */
 footer {
@@ -179,12 +257,11 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
-  position: relative; /* for GitHub icon */
 }
 
 footer p { margin: 5px 0; }
 
-footer a { color: #888; text-decoration: none; }
+footer a { color: #888; text-decoration: none; font-weight: normal;}
 
 footer a:hover { color: #fff; }
 
@@ -198,9 +275,8 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc;
+  color: #ccc; /* lighter so it looks secondary */
   width: 8ch;
-  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* GitHub Icon */
@@ -210,13 +286,14 @@ footer a:hover { color: #fff; }
   bottom: 15px;
   opacity: 0.7;
   transition: opacity 0.2s ease, transform 0.2s ease;
-  text-decoration: none;
-  border-bottom: none;
+  text-decoration: none !important;
+  border-bottom: none !important
 }
 
 .github-link:hover {
   opacity: 1;
   transform: translateY(-2px);
+  padding-bottom: 0 !important;
 }
 
 .github-link .github-icon {
@@ -227,14 +304,17 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important;
+  filter: brightness(0) invert(1) !important; /* pure white on hover */
+}
+
+/* Make sure footer can hold absolutely positioned elements */
+footer {
+  position: relative;
 }
 
 /* Responsive / Mobile */
 @media (max-width: 768px) {
-  .nav-toggle {
-    display: flex;
-  }
+  .nav-toggle { display: flex; }
 
   nav.top-nav {
     display: none;
@@ -249,11 +329,5 @@ footer a:hover { color: #fff; }
     z-index: 999;
   }
 
-  nav.top-nav.active {
-    display: flex;
-  }
-
-  .header-right {
-    margin-left: 0; /* next to title on mobile */
-  }
+  nav.top-nav.active { display: flex; }
 }
