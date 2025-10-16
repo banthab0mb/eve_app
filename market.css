@@ -92,8 +92,6 @@ a.active, a:hover {
   padding-bottom: 2px;
 }
 
-#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
-
 #searchBtn {
   background: #222;
   color: #eee;
