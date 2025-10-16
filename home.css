@@ -221,9 +221,6 @@ footer a:hover { color: #fff; }
   filter: brightness(0) invert(1) !important;
 }
 
-/* Player count small adjustments */
-#onlineCounter { font-size: 0.9rem; color: rgb(72,72,71); }
-
 /* Responsive / Mobile */
 @media (max-width: 768px) {
   .nav-toggle {
