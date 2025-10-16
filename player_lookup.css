@@ -338,9 +338,7 @@ footer #onlineCounter, footer #eveTime {
 }
 
 @media (max-width: 768px) {
-  .nav-toggle {
-    display: flex;
-  }
+  .nav-toggle { display: flex; }
 
   nav.top-nav {
     display: none;
@@ -355,11 +353,7 @@ footer #onlineCounter, footer #eveTime {
     z-index: 999;
   }
 
-  nav.top-nav.active {
-    display: flex;
-  }
+  nav.top-nav.active { display: flex; }
 
-  .header-right {
-    margin-left: 0; /* next to title on mobile */
-  }
+  .header-right { margin-left: 0; }
 }
