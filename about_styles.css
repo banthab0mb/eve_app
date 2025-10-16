@@ -103,26 +103,23 @@ nav.top-nav a:hover {
   padding-bottom: 2px;
 }
 
-links {
-  flex: 1;
-}
-
-links a { color: #aaa; text-decoration: none; }
-
-links a:hover { color: #fff; }
-
 /* Main Content */
-main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important;}
+main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
 
 .container { max-width: 900px; margin: 0 auto; }
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
 /* Features on home page */
-.features { display: flex; gap: 20px; margin-top: 20px; }
+.features { 
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+  padding: 20px;
+}
 
 .feature-box {
-  flex: 1;
   background: #1a1a1a;
   padding: 15px;
   border-radius: 6px;
@@ -130,6 +127,44 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 }
 
 .feature-box h3 { margin-top: 0; margin-bottom: 8px; color: #1e88e5; }
+
+h3 nav {
+  flex: 1;
+  text-align: center;
+}
+
+h3 nav a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h3 nav a.active, nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+h3 a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+h3 a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+links {
+  flex: 1;
+}
+
+links a { color: #aaa; text-decoration: none; }
+
+links a:hover { color: #fff; }
 
 /* Footer */
 footer {
@@ -144,6 +179,7 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
+  position: relative; /* for GitHub icon */
 }
 
 footer p { margin: 5px 0; }
@@ -162,8 +198,9 @@ footer a:hover { color: #fff; }
 #eveTime {
   margin-top: 6px;
   font-size: 0.9em;
-  color: #ccc; /* lighter so it looks secondary */
+  color: #ccc;
   width: 8ch;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 /* GitHub Icon */
@@ -190,17 +227,14 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important; /* pure white on hover */
-}
-
-/* Make sure footer can hold absolutely positioned elements */
-footer {
-  position: relative;
+  filter: brightness(0) invert(1) !important;
 }
 
 /* Responsive / Mobile */
 @media (max-width: 768px) {
-  .nav-toggle { display: flex; }
+  .nav-toggle {
+    display: flex;
+  }
 
   nav.top-nav {
     display: none;
@@ -215,5 +249,11 @@ footer {
     z-index: 999;
   }
 
-  nav.top-nav.active { display: flex; }
+  nav.top-nav.active {
+    display: flex;
+  }
+
+  .header-right {
+    margin-left: 0; /* next to title on mobile */
+  }
 }
