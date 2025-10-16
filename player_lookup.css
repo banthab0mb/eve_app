@@ -30,7 +30,6 @@ html, body {
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
 
-/* Header & Navigation Setup for Mobile */
 header, footer {
   background: #111;
   color: #ccc;
@@ -41,28 +40,19 @@ header, footer {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-header { 
-  border-bottom: 2px solid #222; 
-  font-family: "Shentox-Regular", sans-serif !important;
-  /* Ensure a single line on desktop and mobile */
-  flex-wrap: nowrap;
-}
+header { border-bottom: 2px solid #222; font-family: "Shentox-Regular", sans-serif !important;}
 
 header .app-title a { 
   font-family: "Shentox-Regular", sans-serif !important;
   font-size: 1.5rem; 
   color: #fff; 
   text-decoration: none; 
-  /* Added min-width to prevent title from getting too small on mobile */
-  min-width: fit-content;
 }
 header .app-title a:hover { color: #fff; }
 
 nav {
   flex: 1;
   text-align: center;
-  display: flex; 
-  justify-content: center;
 }
 
 nav a {
@@ -95,7 +85,6 @@ main {
   flex: 1; 
   padding: 20px; 
   font-family: "Shentox-Regular", sans-serif !important;
-  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -133,7 +122,7 @@ body {
 #output {
   display: none;
   text-align: center;
-  margin: 20px auto 0 auto; 
+  margin: 20px auto 0 auto;   /* auto left/right centers it */
   max-width: 700px;
   width: 100%;
   padding: 10px;
@@ -151,11 +140,11 @@ body {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
-/* Suggestions dropdown - Position relative to .search-container for better control */
+/* Suggestions dropdown */
 .suggestions {
   display: none;
   position: absolute;
-  top: 100%;
+  top: 100%;   /* directly under input */
   left: 0;
   right: 0;
   background: #fff;
@@ -181,7 +170,7 @@ body {
   max-width: 700px;
   text-align: center;
   margin: 30px auto;
-  background: #1a1a1a; 
+  background: #1a1a1a;   /* optional: dark card background */
   padding: 20px;
   border-radius: 10px;
   color: #ccc;
@@ -243,7 +232,7 @@ body {
 hr {
   border: none;
   height: 1px;
-  background-color: #ccc; 
+  background-color: #ccc; /* or any color you prefer */
   margin: 30px 0;
 }
 
@@ -260,7 +249,6 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
-  position: relative; /* for GitHub icon */
 }
 
 footer p { margin: 5px 0; }
@@ -269,7 +257,19 @@ footer a { color: #888; text-decoration: none; font-weight: normal;}
 
 footer a:hover { color: #fff; }
 
-/* NOTE: Moved #onlineCounter and #eveTime into header-right for mobile use */
+#onlineCounter {
+  margin-top: 6px;
+  font-size: 0.9em;
+  padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
+}
+
+#eveTime {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ccc; /* lighter so it looks secondary */
+  width: 8ch;
+}
 
 /* GitHub Icon */
 .github-link {
@@ -296,47 +296,15 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important;
+  filter: brightness(0) invert(1) !important; /* pure white on hover */
 }
 
-/* --- Added Helper Elements and Mobile Responsiveness --- */
-
-/* Mobile Navigation Toggle (Hamburger) */
-.nav-toggle {
-  display: none; /* Hidden by default on desktop */
-  flex-direction: column;
-  cursor: pointer;
-  gap: 4px;
-  padding: 5px; 
+/* Make sure footer can hold absolutely positioned elements */
+footer {
+  position: relative;
 }
 
-.nav-toggle span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: #aaa;
-  border-radius: 2px;
-}
-
-/* Header Container for right-side elements */
-.header-right-info {
-  display: flex; /* Always display for PC */
-  align-items: center;
-  gap: 10px;
-  /* By default, show both on PC */
-}
-.header-right-info #onlineCounter, .header-right-info #eveTime {
-  margin: 0; /* Clear previous footer margins */
-  font-size: 1em; /* Normal size in header */
-  padding-right: 0; 
-  font-family: "Shentox-Regular", sans-serif !important;
-}
-
-/* Hide these on PC so they appear only in the footer */
-footer #onlineCounter, footer #eveTime {
-  display: none;
-}
-
+/* Responsive / Mobile */
 @media (max-width: 768px) {
   .nav-toggle { display: flex; }
 
@@ -354,6 +322,4 @@ footer #onlineCounter, footer #eveTime {
   }
 
   nav.top-nav.active { display: flex; }
-
-  .header-right { margin-left: 0; }
 }
