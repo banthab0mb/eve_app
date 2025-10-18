@@ -106,6 +106,18 @@ body {
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
+a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
 /* Wrap input + button neatly */
 .search-container {
   display: flex;
