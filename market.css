@@ -58,7 +58,7 @@ main {
   flex-direction: column;
   padding: 20px;
   gap: 30px;
-  min-height: 0; /* ensures scrollable lists work properly */
+  min-height: 0;
   font-family: "Shentox-Regular", sans-serif !important;
 }
 
@@ -92,6 +92,7 @@ a.active, a:hover {
   padding-bottom: 2px;
 }
 
+/* Search Button */
 #searchBtn {
   background: #222;
   color: #eee;
@@ -116,6 +117,27 @@ a.active, a:hover {
   background: #111;
   border: 1px solid #666;
 }
+
+/* Suggestions below search box */
+.suggestions {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  width: 100%;
+  background: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 4px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 1000;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+.suggestions div {
+  padding: 6px 8px;
+  cursor: pointer;
+}
+.suggestions div:hover { background: #333; }
 
 /* Market Container Layout */
 .market-container {
@@ -209,7 +231,6 @@ a.active, a:hover {
 .tab-content.active { display: block; }
 
 /* Tables */
-/* Tables */
 .orders-table {
   width: 100%;
   border-collapse: collapse;
@@ -235,7 +256,7 @@ a.active, a:hover {
 
 /* Scrollable wrappers */
 .table-wrapper {
-  max-height: 250px;   /* controls visible rows */
+  max-height: 250px;
   overflow-y: auto;
   border: 1px solid #333;
   border-radius: 4px;
@@ -260,26 +281,21 @@ a.active, a:hover {
   border-radius: 4px;
 }
 
-/* Suggestions below search box */
-.suggestions {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  width: 100%;
-  background: #1a1a1a;
-  border: 1px solid #333;
-  border-radius: 4px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 1000;
-  font-family: "Shentox-Regular", sans-serif !important;
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
 }
 
-.suggestions div {
-  padding: 6px 8px;
-  cursor: pointer;
+.nav-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #aaa;
+  border-radius: 2px;
 }
-.suggestions div:hover { background: #333; }
 
 /* Footer */
 footer {
@@ -294,12 +310,11 @@ footer {
   background: #111;
   margin-top: auto;
   font-family: "Shentox-Regular", sans-serif !important;
+  position: relative;
 }
 
 footer p { margin: 5px 0; }
-
-footer a { color: #888; text-decoration: none; font-weight: normal;}
-
+footer a { color: #888; text-decoration: none; font-weight: normal; }
 footer a:hover { color: #fff; }
 
 #onlineCounter {
@@ -324,7 +339,7 @@ footer a:hover { color: #fff; }
   opacity: 0.7;
   transition: opacity 0.2s ease, transform 0.2s ease;
   text-decoration: none !important;
-  border-bottom: none !important
+  border-bottom: none !important;
 }
 
 .github-link:hover {
@@ -341,10 +356,54 @@ footer a:hover { color: #fff; }
 }
 
 .github-link:hover .github-icon {
-  filter: brightness(0) invert(1) !important; /* pure white on hover */
+  filter: brightness(0) invert(1) !important;
 }
 
-/* Make sure footer can hold absolutely positioned elements */
-footer {
-  position: relative;
+/* Responsive / Mobile */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+    background: #222;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    font-size: 1.2em;
+    cursor: pointer;
+  }
+
+  nav.top-nav {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background: #111;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 999;
+  }
+
+  nav.top-nav.active {
+    display: flex;
+  }
+
+  /* Move search bar section to top */
+  header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #searchContainer {
+    order: -1;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  #searchContainer input,
+  #searchContainer button {
+    width: auto;
+  }
 }
