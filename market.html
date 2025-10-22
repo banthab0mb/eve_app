@@ -20,8 +20,16 @@
 </head>
 <body>
   <header>
-  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-  <nav>
+  <div class="header-left">
+    <div class="nav-toggle" id="navToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  </div>
+
+  <nav class="top-nav">
     <a href="index.html">Home</a>
     <a href="systemSearch.html">System Lookup</a>
     <a href="route.html">Route Planner</a>
@@ -29,8 +37,11 @@
     <a href="market.html">Market Browser</a>
     <a href="about.html">About</a>
   </nav>
-  <div id="onlineCounter">Loading...</div>
-  <div id="eveTime">--:--:--</div>
+
+  <div class="header-right">
+    <div id="onlineCounter">Loading...</div>
+    <div id="eveTime">--:--:--</div>
+  </div>
 </header>
 
   <div class="market-container">
@@ -152,6 +163,15 @@
       updateEveTime();
       setInterval(updateEveTime, .5);
 
+    </script>
+    <script>
+      // Hamburger toggle
+      const navToggle = document.getElementById('navToggle');
+      const nav = document.querySelector('header nav');
+
+      navToggle.addEventListener('click', () => {
+        nav.classList.toggle('active');
+      });
     </script>
     <script src= market.js></script>
 </body>
