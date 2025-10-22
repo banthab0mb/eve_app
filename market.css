@@ -29,52 +29,73 @@ html, body {
   font-weight: normal;
   src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
 }
-
-header, footer {
-  background: #111;
-  color: #ccc;
-  padding: 10px 20px;
+/* Header */
+header {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  flex-wrap: nowrap;
+  position: relative;
+  border-bottom: 2px solid #222;
   font-family: "Shentox-Regular", sans-serif !important;
+  padding: 10px 20px;
 }
 
-header { 
-  border-bottom: 2px solid #222; 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-header .app-title a { 
-  font-family: "Shentox-Regular", sans-serif !important;
-  font-size: 1.5rem; 
-  color: #fff; 
-  text-decoration: none; 
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* pushes to far right on PC */
 }
+
+header .app-title a {
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
 header .app-title a:hover { color: #fff; }
 
-main {
-  flex-grow: 1;
-  display: flex;
+/* Hamburger */
+.nav-toggle {
+  display: none;
   flex-direction: column;
-  padding: 20px;
-  gap: 30px;
-  min-height: 0;
-  font-family: "Shentox-Regular", sans-serif !important;
+  cursor: pointer;
+  gap: 4px;
 }
 
-nav {
+.nav-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #aaa;
+  border-radius: 2px;
+}
+
+/* Top navigation */
+nav.top-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
   flex: 1;
-  text-align: center;
 }
 
-nav a {
+nav.top-nav a {
   color: #aaa;
   margin: 0 15px;
   text-decoration: none;
   font-weight: bold;
 }
 
-nav a.active, nav a:hover {
+nav.top-nav a.active,
+nav.top-nav a:hover {
   color: #fff;
   border-bottom: 2px solid #fff;
   padding-bottom: 2px;
@@ -279,22 +300,6 @@ a.active, a:hover {
 .table-wrapper::-webkit-scrollbar-thumb {
   background-color: #555;
   border-radius: 4px;
-}
-
-/* Hamburger */
-.nav-toggle {
-  display: none;
-  flex-direction: column;
-  cursor: pointer;
-  gap: 4px;
-}
-
-.nav-toggle span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background: #aaa;
-  border-radius: 2px;
 }
 
 /* Footer */
