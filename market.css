@@ -434,13 +434,25 @@ footer a:hover { color: #fff; }
     z-index: 1100;
   }
 
+  /* Make search and select smaller on mobile */
+  .market-sidebar input[type="text"],
+  .market-sidebar select {
+    font-size: 13px;
+    padding: 6px 8px;
+  }
+
+  #searchBtn {
+    font-size: 12px;
+    padding: 5px 10px;
+  }
+
+  .market-sidebar button {
+    font-size: 12px;
+    padding: 6px 10px;
+  }
+
   /* Keep main content below the new top bar */
   .market-content {
     padding: 16px;
-  }
-
-  /* If you want the sidebar collapsible (optional) */
-  .market-sidebar.collapsed .controls-row {
-    display: none;
   }
 }

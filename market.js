@@ -319,7 +319,8 @@ async function renderHistoryChart(typeId, regionId) {
         borderColor: '#378937',
         backgroundColor: 'rgba(55,137,55,0.15)',
         fill: true,
-        tension: 0.15
+        tension: 0.15,
+        pointRadius: 0,
       }]
     },
     options: {
