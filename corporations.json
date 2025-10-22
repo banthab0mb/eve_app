@@ -88193,5 +88193,450 @@
     "id": 98624281,
     "name": "Hundred Acre Wood",
     "ticker": "ROOH"
+  },
+  {
+    "id": 98634900,
+    "name": "Hispanic Enterprises Holding",
+    "ticker": "HIEHO"
+  },
+  {
+    "id": 98582122,
+    "name": "Primal Urges",
+    "ticker": "PRIM9"
+  },
+  {
+    "id": 98815864,
+    "name": "Hell Creek Formation",
+    "ticker": ".MOR"
+  },
+  {
+    "id": 98786884,
+    "name": "Naughty Badger Supply CO",
+    "ticker": "NBSCO"
+  },
+  {
+    "id": 98816036,
+    "name": "Angels Redeemed",
+    "ticker": "-A8R-"
+  },
+  {
+    "id": 1465688460,
+    "name": "The Stone Gate",
+    "ticker": "TSG86"
+  },
+  {
+    "id": 98741291,
+    "name": "Im Having a Hel of a Time",
+    "ticker": "-NYX-"
+  },
+  {
+    "id": 98675029,
+    "name": "Seyllin Port Authority.",
+    "ticker": ".SEY."
+  },
+  {
+    "id": 98711410,
+    "name": "glenngoolie blue",
+    "ticker": "GLENG"
+  },
+  {
+    "id": 98753927,
+    "name": "Tao Makto Inc",
+    "ticker": "TAO M"
+  },
+  {
+    "id": 98798416,
+    "name": "Spontaneous Combustion Of Your Ship",
+    "ticker": "SCOYS"
+  },
+  {
+    "id": 98812704,
+    "name": "Galaxy Angels Inc",
+    "ticker": "GXNI"
+  },
+  {
+    "id": 98815562,
+    "name": "Ridgepoint Industrial Works",
+    "ticker": "RIWRK"
+  },
+  {
+    "id": 98084652,
+    "name": "Tornado Developments",
+    "ticker": "T DEV"
+  },
+  {
+    "id": 98699000,
+    "name": "Freeport Freedom Fighters",
+    "ticker": "3EFF"
+  },
+  {
+    "id": 98521690,
+    "name": "22O V",
+    "ticker": "22O V"
+  },
+  {
+    "id": 98813951,
+    "name": "Tactical Nuke Inc.",
+    "ticker": "TNI."
+  },
+  {
+    "id": 98763867,
+    "name": "LittleBubble",
+    "ticker": "L1LBU"
+  },
+  {
+    "id": 98811861,
+    "name": "Tribal Rust Express",
+    "ticker": "TXRL"
+  },
+  {
+    "id": 98813152,
+    "name": "Imperium Solis",
+    "ticker": "5OLI5"
+  },
+  {
+    "id": 98804738,
+    "name": "Blues Booze 'N' Tattoos",
+    "ticker": "BBNT"
+  },
+  {
+    "id": 98493096,
+    "name": "I swear I was Cloaked",
+    "ticker": "I SAW"
+  },
+  {
+    "id": 98806496,
+    "name": "IRON.",
+    "ticker": "V1SE"
+  },
+  {
+    "id": 98815568,
+    "name": "Horizon Expedition",
+    "ticker": "HTION"
+  },
+  {
+    "id": 98815619,
+    "name": "Puppygirl Enterprises",
+    "ticker": ".BORK"
+  },
+  {
+    "id": 717884393,
+    "name": "Donum Mortis",
+    "ticker": "DONUM"
+  },
+  {
+    "id": 98802775,
+    "name": "Chit-Chat-Champions",
+    "ticker": "-CHIT"
+  },
+  {
+    "id": 98295556,
+    "name": "drugfactory",
+    "ticker": "DRUFA"
+  },
+  {
+    "id": 98415782,
+    "name": "PEGASUS MOSS",
+    "ticker": "CC-11"
+  },
+  {
+    "id": 98551468,
+    "name": "Amish Tobacco Plantation Co.",
+    "ticker": "AM1H"
+  },
+  {
+    "id": 98815688,
+    "name": "Chronos Conglomerate",
+    "ticker": "YGJKF"
+  },
+  {
+    "id": 359022129,
+    "name": "Holy Amarrian Battlemonk",
+    "ticker": "AMONK"
+  },
+  {
+    "id": 98219113,
+    "name": "Flying Llamas",
+    "ticker": "LLMS"
+  },
+  {
+    "id": 98815481,
+    "name": "Rising Suns Corp",
+    "ticker": "RSC5"
+  },
+  {
+    "id": 98816044,
+    "name": "Overworked and Underpayed",
+    "ticker": "OW-UP"
+  },
+  {
+    "id": 98755099,
+    "name": "The Wandering Inn",
+    "ticker": "T-WI"
+  },
+  {
+    "id": 98815714,
+    "name": "RinogD Corporation",
+    "ticker": "YJSDA"
+  },
+  {
+    "id": 98795738,
+    "name": "Glenn's Hookers and Blow Emporium",
+    "ticker": "GHABE"
+  },
+  {
+    "id": 98805441,
+    "name": "Jointi's Drug Den",
+    "ticker": "JDDV2"
+  },
+  {
+    "id": 98807049,
+    "name": "Konata Corp",
+    "ticker": "KONTA"
+  },
+  {
+    "id": 98814196,
+    "name": "Hammer and Steel Engineering",
+    "ticker": "HSENG"
+  },
+  {
+    "id": 98815795,
+    "name": "Yautja Mercs",
+    "ticker": "YAUT"
+  },
+  {
+    "id": 544435406,
+    "name": "Commodum Industries Inc.",
+    "ticker": "CIINC"
+  },
+  {
+    "id": 98046366,
+    "name": "Goat Trading Institute",
+    "ticker": "GOATT"
+  },
+  {
+    "id": 98134996,
+    "name": "Hydraxis Industries",
+    "ticker": "HYDRX"
+  },
+  {
+    "id": 98786864,
+    "name": "WHITE SMOKE",
+    "ticker": "WHSMK"
+  },
+  {
+    "id": 98815736,
+    "name": "Thrraa Industries",
+    "ticker": ".MAKI"
+  },
+  {
+    "id": 98794040,
+    "name": "HIGHHEELS-SISTERS",
+    "ticker": "HHSSS"
+  },
+  {
+    "id": 98815993,
+    "name": "Seasons Don't Fear the Reaper",
+    "ticker": "SEASN"
+  },
+  {
+    "id": 98730504,
+    "name": "Silent Armada",
+    "ticker": "SILA-"
+  },
+  {
+    "id": 98386646,
+    "name": "Texas Multi-National Organization",
+    "ticker": "TMNO"
+  },
+  {
+    "id": 98814077,
+    "name": "Triad Born Noema",
+    "ticker": "XTBNX"
+  },
+  {
+    "id": 98815431,
+    "name": "Svarog Squad",
+    "ticker": "SVRSQ"
+  },
+  {
+    "id": 98815780,
+    "name": "Atomic Eagles",
+    "ticker": "ATMEA"
+  },
+  {
+    "id": 98807469,
+    "name": "Neon Spider Hive",
+    "ticker": "NSH8"
+  },
+  {
+    "id": 98747124,
+    "name": "Xe'um Galactic",
+    "ticker": "XEUM"
+  },
+  {
+    "id": 98812278,
+    "name": "Disciples of the Isnis",
+    "ticker": "ISNIS"
+  },
+  {
+    "id": 98715805,
+    "name": "Gazprom WorldWide",
+    "ticker": "GASWW"
+  },
+  {
+    "id": 98612072,
+    "name": "HOLY EMPIRE OF ISK...",
+    "ticker": "HEI.."
+  },
+  {
+    "id": 98799582,
+    "name": "The Imperial Industrial Corporation",
+    "ticker": "IINDY"
+  },
+  {
+    "id": 98815839,
+    "name": "Federation of Cats",
+    "ticker": "98089"
+  },
+  {
+    "id": 98815727,
+    "name": "Feet pic only holding corp",
+    "ticker": "FPOHC"
+  },
+  {
+    "id": 98742018,
+    "name": "Neural Nexus",
+    "ticker": "SYNEX"
+  },
+  {
+    "id": 98815970,
+    "name": "Highbeam Security",
+    "ticker": "HBSEC"
+  },
+  {
+    "id": 98714665,
+    "name": "LKS Industrial",
+    "ticker": "LKS."
+  },
+  {
+    "id": 98812584,
+    "name": "Lynwood Park Industries",
+    "ticker": "LYNWD"
+  },
+  {
+    "id": 98765248,
+    "name": "Reggaeton Sex Crew",
+    "ticker": "BLLAK"
+  },
+  {
+    "id": 98813997,
+    "name": "DAWN OF THE DARKPHOENIX",
+    "ticker": "DOTDP"
+  },
+  {
+    "id": 98808143,
+    "name": "kobenox holding inc",
+    "ticker": "KHL11"
+  },
+  {
+    "id": 98395971,
+    "name": "CATG0",
+    "ticker": "CATG0"
+  },
+  {
+    "id": 98798664,
+    "name": "Caper Neo Criminal Corporation",
+    "ticker": "MMAOR"
+  },
+  {
+    "id": 98815677,
+    "name": "K P O T bI",
+    "ticker": "Z I P"
+  },
+  {
+    "id": 98815774,
+    "name": "Aetherionyx",
+    "ticker": "ATHNX"
+  },
+  {
+    "id": 98635855,
+    "name": "Stay Cool And Calm Down",
+    "ticker": "STCNB"
+  },
+  {
+    "id": 98808069,
+    "name": "Seza Ten Corporation",
+    "ticker": "0329"
+  },
+  {
+    "id": 98813971,
+    "name": "LIFE 0",
+    "ticker": "L0."
+  },
+  {
+    "id": 98770975,
+    "name": "Holding Corp 99",
+    "ticker": "HC99"
+  },
+  {
+    "id": 98809968,
+    "name": "Kilonetics",
+    "ticker": "KLNTS"
+  },
+  {
+    "id": 98815626,
+    "name": "Critical Operations and Excavation Engineering",
+    "ticker": "XIOIX"
+  },
+  {
+    "id": 98769395,
+    "name": "Pharsyde.",
+    "ticker": "PHAR."
+  },
+  {
+    "id": 98798346,
+    "name": "Space Nirvana",
+    "ticker": "NIRV."
+  },
+  {
+    "id": 98815902,
+    "name": "Undesirable Gameplay.",
+    "ticker": "F216."
+  },
+  {
+    "id": 98815916,
+    "name": "Sapphire Project Holding",
+    "ticker": "SPPRH"
+  },
+  {
+    "id": 1822204753,
+    "name": "Some Corp",
+    "ticker": "S0ME"
+  },
+  {
+    "id": 98757575,
+    "name": "Exotic Dancer Trade Bureau",
+    "ticker": "X0TIC"
+  },
+  {
+    "id": 98816010,
+    "name": "Initaitive Holding",
+    "ticker": "-H.1-"
+  },
+  {
+    "id": 98630705,
+    "name": "Strix Ridens",
+    "ticker": "OWL."
+  },
+  {
+    "id": 98452383,
+    "name": "Xae Mining Consortium Inc.",
+    "ticker": "XMCI"
+  },
+  {
+    "id": 98808697,
+    "name": "Void Engine.",
+    "ticker": "VO.NG"
   }
 ]
