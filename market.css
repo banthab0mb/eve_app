@@ -379,7 +379,6 @@ footer a:hover { color: #fff; }
     left: 0;
     width: 100%;
     padding: 10px 0;
-    padding-top: 30px;
     z-index: 999;
   }
 
@@ -435,19 +434,10 @@ footer a:hover { color: #fff; }
     z-index: 1100;
   }
 
-  /* Ensure search container sits above everything in header area */
-  header {
-    position: relative;
-  }
-
   /* Keep main content below the new top bar */
   .market-content {
     padding: 16px;
   }
-
-  /* reduce paddings / font sizes slightly to match compact mobile look */
-  header .app-title a { font-size: 1.15rem; }
-  nav a { margin: 0 8px; font-size: 0.95rem; }
 
   /* If you want the sidebar collapsible (optional) */
   .market-sidebar.collapsed .controls-row {
