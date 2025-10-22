@@ -17698,5 +17698,70 @@
     "id": 99014453,
     "name": "Spoonswarm Federation",
     "ticker": "SPNF"
+  },
+  {
+    "id": 99014454,
+    "name": "R A I D E R S",
+    "ticker": "RAIDR"
+  },
+  {
+    "id": 99014455,
+    "name": "The Army 0f Mango Alliance",
+    "ticker": "A0M"
+  },
+  {
+    "id": 99014456,
+    "name": "THE ADAM STARK",
+    "ticker": "STARK"
+  },
+  {
+    "id": 99014457,
+    "name": "Holding Alliance",
+    "ticker": "HOLD"
+  },
+  {
+    "id": 99014458,
+    "name": "Order Of Erebos",
+    "ticker": "ERBX"
+  },
+  {
+    "id": 99014459,
+    "name": "Adventures in Space",
+    "ticker": "A I S"
+  },
+  {
+    "id": 99014460,
+    "name": "Undesirable Gameplay",
+    "ticker": "F216"
+  },
+  {
+    "id": 99014462,
+    "name": "Sapphire Project",
+    "ticker": "SHPRO"
+  },
+  {
+    "id": 99014463,
+    "name": "Some Alliance",
+    "ticker": "SOME"
+  },
+  {
+    "id": 99014464,
+    "name": "Zor's Pleasure Hub",
+    "ticker": "ZPHUB"
+  },
+  {
+    "id": 99014465,
+    "name": "The Initaitive.",
+    "ticker": "INIT-"
+  },
+  {
+    "id": 99014466,
+    "name": "Strix Ridens.",
+    "ticker": "STRIX"
+  },
+  {
+    "id": 99014467,
+    "name": "Empire's Edge Trading Cartel",
+    "ticker": "EETC"
   }
 ]
