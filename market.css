@@ -361,49 +361,100 @@ footer a:hover { color: #fff; }
 
 /* Responsive / Mobile */
 @media (max-width: 768px) {
+  /* header / nav toggle */
   .nav-toggle {
     display: flex;
+    align-items: center;
+    gap: 8px;
     background: #222;
     color: #fff;
     border: none;
     padding: 8px 12px;
-    font-size: 1.2em;
+    font-size: 1rem;
     cursor: pointer;
   }
 
   nav.top-nav {
     display: none;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     background: #111;
     position: absolute;
-    top: 60px;
+    top: 56px; /* below header */
     left: 0;
     width: 100%;
-    padding: 10px 0;
+    padding: 8px 12px;
     z-index: 999;
   }
 
-  nav.top-nav.active {
-    display: flex;
-  }
+  nav.top-nav.active { display: flex; }
 
-  /* Move search bar section to top */
-  header {
+  /* Make main layout vertical on mobile */
+  .market-container {
     flex-direction: column;
-    align-items: stretch;
   }
 
-  #searchContainer {
-    order: -1;
+  /* Turn sidebar into a full-width top bar */
+  .market-sidebar {
     width: 100%;
+    background: #141414;
+    padding: 12px;
+    border-right: none;
+    border-bottom: 1px solid #222;
     display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+    flex-direction: column;
+    position: relative;
+    box-sizing: border-box;
   }
 
-  #searchContainer input,
-  #searchContainer button {
+  /* compact controls inline for mobile */
+  .market-sidebar .controls-row {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+  }
+
+  .market-sidebar input[type="text"],
+  .market-sidebar select {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 8px;
+    border-radius: 6px;
+  }
+
+  .market-sidebar button {
+    flex: 0 0 auto;
+    padding: 8px 12px;
+    border-radius: 6px;
+  }
+
+  /* make suggestions positioned below their input and constrained within header area */
+  .suggestions {
+    position: absolute;
+    top: 56px; /* relative to header area when open */
+    left: 12px;
+    right: 12px;
     width: auto;
+    z-index: 1100;
+  }
+
+  /* Ensure search container sits above everything in header area */
+  header {
+    position: relative;
+  }
+
+  /* Keep main content below the new top bar */
+  .market-content {
+    padding: 16px;
+  }
+
+  /* reduce paddings / font sizes slightly to match compact mobile look */
+  header .app-title a { font-size: 1.15rem; }
+  nav a { margin: 0 8px; font-size: 0.95rem; }
+
+  /* If you want the sidebar collapsible (optional) */
+  .market-sidebar.collapsed .controls-row {
+    display: none;
   }
 }
