@@ -367,28 +367,19 @@ footer a:hover { color: #fff; }
 /* Responsive / Mobile */
 @media (max-width: 768px) {
   /* header / nav toggle */
-  .nav-toggle {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background: #222;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    font-size: 1rem;
-    cursor: pointer;
-  }
+  .nav-toggle { display: flex; }
 
   nav.top-nav {
     display: none;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     background: #111;
     position: absolute;
-    top: 56px; /* below header */
+    top: 60px;
     left: 0;
     width: 100%;
-    padding: 8px 12px;
+    padding: 10px 0;
+    padding-top: 10px;
     z-index: 999;
   }
 
