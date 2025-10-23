@@ -370,12 +370,12 @@ async function performSearch() {
       fetchOrders(typeId, regionId, 'buy')
     ]);
 
-    // Render tables (visible rows limited by CSS)
-    await renderOrders(sellOrders, 'sellOrdersBody', 'sell');
-    await renderOrders(buyOrders, 'buyOrdersBody', 'buy');
-
-    // update history (always fetch so chart is ready)
-    await renderHistoryChart(typeId, regionId);
+    // render tables and graph simultaneously
+    await Promise.all([
+      renderOrders(sellOrders, 'sellOrdersBody', 'sell'),
+      renderOrders(buyOrders, 'buyOrdersBody', 'buy'),
+      renderHistoryChart(typeId, regionId)
+    ]);
 
   } catch (err) {
     console.error('Search error', err);
