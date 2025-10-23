@@ -391,15 +391,16 @@ footer a:hover { color: #fff; }
 
   /* Turn sidebar into a full-width top bar */
   .market-sidebar {
-    width: 100%;
-    background: #141414;
-    padding: 12px;
-    border-right: none;
-    border-bottom: 1px solid #222;
-    display: flex;
-    flex-direction: column;
-    position: relative;
-    box-sizing: border-box;
+  width: 85%;
+  background: #111;
+  padding: 12px;
+  border-right: none;
+  border-bottom: 1px solid #222;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  box-sizing: border-box;
+  margin: 0 auto;
   }
 
   /* compact controls inline for mobile */
@@ -414,7 +415,7 @@ footer a:hover { color: #fff; }
   .market-sidebar select {
     flex: 1 1 auto;
     min-width: 0;
-    padding: 8px;
+    /* padding: 30px; */
     border-radius: 6px;
   }
 
