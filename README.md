@@ -1,21 +1,20 @@
-
 # EVE Tools
-
 
 This site provides easy access many tools to make your time playing EVE Online just a little bit easier.
 
-[banthab0mb.github.io/eve_app](https://banthab0mb.github.io/eve_app/)
+<a href="https://banthab0mb.github.io/eve_app/" target="_blank" rel="noopener noreferrer">banthab0mb.github.io/eve_app</a>
 
 ## Support & Feedback
 
-[Report a bug](https://github.com/banthab0mb/eve_app/issues/new?template=bug_report.yml )
+<a href="https://github.com/banthab0mb/eve_app/issues/new?template=bug_report.yml" target="_blank" rel="noopener noreferrer">Report a bug</a>
 
-[Suggest a feature](https://github.com/banthab0mb/eve_app/issues/new?template=feature_request.yml)
+<a href="https://github.com/banthab0mb/eve_app/issues/new?template=feature_request.yml" target="_blank" rel="noopener noreferrer">Suggest a feature</a>
+
 ## Acknowledgements
 
- - [EVE Swagger Interface](https://esi.evetech.net)
- - [zkillBoard](https://zkillboard.com)
- - [EVE-Scout](https://eve-scout.com)
+- <a href="https://esi.evetech.net" target="_blank" rel="noopener noreferrer">EVE Swagger Interface</a>
+- <a href="https://zkillboard.com" target="_blank" rel="noopener noreferrer">zkillBoard</a>
+- <a href="https://eve-scout.com" target="_blank" rel="noopener noreferrer">EVE-Scout</a>
 
 
 ## License
