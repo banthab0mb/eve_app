@@ -17681,8 +17681,8 @@
   },
   {
     "id": 99014450,
-    "name": "Sunffed 0ut",
-    "ticker": "BB C"
+    "name": "New Eden Alliance 99014450",
+    "ticker": "NEA50"
   },
   {
     "id": 99014451,
@@ -17751,8 +17751,8 @@
   },
   {
     "id": 99014465,
-    "name": "The Initaitive.",
-    "ticker": "INIT-"
+    "name": "New Eden Alliance 99014465",
+    "ticker": "NEA65"
   },
   {
     "id": 99014466,
@@ -17763,5 +17763,95 @@
     "id": 99014467,
     "name": "Empire's Edge Trading Cartel",
     "ticker": "EETC"
+  },
+  {
+    "id": 99014468,
+    "name": "Resilience Force",
+    "ticker": "RESI"
+  },
+  {
+    "id": 99014469,
+    "name": "Northern Sky Stalkers",
+    "ticker": "NORTH"
+  },
+  {
+    "id": 99014470,
+    "name": "Everyone's Problem",
+    "ticker": "EP"
+  },
+  {
+    "id": 99014471,
+    "name": "No Safe Word Holdings",
+    "ticker": "NSFWH"
+  },
+  {
+    "id": 99014472,
+    "name": "Helion Consortium",
+    "ticker": "HELIO"
+  },
+  {
+    "id": 99014473,
+    "name": "Rejected.",
+    "ticker": "RJC"
+  },
+  {
+    "id": 99014474,
+    "name": "Chemosh Girl",
+    "ticker": "GOOMB"
+  },
+  {
+    "id": 99014475,
+    "name": "Other-Universe",
+    "ticker": "OTHR"
+  },
+  {
+    "id": 99014476,
+    "name": "NEVER.SAY.DIE.",
+    "ticker": "NSD"
+  },
+  {
+    "id": 99014477,
+    "name": "TERANO.Empire",
+    "ticker": "TE.EM"
+  },
+  {
+    "id": 99014478,
+    "name": "Top Scanner Alliance",
+    "ticker": "TSA25"
+  },
+  {
+    "id": 99014479,
+    "name": "Deadspace Armada",
+    "ticker": "DEAD"
+  },
+  {
+    "id": 99014480,
+    "name": "Ebon Hex",
+    "ticker": "VOODO"
+  },
+  {
+    "id": 99014481,
+    "name": "Kestrel Dynamics",
+    "ticker": "PHEEW"
+  },
+  {
+    "id": 99014482,
+    "name": "Allianz Trade",
+    "ticker": "ALLIA"
+  },
+  {
+    "id": 99014483,
+    "name": "MUTHR",
+    "ticker": "MUM"
+  },
+  {
+    "id": 99014484,
+    "name": "Trit Happens",
+    "ticker": "TRIT"
+  },
+  {
+    "id": 99014485,
+    "name": "Temper Tantrums",
+    "ticker": "TEMPE"
   }
 ]
