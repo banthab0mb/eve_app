@@ -21,22 +21,24 @@ async function analyzeNames(inputValue) {
   // Clear previous rows except headers
   tableBody.querySelectorAll("tr:not(:first-child)").forEach(r => r.remove());
 
-  const rows = [];
+  const batchSize = 10;
+  let allRows = [];
 
-  for (const name of names) {
-    const row = await createCharacterRow(name);
-    if (row) rows.push(row);
+  for (let i = 0; i < names.length; i += batchSize) {
+    const batch = names.slice(i, i + batchSize);
+    const batchRows = await Promise.all(batch.map(name => createCharacterRow(name)));
+    allRows = allRows.concat(batchRows.filter(r => r));
   }
 
   // Sort rows by risk descending
-  rows.sort((a, b) => {
+  allRows.sort((a, b) => {
     const riskA = parseFloat(a.dataset.risk) || 0;
     const riskB = parseFloat(b.dataset.risk) || 0;
-    return riskB - riskA; // descending
+    return riskB - riskA;
   });
 
   // Append sorted rows
-  rows.forEach(row => tableBody.appendChild(row));
+  allRows.forEach(row => tableBody.appendChild(row));
   tableBody.style.display = "table";
 }
 
@@ -48,7 +50,6 @@ async function createCharacterRow(name) {
       body: JSON.stringify([name])
     });
     if (!res.ok) throw new Error(`universe/ids failed: ${res.status}`);
-
     const data = await res.json();
     const charEntry = data.characters?.[0];
     if (!charEntry) throw new Error(`Character not found: ${name}`);
@@ -74,9 +75,10 @@ async function createCharacterRow(name) {
       allianceLogo = `https://images.evetech.net/alliances/${allianceId}/logo?size=64`;
     }
 
-    // zKillboard stats
+    // zKillboard stats (limit parallel fetches)
     let kills = 0, losses = 0;
     try {
+      await new Promise(r => setTimeout(r, 100)); // 100ms delay per fetch
       const zkillRes = await fetch(`https://zkillboard.com/api/stats/characterID/${charId}/`, {
         headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
       });
@@ -93,7 +95,7 @@ async function createCharacterRow(name) {
       .join(" ");
 
     const row = document.createElement("tr");
-    row.dataset.risk = risk; // store risk for sorting
+    row.dataset.risk = risk;
     const lookupBase = "https://banthab0mb.github.io/eve_app/playerLookup.html?q=";
 
     row.innerHTML = `
