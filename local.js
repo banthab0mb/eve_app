@@ -97,7 +97,7 @@ async function createCharacterRow(name) {
 
     row.innerHTML = `
     <td>
-        <img src="${portrait}" width="64" height="64"> 
+        <img src="${portrait}" width="64" height="64" style="vertical-align:middle> 
         <a href="${lookupBase}${encodeURIComponent(properName)}" target="_blank">${properName}</a>
     </td>
     <td>
