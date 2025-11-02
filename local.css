@@ -134,6 +134,7 @@ button {
   border-radius: 4px;
   padding: 8px 10px;
   cursor: pointer;
+  font-family: "Shentox-Regular", sans-serif !important;
 }
 
 button:hover {
