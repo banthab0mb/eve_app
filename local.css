@@ -142,6 +142,7 @@ button:hover {
 }
 
 table {
+  display: none;
   width: 90%;
   margin: 20px auto;
   border-collapse: collapse;

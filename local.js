@@ -37,6 +37,7 @@ async function analyzeNames(inputValue) {
 
   // Append sorted rows
   rows.forEach(row => tableBody.appendChild(row));
+  tableBody.style.display = "table";
 }
 
 async function createCharacterRow(name) {
