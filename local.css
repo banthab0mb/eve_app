@@ -1,0 +1,261 @@
+/* Base Reset + Layout */
+html, body {
+  height: 100%;
+  margin: 0;
+  font-family: "Shentox-Regular", sans-serif !important;
+  background: #0d0d0d;
+  color: #e0e0e0;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Fonts */
+@font-face {
+  font-family: 'Shentox-Regular';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Regular'), url('fonts/Shentox-Regular.ttf') format('trueType');
+}
+
+@font-face {
+  font-family: 'Shentox-Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Shentox Medium'), url('fonts/Shentox-Medium.ttf') format('trueType');
+}
+
+/* Header */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+  position: relative;
+  border-bottom: 2px solid #222;
+  font-family: "Shentox-Regular", sans-serif !important;
+  padding: 10px 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-left: auto; /* far right on PC */
+}
+
+header .app-title a {
+  font-size: 1.5rem;
+  color: #fff;
+  text-decoration: none;
+}
+
+header .app-title a:hover { color: #fff; }
+
+/* Hamburger */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 4px;
+}
+
+.nav-toggle span {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: #aaa;
+  border-radius: 2px;
+}
+
+/* Top navigation */
+nav.top-nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex: 1;
+}
+
+nav.top-nav a {
+  color: #aaa;
+  margin: 0 15px;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+nav.top-nav a.active,
+nav.top-nav a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+/* Main Content */
+main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
+.container { max-width: 600px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important; }
+
+h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+
+body {
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+links {
+  flex: 1;
+}
+
+links a { color: #aaa; text-decoration: none; }
+
+links a:hover { color: #fff; }
+
+textarea {
+  width: 320px;
+  height: 160px;
+  margin-top: 10px;
+  background: #111;
+  color: #ddd;
+  border: 1px solid #333;
+  border-radius: 5px;
+  padding: 10px;
+  font-family: inherit;
+}
+
+button {
+  margin: 10px;
+  background: #222;
+  color: #eee;
+  border: 1px solid #555;
+  border-radius: 4px;
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #333;
+}
+
+table {
+  width: 90%;
+  margin: 20px auto;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+}
+
+th {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+tr:nth-child(even) {
+  background: #111;
+}
+
+a {
+  color: #aaa;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+a.active, a:hover {
+  color: #fff;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 2px;
+}
+
+/* Footer */
+footer {
+  border-top: 2px solid #222;
+  flex-shrink: 0;
+  flex-grow: 0;
+  text-align: center;
+  flex-direction: column;
+  display: flex;
+  justify-content: center;
+  padding: 15px 20px;
+  background: #111;
+  margin-top: auto;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
+
+footer p { margin: 5px 0; }
+
+footer a { color: #888; text-decoration: none; font-weight: normal;}
+
+footer a:hover { color: #fff; }
+
+#onlineCounter {
+  margin-top: 6px;
+  font-size: 0.9em;
+  padding-right: 20px;
+  font-family: "Shentox-Medium", sans-serif !important;
+}
+
+#eveTime {
+  margin-top: 6px;
+  font-size: 0.9em;
+  color: #ccc; /* lighter so it looks secondary */
+  width: 8ch;
+}
+
+/* GitHub Icon */
+.github-link {
+  position: absolute;
+  right: 20px;
+  bottom: 15px;
+  opacity: 0.7;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  text-decoration: none !important;
+  border-bottom: none !important
+}
+
+.github-link:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+  padding-bottom: 0 !important;
+}
+
+.github-link .github-icon {
+  width: 24px;
+  height: 24px;
+  filter: invert(70%) sepia(0%) saturate(0%) hue-rotate(180deg) brightness(90%);
+  transition: filter 0.3s ease;
+}
+
+.github-link:hover .github-icon {
+  filter: brightness(0) invert(1) !important; /* pure white on hover */
+}
+
+/* Make sure footer can hold absolutely positioned elements */
+footer {
+  position: relative;
+}
+
+/* Responsive / Mobile */
+@media (max-width: 768px) {
+  .nav-toggle { display: flex; }
+
+  nav.top-nav {
+    display: none;
+    flex-direction: column;
+    gap: 10px;
+    background: #111;
+    position: absolute;
+    top: 60px;
+    left: 0;
+    width: 100%;
+    padding: 10px 0;
+    z-index: 999;
+  }
+
+  nav.top-nav.active { display: flex; }
+}

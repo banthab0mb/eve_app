@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
-  <title>EVE Tools - Route Planner</title>
-  <link rel="stylesheet" href="route_style.css">
+  <link rel="apple-touch-icon" sizes="180x180" href="/evetoolslogo.png">
+  <title>EVE Tools - Local Check</title>
+  <link rel="stylesheet" href="local.css">
 
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YMK6E5H4PX"></script>
@@ -46,32 +47,11 @@
 </header>
 
   <main>
-    <div class="route-search">
-      <div class="search-group">
-        <input id="originSystem" type="text" placeholder="Origin system">
-        <div id="suggestions-origin" class="suggestions"></div>
-      </div>
+    <h2>Local Threat Analyzer</h2>
+        <textarea id="nameInput" rows="8" cols="40" placeholder="Paste local names here (one per line)"></textarea><br>
+        <button onclick="analyzeNames(document.getElementById('nameInput').value)">Analyze</button>
 
-      <div class="search-group">
-        <input id="destSystem" type="text" placeholder="Destination system">
-        <div id="suggestions-dest" class="suggestions"></div>
-      </div>
-
-      <div class="route-options-wrapper">
-        <div class="route-options">
-          <div class="flag-select">
-            <label><input type="radio" name="route-flag" value="shortest" checked> Shortest</label>
-            <label><input type="radio" name="route-flag" value="shortest-gates-only"> Shortest - Gates Only</label>
-            <label><input type="radio" name="route-flag" value="secure"> Secure</label>
-          </div>
-        </div>
-
-        <button id="routeBtn">Find Route</button>
-      </div>
-
-      <div id="total-jumps"></div>
-      <div id="route-output"></div>
-    </div>
+        <table id="threatTable" style="margin-top:10px; border-collapse:collapse;"></table>
   </main>
 
   <footer>
@@ -97,8 +77,6 @@
          class="github-icon">
     </a>
   </footer>
-
-  <script src="route.js"></script>
   <script>
     // Toggle CCP disclaimer visibility
     document.getElementById("ccp-link").addEventListener("click", (e) => {
@@ -106,33 +84,34 @@
       const disclaimer = document.getElementById("ccp-disclaimer");
       disclaimer.style.display = disclaimer.style.display === "none" ? "block" : "none";
     });
-
-    // Highlight current page
-    const navLinks = document.querySelectorAll('nav a');
-    const path = window.location.pathname.split('/').pop();
-
-    navLinks.forEach(link => {
-      if (link.getAttribute('href') === path || (path === "" && link.getAttribute('href') === "index.html")) {
-        link.classList.add('active');
-      } else {
-        link.classList.remove('active');
-      }
-    });
-
-    // Player count (top-right)
-    fetch("https://esi.evetech.net/latest/status/")
-      .then(res => res.json())
-      .then(data => {
-          const playerCount = document.getElementById("onlineCounter");
-          if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
-          playerCount.style.color = "#378937ff";
-      })
-      .catch(() => {
-          const playerCount = document.getElementById("onlineCounter");
-          if (playerCount) playerCount.textContent = "Tranquility unreachable";
-          playerCount.style.color = "#9f3232ff";
-      });
   </script>
+  <script>
+        // Highlight current page
+        const navLinks = document.querySelectorAll('nav a');
+        const path = window.location.pathname.split('/').pop();
+
+        navLinks.forEach(link => {
+        if (link.getAttribute('href') === path || (path === "" && link.getAttribute('href') === "index.html")) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+        });
+
+        // Player count (top-right)
+        fetch("https://esi.evetech.net/latest/status/")
+        .then(res => res.json())
+        .then(data => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = `${data.players.toLocaleString()}`;
+            playerCount.style.color = "#378937ff";
+        })
+        .catch(() => {
+            const playerCount = document.getElementById("onlineCounter");
+            if (playerCount) playerCount.textContent = "Tranquility unreachable";
+            playerCount.style.color = "#9f3232ff";
+        });
+    </script>
     <script>
       function updateEveTime() {
         const now = new Date();
@@ -155,5 +134,6 @@
         nav.classList.toggle('active');
       });
     </script>
+    <script src= local.js></script>
 </body>
 </html>
