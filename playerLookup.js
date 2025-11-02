@@ -171,7 +171,7 @@ async function renderAllianceInfo(corp) {
   const name = alliance.name ?? "Unknown";
   const ticker = alliance.ticker ?? "";
 
-  document.querySelector("#alliance-name").innerHTML = `<p>${name} [${ticker}]</p>`;
+  document.querySelector("#alliance-name").innerHTML = `<p><a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${name}"${name} [${ticker}]</p>`;
 }
 
 // ------------------ FORMAT OUTPUT ------------------
@@ -198,13 +198,13 @@ function formatOutput(result) {
   <div class="corp-info">
     <h3>Corporation</h3>
     <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
-    <p>${corp.name} [${corp.ticker}]</p>
+    <p><a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${corp.name}"${corp.name} [${corp.ticker}]</p>
   </div>
   <div class="alliance-info">
     <h3>Alliance</h3>
     ${alliance ? `
       <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
-      <p>${alliance.name} [${alliance.ticker}]</p>
+      <p><a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${alliance.name}"${alliance.name} [${alliance.ticker}]</p>
     ` : "<p>None</p>"}
   </div>
   </div>
