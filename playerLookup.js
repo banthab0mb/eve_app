@@ -57,44 +57,43 @@ async function runLookup() {
 
   outputDiv.innerHTML = `<p>Searching for "${escapeHtml(name)}"...</p>`;
 
-  // 1. Try to match locally in alliances (by name or ticker)
+  // ------------------ LOCAL JSON LOOKUP ------------------
   const alliance = alliances.find(a =>
     a.name.toLowerCase() === name.toLowerCase() ||
     (a.ticker && a.ticker.toLowerCase() === name.toLowerCase())
   );
+
   if (alliance) {
     const allianceId = alliance.alliance_id || alliance.id || alliance.allianceID;
     if (!allianceId) {
       outputDiv.innerHTML = `<p>Alliance found in JSON, but ID missing.</p>`;
       return;
     }
-    const details = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
+    const details = await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`).then(r => r.json());
     outputDiv.innerHTML = formatOutput({ category: "alliance", id: allianceId, details });
     outputDiv.style.display = "block";
     return;
   }
 
-  // 2. Try to match locally in corporations (by name or ticker)
   const corp = corporations.find(c =>
     c.name.toLowerCase() === name.toLowerCase() ||
     (c.ticker && c.ticker.toLowerCase() === name.toLowerCase())
   );
+
   if (corp) {
     const corpId = corp.corporation_id || corp.id || corp.corporationID;
     if (!corpId) {
       outputDiv.innerHTML = `<p>Corporation found in JSON, but ID missing.</p>`;
       return;
     }
-    const details = await (await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`)).json();
+    const details = await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`).then(r => r.json());
     outputDiv.innerHTML = formatOutput({ category: "corporation", id: corpId, details });
     outputDiv.style.display = "block";
     return;
   }
 
-  // 3. Fallback → use universe/ids for characters
+  // ------------------ ESI UNIVERSE IDS FALLBACK ------------------
   try {
-    console.log("POSTing to universe/ids with:", [name]);
-
     const res = await fetch("https://esi.evetech.net/latest/universe/ids/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -103,38 +102,56 @@ async function runLookup() {
 
     if (!res.ok) {
       const text = await res.text();
-      console.error("universe/ids failed:", res.status, text);
       outputDiv.innerHTML = `<p>universe/ids failed: ${res.status}</p><pre>${escapeHtml(text)}</pre>`;
       outputDiv.style.display = "block"; 
       return;
     }
 
     const data = await res.json();
-    console.log("universe/ids response:", data);
 
+    // -------- CHARACTER --------
     if (data.characters && data.characters.length) {
-      const id = data.characters[0].id;
-      const char = await (await fetch(`https://esi.evetech.net/latest/characters/${id}/`)).json();
-      const corp = await (await fetch(`https://esi.evetech.net/latest/corporations/${char.corporation_id}/`)).json();
+      const charId = data.characters[0].id;
+      const char = await fetch(`https://esi.evetech.net/latest/characters/${charId}/`).then(r => r.json());
+      const corp = await fetch(`https://esi.evetech.net/latest/corporations/${char.corporation_id}/`).then(r => r.json());
 
       let alliance = null;
       if (corp.alliance_id) {
-        alliance = await (await fetch(`https://esi.evetech.net/latest/alliances/${corp.alliance_id}/`)).json();
+        alliance = await fetch(`https://esi.evetech.net/latest/alliances/${corp.alliance_id}/`).then(r => r.json());
       }
 
-      outputDiv.innerHTML = formatOutput({ category: "character", id, details: char, corp, alliance });
+      outputDiv.innerHTML = formatOutput({ category: "character", id: charId, details: char, corp, alliance });
       outputDiv.style.display = "block"; 
       return;
     }
 
+    // -------- CORPORATION --------
+    if (data.corporations && data.corporations.length) {
+      const corpId = data.corporations[0].id;
+      const corpDetails = await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/`).then(r => r.json());
+      outputDiv.innerHTML = formatOutput({ category: "corporation", id: corpId, details: corpDetails });
+      outputDiv.style.display = "block"; 
+      return;
+    }
+
+    // -------- ALLIANCE --------
+    if (data.alliances && data.alliances.length) {
+      const allianceId = data.alliances[0].id;
+      const allianceDetails = await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`).then(r => r.json());
+      outputDiv.innerHTML = formatOutput({ category: "alliance", id: allianceId, details: allianceDetails });
+      outputDiv.style.display = "block"; 
+      return;
+    }
+
+    // -------- NO MATCH --------
     outputDiv.innerHTML = `<p>No match for "${escapeHtml(name)}"</p>`;
-    outputDiv.style.display = "block"; 
+    outputDiv.style.display = "block";
+
   } catch (err) {
     console.error("Lookup failed:", err);
     outputDiv.innerHTML = `<p>Error during lookup. Check console.</p>`;
     outputDiv.style.display = "block"; 
   }
-  outputDiv.style.display = "block"; 
 }
 
 // Fetch alliance info
