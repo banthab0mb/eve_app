@@ -17853,5 +17853,100 @@
     "id": 99014485,
     "name": "Temper Tantrums",
     "ticker": "TEMPE"
+  },
+  {
+    "id": 99014486,
+    "name": "Purple Players Social Club",
+    "ticker": "MY-PP"
+  },
+  {
+    "id": 99014487,
+    "name": "Recursive Frenzy",
+    "ticker": "GOIDA"
+  },
+  {
+    "id": 99014488,
+    "name": "New Eden Industrial and Logistics Foundry",
+    "ticker": "NEI"
+  },
+  {
+    "id": 99014489,
+    "name": "Heralds Of The Great One",
+    "ticker": "HOTGO"
+  },
+  {
+    "id": 99014490,
+    "name": "Ruber Taurus",
+    "ticker": "RUBER"
+  },
+  {
+    "id": 99014491,
+    "name": "Astral Requisitions Inc.",
+    "ticker": "ARI"
+  },
+  {
+    "id": 99014492,
+    "name": "Whispering Waves",
+    "ticker": "WHISP"
+  },
+  {
+    "id": 99014493,
+    "name": "SPACECOM S.C.",
+    "ticker": "CHUM"
+  },
+  {
+    "id": 99014494,
+    "name": "Aegis Engineering Supply Co.",
+    "ticker": "AGS"
+  },
+  {
+    "id": 99014495,
+    "name": "Umbrella Initiative Alliance",
+    "ticker": "UMBRE"
+  },
+  {
+    "id": 99014496,
+    "name": "Stellar Industrial Alliance",
+    "ticker": "STLLR"
+  },
+  {
+    "id": 99014497,
+    "name": "Cvetnyashki",
+    "ticker": "DETKI"
+  },
+  {
+    "id": 99014498,
+    "name": "The Beak Cartel",
+    "ticker": "BEAK"
+  },
+  {
+    "id": 99014499,
+    "name": "Limited Avenger",
+    "ticker": "PVDOT"
+  },
+  {
+    "id": 99014500,
+    "name": "H8N LOYALS Parallax Union",
+    "ticker": "HLPU"
+  },
+  {
+    "id": 99014501,
+    "name": "Funky Alliance",
+    "ticker": "FUNKY"
+  },
+  {
+    "id": 99014502,
+    "name": "Valhalla Cartel",
+    "ticker": "VALX"
+  },
+  {
+    "id": 99014503,
+    "name": "WEYLAND-YAUNTI CORP Alliance",
+    "ticker": "WEYL"
+  },
+  {
+    "id": 99014504,
+    "name": "Euronext Holding Alliance",
+    "ticker": "ENHA"
   }
 ]
