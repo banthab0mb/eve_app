@@ -221,7 +221,7 @@ footer {
 
 footer p { margin: 5px 0; }
 
-footer a { color: #888; text-decoration: none; }
+footer a { color: #888; text-decoration: none; font-weight: normal !important; }
 
 footer a:hover { color: #fff; }
 
