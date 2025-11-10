@@ -158,9 +158,9 @@ h3 a.active, a:hover {
   padding-bottom: 2px;
 }
 
-main a { color: #aaa; text-decoration: none; }
+links a { color: #aaa; text-decoration: none; }
 
-main a:hover { color: #fff; }
+links a:hover { color: #fff; }
 
 .page-image {
   display: block;
