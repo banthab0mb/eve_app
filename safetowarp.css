@@ -114,21 +114,6 @@ links a { color: #aaa; text-decoration: none; }
 
 links a:hover { color: #fff; }
 
-.page-image {
-  display: block;
-  margin: 0 auto;
-  max-width: 80%;
-  height: auto;
-}
-
-img {
-  display: block;
-  margin: 0 auto;
-  max-width: 100%;
-  height: auto;
-
-}
-
 a {
   color: #aaa;
   text-decoration: none;
