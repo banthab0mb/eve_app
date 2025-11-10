@@ -20,8 +20,16 @@
 </head>
 <body>
   <header>
-  <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
-  <nav>
+  <div class="header-left">
+    <div class="nav-toggle" id="navToggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <h1 class="app-title"><a href="index.html">EVE Tools</a></h1>
+  </div>
+
+  <nav class="top-nav">
     <a href="index.html">Home</a>
     <a href="systemSearch.html">System Lookup</a>
     <a href="route.html">Route Planner</a>
@@ -30,11 +38,15 @@
     <a href="local.html">Local Check</a>
     <a href="about.html">About</a>
   </nav>
-  <div id="onlineCounter">Loading...</div>
-  <div id="eveTime">--:--:--</div>
+
+  <div class="header-right">
+    <div id="onlineCounter">Loading...</div>
+    <div id="eveTime">--:--:--</div>
+  </div>
 </header>
+
   <main>
-    <img src="stw2025.jpg">
+    <img src="stw2025.jpg" style="display: block; margin: auto; max-width: 100%; height: auto;">
     <p>Created by: <links><a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=anatol+syndran" target="_blank">Anatol Syndran</a></links></p>
   </main>
   <footer>
