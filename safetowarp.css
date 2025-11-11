@@ -110,9 +110,9 @@ links {
   flex: 1;
 }
 
-links a { color: #aaa; text-decoration: none; }
+links a { color: #aaa; text-decoration: none; font-weight: normal; }
 
-links a:hover { color: #fff; }
+links a:hover { color: #fff; font-weight: normal; }
 
 a {
   color: #aaa;
