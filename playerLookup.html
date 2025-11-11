@@ -40,7 +40,7 @@
   </nav>
 
   <div class="header-right">
-    <div id="onlineCounter">Loading...</div>
+    <div id="onlineCounter" style="cursor: pointer;">Loading...</div>
     <div id="eveTime">--:--:--</div>
   </div>
 </header>
@@ -114,6 +114,9 @@
             const playerCount = document.getElementById("onlineCounter");
             if (playerCount) playerCount.textContent = "Tranquility unreachable";
             playerCount.style.color = "#9f3232ff";
+        });
+        document.getElementById("onlineCounter").addEventListener("click", () => {
+          window.open("https://eve-offline.net/?server=tranquility", "_blank");
         });
     </script>
     <script>
