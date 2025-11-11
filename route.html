@@ -132,6 +132,10 @@
           if (playerCount) playerCount.textContent = "Tranquility unreachable";
           playerCount.style.color = "#9f3232ff";
       });
+    document.getElementById("onlineCounter").addEventListener("click", () => {
+      window.open("https://eve-offline.net/?server=tranquility", "_blank");
+    });
+
   </script>
     <script>
       function updateEveTime() {
