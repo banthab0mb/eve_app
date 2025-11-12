@@ -17948,5 +17948,125 @@
     "id": 99014504,
     "name": "Euronext Holding Alliance",
     "ticker": "ENHA"
+  },
+  {
+    "id": 99014505,
+    "name": "Pandemic Northern Legion",
+    "ticker": "NCPL"
+  },
+  {
+    "id": 99014507,
+    "name": "Emotionally Unavailable",
+    "ticker": "EU"
+  },
+  {
+    "id": 99014508,
+    "name": "Filthy CasuaIs",
+    "ticker": "FLTHY"
+  },
+  {
+    "id": 99014510,
+    "name": "L O S T M E M O R I E S",
+    "ticker": "L0ST"
+  },
+  {
+    "id": 99014511,
+    "name": "Pillars Of Cantref",
+    "ticker": "POC"
+  },
+  {
+    "id": 99014512,
+    "name": "Genesis Brother Alliance",
+    "ticker": "CS"
+  },
+  {
+    "id": 99014513,
+    "name": "Escalat.",
+    "ticker": "87KM"
+  },
+  {
+    "id": 99014516,
+    "name": "The Astral Express",
+    "ticker": "TAE."
+  },
+  {
+    "id": 99014517,
+    "name": "Kombat Mining Club",
+    "ticker": "KMC"
+  },
+  {
+    "id": 99014518,
+    "name": "PUT THE FRIES IN THE BAG",
+    "ticker": "FRIES"
+  },
+  {
+    "id": 99014519,
+    "name": "Storm City Holy Light Cathedral Alliance",
+    "ticker": "SCH"
+  },
+  {
+    "id": 99014520,
+    "name": "Mama's Meadery",
+    "ticker": "MAMAS"
+  },
+  {
+    "id": 99014521,
+    "name": "Autonomous Droneland Collective",
+    "ticker": "STAYD"
+  },
+  {
+    "id": 99014522,
+    "name": "Fireball.",
+    "ticker": "FIRE"
+  },
+  {
+    "id": 99014523,
+    "name": "The Rejected.",
+    "ticker": "T.RD"
+  },
+  {
+    "id": 99014524,
+    "name": "Silhouettes.",
+    "ticker": "SILHO"
+  },
+  {
+    "id": 99014525,
+    "name": "Capsuleer's Country Club",
+    "ticker": "CCC"
+  },
+  {
+    "id": 99014526,
+    "name": "Lunar Fluorescence",
+    "ticker": "LUN4R"
+  },
+  {
+    "id": 99014527,
+    "name": "Texas.",
+    "ticker": "ARK"
+  },
+  {
+    "id": 99014529,
+    "name": "Phantasm Capital",
+    "ticker": "PH"
+  },
+  {
+    "id": 99014530,
+    "name": "United Industrials",
+    "ticker": "-UI-"
+  },
+  {
+    "id": 99014531,
+    "name": "Galactic League",
+    "ticker": "GL."
+  },
+  {
+    "id": 99014532,
+    "name": "Stellar Architects",
+    "ticker": "STELL"
+  },
+  {
+    "id": 99014533,
+    "name": "Velari Conclave",
+    "ticker": "VELAR"
   }
 ]
