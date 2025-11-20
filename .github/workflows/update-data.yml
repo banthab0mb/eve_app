@@ -28,8 +28,8 @@ jobs:
         
       - name: Commit & push changes
         run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "Database-Updater[bot]"
+          git config user.email "Database-updater[bot]@users.noreply.github.com"
           git add alliances.json corporations.json
           git commit -m "Update alliances and corps (automated)" || echo "No changes"
           git stash --include-untracked
