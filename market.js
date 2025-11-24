@@ -3,6 +3,9 @@ let regionsList = [];
 const stationCache = new Map();
 let historyChart = null;
 
+const PLEX_ID = 44992;
+const PLEX_MARKET_REGION_ID = 19000001; 
+
 document.addEventListener('DOMContentLoaded', () => {
   initElements();
   loadRegions();
@@ -50,17 +53,27 @@ function initElements() {
       if (target) target.classList.add('active');
     });
   });
+
+  // CCP disclaimer toggle
+  const ccpLink = $('ccp-link');
+  if (ccpLink) ccpLink.addEventListener('click', (e) => {
+    e.preventDefault();
+    const disc = $('ccp-disclaimer');
+    if (!disc) return;
+    disc.style.display = disc.style.display === 'block' ? 'none' : 'block';
+  });
 }
 
 //Load static files
 async function loadItems() {
   try {
-    const res = await fetch('items.json');
-    if (!res.ok) throw new Error('items.json not found');
+    // Using input_items.json
+    const res = await fetch('input_items.json');
+    if (!res.ok) throw new Error('input_items.json not found');
     itemsList = await res.json();
-    console.log(`Loaded items.json (${itemsList.length})`);
+    console.log(`Loaded input_items.json (${itemsList.length})`);
   } catch (err) {
-    console.warn('Could not load items.json:', err);
+    console.warn('Could not load input_items.json:', err);
     itemsList = [];
   }
 }
@@ -90,6 +103,20 @@ async function loadRegions() {
     opt.textContent = r.name;
     regionSelect.appendChild(opt);
   });
+    
+    // Add the PLEX Market region to the list for completeness, but it's not a standard market - KEEPING THIS
+    const plexMarketRegion = { region_id: PLEX_MARKET_REGION_ID, name: "PLEX Market" };
+    // Only add if it's not already in the list
+    if (!regionsList.some(r => r.region_id === PLEX_MARKET_REGION_ID)) {
+        regionsList.push(plexMarketRegion);
+    }
+    // Add to select if not present
+    if (!regionSelect.querySelector(`option[value="${PLEX_MARKET_REGION_ID}"]`)) {
+        const plexOpt = document.createElement('option');
+        plexOpt.value = String(PLEX_MARKET_REGION_ID);
+        plexOpt.textContent = plexMarketRegion.name;
+        regionSelect.appendChild(plexOpt);
+    }
 
   regionSelect.value = 'all';
 }
@@ -168,36 +195,47 @@ async function getItemId(name) {
   }
 }
 
-async function fetchOrdersForRegion(typeId, regionId, orderType) {
-  try {
-    const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
-    if (!res.ok) return [];
-    const arr = await res.json();
-    return arr.map(o => ({ ...o, regionId }));
-  } catch (err) {
-    return [];
-  }
-}
+// Removed fetchOrdersForRegion
 
 async function fetchOrders(typeId, regionId, orderType) {
   if (!typeId) return [];
 
-  if (regionId && regionId !== 'all') {
-    return await fetchOrdersForRegion(typeId, regionId, orderType);
+  // 1. Determine the list of regions to query
+  let regionsToQuery = [];
+  const isPLEX = typeId === PLEX_ID;
+  
+  if (isPLEX) {
+    // If PLEX, only query the dedicated PLEX Market Region
+    regionsToQuery = [PLEX_MARKET_REGION_ID]; // KEEPING PLEX OVERRIDE
+  } else if (regionId && regionId !== 'all') {
+    // If a specific non-PLEX region is selected
+    regionsToQuery = [Number(regionId)];
+  } else {
+    // If "All Regions" is selected for a non-PLEX item
+    regionsToQuery = regionsList.map(r => r.region_id).filter(Boolean);
   }
-
-  // All regions: aggregate. Limit concurrency to avoid blasting ESI too hard
-  const regionIds = regionsList.map(r => r.region_id).filter(Boolean);
+  
   const results = [];
-  // batch size to avoid too many parallel fetches (reduce rate limit risk)
-  const batchSize = 200;
-  for (let i = 0; i < regionIds.length; i += batchSize) {
-    const batch = regionIds.slice(i, i + batchSize);
-    const promises = batch.map(rid => fetchOrdersForRegion(typeId, rid, orderType));
-    const batchResults = await Promise.all(promises);
-    batchResults.forEach(arr => results.push(...arr));
-  }
-  // attach region name where available
+  
+  // 2. Execute the fetch without batching or throttling
+  // Reverting to a simple Promise.all
+  const promises = regionsToQuery.map(async rid => {
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/markets/${rid}/orders/?order_type=${orderType}&type_id=${typeId}&datasource=tranquility`);
+      if (res.ok) {
+        const arr = await res.json();
+        return arr.map(o => ({ ...o, regionId: rid }));
+      }
+    } catch (err) {
+      console.warn(`Error fetching orders for region ${rid}:`, err);
+    }
+    return [];
+  });
+
+  const batchResults = await Promise.all(promises);
+  batchResults.forEach(arr => results.push(...arr));
+
+  // 3. Attach region name where available
   results.forEach(o => {
     const r = regionsList.find(rr => String(rr.region_id) === String(o.regionId));
     if (r) o.regionName = r.name;
@@ -271,27 +309,44 @@ async function renderHistoryChart(typeId, regionId) {
 
   let historyData = [];
 
+  // 1. Determine the list of regions to query
+  let regionsToQuery = [];
+  const isPLEX = typeId === PLEX_ID;
+  
+  if (isPLEX) {
+    // If PLEX, only query the dedicated PLEX Market Region
+    regionsToQuery = [PLEX_MARKET_REGION_ID];
+  } else if (regionId && regionId !== 'all') {
+    // If a specific non-PLEX region is selected
+    regionsToQuery = [Number(regionId)];
+  } else {
+    // If "All Regions" is selected for a non-PLEX item
+    regionsToQuery = regionsList.map(r => r.region_id).filter(Boolean);
+  }
+  
+  // 2. Execute the fetch without batching or throttling
+  const aggregated = {};
   try {
-    if (regionId === 'all') {
-      // aggregate across regions
-      const regionIds = regionsList.map(r => r.region_id);
-      const aggregated = {};
-      const batchSize = 12;
-      for (let i = 0; i < regionIds.length; i += batchSize) {
-        const batch = regionIds.slice(i, i + batchSize);
-        const promises = batch.map(rid => fetch(`https://esi.evetech.net/latest/markets/${rid}/history/?type_id=${typeId}&datasource=tranquility`).then(res => res.ok ? res.json().catch(()=>[]) : []));
-        const batchResults = await Promise.all(promises);
-        batchResults.flat().forEach(entry => {
-          if (!entry || !entry.date) return;
-          aggregated[entry.date] = aggregated[entry.date] || [];
-          aggregated[entry.date].push(entry.average || 0);
-        });
+    const promises = regionsToQuery.map(async rid => {
+      try {
+        const res = await fetch(`https://esi.evetech.net/latest/markets/${rid}/history/?type_id=${typeId}&datasource=tranquility`);
+        if (res.ok) {
+          return await res.json().catch(() => []);
+        }
+      } catch (err) {
+        console.warn(`Error fetching history for region ${rid}:`, err);
       }
-      historyData = Object.keys(aggregated).sort().map(d => ({ date: d, average: aggregated[d].reduce((a,b)=>a+b,0)/aggregated[d].length }));
-    } else {
-      const res = await fetch(`https://esi.evetech.net/latest/markets/${regionId}/history/?type_id=${typeId}&datasource=tranquility`);
-      historyData = res.ok ? await res.json() : [];
-    }
+      return [];
+    });
+
+    const allHistory = await Promise.all(promises);
+    allHistory.flat().forEach(entry => {
+      if (!entry || !entry.date) return;
+      aggregated[entry.date] = aggregated[entry.date] || [];
+      aggregated[entry.date].push(entry.average || 0);
+    });
+    
+    historyData = Object.keys(aggregated).sort().map(d => ({ date: d, average: aggregated[d].reduce((a,b)=>a+b,0)/aggregated[d].length }));
   } catch (err) {
     console.warn('History fetch error', err);
     historyData = [];
@@ -333,11 +388,13 @@ async function performSearch() {
 
   if (searchBtn) { searchBtn.disabled = true; searchBtn.textContent = 'Searching...'; }
 
-  console.log(getItemId(q));
-
   try {
     const typeId = await getItemId(q);
-    if (!typeId) { alert('Item not found'); return; }
+    if (!typeId) { 
+      const msg = $('statusMessage');
+      if (msg) { msg.textContent = 'Item not found'; setTimeout(() => msg.textContent = '', 5000); }
+      return;
+    }
 
     // header info
     const itemNameEl = $('itemName');
@@ -355,9 +412,16 @@ async function performSearch() {
     }
 
 
-    const regionId = regionSelect ? regionSelect.value : 'all';
+    let regionId = regionSelect ? regionSelect.value : 'all';
+    
+    if (typeId === PLEX_ID) {
+        // If the item is PLEX, use the dedicated PLEX market region, 19000001,
+        // regardless of what region the user selected.
+        regionId = String(PLEX_MARKET_REGION_ID);
+        console.log(`PLEX detected. Overriding region to PLEX Market (${regionId}).`);
+    }
 
-    // fetch buy + sell (all regions if selected)
+    // fetch buy + sell
     const [sellOrders, buyOrders] = await Promise.all([
       fetchOrders(typeId, regionId, 'sell'),
       fetchOrders(typeId, regionId, 'buy')
@@ -372,7 +436,11 @@ async function performSearch() {
 
   } catch (err) {
     console.error('Search error', err);
-    alert('Search failed — check console for details.');
+    const msg = $('statusMessage');
+    if (msg) {
+      msg.textContent = 'Search failed — check console for details.';
+      setTimeout(() => msg.textContent = '', 5000);
+    }
   } finally {
     if (searchBtn) { searchBtn.disabled = false; searchBtn.textContent = 'Search'; }
   }
