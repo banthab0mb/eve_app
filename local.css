@@ -123,7 +123,8 @@ textarea {
   border: 1px solid #333;
   border-radius: 5px;
   padding: 10px;
-  font-family: inherit;
+  font-family: "Shentox-Regular", sans-serif !important;
+  resize: none;
 }
 
 button {
