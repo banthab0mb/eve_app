@@ -50,15 +50,6 @@ function initElements() {
       if (target) target.classList.add('active');
     });
   });
-
-  // CCP disclaimer toggle
-  const ccpLink = $('ccp-link');
-  if (ccpLink) ccpLink.addEventListener('click', (e) => {
-    e.preventDefault();
-    const disc = $('ccp-disclaimer');
-    if (!disc) return;
-    disc.style.display = disc.style.display === 'block' ? 'none' : 'block';
-  });
 }
 
 //Load static files
@@ -341,6 +332,8 @@ async function performSearch() {
   if (!q) return;
 
   if (searchBtn) { searchBtn.disabled = true; searchBtn.textContent = 'Searching...'; }
+
+  console.log(getItemId(q));
 
   try {
     const typeId = await getItemId(q);
