@@ -152,6 +152,7 @@ a.active, a:hover {
   overflow-y: auto;
   z-index: 1000;
   font-family: "Shentox-Regular", sans-serif !important;
+  display: none;
 }
 
 .suggestions div {
