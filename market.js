@@ -315,7 +315,7 @@ async function renderHistoryChart(typeId, regionId) {
   
   if (isPLEX) {
     // If PLEX, only query the dedicated PLEX Market Region
-    regionsToQuery = [PLEX_MARKET_REGION_ID];
+    regionsToQuery = [PLEX_MARKET_REGION_ID]; 
   } else if (regionId && regionId !== 'all') {
     // If a specific non-PLEX region is selected
     regionsToQuery = [Number(regionId)];
@@ -372,7 +372,28 @@ async function renderHistoryChart(typeId, regionId) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } }
+      // Enables showing the nearest data point on hover
+      interaction: {
+        mode: 'index',
+        intersect: false,
+      },
+      plugins: { 
+        legend: { display: false },
+        // Tooltip configuration to format the price display
+        tooltip: {
+          enabled: true,
+          callbacks: {
+            label: function(context) {
+              let label = context.dataset.label || '';
+              if (context.parsed.y !== null) {
+                // Use the global formatNumber function
+                label = `${label}: ${formatNumber(context.parsed.y)} ISK`;
+              }
+              return label;
+            }
+          }
+        }
+      }
     }
   });
 }
