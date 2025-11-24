@@ -18163,5 +18163,60 @@
     "id": 99014553,
     "name": "Holding Alliance",
     "ticker": "HOLD"
+  },
+  {
+    "id": 99014554,
+    "name": "717-Elderly leisure",
+    "ticker": "717"
+  },
+  {
+    "id": 99014555,
+    "name": "Metal Warriors Alliance",
+    "ticker": "META"
+  },
+  {
+    "id": 99014556,
+    "name": "Brotherhood of the Flame",
+    "ticker": "BROFL"
+  },
+  {
+    "id": 99014557,
+    "name": "SUETA UNIVERSE",
+    "ticker": "SUETU"
+  },
+  {
+    "id": 99014559,
+    "name": "Financial Instruments For People Who Press F1",
+    "ticker": "F1"
+  },
+  {
+    "id": 99014560,
+    "name": "Liminal Oguzok",
+    "ticker": "KISSY"
+  },
+  {
+    "id": 99014561,
+    "name": "The NanBeiPai Alliance",
+    "ticker": "TNB"
+  },
+  {
+    "id": 99014562,
+    "name": "S.W.A.R.M",
+    "ticker": "SWAR"
+  },
+  {
+    "id": 99014563,
+    "name": "Hanseatic Authority Networks for Sector Economics",
+    "ticker": "HANSE"
+  },
+  {
+    "id": 99014564,
+    "name": "New Eden Hosting Development",
+    "ticker": "NEHD"
+  },
+  {
+    "id": 99014565,
+    "name": "Project Potato",
+    "ticker": "PP"
   }
 ]
