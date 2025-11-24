@@ -67,13 +67,13 @@ function initElements() {
 //Load static files
 async function loadItems() {
   try {
-    // Using input_items.json
-    const res = await fetch('input_items.json');
-    if (!res.ok) throw new Error('input_items.json not found');
+    // Using items.json
+    const res = await fetch('items.json');
+    if (!res.ok) throw new Error('items.json not found');
     itemsList = await res.json();
-    console.log(`Loaded input_items.json (${itemsList.length})`);
+    console.log(`Loaded items.json (${itemsList.length})`);
   } catch (err) {
-    console.warn('Could not load input_items.json:', err);
+    console.warn('Could not load items.json:', err);
     itemsList = [];
   }
 }
