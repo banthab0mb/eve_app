@@ -91918,5 +91918,300 @@
     "id": 98818450,
     "name": "Bix Industries",
     "ticker": "BIXPI"
+  },
+  {
+    "id": 98819161,
+    "name": "Ironclad Warborn Consortium",
+    "ticker": "IWCON"
+  },
+  {
+    "id": 98397648,
+    "name": "Soto's Potatoes",
+    "ticker": "STOTS"
+  },
+  {
+    "id": 98665644,
+    "name": "MASS-Logistics",
+    "ticker": "LMASS"
+  },
+  {
+    "id": 98262247,
+    "name": "Free Bird Shadow",
+    "ticker": "FBSHD"
+  },
+  {
+    "id": 98060388,
+    "name": "Magnus Milites",
+    "ticker": "QMQ"
+  },
+  {
+    "id": 98706175,
+    "name": "cangqiong strategic transportation",
+    "ticker": "JYYS"
+  },
+  {
+    "id": 98815958,
+    "name": "Circle of Basic and Advanced Learning",
+    "ticker": "C0BAL"
+  },
+  {
+    "id": 98817875,
+    "name": "Kosmopobla Unity",
+    "ticker": "KPU"
+  },
+  {
+    "id": 98818613,
+    "name": "MeccxonMobil",
+    "ticker": "MECC-"
+  },
+  {
+    "id": 98818032,
+    "name": "Tubby Tommy Builders",
+    "ticker": "B3LLY"
+  },
+  {
+    "id": 98818990,
+    "name": "RUNEWORD.",
+    "ticker": "RWXD."
+  },
+  {
+    "id": 98819258,
+    "name": "The Refuge.",
+    "ticker": "HHREF"
+  },
+  {
+    "id": 98817655,
+    "name": "Quorum Fulminum XII",
+    "ticker": "QFXII"
+  },
+  {
+    "id": 98819014,
+    "name": "Pocket Trucking",
+    "ticker": "OGRAC"
+  },
+  {
+    "id": 98810218,
+    "name": "Irjunen Red Loot Enjoyers",
+    "ticker": "IRLE."
+  },
+  {
+    "id": 98775495,
+    "name": "Traumatic Wormhole",
+    "ticker": "TTWH"
+  },
+  {
+    "id": 98801355,
+    "name": "Interest Club Corp.",
+    "ticker": "-ICC"
+  },
+  {
+    "id": 98704405,
+    "name": "Safety Hazard",
+    "ticker": "-OSHA"
+  },
+  {
+    "id": 98275693,
+    "name": "Isotope Industries Inc",
+    "ticker": "ISO5"
+  },
+  {
+    "id": 98298713,
+    "name": "Interim Trading Corperation",
+    "ticker": "ITC.."
+  },
+  {
+    "id": 98727171,
+    "name": "Gray Moon Inc.",
+    "ticker": "GYMI"
+  },
+  {
+    "id": 98785991,
+    "name": "House Va'ruun",
+    "ticker": "JINAN"
+  },
+  {
+    "id": 98643687,
+    "name": "The River Isk",
+    "ticker": "T8I"
+  },
+  {
+    "id": 98302397,
+    "name": "Ascetic Hermit of mystic space",
+    "ticker": "AHOMS"
+  },
+  {
+    "id": 98814232,
+    "name": "INNOVEX",
+    "ticker": "INVEX"
+  },
+  {
+    "id": 98809540,
+    "name": "Bender's Penguins",
+    "ticker": "4BYRD"
+  },
+  {
+    "id": 98819048,
+    "name": "Natural Selection Ltd.",
+    "ticker": "N0BAD"
+  },
+  {
+    "id": 98669352,
+    "name": "Traffic Control Squad",
+    "ticker": "XTCSX"
+  },
+  {
+    "id": 98579036,
+    "name": "Wing Commanders Naffcom",
+    "ticker": "W.C.N"
+  },
+  {
+    "id": 98819199,
+    "name": "Jack 33",
+    "ticker": "J 33"
+  },
+  {
+    "id": 98666169,
+    "name": "Isuzu motors Ltd.",
+    "ticker": "7202"
+  },
+  {
+    "id": 98480922,
+    "name": "Black Holes Matter",
+    "ticker": "BLKHM"
+  },
+  {
+    "id": 98806402,
+    "name": "Wu-Tang Financial inc",
+    "ticker": "WU WU"
+  },
+  {
+    "id": 98049751,
+    "name": "Lords of Sandbox",
+    "ticker": "-LOS"
+  },
+  {
+    "id": 98159879,
+    "name": "Monolithic Juggernaut",
+    "ticker": "MONO1"
+  },
+  {
+    "id": 98818407,
+    "name": "Tactical Narcotics Division",
+    "ticker": "-9.9."
+  },
+  {
+    "id": 98808497,
+    "name": "dont ask me",
+    "ticker": "DAM0"
+  },
+  {
+    "id": 98815974,
+    "name": "Blood Petal Armada",
+    "ticker": "NUOBI"
+  },
+  {
+    "id": 98615588,
+    "name": "10 Potatoes",
+    "ticker": "15-12"
+  },
+  {
+    "id": 98215301,
+    "name": "Redneck Rum Runners",
+    "ticker": "RERU"
+  },
+  {
+    "id": 98817475,
+    "name": "Elyseyium",
+    "ticker": "ELYSY"
+  },
+  {
+    "id": 98807067,
+    "name": "diyhrt.info",
+    "ticker": "DIYHR"
+  },
+  {
+    "id": 98819242,
+    "name": "Berserker Vikings Holding",
+    "ticker": "BCCVH"
+  },
+  {
+    "id": 98499207,
+    "name": "This Corp Doesn't Exist",
+    "ticker": "TCDE"
+  },
+  {
+    "id": 98812598,
+    "name": "The Occupational Safety and Health Administration",
+    "ticker": "TOSAH"
+  },
+  {
+    "id": 98818558,
+    "name": "The Federal Bureau of Control.",
+    "ticker": "TFBOC"
+  },
+  {
+    "id": 98435365,
+    "name": "Weird Unicorn Studio",
+    "ticker": "WEIUN"
+  },
+  {
+    "id": 98543941,
+    "name": "Weird Brutor Militia",
+    "ticker": "WEBMI"
+  },
+  {
+    "id": 98786577,
+    "name": "Tekton Industries",
+    "ticker": "TEKTN"
+  },
+  {
+    "id": 98506845,
+    "name": "Aphi Maze",
+    "ticker": "A.MA"
+  },
+  {
+    "id": 98819247,
+    "name": "ZarBay",
+    "ticker": ".ZBS."
+  },
+  {
+    "id": 98715071,
+    "name": "On The Seventh Day",
+    "ticker": ".7DAY"
+  },
+  {
+    "id": 98819321,
+    "name": "Miner Inconvenience Corporation",
+    "ticker": "NINUN"
+  },
+  {
+    "id": 98816333,
+    "name": "Hold my lance",
+    "ticker": "HLANC"
+  },
+  {
+    "id": 98819245,
+    "name": "Ecos Del Silencio",
+    "ticker": "ECO.0"
+  },
+  {
+    "id": 98819016,
+    "name": "Silentrix",
+    "ticker": "SILIX"
+  },
+  {
+    "id": 98819336,
+    "name": "StarTrack Holdings",
+    "ticker": ".STLH"
+  },
+  {
+    "id": 98702397,
+    "name": "Red Crushers Inc",
+    "ticker": "RCIN7"
+  },
+  {
+    "id": 98818515,
+    "name": "A Whalecum Buyback",
+    "ticker": "A WHB"
   }
 ]

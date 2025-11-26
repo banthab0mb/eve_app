@@ -18218,5 +18218,75 @@
     "id": 99014565,
     "name": "Project Potato",
     "ticker": "PP"
+  },
+  {
+    "id": 99014566,
+    "name": "Light Engine Wormhole Defilers",
+    "ticker": "LEWD"
+  },
+  {
+    "id": 99014567,
+    "name": "Anti Weeb Coalition",
+    "ticker": "AWC"
+  },
+  {
+    "id": 99014568,
+    "name": "Berserker Vikings",
+    "ticker": "KING"
+  },
+  {
+    "id": 99014569,
+    "name": "The Oldest House",
+    "ticker": "TOH"
+  },
+  {
+    "id": 99014570,
+    "name": "Weird Industries",
+    "ticker": "WEIRD"
+  },
+  {
+    "id": 99014571,
+    "name": "Laputa Labyrinth",
+    "ticker": "LPT"
+  },
+  {
+    "id": 99014572,
+    "name": "DreadIy",
+    "ticker": "0..O"
+  },
+  {
+    "id": 99014573,
+    "name": "Devoid Rangers",
+    "ticker": ".D-R."
+  },
+  {
+    "id": 99014574,
+    "name": "Upwell Sanitation",
+    "ticker": "UPWEL"
+  },
+  {
+    "id": 99014575,
+    "name": "Space Hussars",
+    "ticker": "HUSS"
+  },
+  {
+    "id": 99014576,
+    "name": "ECUACION DEL SILENCIO",
+    "ticker": "ECC"
+  },
+  {
+    "id": 99014577,
+    "name": "High Sec Mining Consortium",
+    "ticker": "HSM"
+  },
+  {
+    "id": 99014578,
+    "name": "StarTrack Network",
+    "ticker": "STRN"
+  },
+  {
+    "id": 99014579,
+    "name": "RedGangBangBang",
+    "ticker": "RGBB"
   }
 ]
