@@ -15502,7 +15502,7 @@
   {
     "id": 99014311,
     "name": "We Have to Keep Trying",
-    "ticker": "MPREG"
+    "ticker": "WHTKT"
   },
   {
     "id": 99014313,
@@ -18448,5 +18448,70 @@
     "id": 99014611,
     "name": "Red Orchestra Triangle Enthusiasts",
     "ticker": "ROTE"
+  },
+  {
+    "id": 99014612,
+    "name": "The Civilization",
+    "ticker": "TCVZN"
+  },
+  {
+    "id": 99014613,
+    "name": "Astral Nomads",
+    "ticker": "ASTRA"
+  },
+  {
+    "id": 99014614,
+    "name": "InnerZone",
+    "ticker": "INZON"
+  },
+  {
+    "id": 99014615,
+    "name": "BloodHound security firm Alliance",
+    "ticker": "BLOO"
+  },
+  {
+    "id": 99014616,
+    "name": "Emotionally Unavailable",
+    "ticker": "EU"
+  },
+  {
+    "id": 99014617,
+    "name": "D E L I R I U M",
+    "ticker": "DM"
+  },
+  {
+    "id": 99014619,
+    "name": "EGNOS Alliance",
+    "ticker": "EGNOS"
+  },
+  {
+    "id": 99014620,
+    "name": "Acting Normal Corporation Alliance",
+    "ticker": "4SALE"
+  },
+  {
+    "id": 99014622,
+    "name": "Interstellar Dynamics.",
+    "ticker": "INTR"
+  },
+  {
+    "id": 99014623,
+    "name": "Halescott Company Limited",
+    "ticker": "HALES"
+  },
+  {
+    "id": 99014624,
+    "name": "Steel Sovereigns",
+    "ticker": "STEEL"
+  },
+  {
+    "id": 99014625,
+    "name": "Industrial Contractors",
+    "ticker": "INDUS"
+  },
+  {
+    "id": 99014626,
+    "name": "Interstellar Workers Union",
+    "ticker": "IWW"
   }
 ]
