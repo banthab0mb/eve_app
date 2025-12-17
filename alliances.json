@@ -18513,5 +18513,90 @@
     "id": 99014626,
     "name": "Interstellar Workers Union",
     "ticker": "IWW"
+  },
+  {
+    "id": 99014627,
+    "name": "Solar WInd Incorporated",
+    "ticker": "SLR"
+  },
+  {
+    "id": 99014628,
+    "name": "Texas.",
+    "ticker": "ARK"
+  },
+  {
+    "id": 99014629,
+    "name": "Dark Horizon",
+    "ticker": "DH."
+  },
+  {
+    "id": 99014630,
+    "name": "Myndbender Labs Alliance",
+    "ticker": "MYND"
+  },
+  {
+    "id": 99014631,
+    "name": "For Fawkes Sake",
+    "ticker": "FAWKS"
+  },
+  {
+    "id": 99014632,
+    "name": "A B C D E F G H I 0",
+    "ticker": "OQOQO"
+  },
+  {
+    "id": 99014633,
+    "name": "Deicidium.",
+    "ticker": "DEI"
+  },
+  {
+    "id": 99014634,
+    "name": "Cherry Bureau of Infrastructure",
+    "ticker": "CBI"
+  },
+  {
+    "id": 99014635,
+    "name": "New Eden Trade Academy",
+    "ticker": "NETA"
+  },
+  {
+    "id": 99014636,
+    "name": "The Indy Shadow",
+    "ticker": "TISH-"
+  },
+  {
+    "id": 99014637,
+    "name": "Execution Prime",
+    "ticker": "FORCE"
+  },
+  {
+    "id": 99014638,
+    "name": "Ribbit Logistics",
+    "ticker": "FR0GS"
+  },
+  {
+    "id": 99014639,
+    "name": "Sentinel Industries Union",
+    "ticker": "SNT"
+  },
+  {
+    "id": 99014640,
+    "name": "Kador Consortium",
+    "ticker": "KDR"
+  },
+  {
+    "id": 99014641,
+    "name": "Ordo Caelestis Tenebris",
+    "ticker": "ORDO"
+  },
+  {
+    "id": 99014642,
+    "name": "Horizonte Oscuro",
+    "ticker": "H Z H"
+  },
+  {
+    "id": 99014643,
+    "name": "T0UCH GRASS",
+    "ticker": "GETRL"
   }
 ]
