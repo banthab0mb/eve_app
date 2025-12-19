@@ -77,6 +77,7 @@ function setupAutocomplete(input, suggestionsId) {
   }
 
   document.addEventListener("click", e => { if (e.target !== input) suggestionsDiv.innerHTML = ""; });
+  suggestionsDiv.style.display = "none";
 }
 
 setupAutocomplete(originInput, "suggestions-origin");
