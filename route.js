@@ -43,41 +43,82 @@ function setupAutocomplete(input, suggestionsId) {
 
   let currentFocus = -1;
 
+  // 1. Hide suggestions when clicking outside the input or suggestions box
+  document.addEventListener("click", (e) => {
+    if (e.target !== input && e.target !== suggestionsDiv) {
+      suggestionsDiv.style.display = "none";
+      suggestionsDiv.innerHTML = "";
+    }
+  });
+
   input.addEventListener("input", () => {
     const query = input.value.trim().toLowerCase();
-    suggestionsDiv.innerHTML = "";
-    if (!query) return;
+    
+    // 2. Hide if input is cleared
+    if (!query) {
+      suggestionsDiv.style.display = "none";
+      suggestionsDiv.innerHTML = "";
+      return;
+    }
 
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
-    matches.forEach(s => {
-      const div = document.createElement("div");
-      div.classList.add("suggestion");
-      div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-      div.addEventListener("click", () => {
-        input.value = s.system;
-        suggestionsDiv.innerHTML = "";
-        suggestionsDiv.style.display = "none";
+    
+    if (matches.length > 0) {
+      suggestionsDiv.innerHTML = "";
+      matches.forEach(s => {
+        const div = document.createElement("div");
+        div.classList.add("suggestion");
+        div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
+        
+        // 3. Hide after selection
+        div.addEventListener("click", () => {
+          input.value = s.system;
+          suggestionsDiv.innerHTML = "";
+          suggestionsDiv.style.display = "none";
+        });
+        suggestionsDiv.appendChild(div);
       });
-      suggestionsDiv.appendChild(div);
-    });
-    suggestionsDiv.style.display = matches.length ? "block" : "none";
+      suggestionsDiv.style.display = "block";
+    } else {
+      suggestionsDiv.style.display = "none";
+    }
   });
 
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
-    if (e.key === "ArrowDown") { currentFocus++; if (currentFocus >= items.length) currentFocus = 0; setActive(items); e.preventDefault(); }
-    else if (e.key === "ArrowUp") { currentFocus--; if (currentFocus < 0) currentFocus = items.length - 1; setActive(items); e.preventDefault(); }
-    else if (e.key === "Enter") { e.preventDefault(); if (currentFocus > -1) { input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); suggestionsDiv.innerHTML = ""; } }
+    
+    if (e.key === "ArrowDown") { 
+      currentFocus++; 
+      if (currentFocus >= items.length) currentFocus = 0; 
+      setActive(items); 
+      e.preventDefault(); 
+    }
+    else if (e.key === "ArrowUp") { 
+      currentFocus--; 
+      if (currentFocus < 0) currentFocus = items.length - 1; 
+      setActive(items); 
+      e.preventDefault(); 
+    }
+    else if (e.key === "Enter") { 
+      e.preventDefault(); 
+      if (currentFocus > -1) { 
+        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); 
+        // Hide on Enter key
+        suggestionsDiv.innerHTML = ""; 
+        suggestionsDiv.style.display = "none";
+      } 
+    }
+    else if (e.key === "Escape") {
+      // Allow user to close suggestions with Escape key
+      suggestionsDiv.style.display = "none";
+    }
   });
 
   function setActive(items) {
     items.forEach(el => el.classList.remove("active"));
     if (currentFocus > -1) items[currentFocus].classList.add("active");
   }
-
-  document.addEventListener("click", e => { if (e.target !== input) suggestionsDiv.innerHTML = ""; });
-  suggestionsDiv.style.display = "none";
 }
 
 setupAutocomplete(originInput, "suggestions-origin");
