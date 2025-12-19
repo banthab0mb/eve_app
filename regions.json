@@ -54,5 +54,6 @@
   {"region_id": 10000060, "name": "Catch"},
   {"region_id": 10000061, "name": "Delve"},
   {"region_id": 10000062, "name": "Tenerifis"},
-  {"region_id": 10000064, "name": "Feythabolis"}
+  {"region_id": 10000064, "name": "Feythabolis"},
+  {"region_id": 11000031, "name": "G-R00031"}
 ]
