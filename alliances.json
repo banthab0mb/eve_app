@@ -18598,5 +18598,90 @@
     "id": 99014643,
     "name": "T0UCH GRASS",
     "ticker": "GETRL"
+  },
+  {
+    "id": 99014644,
+    "name": "Gold Star Alliance",
+    "ticker": "GSA"
+  },
+  {
+    "id": 99014645,
+    "name": "Total System Failure",
+    "ticker": "FAIL."
+  },
+  {
+    "id": 99014646,
+    "name": "Maximum Madness",
+    "ticker": "MAXI"
+  },
+  {
+    "id": 99014647,
+    "name": "Ruhar Collective",
+    "ticker": "RHR"
+  },
+  {
+    "id": 99014648,
+    "name": "We Are Rebelion",
+    "ticker": "TTIN"
+  },
+  {
+    "id": 99014649,
+    "name": "Fusionex",
+    "ticker": "IONX"
+  },
+  {
+    "id": 99014650,
+    "name": "Cat Mom",
+    "ticker": "MAMA"
+  },
+  {
+    "id": 99014651,
+    "name": "Inverted.",
+    "ticker": "IWAS"
+  },
+  {
+    "id": 99014652,
+    "name": "PREVATEERS",
+    "ticker": "PREVA"
+  },
+  {
+    "id": 99014653,
+    "name": "Occupas",
+    "ticker": "OCCUP"
+  },
+  {
+    "id": 99014654,
+    "name": "Whooping Snakes",
+    "ticker": "WSNEK"
+  },
+  {
+    "id": 99014655,
+    "name": "H A R D L I N E R S Associates",
+    "ticker": "HLNRS"
+  },
+  {
+    "id": 99014656,
+    "name": "Adira Enterprises",
+    "ticker": "ADIRA"
+  },
+  {
+    "id": 99014657,
+    "name": "Ranger Regiment",
+    "ticker": "RR"
+  },
+  {
+    "id": 99014658,
+    "name": "Weapons Free.",
+    "ticker": "WPNF."
+  },
+  {
+    "id": 99014659,
+    "name": "Ravens Nest Syndicate",
+    "ticker": "FCAWF"
+  },
+  {
+    "id": 99014660,
+    "name": "The Destiny Logistics. Alliance",
+    "ticker": "THD"
   }
 ]
