@@ -18683,5 +18683,80 @@
     "id": 99014660,
     "name": "The Destiny Logistics. Alliance",
     "ticker": "THD"
+  },
+  {
+    "id": 99014661,
+    "name": "Bonzai Federation",
+    "ticker": "BONZI"
+  },
+  {
+    "id": 99014662,
+    "name": "Ironclad Acquisition",
+    "ticker": "IRNC"
+  },
+  {
+    "id": 99014663,
+    "name": "Obsidian Force",
+    "ticker": "--OF-"
+  },
+  {
+    "id": 99014664,
+    "name": "Aperture Science Enterprise",
+    "ticker": "ASE"
+  },
+  {
+    "id": 99014665,
+    "name": "Invictus Industries LtD",
+    "ticker": "INVC"
+  },
+  {
+    "id": 99014666,
+    "name": "Drunken Brotherhood",
+    "ticker": "B33R"
+  },
+  {
+    "id": 99014667,
+    "name": "Omega XE Corporation Alliance",
+    "ticker": "OXECA"
+  },
+  {
+    "id": 99014668,
+    "name": "The Ravens' Nest",
+    "ticker": "RAVEN"
+  },
+  {
+    "id": 99014670,
+    "name": "Malicious.Intentions",
+    "ticker": "MALIS"
+  },
+  {
+    "id": 99014671,
+    "name": "NecroSphere.",
+    "ticker": "NECRO"
+  },
+  {
+    "id": 99014672,
+    "name": "GrincH CircuS",
+    "ticker": "GRNCH"
+  },
+  {
+    "id": 99014673,
+    "name": "Children Of Ruin.",
+    "ticker": "CRIN"
+  },
+  {
+    "id": 99014674,
+    "name": "CYXOU 3AKOH",
+    "ticker": "CYXOU"
+  },
+  {
+    "id": 99014675,
+    "name": "The Afterparty",
+    "ticker": "AFT"
+  },
+  {
+    "id": 99014676,
+    "name": "The Excommunicati",
+    "ticker": "EXCOM"
   }
 ]
