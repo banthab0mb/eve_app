@@ -1,11 +1,26 @@
+// DOM Elements
 const originInput = document.getElementById("originSystem");
 const destInput = document.getElementById("destSystem");
 const routeBtn = document.getElementById("routeBtn");
 const routeOutput = document.getElementById("route-output");
 const totalJumps = document.getElementById("total-jumps");
 
+const avoidInput = document.getElementById("avoidSystem");
+const avoidTagsDiv = document.getElementById("avoid-tags");
+const addWaypointBtn = document.getElementById("add-waypoint-btn");
+const waypointContainer = document.getElementById("waypoint-container");
+
+const FAVORITES_KEY = "eve_route_favorites";
+const THERA_ID = 31000005;
+const TURNUR_ID = 30002086;
+
+// Data
 let systems = [];
 let stargates = [];
+let whGraph = {};
+let avoidList = new Set([TURNUR_ID]); // Optional default
+let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
+const CACHE_TTL = 60 * 60 * 1000;
 
 // Load static data
 Promise.all([
@@ -13,13 +28,12 @@ Promise.all([
   fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
 ]).catch(err => console.error("Failed to load JSON:", err));
 
-// Helper: get system ID
+// --- Helpers ---
 function getSystemId(name) {
-  const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
-  return system ? system.system_id : null;
+  const s = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
+  return s ? s.system_id : null;
 }
 
-// Security colors
 function secClass(sec) {
   if (sec >= 1) return "sec-blue";
   if (sec >= 0.9) return "sec-lighter-blue";
@@ -34,8 +48,12 @@ function secClass(sec) {
   return "sec-null";
 }
 
-// Autocomplete
-function setupAutocomplete(input, suggestionsId) {
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
+
+// --- Autocomplete ---
+function setupAutocomplete(input, suggestionsId, callback = null) {
   const suggestionsDiv = document.getElementById(suggestionsId) || document.createElement("div");
   suggestionsDiv.classList.add("suggestions");
   if (!suggestionsDiv.id) suggestionsDiv.id = suggestionsId;
@@ -43,7 +61,6 @@ function setupAutocomplete(input, suggestionsId) {
 
   let currentFocus = -1;
 
-  // 1. Hide suggestions when clicking outside the input or suggestions box
   document.addEventListener("click", (e) => {
     if (e.target !== input && e.target !== suggestionsDiv) {
       suggestionsDiv.style.display = "none";
@@ -53,116 +70,82 @@ function setupAutocomplete(input, suggestionsId) {
 
   input.addEventListener("input", () => {
     const query = input.value.trim().toLowerCase();
-    
-    // 2. Hide if input is cleared
-    if (!query) {
-      suggestionsDiv.style.display = "none";
-      suggestionsDiv.innerHTML = "";
-      return;
-    }
+    if (!query) return (suggestionsDiv.style.display = "none", suggestionsDiv.innerHTML = "");
 
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
-    
-    if (matches.length > 0) {
-      suggestionsDiv.innerHTML = "";
-      matches.forEach(s => {
-        const div = document.createElement("div");
-        div.classList.add("suggestion");
-        div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-        
-        // 3. Hide after selection
-        div.addEventListener("click", () => {
-          input.value = s.system;
-          suggestionsDiv.innerHTML = "";
-          suggestionsDiv.style.display = "none";
-        });
-        suggestionsDiv.appendChild(div);
+    if (!matches.length) return suggestionsDiv.style.display = "none";
+
+    suggestionsDiv.innerHTML = "";
+    matches.forEach(s => {
+      const div = document.createElement("div");
+      div.classList.add("suggestion");
+      div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
+      div.addEventListener("click", () => {
+        input.value = s.system;
+        suggestionsDiv.innerHTML = "";
+        suggestionsDiv.style.display = "none";
+        if (callback) callback(s.system);
       });
-      suggestionsDiv.style.display = "block";
-    } else {
-      suggestionsDiv.style.display = "none";
-    }
+      suggestionsDiv.appendChild(div);
+    });
+    suggestionsDiv.style.display = "block";
   });
 
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
-    
-    if (e.key === "ArrowDown") { 
-      currentFocus++; 
-      if (currentFocus >= items.length) currentFocus = 0; 
-      setActive(items); 
-      e.preventDefault(); 
-    }
-    else if (e.key === "ArrowUp") { 
-      currentFocus--; 
-      if (currentFocus < 0) currentFocus = items.length - 1; 
-      setActive(items); 
-      e.preventDefault(); 
-    }
-    else if (e.key === "Enter") { 
-      e.preventDefault(); 
-      if (currentFocus > -1) { 
-        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); 
-        // Hide on Enter key
-        suggestionsDiv.innerHTML = ""; 
-        suggestionsDiv.style.display = "none";
-      } 
-    }
-    else if (e.key === "Escape") {
-      // Allow user to close suggestions with Escape key
+    if (e.key === "ArrowDown") currentFocus = (currentFocus + 1) % items.length;
+    else if (e.key === "ArrowUp") currentFocus = (currentFocus - 1 + items.length) % items.length;
+    else if (e.key === "Enter") {
+      e.preventDefault();
+      if (currentFocus > -1) input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, "");
       suggestionsDiv.style.display = "none";
     }
-  });
-
-  function setActive(items) {
     items.forEach(el => el.classList.remove("active"));
     if (currentFocus > -1) items[currentFocus].classList.add("active");
-  }
+  });
 }
 
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
+setupAutocomplete(avoidInput, "suggestions-avoid", addSystemToAvoidList);
 
-// Sleep helper
-function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
+// --- Waypoints & Avoid ---
+function addWaypoint(name = "") {
+  const div = document.createElement("div");
+  div.className = "waypoint-item";
+  div.innerHTML = `
+    <input type="text" value="${name}" placeholder="System name">
+    <button class="remove-waypoint-btn">×</button>
+  `;
+  const input = div.querySelector("input");
+  const btn = div.querySelector("button");
+  btn.onclick = () => { div.remove(); };
+  waypointContainer.appendChild(div);
+}
 
-// Cache
-let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
-const CACHE_TTL = 60 * 60 * 1000;
-function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
-
-// Fetch PvP kills (zKill)
-async function getPvpKills(systemId, retries = 3, delay = 1000) {
-  const now = Date.now();
-  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
-
-  for (let attempt = 1; attempt <= retries; attempt++) {
-    try {
-      const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
-        headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
-      });
-      if (!res.ok) await sleep(delay * attempt);
-      const kills = await res.json();
-      if (!Array.isArray(kills)) return 0;
-      const pvpKills = kills.filter(k => k.zkb && !k.zkb.npc).length;
-      killCache[systemId] = { time: now, kills: pvpKills };
-      saveCache();
-      return pvpKills;
-    } catch { await sleep(delay * attempt); }
+function addSystemToAvoidList(name) {
+  const id = getSystemId(name);
+  if (id && !avoidList.has(id)) {
+    avoidList.add(id);
+    renderAvoidList();
   }
-  return 0;
 }
 
-// Route kills sequential (mobile-safe)
-async function getRouteKills(route) {
-  const result = {};
-  for (let id of route) result[id] = await getPvpKills(id);
-  return result;
+function renderAvoidList() {
+  avoidTagsDiv.innerHTML = "";
+  avoidList.forEach(id => {
+    const sys = systems.find(s => s.system_id === id);
+    if (!sys) return;
+    const tag = document.createElement("div");
+    tag.className = "avoid-tag";
+    tag.textContent = `${sys.system} ✖`;
+    tag.onclick = () => { avoidList.delete(id); renderAvoidList(); };
+    avoidTagsDiv.appendChild(tag);
+  });
 }
 
-// Build graph
-let whGraph = {};
+// --- Graph ---
 function buildGraph() {
   whGraph = {};
   stargates.forEach(g => {
@@ -171,23 +154,21 @@ function buildGraph() {
   });
 }
 
-// Add wormholes
 async function addWormholes() {
   const thera = await fetch("https://api.eve-scout.com/v2/public/signatures?system_name=thera").then(r => r.json());
   const turnur = await fetch("https://api.eve-scout.com/v2/public/signatures?system_name=turnur").then(r => r.json());
   [...thera, ...turnur].forEach(sig => {
     if (sig.signature_type === "wormhole" && sig.completed && sig.remaining_hours > 1) {
-      const from = sig.out_system_id;
-      const to = sig.in_system_id;
+      const from = sig.out_system_id, to = sig.in_system_id;
       if (!whGraph[from]) whGraph[from] = [];
-      whGraph[from].push(to);
       if (!whGraph[to]) whGraph[to] = [];
+      whGraph[from].push(to);
       whGraph[to].push(from);
     }
   });
 }
 
-// BFS shortest path
+// --- Route calculation ---
 function shortestPath(startId, endId) {
   const queue = [[startId]];
   const visited = new Set();
@@ -203,54 +184,63 @@ function shortestPath(startId, endId) {
   return null;
 }
 
-// Route button
-routeBtn.addEventListener("click", async () => {
-  const originName = originInput.value.trim();
-  const destName = destInput.value.trim();
-  if (!originName || !destName) return;
-
-  const originId = getSystemId(originName);
-  const destId = getSystemId(destName);
-  if (!originId || !destId) { routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; return; }
-
-  routeOutput.innerHTML = "<p>Fetching route...</p>";
-  const selectedRadio = document.querySelector("input[name='route-flag']:checked");
-  const mode = selectedRadio ? selectedRadio.value : "shortest";
-  const allowWormholes = !(mode === "secure" || mode === "shortest-gates-only");
-
+// --- zKill ---
+async function getPvpKills(systemId) {
+  const now = Date.now();
+  if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
   try {
-    buildGraph();
-    if (allowWormholes) await addWormholes();
+    const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`);
+    const data = await res.json();
+    const kills = data.filter(k => k.zkb && !k.zkb.npc).length;
+    killCache[systemId] = { time: now, kills };
+    saveCache();
+    return kills;
+  } catch { return 0; }
+}
 
-    const routeIds = shortestPath(originId, destId);
-    if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
+async function getRouteKills(route) {
+  const result = {};
+  for (const id of route) result[id] = await getPvpKills(id);
+  return result;
+}
 
-    const routeKills = await getRouteKills(routeIds);
+// --- Route button ---
+routeBtn.addEventListener("click", async () => {
+  const originId = getSystemId(originInput.value.trim());
+  const destId = getSystemId(destInput.value.trim());
+  if (!originId || !destId) return routeOutput.innerHTML = "<p>Invalid origin or destination.</p>";
 
-    let html = `<table><tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills</th><th>zKill</th></tr>`;
-    for (let i = 0; i < routeIds.length; i++) {
-      const sysId = routeIds[i];
-      const system = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
-      const sec = parseFloat(system.security_status).toFixed(1);
-      const cls = secClass(sec);
-      const kills = routeKills[sysId] || 0;
-      const killClass = kills >= 5 ? "kills-high" : "";
-      const highlight = (system.system === "Thera" || system.system === "Turnur") ? '<span class="highlight-system">' : '';
-      const endHighlight = highlight ? '</span>' : '';
-      html += `<tr>
-        <td><b>${i}</b></td>
-        <td>${highlight}${system.system}${endHighlight} <span class="region">(${system.region})</span></td>
-        <td class="${cls}"><b>${sec}</b></td>
-        <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
-      </tr>`;
-    }
-    html += "</table>";
-    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
-    routeOutput.innerHTML = html;
+  routeOutput.innerHTML = "<p>Calculating route...</p>";
+  buildGraph();
+  await addWormholes();
 
-  } catch (err) {
-    console.error(err);
-    routeOutput.innerHTML = "<p>Error fetching route.</p>";
+  const wpIds = Array.from(waypointContainer.querySelectorAll("input")).map(inp => getSystemId(inp.value.trim())).filter(Boolean);
+  const routeIds = [originId, ...wpIds, destId];
+
+  let fullRoute = [];
+  for (let i = 0; i < routeIds.length - 1; i++) {
+    const segment = shortestPath(routeIds[i], routeIds[i+1]);
+    if (!segment) return routeOutput.innerHTML = "<p>No route found.</p>";
+    fullRoute = fullRoute.concat(i === 0 ? segment : segment.slice(1));
   }
+
+  const routeKills = await getRouteKills(fullRoute);
+
+  let html = `<table>
+    <tr><th>Jump</th><th>System</th><th>Security</th><th>Kills</th><th>zKill</th></tr>`;
+  fullRoute.forEach((sysId, idx) => {
+    const sys = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
+    const kills = routeKills[sysId] || 0;
+    const killClass = kills >= 5 ? "kills-high" : "";
+    html += `<tr>
+      <td>${idx}</td>
+      <td>${sys.system} <span class="region">(${sys.region})</span></td>
+      <td class="${secClass(sys.security_status)}">${sys.security_status.toFixed(1)}</td>
+      <td class="${killClass}">${kills}</td>
+      <td><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKill</a></td>
+    </tr>`;
+  });
+  html += "</table>";
+  routeOutput.innerHTML = html;
+  totalJumps.textContent = `Total Jumps: ${fullRoute.length - 1}`;
 });
