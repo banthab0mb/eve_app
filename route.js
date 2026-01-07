@@ -171,9 +171,12 @@ function buildGraph() {
 async function fetchWormholes() {
   try {
     const [theraRes, turnurRes] = await Promise.all([
-      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=thera`).then(r => r.json()),
-      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=turnur`).then(r => r.json())
+      fetch("https://api.eve-scout.com/v2/public/signatures?system_name=thera").then(r => r.json()),
+      fetch("https://api.eve-scout.com/v2/public/signatures?system_name=turnur").then(r => r.json())
     ]);
+
+    console.log(theraRes);
+    console.log(turnurRes);
 
     const whs = [...theraRes, ...turnurRes].filter(sig => sig.signature_type === "wormhole" && sig.completed && sig.remaining_hours > 1);
     wormholeConnections = whs;
@@ -257,7 +260,7 @@ routeBtn.addEventListener("click", async () => {
           const type = wh.type || '';
           const ageMins = Math.floor((Date.now() - new Date(wh.updated_at)) / 60000);
           const ageStr = ageMins >= 60 ? `${Math.floor(ageMins/60)}h ${ageMins%60}m` : `${ageMins}m`;
-          info = `${sig} (${type}) age ${ageStr}`;
+          info = `${sig} (${type}) ${ageStr}`;
         }
       }
 
@@ -266,7 +269,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a href="${zkbLink}" target="_blank">zKillboard</a></td>
+        <td><links href="${zkbLink}" target="_blank">zKillboard</links></td>
         <td>${info}</td>
       </tr>`;
     }
