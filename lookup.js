@@ -205,7 +205,6 @@ function renderCorpTable(corps) {
     const link = document.createElement('a');
     link.href = `https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(corp.name)}`;
     link.textContent = corp.name;
-    link.target = "_blank";
     nameCell.appendChild(link);
     nameCell.style.border = '1px solid #0d0d0d';
     nameCell.style.padding = '4px';
