@@ -182,8 +182,12 @@ async function renderAllianceInfo(corp) {
 
 async function getAllianceCorps(id) {
   const response = await fetch(`https://esi.evetech.net/alliances/${id}/corporations`);
-  const allianceCorps = response.json;
-  return allianceCorps;
+  const allianceCorps = await response.json();
+  const corps = allianceCorps
+  .map(id => corporations.find(c => c.id === id))
+    .filter(Boolean);
+  renderCorpTable(corps);
+  console.log(corps);
 }
 
 function renderCorpTable(corps) {
@@ -191,34 +195,26 @@ function renderCorpTable(corps) {
   const table = document.createElement('table');
   table.style.borderCollapse = 'collapse';
   table.style.width = '100%';
-  
-  // add header row
-  const header = table.insertRow();
-  const th1 = document.createElement('th');
-  th1.textContent = 'Corp Name';
-  th1.style.border = '1px solid #000';
-  th1.style.padding = '4px';
-  const th2 = document.createElement('th');
-  th2.textContent = 'Logo';
-  th2.style.border = '1px solid #000';
-  th2.style.padding = '4px';
-  header.appendChild(th1);
-  header.appendChild(th2);
+  table.style.margin = 'auto';
   
   // add corp rows
   corps.forEach(corp => {
     const row = table.insertRow();
     
     const nameCell = row.insertCell();
-    nameCell.textContent = corp.name;
-    nameCell.style.border = '1px solid #000';
+    const link = document.createElement('a');
+    link.href = `https://banthab0mb.github.io/eve_app/playerLookup.html?q=${encodeURIComponent(corp.name)}`;
+    link.textContent = corp.name;
+    link.target = "_blank";
+    nameCell.appendChild(link);
+    nameCell.style.border = '1px solid #0d0d0d';
     nameCell.style.padding = '4px';
     
     const logoCell = row.insertCell();
-    logoCell.style.border = '1px solid #000';
+    logoCell.style.border = '1px solid #0d0d0d';
     logoCell.style.padding = '4px';
     const img = document.createElement('img');
-    img.src = `https://images.evetech.net/corporations/${corp.id}/logo height="64px"`;
+    img.src=`https://images.evetech.net/corporations/${corp.id}/logo`;
     img.alt = corp.name;
     img.width = 64;
     img.height = 64;
@@ -310,7 +306,7 @@ function formatOutput(result) {
 
   if (result.category === "alliance") {
     const alliance = result.details;
-    renderCorpTable(corpsArray); 
+    getAllianceCorps(result.id); 
     return `
 <div class="lookup-result">
   <h2>${alliance.name}</h2>
