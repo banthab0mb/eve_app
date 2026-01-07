@@ -218,8 +218,13 @@ routeBtn.addEventListener("click", async () => {
 
   const originId = getSystemId(originName);
   const destId = getSystemId(destName);
-  if (!originId || !destId) { routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; return; }
+  if (!originId || !destId) { 
+    totalJumps.style.display = "none"; 
+    routeOutput.innerHTML = "<p>Origin or destination system not found!</p>"; 
+    return; 
+  }
 
+  totalJumps.style.display = "none";
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
@@ -227,7 +232,11 @@ routeBtn.addEventListener("click", async () => {
     await fetchWormholes();
 
     const routeIds = shortestPath(originId, destId);
-    if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
+    if (!routeIds) { 
+      totalJumps.style.display = "none";
+      routeOutput.innerHTML = "<p>No route found.</p>"; 
+      return; 
+    }
 
     const routeKills = await getRouteKills(routeIds);
 
@@ -279,7 +288,7 @@ routeBtn.addEventListener("click", async () => {
           ? `<span style="color:red">EOL</span>`
           : '';    
       
-        info = `WH ${sig} (${wh.wh_type}) ${eol} <span style="opacity:0.7">[${ageStr}]</span>`;
+        info = `${sig} (${wh.wh_type}) ${eol} <span style="opacity:0.7">[${ageStr}]</span>`;
       }
     }
 
@@ -294,6 +303,7 @@ routeBtn.addEventListener("click", async () => {
     }
 
     html += "</table>";
+    totalJumps.style.display = "block";
     totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
     routeOutput.innerHTML = html;
 
