@@ -251,20 +251,21 @@ routeBtn.addEventListener("click", async () => {
       const zkbLink = `https://zkillboard.com/system/${sysId}/`;
 
       let info = '';
-      if (i < routeIds.length - 1) {
-        const nextSysId = routeIds[i + 1];
+      if (index < path.length - 1) {
+        const nextNode = path[index + 1];
         const wh = wormholeConnections.find(w =>
-          (w.out_system_id === routeIds[i] && w.in_system_id === routeIds[i + 1]) ||
-          (w.in_system_id === routeIds[i] && w.out_system_id === routeIds[i + 1])
+          (w.in_system_id === node.id && w.out_system_id === nextNode.id) ||
+          (w.out_system_id === node.id && w.in_system_id === nextNode.id)
         );
         if (wh) {
-          const sig = wh.out_system_id === routeIds[i] ? wh.out_signature : wh.in_signature;
-          const type = wh.wh_type;
-          const ageMins = Math.floor((Date.now() - new Date(wh.updated_at)) / 60000);
-          const ageStr = ageMins >= 60 ? `${Math.floor(ageMins/60)}h ${ageMins%60}m` : `${ageMins}m`;
-          info = `${sig} (${type}) age ${ageStr}`;
+          node.wormhole = {
+            signature: node.id === w.out_system_id ? w.out_signature : w.in_signature,
+            type: wh.wh_type,
+            age: wh.updated_at,
+            eol: wh.remaining_hours === 0
+          };
         }
-
+      }
 
       html += `<tr>
         <td><b>${i}</b></td>
