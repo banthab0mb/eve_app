@@ -248,7 +248,6 @@ routeBtn.addEventListener("click", async () => {
       const cls = secClass(sec);
       const kills = routeKills[sysId] || 0;
       const killClass = kills >= 5 ? "kills-high" : "";
-      const zkbLink = `https://zkillboard.com/system/${sysId}/`;
 
       let info = '';
 
@@ -267,13 +266,19 @@ routeBtn.addEventListener("click", async () => {
           : wh.in_signature;
 
         let ageStr = '';
-            if (wh.age) {
-                const diffMins = Math.floor((new Date() - new Date(wh.age)) / 60000);
-                const h = Math.floor(diffMins / 60);
-                const m = diffMins % 60;
-                ageStr = h > 0 ? `age ${h}h ${m}m` : `age ${m}m`;
+            if (wh.created_at) {
+              const diffMins = Math.floor(
+                (Date.now() - new Date(wh.created_at).getTime()) / 60000
+              );
+              const h = Math.floor(diffMins / 60);
+              const m = diffMins % 60;
+              ageStr = h > 0 ? `${h}h ${m}m` : `age ${m}m`;
             }
 
+        const eol = wh.remaining_hours <= 4
+          ? `<span style="color:red">EOL</span>`
+          : '';    
+      
         info = `WH ${sig} (${wh.wh_type}) ${eol} <span style="opacity:0.7">[${ageStr}]</span>`;
       }
     }
@@ -283,7 +288,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><a class="links" href="${zkbLink}" target="_blank">zKillboard</a></td>
+        <td><links><a href="https://zkillboard.com/system/${sysId}/" target="_blank">zKillboard</a></links></td>
         <td>${info}</td>
       </tr>`;
     }
