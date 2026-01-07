@@ -6,22 +6,17 @@ const totalJumps = document.getElementById("total-jumps");
 
 let systems = [];
 let stargates = [];
-let wormholeConnections = [];
-
 const THERA_ID = 31000005;
 const TURNUR_ID = 30002086;
+
+// Preload wormholes
+let wormholeConnections = [];
 
 // Load static data
 Promise.all([
   fetch("systems.json").then(r => r.json()).then(data => systems = data),
   fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
-]).catch(err => console.error("Failed to load JSON:", err));
-
-// Helper: get system ID
-function getSystemId(name) {
-  const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
-  return system ? system.system_id : null;
-}
+]).then(() => addWormholes()).catch(err => console.error("Failed to load JSON:", err));
 
 // Security colors
 function secClass(sec) {
@@ -36,6 +31,12 @@ function secClass(sec) {
   if (sec >= 0.2) return "sec-red";
   if (sec >= 0.1) return "sec-purple";
   return "sec-null";
+}
+
+// Helper: get system ID
+function getSystemId(name) {
+  const system = systems.find(s => s.system.toLowerCase() === name.toLowerCase());
+  return system ? system.system_id : null;
 }
 
 // Autocomplete
@@ -85,7 +86,7 @@ function setupAutocomplete(input, suggestionsId) {
   input.addEventListener("keydown", e => {
     const items = suggestionsDiv.querySelectorAll(".suggestion");
     if (!items.length) return;
-
+    
     if (e.key === "ArrowDown") { 
       currentFocus++; 
       if (currentFocus >= items.length) currentFocus = 0; 
@@ -120,15 +121,31 @@ function setupAutocomplete(input, suggestionsId) {
 setupAutocomplete(originInput, "suggestions-origin");
 setupAutocomplete(destInput, "suggestions-dest");
 
+// Wormhole fetch
+async function addWormholes() {
+  try {
+    const [thera, turnur] = await Promise.all([
+      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=thera`).then(r => r.json()),
+      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=turnur`).then(r => r.json())
+    ]);
+
+    wormholeConnections = [...thera, ...turnur].filter(sig =>
+      sig.signature_type === "wormhole" && sig.completed && sig.remaining_hours > 1
+    );
+  } catch (e) {
+    console.error("Failed to load wormholes:", e);
+  }
+}
+
 // Sleep helper
 function sleep(ms) { return new Promise(resolve => setTimeout(resolve, ms)); }
 
-// Cache for kills
+// Cache
 let killCache = JSON.parse(localStorage.getItem("killCache") || "{}");
 const CACHE_TTL = 60 * 60 * 1000;
 function saveCache() { localStorage.setItem("killCache", JSON.stringify(killCache)); }
 
-// Fetch PvP kills
+// Fetch PvP kills (zKill)
 async function getPvpKills(systemId, retries = 3, delay = 1000) {
   const now = Date.now();
   if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) return killCache[systemId].kills;
@@ -150,13 +167,6 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
   return 0;
 }
 
-// Route kills sequential
-async function getRouteKills(route) {
-  const result = {};
-  for (let id of route) result[id] = await getPvpKills(id);
-  return result;
-}
-
 // Build graph
 let whGraph = {};
 function buildGraph() {
@@ -165,30 +175,6 @@ function buildGraph() {
     if (!whGraph[g.from_system]) whGraph[g.from_system] = [];
     whGraph[g.from_system].push(g.to_system);
   });
-}
-
-// Fetch wormholes from Eve-Scout
-async function fetchWormholes() {
-  try {
-    const [theraRes, turnurRes] = await Promise.all([
-      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=thera`).then(r => r.json()),
-      fetch(`https://api.eve-scout.com/v2/public/signatures?system_name=turnur`).then(r => r.json())
-    ]);
-
-    const whs = [...theraRes, ...turnurRes].filter(sig => sig.signature_type === "wormhole" && sig.completed && sig.remaining_hours > 1);
-    wormholeConnections = whs;
-
-    whs.forEach(sig => {
-      const from = sig.out_system_id;
-      const to = sig.in_system_id;
-      if (!whGraph[from]) whGraph[from] = [];
-      if (!whGraph[to]) whGraph[to] = [];
-      whGraph[from].push(to);
-      whGraph[to].push(from);
-    });
-  } catch (e) {
-    console.error("Failed to fetch wormholes:", e);
-  }
 }
 
 // BFS shortest path
@@ -221,21 +207,21 @@ routeBtn.addEventListener("click", async () => {
 
   try {
     buildGraph();
-    await fetchWormholes();
+    await addWormholes();
 
     const routeIds = shortestPath(originId, destId);
     if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
 
-    const routeKills = await getRouteKills(routeIds);
+    const routeKills = {};
+    for (let id of routeIds) routeKills[id] = await getPvpKills(id);
 
-    let html = `<table>
-      <tr>
-        <th>Jumps</th>
-        <th>System (Region)</th>
-        <th>Security</th>
-        <th>Kills</th>
-        <th>Info</th>
-      </tr>`;
+    let html = `<table><tr>
+      <th>Jumps</th>
+      <th>System (Region)</th>
+      <th>Security</th>
+      <th>Kills</th>
+      <th>Info</th>
+    </tr>`;
 
     for (let i = 0; i < routeIds.length; i++) {
       const sysId = routeIds[i];
@@ -245,11 +231,15 @@ routeBtn.addEventListener("click", async () => {
       const kills = routeKills[sysId] || 0;
       const killClass = kills >= 5 ? "kills-high" : "";
 
+      const isThera = sysId === THERA_ID;
+      const isTurnur = sysId === TURNUR_ID;
+      const highlightClass = isThera ? "thera-highlight" : isTurnur ? "turnur-highlight" : "";
+
       let info = '';
       if (i === 0) info = 'Start';
       else if (i === routeIds.length - 1) info = 'Destination';
       else {
-        const wh = wormholeConnections.find(w => (w.out_system_id === sysId || w.in_system_id === sysId));
+        const wh = wormholeConnections.find(w => w.out_system_id === sysId || w.in_system_id === sysId);
         if (wh) {
           const sig = wh.signature || 'WH';
           const type = wh.type || '';
@@ -259,7 +249,7 @@ routeBtn.addEventListener("click", async () => {
         }
       }
 
-      html += `<tr>
+      html += `<tr class="${highlightClass}">
         <td><b>${i}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
