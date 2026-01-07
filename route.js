@@ -157,6 +157,11 @@ async function getRouteKills(route) {
   return result;
 }
 
+function getRoutePreference() {
+  const pref = document.querySelector('input[name="routePref"]:checked');
+  return pref ? pref.value : 'shortest';
+}
+
 // Build graph
 let whGraph = {};
 function buildGraph() {
@@ -194,20 +199,55 @@ async function fetchWormholes() {
   }
 }
 
-// BFS shortest path
-function shortestPath(startId, endId) {
-  const queue = [[startId]];
-  const visited = new Set();
-  while (queue.length) {
-    const path = queue.shift();
-    const node = path[path.length - 1];
-    if (node === endId) return path;
-    if (!visited.has(node)) {
-      visited.add(node);
-      (whGraph[node] || []).forEach(n => queue.push([...path, n]));
-    }
+function weightedPath(startId, endId) {
+  const pref = getRoutePreference();
+  const queue = new MinHeap(); // simple priority queue
+  const distances = {};
+  const previous = {};
+
+  Object.keys(whGraph).forEach(node => distances[node] = Infinity);
+  distances[startId] = 0;
+  queue.push({ id: startId, cost: 0 });
+
+  while (!queue.isEmpty()) {
+    const { id: node } = queue.pop();
+
+    if (node === endId) break;
+
+    (whGraph[node] || []).forEach(neighborId => {
+      const system = systems.find(s => s.system_id === neighborId) || { security_status: 0.5 };
+
+      let weight = 1; // base weight per jump
+      if (pref === 'safest') {
+        // weight = 1 / security, so high-sec = low cost
+        weight = 1 / Math.max(system.security_status, 0.1);
+      }
+
+      const newDist = distances[node] + weight;
+      if (newDist < distances[neighborId]) {
+        distances[neighborId] = newDist;
+        previous[neighborId] = node;
+        queue.push({ id: neighborId, cost: newDist });
+      }
+    });
   }
-  return null;
+
+  // Reconstruct path
+  const path = [];
+  let current = endId;
+  while (current) {
+    path.unshift(current);
+    current = previous[current];
+  }
+  return path[0] === startId ? path : null;
+}
+
+// Simple MinHeap for Dijkstra
+class MinHeap {
+  constructor() { this.items = []; }
+  push(obj) { this.items.push(obj); this.items.sort((a,b) => a.cost-b.cost); }
+  pop() { return this.items.shift(); }
+  isEmpty() { return this.items.length === 0; }
 }
 
 // Route button
@@ -231,7 +271,7 @@ routeBtn.addEventListener("click", async () => {
     buildGraph();
     await fetchWormholes();
 
-    const routeIds = shortestPath(originId, destId);
+    const routeIds = weightedPath(originId, destId);
     if (!routeIds) { 
       totalJumps.style.display = "none";
       routeOutput.innerHTML = "<p>No route found.</p>"; 
