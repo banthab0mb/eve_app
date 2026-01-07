@@ -180,6 +180,57 @@ async function renderAllianceInfo(corp) {
   </p>`;
 }
 
+async function getAllianceCorps(id) {
+  const response = await fetch(`https://esi.evetech.net/alliances/${id}/corporations`);
+  const allianceCorps = response.json;
+  return allianceCorps;
+}
+
+function renderCorpTable(corps) {
+  // create table element
+  const table = document.createElement('table');
+  table.style.borderCollapse = 'collapse';
+  table.style.width = '100%';
+  
+  // add header row
+  const header = table.insertRow();
+  const th1 = document.createElement('th');
+  th1.textContent = 'Corp Name';
+  th1.style.border = '1px solid #000';
+  th1.style.padding = '4px';
+  const th2 = document.createElement('th');
+  th2.textContent = 'Logo';
+  th2.style.border = '1px solid #000';
+  th2.style.padding = '4px';
+  header.appendChild(th1);
+  header.appendChild(th2);
+  
+  // add corp rows
+  corps.forEach(corp => {
+    const row = table.insertRow();
+    
+    const nameCell = row.insertCell();
+    nameCell.textContent = corp.name;
+    nameCell.style.border = '1px solid #000';
+    nameCell.style.padding = '4px';
+    
+    const logoCell = row.insertCell();
+    logoCell.style.border = '1px solid #000';
+    logoCell.style.padding = '4px';
+    const img = document.createElement('img');
+    img.src = `https://images.evetech.net/corporations/${corp.id}/logo height="64px"`;
+    img.alt = corp.name;
+    img.width = 64;
+    img.height = 64;
+    logoCell.appendChild(img);
+  });
+
+  // append table to container
+  const container = document.getElementById('corp-table-container');
+  container.innerHTML = ''; // clear old table if any
+  container.appendChild(table);
+}
+
 // ------------------ FORMAT OUTPUT ------------------
 function formatOutput(result) {
   if (!result) return "No results found.";
@@ -195,7 +246,7 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>${char.name}</h2>
-  <img src="https://images.evetech.net/characters/${result.id}/portrait?size=256" alt="${char.name}" class="portrait">
+  <img src="https://images.evetech.net/characters/${result.id}/portrait" alt="${char.name}" class="portrait" height="256px">
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
@@ -203,7 +254,7 @@ function formatOutput(result) {
   <div class="char-affiliations">
   <div class="corp-info">
     <h3>Corporation</h3>
-    <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo?size=128" alt="${corp.name}" class="logo">
+    <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo" alt="${corp.name}" class="logo" height="128px">
     <p>
         <links>
           <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${corp.name}">
@@ -215,7 +266,7 @@ function formatOutput(result) {
   <div class="alliance-info">
   <h3>Alliance</h3>
     ${alliance ? `
-      <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo?size=128" alt="${alliance.name}" class="logo">
+      <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo" alt="${alliance.name}" class="logo" height="128px">
       <p>
         <links>
           <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${alliance.name}">
@@ -242,9 +293,9 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>${corp.name}</h2>
-  <img src="https://images.evetech.net/corporations/${result.id}/logo?size=256" alt="${corp.name}" class="logo">
+  <img src="https://images.evetech.net/corporations/${result.id}/logo" alt="${corp.name}" class="logo" height="256px">
   <p>[${corp.ticker}]</p>
-  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo?size=128" alt="${corp.alliance}" class="logo">
+  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo" alt="${corp.alliance}" class="logo" height="128px">
   <div id="alliance-name"></div>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <p><a href="https://zkillboard.com/corporation/${result.id}" target="_blank">zKillboard</a></p>
@@ -259,13 +310,16 @@ function formatOutput(result) {
 
   if (result.category === "alliance") {
     const alliance = result.details;
+    renderCorpTable(corpsArray); 
     return `
 <div class="lookup-result">
   <h2>${alliance.name}</h2>
-  <img src="https://images.evetech.net/alliances/${result.id}/logo?size=256" alt="${alliance.name}" class="logo">
+  <img src="https://images.evetech.net/alliances/${result.id}/logo" alt="${alliance.name}" class="logo" height="256px">
   <p>[${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
   <p><a href="https://zkillboard.com/alliance/${result.id}" target="_blank">zKillboard</a></p>
+  <p>Corportations:</p>
+  <div id="corp-table-container"></div>
 </div>
     `;
   }

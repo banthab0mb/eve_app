@@ -260,29 +260,29 @@ routeBtn.addEventListener("click", async () => {
 
       let info = '';
 
-    if (i < routeIds.length - 1) {
-      const currId = routeIds[i];
-      const nextId = routeIds[i + 1];
+      if (i < routeIds.length - 1) {
+        const currId = routeIds[i];
+        const nextId = routeIds[i + 1];
 
-      const wh = wormholeConnections.find(w =>
-        (w.out_system_id === currId && w.in_system_id === nextId) ||
-        (w.out_system_id === nextId && w.in_system_id === currId)
-      );
+        const wh = wormholeConnections.find(w =>
+          (w.out_system_id === currId && w.in_system_id === nextId) ||
+          (w.out_system_id === nextId && w.in_system_id === currId)
+        );
 
-      if (wh) {
-        const sig = currId === wh.out_system_id
-          ? wh.out_signature
-          : wh.in_signature;
+        if (wh) {
+          const sig = currId === wh.out_system_id
+            ? wh.out_signature
+            : wh.in_signature;
 
-        let ageStr = '';
-            if (wh.created_at) {
-              const diffMins = Math.floor(
-                (Date.now() - new Date(wh.created_at).getTime()) / 60000
-              );
-              const h = Math.floor(diffMins / 60);
-              const m = diffMins % 60;
-              ageStr = h > 0 ? `${h}h ${m}m` : `age ${m}m`;
-            }
+          let ageStr = '';
+              if (wh.created_at) {
+                const diffMins = Math.floor(
+                  (Date.now() - new Date(wh.created_at).getTime()) / 60000
+                );
+                const h = Math.floor(diffMins / 60);
+                const m = diffMins % 60;
+                ageStr = h > 0 ? `${h}h ${m}m` : `age ${m}m`;
+              }
 
         const eol = wh.remaining_hours <= 4
           ? `<span style="color:red">EOL</span>`
