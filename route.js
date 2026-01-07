@@ -266,16 +266,13 @@ routeBtn.addEventListener("click", async () => {
           ? wh.out_signature
           : wh.in_signature;
 
-        const ageMins = Math.floor(
-          (Date.now() - new Date(wh.updated_at)) / 60000
-        );
-        const ageStr = ageMins >= 60
-          ? `${Math.floor(ageMins / 60)}h ${ageMins % 60}m`
-          : `${ageMins}m`;
-
-        const eol = wh.remaining_hours <= 4
-          ? `<span style="color:red">EOL</span>`
-          : '';
+        let ageStr = '';
+            if (wh.age) {
+                const diffMins = Math.floor((new Date() - new Date(wh.age)) / 60000);
+                const h = Math.floor(diffMins / 60);
+                const m = diffMins % 60;
+                ageStr = h > 0 ? `age ${h}h ${m}m` : `age ${m}m`;
+            }
 
         info = `WH ${sig} (${wh.wh_type}) ${eol} <span style="opacity:0.7">[${ageStr}]</span>`;
       }
@@ -286,7 +283,7 @@ routeBtn.addEventListener("click", async () => {
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><span class="links"><a>href="${zkbLink}" target="_blank">zKillboard</a></span></td>
+        <td><a class="links" href="${zkbLink}" target="_blank">zKillboard</a></td>
         <td>${info}</td>
       </tr>`;
     }
