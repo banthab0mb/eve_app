@@ -6,17 +6,16 @@ const totalJumps = document.getElementById("total-jumps");
 
 let systems = [];
 let stargates = [];
+let wormholeConnections = []; // Eve-Scout WHs
+
 const THERA_ID = 31000005;
 const TURNUR_ID = 30002086;
-
-// Preload wormholes
-let wormholeConnections = [];
 
 // Load static data
 Promise.all([
   fetch("systems.json").then(r => r.json()).then(data => systems = data),
   fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
-]).then(() => addWormholes()).catch(err => console.error("Failed to load JSON:", err));
+]).catch(err => console.error("Failed to load JSON:", err));
 
 // Security colors
 function secClass(sec) {
@@ -39,89 +38,17 @@ function getSystemId(name) {
   return system ? system.system_id : null;
 }
 
-// Autocomplete
-function setupAutocomplete(input, suggestionsId) {
-  const suggestionsDiv = document.getElementById(suggestionsId) || document.createElement("div");
-  suggestionsDiv.classList.add("suggestions");
-  if (!suggestionsDiv.id) suggestionsDiv.id = suggestionsId;
-  if (!suggestionsDiv.parentNode) input.parentNode.appendChild(suggestionsDiv);
-
-  let currentFocus = -1;
-
-  document.addEventListener("click", (e) => {
-    if (e.target !== input && e.target !== suggestionsDiv) {
-      suggestionsDiv.style.display = "none";
-      suggestionsDiv.innerHTML = "";
-    }
+// Build graph
+let whGraph = {};
+function buildGraph() {
+  whGraph = {};
+  stargates.forEach(g => {
+    if (!whGraph[g.from_system]) whGraph[g.from_system] = [];
+    whGraph[g.from_system].push(g.to_system);
   });
-
-  input.addEventListener("input", () => {
-    const query = input.value.trim().toLowerCase();
-    if (!query) {
-      suggestionsDiv.style.display = "none";
-      suggestionsDiv.innerHTML = "";
-      return;
-    }
-
-    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 10);
-    if (matches.length > 0) {
-      suggestionsDiv.innerHTML = "";
-      matches.forEach(s => {
-        const div = document.createElement("div");
-        div.classList.add("suggestion");
-        div.innerHTML = `${s.system} <span class="region">(${s.region})</span>`;
-        div.addEventListener("click", () => {
-          input.value = s.system;
-          suggestionsDiv.innerHTML = "";
-          suggestionsDiv.style.display = "none";
-        });
-        suggestionsDiv.appendChild(div);
-      });
-      suggestionsDiv.style.display = "block";
-    } else {
-      suggestionsDiv.style.display = "none";
-    }
-  });
-
-  input.addEventListener("keydown", e => {
-    const items = suggestionsDiv.querySelectorAll(".suggestion");
-    if (!items.length) return;
-    
-    if (e.key === "ArrowDown") { 
-      currentFocus++; 
-      if (currentFocus >= items.length) currentFocus = 0; 
-      setActive(items); 
-      e.preventDefault(); 
-    }
-    else if (e.key === "ArrowUp") { 
-      currentFocus--; 
-      if (currentFocus < 0) currentFocus = items.length - 1; 
-      setActive(items); 
-      e.preventDefault(); 
-    }
-    else if (e.key === "Enter") { 
-      e.preventDefault(); 
-      if (currentFocus > -1) { 
-        input.value = items[currentFocus].textContent.replace(/\s\(.+\)/, ""); 
-        suggestionsDiv.innerHTML = ""; 
-        suggestionsDiv.style.display = "none";
-      } 
-    }
-    else if (e.key === "Escape") {
-      suggestionsDiv.style.display = "none";
-    }
-  });
-
-  function setActive(items) {
-    items.forEach(el => el.classList.remove("active"));
-    if (currentFocus > -1) items[currentFocus].classList.add("active");
-  }
 }
 
-setupAutocomplete(originInput, "suggestions-origin");
-setupAutocomplete(destInput, "suggestions-dest");
-
-// Wormhole fetch
+// Fetch Eve-Scout wormholes (Thera & Turnur)
 async function addWormholes() {
   try {
     const [thera, turnur] = await Promise.all([
@@ -132,6 +59,16 @@ async function addWormholes() {
     wormholeConnections = [...thera, ...turnur].filter(sig =>
       sig.signature_type === "wormhole" && sig.completed && sig.remaining_hours > 1
     );
+
+    // Add WH connections to graph
+    wormholeConnections.forEach(sig => {
+      const from = sig.out_system_id;
+      const to = sig.in_system_id;
+      if (!whGraph[from]) whGraph[from] = [];
+      if (!whGraph[to]) whGraph[to] = [];
+      whGraph[from].push(to);
+      whGraph[to].push(from);
+    });
   } catch (e) {
     console.error("Failed to load wormholes:", e);
   }
@@ -165,16 +102,6 @@ async function getPvpKills(systemId, retries = 3, delay = 1000) {
     } catch { await sleep(delay * attempt); }
   }
   return 0;
-}
-
-// Build graph
-let whGraph = {};
-function buildGraph() {
-  whGraph = {};
-  stargates.forEach(g => {
-    if (!whGraph[g.from_system]) whGraph[g.from_system] = [];
-    whGraph[g.from_system].push(g.to_system);
-  });
 }
 
 // BFS shortest path
@@ -212,17 +139,14 @@ routeBtn.addEventListener("click", async () => {
     const routeIds = shortestPath(originId, destId);
     if (!routeIds) { routeOutput.innerHTML = "<p>No route found.</p>"; return; }
 
+    // Fetch PvP kills (1h) sequentially
     const routeKills = {};
-    for (let id of routeIds) routeKills[id] = await getPvpKills(id);
+    for (let sysId of routeIds) {
+      routeKills[sysId] = await getPvpKills(sysId);
+    }
 
-    let html = `<table><tr>
-      <th>Jumps</th>
-      <th>System (Region)</th>
-      <th>Security</th>
-      <th>Kills</th>
-      <th>Info</th>
-    </tr>`;
-
+    // Build table
+    let html = `<table><tr><th>Jumps</th><th>System (Region)</th><th>Security</th><th>Kills</th><th>Info</th></tr>`;
     for (let i = 0; i < routeIds.length; i++) {
       const sysId = routeIds[i];
       const system = systems.find(s => s.system_id === sysId) || { system: "Unknown", region: "Unknown", security_status: 0 };
@@ -231,10 +155,10 @@ routeBtn.addEventListener("click", async () => {
       const kills = routeKills[sysId] || 0;
       const killClass = kills >= 5 ? "kills-high" : "";
 
-      const isThera = sysId === THERA_ID;
-      const isTurnur = sysId === TURNUR_ID;
-      const highlightClass = isThera ? "thera-highlight" : isTurnur ? "turnur-highlight" : "";
+      // Highlight Thera & Turnur
+      const highlightClass = sysId === THERA_ID ? "thera-highlight" : sysId === TURNUR_ID ? "turnur-highlight" : "";
 
+      // Info column
       let info = '';
       if (i === 0) info = 'Start';
       else if (i === routeIds.length - 1) info = 'Destination';
