@@ -251,28 +251,42 @@ routeBtn.addEventListener("click", async () => {
       const zkbLink = `https://zkillboard.com/system/${sysId}/`;
 
       let info = '';
-      if (index < path.length - 1) {
-        const nextNode = path[index + 1];
-        const wh = wormholeConnections.find(w =>
-          (w.in_system_id === node.id && w.out_system_id === nextNode.id) ||
-          (w.out_system_id === node.id && w.in_system_id === nextNode.id)
+
+    if (i < routeIds.length - 1) {
+      const currId = routeIds[i];
+      const nextId = routeIds[i + 1];
+
+      const wh = wormholeConnections.find(w =>
+        (w.out_system_id === currId && w.in_system_id === nextId) ||
+        (w.out_system_id === nextId && w.in_system_id === currId)
+      );
+
+      if (wh) {
+        const sig = currId === wh.out_system_id
+          ? wh.out_signature
+          : wh.in_signature;
+
+        const ageMins = Math.floor(
+          (Date.now() - new Date(wh.updated_at)) / 60000
         );
-        if (wh) {
-          node.wormhole = {
-            signature: node.id === w.out_system_id ? w.out_signature : w.in_signature,
-            type: wh.wh_type,
-            age: wh.updated_at,
-            eol: wh.remaining_hours === 0
-          };
-        }
+        const ageStr = ageMins >= 60
+          ? `${Math.floor(ageMins / 60)}h ${ageMins % 60}m`
+          : `${ageMins}m`;
+
+        const eol = wh.remaining_hours <= 4
+          ? `<span style="color:red">EOL</span>`
+          : '';
+
+        info = `WH ${sig} (${wh.wh_type}) ${eol} <span style="opacity:0.7">[${ageStr}]</span>`;
       }
+    }
 
       html += `<tr>
         <td><b>${i}</b></td>
         <td>${system.system} <span class="region">(${system.region})</span></td>
         <td class="${cls}"><b>${sec}</b></td>
         <td><span class="${killClass}"><b>${kills}</b></span></td>
-        <td><links><a>href="${zkbLink}" target="_blank">zKillboard</a></links></td>
+        <td><span class="links"><a>href="${zkbLink}" target="_blank">zKillboard</a></span></td>
         <td>${info}</td>
       </tr>`;
     }
