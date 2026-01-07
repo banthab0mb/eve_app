@@ -96,7 +96,7 @@ async function createCharacterRow(name) {
 
     const row = document.createElement("tr");
     row.dataset.risk = risk;
-    const lookupBase = "https://banthab0mb.github.io/eve_app/playerLookup.html?q=";
+    const lookupBase = "https://banthab0mb.github.io/eve_app/lookup.html?q=";
 
     row.innerHTML = `
     <td>

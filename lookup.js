@@ -13,7 +13,7 @@ const lookupBtn =
 const outputDiv = document.getElementById('output') || document.querySelector('.output');
 
 if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
-  console.warn('playerLookup.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
+  console.warn('lookup.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
 }
 
 let currentFocus = -1;
@@ -173,7 +173,7 @@ async function renderAllianceInfo(corp) {
 
   document.querySelector("#alliance-name").innerHTML = `<p>
         <links>
-          <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${name}">
+          <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${name}">
             ${name}
           </a>
         </links> [${ticker}]
@@ -203,7 +203,7 @@ function renderCorpTable(corps) {
     
     const nameCell = row.insertCell();
     const link = document.createElement('a');
-    link.href = `https://banthab0mb.github.io/eve_app/playerLookup.html?q=${encodeURIComponent(corp.name)}`;
+    link.href = `https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(corp.name)}`;
     link.textContent = corp.name;
     link.target = "_blank";
     nameCell.appendChild(link);
@@ -253,7 +253,7 @@ function formatOutput(result) {
     <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo" alt="${corp.name}" class="logo" height="128px">
     <p>
         <links>
-          <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${corp.name}">
+          <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${corp.name}">
             ${corp.name}
           </a>
         </links> [${corp.ticker}]
@@ -265,7 +265,7 @@ function formatOutput(result) {
       <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo" alt="${alliance.name}" class="logo" height="128px">
       <p>
         <links>
-          <a href="https://banthab0mb.github.io/eve_app/playerLookup.html?q=${alliance.name}">
+          <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${alliance.name}">
             ${alliance.name}
           </a>
         </links> [${alliance.ticker}]
