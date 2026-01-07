@@ -18758,5 +18758,105 @@
     "id": 99014676,
     "name": "The Excommunicati",
     "ticker": "EXCOM"
+  },
+  {
+    "id": 99014677,
+    "name": "Jufvitte Holdings.",
+    "ticker": "-JUF"
+  },
+  {
+    "id": 99014679,
+    "name": "Flat Face Federation",
+    "ticker": "PUGS"
+  },
+  {
+    "id": 99014680,
+    "name": "Caldari Investment and Development Bank",
+    "ticker": "CIDB"
+  },
+  {
+    "id": 99014681,
+    "name": "Warsmiths.",
+    "ticker": "WRSM"
+  },
+  {
+    "id": 99014682,
+    "name": "Cloven Star Consortium",
+    "ticker": "CSC"
+  },
+  {
+    "id": 99014683,
+    "name": "United Federation Prime Alliance",
+    "ticker": "UNIT"
+  },
+  {
+    "id": 99014684,
+    "name": "Central Federation Tempest",
+    "ticker": "CFT"
+  },
+  {
+    "id": 99014685,
+    "name": "IT IS NOT HONORABLE",
+    "ticker": "NOT"
+  },
+  {
+    "id": 99014686,
+    "name": "Kingdom of Tulipa",
+    "ticker": "KINGD"
+  },
+  {
+    "id": 99014687,
+    "name": "CellarWorx Interstellar Services",
+    "ticker": "CINT"
+  },
+  {
+    "id": 99014688,
+    "name": "Golightly Galactic",
+    "ticker": "GOSH"
+  },
+  {
+    "id": 99014689,
+    "name": "Inner Circle Excavations",
+    "ticker": "ICX"
+  },
+  {
+    "id": 99014690,
+    "name": "LaoSengSaoSaoDi Alliance",
+    "ticker": "L3SDA"
+  },
+  {
+    "id": 99014691,
+    "name": "All You Can",
+    "ticker": "AYC"
+  },
+  {
+    "id": 99014692,
+    "name": "All You Can Eat Holding",
+    "ticker": "AYCEH"
+  },
+  {
+    "id": 99014693,
+    "name": "Bikini Bottom Seahorse Riders",
+    "ticker": "BB.SR"
+  },
+  {
+    "id": 99014694,
+    "name": "Hyena.",
+    "ticker": "HYENA"
+  },
+  {
+    "id": 99014695,
+    "name": "Blackout Protocol",
+    "ticker": "BPRO"
+  },
+  {
+    "id": 99014696,
+    "name": "Hullbreakers",
+    "ticker": "HULBR"
+  },
+  {
+    "id": 99014697,
+    "name": "Obscure Legion",
+    "ticker": "VIEL"
   }
 ]
