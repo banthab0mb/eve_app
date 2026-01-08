@@ -330,16 +330,14 @@ const STATION_TYPE_IDS = new Set([
     29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
 ]);
 
-// This string safely triggers your toast and prevents the browser from trying to open the protocol
-const TOAST_ACTION = 'onclick=\'showToast("This link type only works inside the EVE client."); return false;\' href="#"';
-
+// Use javascript:void(0) to prevent page jumps
 const TOAST_ATTRS = `onclick="showToast('In-game link (Bookmark/Channel) not supported in web app'); return false;" href="javascript:void(0)"`;
 
 function cleanDescription(raw) {
     if (!raw) return "No description.";
     let cleaned = raw;
 
-    // 1. Unicode/Python string cleanup
+    // 1. Initial Cleaning
     cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
     cleaned = cleaned.replace(/\\'/g, "'");
     cleaned = cleaned.replace(/^u'/, "");
@@ -350,7 +348,7 @@ function cleanDescription(raw) {
         return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
     });
 
-    // 3. Map specific protocols to external tools
+    // 3. Map specific ESI/Zkill links (same as your original logic)
     cleaned = cleaned
         .replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
         .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
@@ -367,26 +365,20 @@ function cleanDescription(raw) {
         cleaned = cleaned.replace(regex, TOAST_ATTRS);
     });
 
-    // Catch remaining showinfo links
+    // Final catch-all for remaining showinfo (Items/Ships)
     cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
 
-    // 5. HTML Formatting
+    // 5. General Cleanup & Paragraphs
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
     cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
-    cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
-        const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-        const rem = (scaled - 8) * 0.05 + 1;
-        return `<font${pre} style="font-size:${rem}rem"${post}>`;
-    });
-
-    // 6. Sanitization (Crucial: preserving our new onclicks)
+    
+    // Final Sanitization: Allow <a> tags to keep their onclicks
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
     cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
         if (tag.toLowerCase() === 'a') return match; 
         return allowedTags.includes(tag.toLowerCase()) ? match : "";
     });
 
-    // 7. Final Paragraph Wrap
     return cleaned
         .split("\n")
         .map(line => line.trim())
@@ -395,62 +387,25 @@ function cleanDescription(raw) {
         .join("");
 }
 
-function showToast(message, duration = 3000) {
-    let container = document.getElementById('toast-container');
-    if (!container) {
-        container = document.createElement('div');
-        container.id = 'toast-container';
-        // Styling the container to cover the screen and center content
-        container.style = `
-            position: fixed;
-            top: 0; left: 0;
-            width: 100vw; height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            pointer-events: none; /* Allows clicking through the background */
-            z-index: 9999;
-        `;
-        document.body.appendChild(container);
-    }
+function showToast(message) {
+  // Get the snackbar DIV
+  let x = document.getElementById("snackbar");
+  
+  // Create it if it doesn't exist
+  if (!x) {
+    x = document.createElement("div");
+    x.id = "snackbar";
+    document.body.appendChild(x);
+  }
 
-    const toast = document.createElement('div');
-    toast.className = 'toast';
-    
-    // Toast specific styling
-    toast.style = `
-        background: rgba(20, 20, 20, 0.95);
-        color: #fff;
-        padding: 20px 40px;
-        border: 1px solid #444;
-        border-radius: 8px;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        pointer-events: auto; /* Makes the toast itself clickable */
-        opacity: 0;
-        transition: opacity 0.3s ease, transform 0.3s ease;
-        transform: translateY(20px);
-        text-align: center;
-        max-width: 80%;
-    `;
+  // Set the message
+  x.innerHTML = purify(message);
 
-    toast.innerHTML = purify(message);
-    container.appendChild(toast);
+  // Add the "show" class to DIV
+  x.className = "show";
 
-    // Trigger animation
-    setTimeout(() => { 
-        toast.style.opacity = "1"; 
-        toast.style.transform = "translateY(0)";
-    }, 10);
-
-    // Remove logic
-    const removeToast = () => {
-        toast.style.opacity = "0";
-        setTimeout(() => toast.remove(), 300);
-    };
-
-    setTimeout(removeToast, duration);
-    toast.addEventListener('click', removeToast);
+  // After 3 seconds, remove the show class from DIV
+  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
