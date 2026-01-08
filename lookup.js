@@ -330,27 +330,38 @@ const STATION_TYPE_IDS = new Set([
     29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
 ]);
 
-// Use javascript:void(0) to prevent page jumps
-const TOAST_ATTRS = `onclick="showToast('In-game link (Bookmark/Channel) not supported in web app'); return false;" href="javascript:void(0)"`;
+// This string safely triggers your toast and prevents the browser from trying to open the protocol
+const TOAST_ACTION = 'onclick=\'showToast("This link type (channel/bookmark/etc) only works inside the EVE client."); return false;\' href="#"';
 
 function cleanDescription(raw) {
     if (!raw) return "No description.";
     let cleaned = raw;
 
-    // 1. Initial Cleaning
+    // 1. Initial Character/Unicode Cleaning
     cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
     cleaned = cleaned.replace(/\\'/g, "'");
     cleaned = cleaned.replace(/^u'/, "");
 
     // 2. Map showinfo: links to INTERNAL lookup (Name-based)
+    // We do this first so we can use the text inside the <a> tag
     cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
-        const encodedName = encodeURIComponent(name.trim());
-        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
+        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
     });
 
-    // 3. Map specific ESI/Zkill links (same as your original logic)
+    // 3. Intercept unsupported EVE protocols to prevent browser "Failed to launch" errors
+    const unsupportedProtocols = [
+        'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
+        'helpPointer', 'fitting', 'fleet', 'contract'
+    ];
+    
+    unsupportedProtocols.forEach(protocol => {
+        const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
+        cleaned = cleaned.replace(regex, TOAST_ACTION);
+    });
+
+    // 4. Map specific IDs to external tools (Zkill/EveWho)
     cleaned = cleaned
-        .replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
+        .replace(/href="killReport:(\d+)/g, 'target=\'_blank\' href="https://zkillboard.com/kill/$1')
         .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
         .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
         .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
@@ -358,33 +369,35 @@ function cleanDescription(raw) {
         .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
         .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
 
-    // 4. Intercept Bookmark/Channel and other unsupported protocols
-    const protocols = ['bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 'helpPointer', 'fitting', 'fleet'];
-    protocols.forEach(p => {
-        const regex = new RegExp(`href="${p}:[^"]+"`, 'gi');
-        cleaned = cleaned.replace(regex, TOAST_ATTRS);
+    // Handle Station IDs from your list
+    cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
+        if (STATION_TYPE_IDS.has(parseInt(id))) {
+            return 'href="https://zkillboard.com/location/';
+        }
+        return match;
     });
 
-    // Catch remaining showinfo links that didn't get mapped
-    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
+    // Final catch-all for any remaining showinfo links that didn't match anything
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ACTION);
 
-    // 5. UI Cleanup
+    // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
     cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
     cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
-      const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-      const rem = (scaled - 8) * 0.05 + 1;
-      return `<font${pre} style="font-size:${rem}rem"${post}>`;
+        const scaled = Math.min(Math.max(parseInt(size), 10), 18);
+        const rem = (scaled - 8) * 0.05 + 1;
+        return `<font${pre} style="font-size:${rem}rem"${post}>`;
     });
 
-    // 6. Sanitization 
+    // 6. Sanitization - Keep 'a' tags intact so onclick works
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
     cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
-      const lowerTag = tag.toLowerCase();
-      if (lowerTag === 'a') return match; // Keep the whole <a> tag so onclick stays
-      return allowedTags.includes(lowerTag) ? match : "";
+        const lowerTag = tag.toLowerCase();
+        if (lowerTag === 'a') return match; // Preserve <a> with its new onclick
+        return allowedTags.includes(lowerTag) ? match : "";
     });
 
+    // 7. Paragraphing
     return cleaned
         .split("\n")
         .map(line => line.trim())
@@ -393,25 +406,25 @@ function cleanDescription(raw) {
         .join("");
 }
 
-function showToast(message) {
-  // Get the snackbar DIV
-  let x = document.getElementById("snackbar");
-  
-  // Create it if it doesn't exist
-  if (!x) {
-    x = document.createElement("div");
-    x.id = "snackbar";
-    document.body.appendChild(x);
-  }
+function showToast(message, duration = 3000) {
+	// Ensure a container exists
+	let container = document.getElementById('toast-container');
+	if (!container) {
+		container = document.createElement('div');
+		container.id = 'toast-container';
+		document.body.appendChild(container);
+	}
 
-  // Set the message
-  x.innerHTML = purify(message);
+	// Create toast element
+	const toast = document.createElement('div');
+	toast.className = 'toast';
+	toast.innerHTML = message;
 
-  // Add the "show" class to DIV
-  x.className = "show";
+	container.appendChild(toast);
 
-  // After 3 seconds, remove the show class from DIV
-  setTimeout(function(){ x.className = x.className.replace("show", ""); }, 3000);
+	_setTimeout(() => { toast.classList.add('show'); }, 0);
+	_setTimeout(() => { toast.remove(); }, duration);
+	toast.addEventListener('click', () => { toast.remove(); return false; });
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
