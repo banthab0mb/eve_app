@@ -387,7 +387,9 @@ function cleanDescription(raw) {
     cleaned = cleaned
         .replace(/href="opportunity:/g, REPLACE_WITH)
         .replace(/href="localsvc:/g, REPLACE_WITH)
-        .replace(/href="helpPointer:/g, REPLACE_WITH);
+        .replace(/href="helpPointer:/g, REPLACE_WITH)
+        .replace(/href="showchannel:/g, REPLACE_WITH)
+        .replace(/href="bookmarkfolder:/g, REPLACE_WITH);
 
     // 4. Final Tag Sanitization & Paragraphing
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
