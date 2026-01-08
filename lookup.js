@@ -275,7 +275,7 @@ function formatOutput(result) {
   <p><a href="https://zkillboard.com/character/${result.id}" target="_blank">zKillboard</a></p>
   <hr>
   <div class="char-description">
-    <h3>Description</h3>
+    <h3>Bio</h3>
     <p style="text-align: left;">${cleanDescription(char.description)}</p>
   </div>
 </div>
