@@ -241,7 +241,7 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>${char.name}</h2>
-  <img src="https://images.evetech.net/characters/${result.id}/portrait" alt="${char.name}" class="portrait" height="256px">
+  <img src="https://images.evetech.net/characters/${result.id}/portrait" alt="${char.name}" class="portrait" height="256px" width="256px">
   <p>Birthday: ${formatDate(char.birthday)}</p>
   <p>Sec Status: ${formatSec(char.security_status)}</p>
 
@@ -249,7 +249,7 @@ function formatOutput(result) {
   <div class="char-affiliations">
   <div class="corp-info">
     <h3>Corporation</h3>
-    <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo" alt="${corp.name}" class="logo" height="128px">
+    <img src="https://images.evetech.net/corporations/${char.corporation_id}/logo" alt="${corp.name}" class="logo" height="128px" width="128px">
     <p>
         <links>
           <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${corp.name}">
@@ -261,7 +261,7 @@ function formatOutput(result) {
   <div class="alliance-info">
   <h3>Alliance</h3>
     ${alliance ? `
-      <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo" alt="${alliance.name}" class="logo" height="128px">
+      <img src="https://images.evetech.net/alliances/${char.alliance_id}/logo" alt="${alliance.name}" class="logo" height="128px" width="128px">
       <p>
         <links>
           <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${alliance.name}">
@@ -288,9 +288,9 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>${corp.name}</h2>
-  <img src="https://images.evetech.net/corporations/${result.id}/logo" alt="${corp.name}" class="logo" height="256px">
+  <img src="https://images.evetech.net/corporations/${result.id}/logo" alt="${corp.name}" class="logo" height="256px" width="256px">
   <p>[${corp.ticker}]</p>
-  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo" alt="${corp.alliance}" class="logo" height="128px">
+  <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo" alt="${corp.alliance}" class="logo" height="128px" width="128px">
   <div id="alliance-name"></div>
   <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
   <p><a href="https://zkillboard.com/corporation/${result.id}" target="_blank">zKillboard</a></p>
@@ -309,7 +309,7 @@ function formatOutput(result) {
     return `
 <div class="lookup-result">
   <h2>${alliance.name}</h2>
-  <img src="https://images.evetech.net/alliances/${result.id}/logo" alt="${alliance.name}" class="logo" height="256px">
+  <img src="https://images.evetech.net/alliances/${result.id}/logo" alt="${alliance.name}" class="logo" height="256px" width="256px">
   <p>[${alliance.ticker}]</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
   <p><a href="https://zkillboard.com/alliance/${result.id}" target="_blank">zKillboard</a></p>
@@ -322,36 +322,88 @@ function formatOutput(result) {
   return JSON.stringify(result, null, 2);
 }
 
-// Clean corporation description HTML
+const STATION_TYPE_IDS = new Set([
+    14, 54, 56, 57, 58, 59, 1529, 1530, 1531, 1926, 1927, 1928, 1929, 1930, 1931,
+    1932, 2071, 2496, 2497, 2498, 2499, 2500, 2501, 2502, 3864, 3865, 3866, 3867,
+    3868, 3869, 3870, 3871, 3872, 4023, 4024, 9856, 9857, 9867, 9868, 9873, 10795,
+    12242, 12294, 12295, 19757, 21642, 21644, 21645, 21646, 22296, 22297, 22298,
+    29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
+]);
+
+const CHARACTER_TYPE_IDS = new Set([
+    1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385,
+    1386, 34574
+]);
+
+const REPLACE_WITH = ' onClick=\'showToast("An in game link without proper mapping within PodMail. Sorry..."); return false;\' href="showInfo:';
+
 function cleanDescription(raw) {
-  if (!raw) return "No description.";
-  let cleaned = raw;
+    if (!raw) return "No description.";
+    let cleaned = raw;
 
-  cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) =>
-    String.fromCharCode(parseInt(code, 16))
-  );
+    // 1. Initial Character/Unicode Cleaning
+    cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+    cleaned = cleaned.replace(/\\'/g, "'");
+    cleaned = cleaned.replace(/^u'/, "");
 
-  cleaned = cleaned.replace(/\\'/g, "'");
-  cleaned = cleaned.replace(/^u'/, "");
-  cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-  cleaned = cleaned.replace(/<loc><a href="([^"]+)">([^<]+)<\/a><\/loc>/gi, `<a href="$1" target="_blank">$2</a>`);
-  cleaned = cleaned.replace(/<loc>((?:<a href="[^"]+">[^<]*<\/a>\s*)+)<\/loc>/gi, (_, links) => links);
-  cleaned = cleaned.replace(/<a href="([^"]+)">([^<]+)<\/a>/gi, `<a href="$1" target="_blank">$2</a>`);
-  cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
-    const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-    const rem = (scaled - 8) * 0.05 + 1;
-    return `<font${pre} style="font-size:${rem}rem"${post}>`;
-  });
+    // 2. Map EVE Online specific showinfo: links to Web URLs
+    // We do this before general tag cleaning so we can capture the IDs
+    cleaned = cleaned
+        .replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
+        .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
+        .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
+        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
+        .replace(/href="showinfo:47466\/\//g, 'href="https://zkillboard.com/item/')
+        .replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
+        .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
+        .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
 
-  const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
-  cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => allowedTags.includes(tag.toLowerCase()) ? match : "");
-  cleaned = cleaned.replace(/\s+\n/g, "\n").trim();
-  return cleaned
-    .split("\n")
-    .map(line => line.trim())
-    .filter(line => line.length > 0)
-    .map(line => `<p>${line}</p>`)
-    .join("");
+    // Handle Dynamic IDs (Stations and Characters)
+    cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
+        const numericId = parseInt(id);
+        if (STATION_TYPE_IDS.has(numericId)) {
+            return 'href="https://zkillboard.com/location/';
+        } else if (CHARACTER_TYPE_IDS.has(numericId)) {
+            return 'href="https://evewho.com/character/';
+        }
+        return match; // Keep as is for the final catch-all "REPLACE_WITH"
+    });
+
+    // 3. UI and Safety Cleaning
+    cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+    
+    // Remove <loc> tags but keep the content
+    cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
+
+    // Standardize all anchors to open in new tab
+    cleaned = cleaned.replace(/<a href="([^"]+)">/gi, '<a href="$1" target="_blank">');
+
+    // Handle Font scaling
+    cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
+        const scaled = Math.min(Math.max(parseInt(size), 10), 18);
+        const rem = (scaled - 8) * 0.05 + 1;
+        return `<font${pre} style="font-size:${rem}rem"${post}>`;
+    });
+
+    // Fallback for unmapped EVE links
+    cleaned = cleaned
+        .replace(/href="opportunity:/g, REPLACE_WITH)
+        .replace(/href="localsvc:/g, REPLACE_WITH)
+        .replace(/href="helpPointer:/g, REPLACE_WITH)
+        .replace(/href="showinfo:/g, REPLACE_WITH);
+
+    // 4. Final Tag Sanitization & Paragraphing
+    const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
+    cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => 
+        allowedTags.includes(tag.toLowerCase()) ? match : ""
+    );
+
+    return cleaned
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+        .map(line => `<p>${line}</p>`)
+        .join("");
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------

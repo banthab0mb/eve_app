@@ -62,7 +62,7 @@ async function createCharacterRow(name) {
     if (charData.corporation_id) {
       const corpData = await (await fetch(`https://esi.evetech.net/latest/corporations/${charData.corporation_id}/`)).json();
       corpName = corpData.name || "—";
-      corpLogo = `https://images.evetech.net/corporations/${charData.corporation_id}/logo?size=64`;
+      corpLogo = `https://images.evetech.net/corporations/${charData.corporation_id}/logo`;
       corpAllianceId = corpData.alliance_id || null;
     }
 
@@ -72,7 +72,7 @@ async function createCharacterRow(name) {
       const allianceId = charData.alliance_id || corpAllianceId;
       const allianceData = await (await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/`)).json();
       allianceName = allianceData.name || "—";
-      allianceLogo = `https://images.evetech.net/alliances/${allianceId}/logo?size=64`;
+      allianceLogo = `https://images.evetech.net/alliances/${allianceId}/logo`;
     }
 
     // zKillboard stats (limit parallel fetches)
@@ -88,7 +88,7 @@ async function createCharacterRow(name) {
     } catch {}
 
     const risk = kills + losses === 0 ? 0 : ((kills / (kills + losses)) * 100).toFixed(1);
-    const portrait = `https://images.evetech.net/characters/${charId}/portrait?size=64`;
+    const portrait = `https://images.evetech.net/characters/${charId}/portrait`;
     const properName = charData.name
       .split(" ")
       .map(p => p.charAt(0).toUpperCase() + p.slice(1).toLowerCase())
