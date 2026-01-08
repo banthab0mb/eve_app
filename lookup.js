@@ -333,99 +333,124 @@ const STATION_TYPE_IDS = new Set([
 // This string safely triggers your toast and prevents the browser from trying to open the protocol
 const TOAST_ACTION = 'onclick=\'showToast("This link type only works inside the EVE client."); return false;\' href="#"';
 
-// This is the string used for unsupported links
 const TOAST_ATTRS = `onclick="showToast('In-game link (Bookmark/Channel) not supported in web app'); return false;" href="javascript:void(0)"`;
 
 function cleanDescription(raw) {
-	if (!raw) return "No description.";
-	let cleaned = raw;
+    if (!raw) return "No description.";
+    let cleaned = raw;
 
-	// 1. Initial Cleaning
-	cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
-	cleaned = cleaned.replace(/\\'/g, "'");
-	cleaned = cleaned.replace(/^u'/, "");
+    // 1. Unicode/Python string cleanup
+    cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+    cleaned = cleaned.replace(/\\'/g, "'");
+    cleaned = cleaned.replace(/^u'/, "");
 
-	// 2. Map showinfo: links to your INTERNAL lookup first (using the Name)
-	cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
-		const encodedName = encodeURIComponent(name.trim());
-		return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
-	});
+    // 2. Map showinfo: links to INTERNAL lookup (Name-based)
+    cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
+        const encodedName = encodeURIComponent(name.trim());
+        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
+    });
 
-	// 3. JitaSpace Style Mapping (Specific IDs to External Tools)
-	cleaned = cleaned
-		.replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
-		.replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
-		.replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
-		.replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
-		.replace(/href="showinfo:47466\/\//g, 'href="https://zkillboard.com/item/')
-		.replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
-		.replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
-		.replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
+    // 3. Map specific protocols to external tools
+    cleaned = cleaned
+        .replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
+        .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
+        .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
+        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
+        .replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
+        .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
+        .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
 
-	// 4. Handle Station/Location IDs from your list
-	cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
-		if (STATION_TYPE_IDS.has(parseInt(id))) {
-			return 'href="https://zkillboard.com/location/';
-		}
-		return match;
-	});
+    // 4. Intercept Bookmark/Channel and other unsupported protocols
+    const protocols = ['bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 'helpPointer', 'fitting', 'fleet'];
+    protocols.forEach(p => {
+        const regex = new RegExp(`href="${p}:[^"]+"`, 'gi');
+        cleaned = cleaned.replace(regex, TOAST_ATTRS);
+    });
 
-	// 5. Intercept Bookmark/Channel and other unsupported protocols
-	// We replace the entire href="..." part with our toast trigger
-	const protocols = ['bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 'helpPointer', 'fitting', 'fleet'];
-	protocols.forEach(p => {
-		const regex = new RegExp(`href="${p}:[^"]+"`, 'gi');
-		cleaned = cleaned.replace(regex, TOAST_ATTRS);
-	});
+    // Catch remaining showinfo links
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
 
-	// Catch remaining showinfo links that didn't get mapped
-	cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
+    // 5. HTML Formatting
+    cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+    cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
+    cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
+        const scaled = Math.min(Math.max(parseInt(size), 10), 18);
+        const rem = (scaled - 8) * 0.05 + 1;
+        return `<font${pre} style="font-size:${rem}rem"${post}>`;
+    });
 
-	// 6. UI Cleanup
-	cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-	cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
-	cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
-		const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-		const rem = (scaled - 8) * 0.05 + 1;
-		return `<font${pre} style="font-size:${rem}rem"${post}>`;
-	});
+    // 6. Sanitization (Crucial: preserving our new onclicks)
+    const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
+    cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
+        if (tag.toLowerCase() === 'a') return match; 
+        return allowedTags.includes(tag.toLowerCase()) ? match : "";
+    });
 
-	// 7. Sanitization (Crucial: This version preserves the onclick/href we just built)
-	const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
-	cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
-		const lowerTag = tag.toLowerCase();
-		if (lowerTag === 'a') return match; // Keep the whole <a> tag so onclick stays
-		return allowedTags.includes(lowerTag) ? match : "";
-	});
-
-	// 8. Paragraphs
-	return cleaned
-		.split("\n")
-		.map(line => line.trim())
-		.filter(line => line.length > 0)
-		.map(line => `<p>${line}</p>`)
-		.join("");
+    // 7. Final Paragraph Wrap
+    return cleaned
+        .split("\n")
+        .map(line => line.trim())
+        .filter(line => line.length > 0)
+        .map(line => `<p>${line}</p>`)
+        .join("");
 }
 
 function showToast(message, duration = 3000) {
-	// Ensure a container exists
-	let container = document.getElementById('toast-container');
-	if (!container) {
-		container = document.createElement('div');
-		container.id = 'toast-container';
-		document.body.appendChild(container);
-	}
+    let container = document.getElementById('toast-container');
+    if (!container) {
+        container = document.createElement('div');
+        container.id = 'toast-container';
+        // Styling the container to cover the screen and center content
+        container.style = `
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none; /* Allows clicking through the background */
+            z-index: 9999;
+        `;
+        document.body.appendChild(container);
+    }
 
-	// Create toast element
-	const toast = document.createElement('div');
-	toast.className = 'toast';
-	toast.innerHTML = message;
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    
+    // Toast specific styling
+    toast.style = `
+        background: rgba(20, 20, 20, 0.95);
+        color: #fff;
+        padding: 20px 40px;
+        border: 1px solid #444;
+        border-radius: 8px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        pointer-events: auto; /* Makes the toast itself clickable */
+        opacity: 0;
+        transition: opacity 0.3s ease, transform 0.3s ease;
+        transform: translateY(20px);
+        text-align: center;
+        max-width: 80%;
+    `;
 
-	container.appendChild(toast);
+    toast.innerHTML = purify(message);
+    container.appendChild(toast);
 
-	_setTimeout(() => { toast.classList.add('show'); }, 0);
-	_setTimeout(() => { toast.remove(); }, duration);
-	toast.addEventListener('click', () => { toast.remove(); return false; });
+    // Trigger animation
+    setTimeout(() => { 
+        toast.style.opacity = "1"; 
+        toast.style.transform = "translateY(0)";
+    }, 10);
+
+    // Remove logic
+    const removeToast = () => {
+        toast.style.opacity = "0";
+        setTimeout(() => toast.remove(), 300);
+    };
+
+    setTimeout(removeToast, duration);
+    toast.addEventListener('click', removeToast);
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
