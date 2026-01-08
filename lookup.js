@@ -346,28 +346,20 @@ function cleanDescription(raw) {
     cleaned = cleaned.replace(/\\'/g, "'");
     cleaned = cleaned.replace(/^u'/, "");
 
-    // 2. Map EVE Online specific showinfo: links to Web URLs
-    // We do this before general tag cleaning so we can capture the IDs
+    // 2. Map EVE Online specific showinfo: links to INTERNAL lookup
+    // This looks for <a href="showinfo:...">Name</a> and captures "Name"
+    cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
+        const encodedName = encodeURIComponent(name.trim());
+        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
+    });
+
+    // Handle specific zKillboard external overrides if you still want them
+    // (Optional: Remove these if you want EVERYTHING to stay internal)
     cleaned = cleaned
-        .replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
+        .replace(/href="killReport:(\d+)/g, 'target=\'_blank\' href="https://zkillboard.com/kill/$1')
         .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
         .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
-        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
-        .replace(/href="showinfo:47466\/\//g, 'href="https://zkillboard.com/item/')
-        .replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
-        .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
-        .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
-
-    // Handle Dynamic IDs (Stations and Characters)
-    cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
-        const numericId = parseInt(id);
-        if (STATION_TYPE_IDS.has(numericId)) {
-            return 'href="https://zkillboard.com/location/';
-        } else if (CHARACTER_TYPE_IDS.has(numericId)) {
-            return 'href="https://evewho.com/character/';
-        }
-        return match; // Keep as is for the final catch-all "REPLACE_WITH"
-    });
+        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/');
 
     // 3. UI and Safety Cleaning
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
@@ -375,8 +367,14 @@ function cleanDescription(raw) {
     // Remove <loc> tags but keep the content
     cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
 
-    // Standardize all anchors to open in new tab
-    cleaned = cleaned.replace(/<a href="([^"]+)">/gi, '<a href="$1" target="_blank">');
+    // Ensure all remaining anchors (like zKill) open in new tab, 
+    // but keep internal links in the same tab for better UX
+    cleaned = cleaned.replace(/<a href="([^"]+)">/gi, (match, url) => {
+        if (url.includes('banthab0mb.github.io')) {
+            return `<a href="${url}">`;
+        }
+        return `<a href="${url}" target="_blank">`;
+    });
 
     // Handle Font scaling
     cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
@@ -385,12 +383,11 @@ function cleanDescription(raw) {
         return `<font${pre} style="font-size:${rem}rem"${post}>`;
     });
 
-    // Fallback for unmapped EVE links
+    // Fallback for unmapped EVE links (opportunity, helpPointer, etc)
     cleaned = cleaned
         .replace(/href="opportunity:/g, REPLACE_WITH)
         .replace(/href="localsvc:/g, REPLACE_WITH)
-        .replace(/href="helpPointer:/g, REPLACE_WITH)
-        .replace(/href="showinfo:/g, REPLACE_WITH);
+        .replace(/href="helpPointer:/g, REPLACE_WITH);
 
     // 4. Final Tag Sanitization & Paragraphing
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
