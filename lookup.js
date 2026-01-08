@@ -344,16 +344,16 @@ function cleanDescription(raw) {
         return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
     });
 
-    // 3. Convert unsupported EVE protocols to Plain Text (Dead Links)
+    // 3. STRIP unsupported EVE protocols (Converts to plain text)
     const unsupportedProtocols = [
         'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
         'helpPointer', 'fitting', 'fleet', 'contract'
     ];
     
     unsupportedProtocols.forEach(protocol => {
-        const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
-        // color:inherit makes it match the text; text-decoration:none removes the underline
-        cleaned = cleaned.replace(regex, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
+        // This regex finds the whole <a> tag and replaces it with just the text inside ($1)
+        const regex = new RegExp(`<a [^>]*href="${protocol}:[^"]+"[^>]*>(.*?)<\/a>`, 'gi');
+        cleaned = cleaned.replace(regex, '$1');
     });
 
     // 4. Map specific IDs to external tools or INTERNAL lookup
@@ -374,8 +374,8 @@ function cleanDescription(raw) {
         return match;
     });
 
-    // Final catch-all: any remaining showinfo links become plain text
-    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
+    // Final catch-all: STRIP any remaining showinfo links (Converts to plain text)
+    cleaned = cleaned.replace(/<a [^>]*href="showinfo:[^"]+"[^>]*>(.*?)<\/a>/gi, '$1');
 
     // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
