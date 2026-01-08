@@ -330,8 +330,6 @@ const STATION_TYPE_IDS = new Set([
     29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
 ]);
 
-// --- Updated cleanDescription with javascript:void(0) ---
-
 function cleanDescription(raw) {
     if (!raw) return "No description.";
     let cleaned = raw;
@@ -346,15 +344,15 @@ function cleanDescription(raw) {
         return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
     });
 
-    // 3. Convert unsupported EVE protocols to Dead Links
+    // 3. Convert unsupported EVE protocols to Plain Text (Dead Links)
     const unsupportedProtocols = [
         'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
         'helpPointer', 'fitting', 'fleet', 'contract'
     ];
     
     unsupportedProtocols.forEach(protocol => {
-        // Replaces the protocol with javascript:void(0) and removes the hand pointer
         const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
+        // color:inherit makes it match the text; text-decoration:none removes the underline
         cleaned = cleaned.replace(regex, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
     });
 
@@ -370,14 +368,14 @@ function cleanDescription(raw) {
 
     // Handle Station IDs
     cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
-        if (STATION_TYPE_IDS.has(parseInt(id))) {
+        if (typeof STATION_TYPE_IDS !== 'undefined' && STATION_TYPE_IDS.has(parseInt(id))) {
             return 'href="https://zkillboard.com/location/';
         }
         return match;
     });
 
-    // Final catch-all: any remaining showinfo links become dead
-    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none;"');
+    // Final catch-all: any remaining showinfo links become plain text
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
 
     // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
