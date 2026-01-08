@@ -377,7 +377,7 @@ function cleanDescription(raw) {
     });
 
     // Final catch-all: any remaining showinfo links become dead
-    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none;"');
 
     // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
