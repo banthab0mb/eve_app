@@ -330,8 +330,7 @@ const STATION_TYPE_IDS = new Set([
     29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
 ]);
 
-// This string safely triggers your toast and prevents the browser from trying to open the protocol
-const TOAST_ACTION = 'onclick=\'showToast("This link type (channel/bookmark/etc) only works inside the EVE client."); return false;\' href="#"';
+// --- Updated cleanDescription with javascript:void(0) ---
 
 function cleanDescription(raw) {
     if (!raw) return "No description.";
@@ -347,16 +346,16 @@ function cleanDescription(raw) {
         return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
     });
 
-    // 3. Convert unsupported EVE protocols to plain text (not links)
+    // 3. Convert unsupported EVE protocols to Dead Links
     const unsupportedProtocols = [
         'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
         'helpPointer', 'fitting', 'fleet', 'contract'
     ];
     
     unsupportedProtocols.forEach(protocol => {
-        const regex = new RegExp(`<a href="${protocol}:[^"]+">([^<]+)<\/a>`, 'gi');
-        // Replaces the link with a span that doesn't click
-        cleaned = cleaned.replace(regex, '<span style="cursor:help; border-bottom:1px dotted #666;">$1</span>');
+        // Replaces the protocol with javascript:void(0) and removes the hand pointer
+        const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
+        cleaned = cleaned.replace(regex, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
     });
 
     // 4. Map specific IDs to external tools or INTERNAL lookup
@@ -377,8 +376,8 @@ function cleanDescription(raw) {
         return match;
     });
 
-    // Final catch-all: Convert any remaining showinfo <a> tags that didn't match to <span>
-    cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, '<span style="cursor:help;">$1</span>');
+    // Final catch-all: any remaining showinfo links become dead
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, 'href="javascript:void(0)" style="cursor:default; text-decoration:none; color:inherit;"');
 
     // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
@@ -389,7 +388,7 @@ function cleanDescription(raw) {
         return `<font${pre} style="font-size:${rem}rem"${post}>`;
     });
 
-    // 6. Sanitization - Allow span for the non-clickable items
+    // 6. Sanitization
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font", "span"];
     cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
         const lowerTag = tag.toLowerCase();
