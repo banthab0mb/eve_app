@@ -331,79 +331,88 @@ const STATION_TYPE_IDS = new Set([
 ]);
 
 // This string safely triggers your toast and prevents the browser from trying to open the protocol
-const TOAST_ACTION = 'onclick=\'showToast("This link type (channel/bookmark/etc) only works inside the EVE client."); return false;\' href="#"';
+const TOAST_ACTION = 'onclick=\'showToast("This link type only works inside the EVE client."); return false;\' href="#"';
+
+const STATION_TYPE_IDS = new Set([
+	14, 54, 56, 57, 58, 59, 1529, 1530, 1531, 1926, 1927, 1928, 1929, 1930, 1931,
+	1932, 2071, 2496, 2497, 2498, 2499, 2500, 2501, 2502, 3864, 3865, 3867,
+	3868, 3869, 3870, 3871, 3872, 4023, 4024, 9856, 9857, 9867, 9868, 9873, 10795,
+	12242, 12294, 12295, 19757, 21642, 21644, 21645, 21646, 22296, 22297, 22298,
+	29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
+]);
+
+// This is the string used for unsupported links
+const TOAST_ATTRS = `onclick="showToast('In-game link (Bookmark/Channel) not supported in web app'); return false;" href="javascript:void(0)"`;
 
 function cleanDescription(raw) {
-    if (!raw) return "No description.";
-    let cleaned = raw;
+	if (!raw) return "No description.";
+	let cleaned = raw;
 
-    // 1. Initial Character/Unicode Cleaning
-    cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
-    cleaned = cleaned.replace(/\\'/g, "'");
-    cleaned = cleaned.replace(/^u'/, "");
+	// 1. Initial Cleaning
+	cleaned = cleaned.replace(/\\u([\dA-F]{4})/gi, (_, code) => String.fromCharCode(parseInt(code, 16)));
+	cleaned = cleaned.replace(/\\'/g, "'");
+	cleaned = cleaned.replace(/^u'/, "");
 
-    // 2. Map showinfo: links to INTERNAL lookup (Name-based)
-    // We do this first so we can use the text inside the <a> tag
-    cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
-        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
-    });
+	// 2. Map showinfo: links to your INTERNAL lookup first (using the Name)
+	cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
+		const encodedName = encodeURIComponent(name.trim());
+		return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
+	});
 
-    // 3. Intercept unsupported EVE protocols to prevent browser "Failed to launch" errors
-    const unsupportedProtocols = [
-        'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
-        'helpPointer', 'fitting', 'fleet', 'contract'
-    ];
-    
-    unsupportedProtocols.forEach(protocol => {
-        const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
-        cleaned = cleaned.replace(regex, TOAST_ACTION);
-    });
+	// 3. JitaSpace Style Mapping (Specific IDs to External Tools)
+	cleaned = cleaned
+		.replace(/href="killReport:/g, 'target=\'_blank\' href="https://zkillboard.com/kill/')
+		.replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
+		.replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
+		.replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
+		.replace(/href="showinfo:47466\/\//g, 'href="https://zkillboard.com/item/')
+		.replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
+		.replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
+		.replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
 
-    // 4. Map specific IDs to external tools (Zkill/EveWho)
-    cleaned = cleaned
-        .replace(/href="killReport:(\d+)/g, 'target=\'_blank\' href="https://zkillboard.com/kill/$1')
-        .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
-        .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
-        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
-        .replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
-        .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
-        .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
+	// 4. Handle Station/Location IDs from your list
+	cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
+		if (STATION_TYPE_IDS.has(parseInt(id))) {
+			return 'href="https://zkillboard.com/location/';
+		}
+		return match;
+	});
 
-    // Handle Station IDs from your list
-    cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
-        if (STATION_TYPE_IDS.has(parseInt(id))) {
-            return 'href="https://zkillboard.com/location/';
-        }
-        return match;
-    });
+	// 5. Intercept Bookmark/Channel and other unsupported protocols
+	// We replace the entire href="..." part with our toast trigger
+	const protocols = ['bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 'helpPointer', 'fitting', 'fleet'];
+	protocols.forEach(p => {
+		const regex = new RegExp(`href="${p}:[^"]+"`, 'gi');
+		cleaned = cleaned.replace(regex, TOAST_ATTRS);
+	});
 
-    // Final catch-all for any remaining showinfo links that didn't match anything
-    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ACTION);
+	// Catch remaining showinfo links that didn't get mapped
+	cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
 
-    // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
-    cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-    cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
-    cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
-        const scaled = Math.min(Math.max(parseInt(size), 10), 18);
-        const rem = (scaled - 8) * 0.05 + 1;
-        return `<font${pre} style="font-size:${rem}rem"${post}>`;
-    });
+	// 6. UI Cleanup
+	cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+	cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
+	cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
+		const scaled = Math.min(Math.max(parseInt(size), 10), 18);
+		const rem = (scaled - 8) * 0.05 + 1;
+		return `<font${pre} style="font-size:${rem}rem"${post}>`;
+	});
 
-    // 6. Sanitization - Keep 'a' tags intact so onclick works
-    const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
-    cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
-        const lowerTag = tag.toLowerCase();
-        if (lowerTag === 'a') return match; // Preserve <a> with its new onclick
-        return allowedTags.includes(lowerTag) ? match : "";
-    });
+	// 7. Sanitization (Crucial: This version preserves the onclick/href we just built)
+	const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
+	cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
+		const lowerTag = tag.toLowerCase();
+		if (lowerTag === 'a') return match; // Keep the whole <a> tag so onclick stays
+		return allowedTags.includes(lowerTag) ? match : "";
+	});
 
-    // 7. Paragraphing
-    return cleaned
-        .split("\n")
-        .map(line => line.trim())
-        .filter(line => line.length > 0)
-        .map(line => `<p>${line}</p>`)
-        .join("");
+	// 8. Paragraphs
+	return cleaned
+		.split("\n")
+		.map(line => line.trim())
+		.filter(line => line.length > 0)
+		.map(line => `<p>${line}</p>`)
+		.join("");
 }
 
 function showToast(message, duration = 3000) {
