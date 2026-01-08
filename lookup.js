@@ -365,18 +365,24 @@ function cleanDescription(raw) {
         cleaned = cleaned.replace(regex, TOAST_ATTRS);
     });
 
-    // Final catch-all for remaining showinfo (Items/Ships)
+    // Catch remaining showinfo links that didn't get mapped
     cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ATTRS);
 
-    // 5. General Cleanup & Paragraphs
+    // 5. UI Cleanup
     cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
     cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
-    
-    // Final Sanitization: Allow <a> tags to keep their onclicks
+    cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
+      const scaled = Math.min(Math.max(parseInt(size), 10), 18);
+      const rem = (scaled - 8) * 0.05 + 1;
+      return `<font${pre} style="font-size:${rem}rem"${post}>`;
+    });
+
+    // 6. Sanitization 
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
     cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
-        if (tag.toLowerCase() === 'a') return match; 
-        return allowedTags.includes(tag.toLowerCase()) ? match : "";
+      const lowerTag = tag.toLowerCase();
+      if (lowerTag === 'a') return match; // Keep the whole <a> tag so onclick stays
+      return allowedTags.includes(lowerTag) ? match : "";
     });
 
     return cleaned
