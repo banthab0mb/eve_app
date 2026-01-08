@@ -335,7 +335,7 @@ const CHARACTER_TYPE_IDS = new Set([
     1386, 34574
 ]);
 
-const REPLACE_WITH = ' onClick=\'showToast("An in game link without proper mapping within PodMail. Sorry..."); return false;\' href="showInfo:';
+const REPLACE_WITH = ' onClick=\'showToast("An in game link without proper mapping within the app. Sorry..."); return false;\' href="showInfo:';
 
 function cleanDescription(raw) {
     if (!raw) return "No description.";
@@ -401,6 +401,27 @@ function cleanDescription(raw) {
         .filter(line => line.length > 0)
         .map(line => `<p>${line}</p>`)
         .join("");
+}
+
+function showToast(message, duration = 3000) {
+	// Ensure a container exists
+	let container = document.getElementById('toast-container');
+	if (!container) {
+		container = document.createElement('div');
+		container.id = 'toast-container';
+		document.body.appendChild(container);
+	}
+
+	// Create toast element
+	const toast = document.createElement('div');
+	toast.className = 'toast';
+	toast.innerHTML = purify(message);
+
+	container.appendChild(toast);
+
+	_setTimeout(() => { toast.classList.add('show'); }, 0);
+	_setTimeout(() => { toast.remove(); }, duration);
+	toast.addEventListener('click', () => { toast.remove(); return false; });
 }
 
 // ------------------ INPUT + SUGGESTIONS ------------------
