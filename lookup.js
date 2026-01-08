@@ -330,12 +330,8 @@ const STATION_TYPE_IDS = new Set([
     29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
 ]);
 
-const CHARACTER_TYPE_IDS = new Set([
-    1373, 1374, 1375, 1376, 1377, 1378, 1379, 1380, 1381, 1382, 1383, 1384, 1385,
-    1386, 34574
-]);
-
-const REPLACE_WITH = ' onClick=\'showToast("An in game link without proper mapping within the app. Sorry..."); return false;\' href="showInfo:';
+// This string safely triggers your toast and prevents the browser from trying to open the protocol
+const TOAST_ACTION = 'onclick=\'showToast("This link type (channel/bookmark/etc) only works inside the EVE client."); return false;\' href="#"';
 
 function cleanDescription(raw) {
     if (!raw) return "No description.";
@@ -346,57 +342,62 @@ function cleanDescription(raw) {
     cleaned = cleaned.replace(/\\'/g, "'");
     cleaned = cleaned.replace(/^u'/, "");
 
-    // 2. Map EVE Online specific showinfo: links to INTERNAL lookup
-    // This looks for <a href="showinfo:...">Name</a> and captures "Name"
+    // 2. Map showinfo: links to INTERNAL lookup (Name-based)
+    // We do this first so we can use the text inside the <a> tag
     cleaned = cleaned.replace(/<a href="showinfo:[^"]+">([^<]+)<\/a>/gi, (match, name) => {
-        const encodedName = encodeURIComponent(name.trim());
-        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodedName}">${name}</a>`;
+        return `<a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${encodeURIComponent(name.trim())}">${name}</a>`;
     });
 
-    // Handle specific zKillboard external overrides if you still want them
-    // (Optional: Remove these if you want EVERYTHING to stay internal)
+    // 3. Intercept unsupported EVE protocols to prevent browser "Failed to launch" errors
+    const unsupportedProtocols = [
+        'bookmarkfolder', 'showchannel', 'opportunity', 'localsvc', 
+        'helpPointer', 'fitting', 'fleet', 'contract'
+    ];
+    
+    unsupportedProtocols.forEach(protocol => {
+        const regex = new RegExp(`href="${protocol}:[^"]+"`, 'gi');
+        cleaned = cleaned.replace(regex, TOAST_ACTION);
+    });
+
+    // 4. Map specific IDs to external tools (Zkill/EveWho)
     cleaned = cleaned
         .replace(/href="killReport:(\d+)/g, 'target=\'_blank\' href="https://zkillboard.com/kill/$1')
         .replace(/href="showinfo:4\/\//g, 'href="https://zkillboard.com/constellation/')
         .replace(/href="showinfo:3\/\//g, 'href="https://zkillboard.com/region/')
-        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/');
+        .replace(/href="showinfo:5\/\//g, 'href="https://zkillboard.com/system/')
+        .replace(/href="showinfo:2\/\//g, 'href="https://evewho.com/corporation/')
+        .replace(/href="showinfo:16159\/\//g, 'href="https://evewho.com/alliance/')
+        .replace(/href="showinfo:30\/\//g, 'href="https://evewho.com/faction/');
 
-    // 3. UI and Safety Cleaning
-    cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
-    
-    // Remove <loc> tags but keep the content
-    cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
-
-    // Ensure all remaining anchors (like zKill) open in new tab, 
-    // but keep internal links in the same tab for better UX
-    cleaned = cleaned.replace(/<a href="([^"]+)">/gi, (match, url) => {
-        if (url.includes('banthab0mb.github.io')) {
-            return `<a href="${url}">`;
+    // Handle Station IDs from your list
+    cleaned = cleaned.replace(/href="showinfo:(\d+)\/\//g, (match, id) => {
+        if (STATION_TYPE_IDS.has(parseInt(id))) {
+            return 'href="https://zkillboard.com/location/';
         }
-        return `<a href="${url}" target="_blank">`;
+        return match;
     });
 
-    // Handle Font scaling
+    // Final catch-all for any remaining showinfo links that didn't match anything
+    cleaned = cleaned.replace(/href="showinfo:[^"]+"/g, TOAST_ACTION);
+
+    // 5. UI Cleanup (Loc tags, Br tags, Font scaling)
+    cleaned = cleaned.replace(/<br\s*\/?>/gi, "\n");
+    cleaned = cleaned.replace(/<loc>(.*?)<\/loc>/gi, "$1");
     cleaned = cleaned.replace(/<font([^>]*)size="(\d+)"([^>]*)>/gi, (_, pre, size, post) => {
         const scaled = Math.min(Math.max(parseInt(size), 10), 18);
         const rem = (scaled - 8) * 0.05 + 1;
         return `<font${pre} style="font-size:${rem}rem"${post}>`;
     });
 
-    // Fallback for unmapped EVE links (opportunity, helpPointer, etc)
-    cleaned = cleaned
-        .replace(/href="opportunity:/g, REPLACE_WITH)
-        .replace(/href="localsvc:/g, REPLACE_WITH)
-        .replace(/href="helpPointer:/g, REPLACE_WITH)
-        .replace(/href="showchannel:/g, REPLACE_WITH)
-        .replace(/href="bookmarkfolder:/g, REPLACE_WITH);
-
-    // 4. Final Tag Sanitization & Paragraphing
+    // 6. Sanitization - Keep 'a' tags intact so onclick works
     const allowedTags = ["b", "i", "u", "strong", "em", "a", "font"];
-    cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => 
-        allowedTags.includes(tag.toLowerCase()) ? match : ""
-    );
+    cleaned = cleaned.replace(/<\/?([a-z]+)([^>]*)>/gi, (match, tag) => {
+        const lowerTag = tag.toLowerCase();
+        if (lowerTag === 'a') return match; // Preserve <a> with its new onclick
+        return allowedTags.includes(lowerTag) ? match : "";
+    });
 
+    // 7. Paragraphing
     return cleaned
         .split("\n")
         .map(line => line.trim())
@@ -417,7 +418,7 @@ function showToast(message, duration = 3000) {
 	// Create toast element
 	const toast = document.createElement('div');
 	toast.className = 'toast';
-	toast.innerHTML = purify(message);
+	toast.innerHTML = message;
 
 	container.appendChild(toast);
 
