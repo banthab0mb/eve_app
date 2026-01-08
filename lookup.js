@@ -333,14 +333,6 @@ const STATION_TYPE_IDS = new Set([
 // This string safely triggers your toast and prevents the browser from trying to open the protocol
 const TOAST_ACTION = 'onclick=\'showToast("This link type only works inside the EVE client."); return false;\' href="#"';
 
-const STATION_TYPE_IDS = new Set([
-	14, 54, 56, 57, 58, 59, 1529, 1530, 1531, 1926, 1927, 1928, 1929, 1930, 1931,
-	1932, 2071, 2496, 2497, 2498, 2499, 2500, 2501, 2502, 3864, 3865, 3867,
-	3868, 3869, 3870, 3871, 3872, 4023, 4024, 9856, 9857, 9867, 9868, 9873, 10795,
-	12242, 12294, 12295, 19757, 21642, 21644, 21645, 21646, 22296, 22297, 22298,
-	29323, 29387, 29388, 29389, 29390, 34325, 34326, 52678, 59956, 71361, 74397,
-]);
-
 // This is the string used for unsupported links
 const TOAST_ATTRS = `onclick="showToast('In-game link (Bookmark/Channel) not supported in web app'); return false;" href="javascript:void(0)"`;
 
