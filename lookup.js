@@ -310,7 +310,7 @@ function formatOutput(result) {
 <div class="lookup-result">
   <h2>${alliance.name}</h2>
   <img src="https://images.evetech.net/alliances/${result.id}/logo" alt="${alliance.name}" class="logo" height="256px" width="256px">
-  <p><${alliance.ticker}></p>
+  <p>&#60;${alliance.ticker}&#62;</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
   <p><a href="https://zkillboard.com/alliance/${result.id}" target="_blank">zKillboard</a></p>
   <p>Corportations:</p>
