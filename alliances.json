@@ -18858,5 +18858,80 @@
     "id": 99014697,
     "name": "Obscure Legion",
     "ticker": "VIEL"
+  },
+  {
+    "id": 99014698,
+    "name": "Seeds of Love",
+    "ticker": "SOLS"
+  },
+  {
+    "id": 99014699,
+    "name": "Recursive Frenzy",
+    "ticker": "GOIDA"
+  },
+  {
+    "id": 99014700,
+    "name": "Ashes of Valhalla",
+    "ticker": "AOV"
+  },
+  {
+    "id": 99014701,
+    "name": "Focaccia Bread",
+    "ticker": ".YEST"
+  },
+  {
+    "id": 99014702,
+    "name": "Blind Obedience",
+    "ticker": "BDONC"
+  },
+  {
+    "id": 99014703,
+    "name": "Thermodynamics",
+    "ticker": "THERM"
+  },
+  {
+    "id": 99014704,
+    "name": "Space Whale Protection Agency",
+    "ticker": "WHALE"
+  },
+  {
+    "id": 99014705,
+    "name": "Sigma Apex",
+    "ticker": "SAPX"
+  },
+  {
+    "id": 99014706,
+    "name": "Nanami Systems",
+    "ticker": "NSYS"
+  },
+  {
+    "id": 99014707,
+    "name": "Cyberpunk.",
+    "ticker": "2049"
+  },
+  {
+    "id": 99014708,
+    "name": "The Dawn Of Aquarius",
+    "ticker": ".LOV."
+  },
+  {
+    "id": 99014709,
+    "name": "Industrial Dynasty",
+    "ticker": "I-DYN"
+  },
+  {
+    "id": 99014710,
+    "name": "S.M.Y.",
+    "ticker": "SMY."
+  },
+  {
+    "id": 99014711,
+    "name": "Forge Eternal",
+    "ticker": "ETRNL"
+  },
+  {
+    "id": 99014712,
+    "name": "Congregation of Magiks",
+    "ticker": "CNG"
   }
 ]
