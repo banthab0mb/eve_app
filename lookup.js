@@ -176,7 +176,7 @@ async function renderAllianceInfo(corp) {
           <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${name}">
             ${name}
           </a>
-        </links> [${ticker}]
+        </links> &#60;${ticker}&#62;
   </p>`;
 }
 

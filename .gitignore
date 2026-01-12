@@ -4,8 +4,6 @@ e.js
 export_systems.js
 systems.db
 
-node_modules/
-
 sqldb_stuff/
 
 htmlcheatsheet.pdf
@@ -15,3 +13,6 @@ test.cjs
 test.mjs
 
 purchasable_ids.txt
+
+package-lock.json
+package.json
