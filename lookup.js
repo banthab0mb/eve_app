@@ -267,7 +267,7 @@ function formatOutput(result) {
           <a href="https://banthab0mb.github.io/eve_app/lookup.html?q=${alliance.name}">
             ${alliance.name}
           </a>
-        </links> &lt;${alliance.ticker}&gt;
+        </links> &#60;${alliance.ticker}&#62;
       </p>
     ` : "<p>None</p>"}
   </div>
