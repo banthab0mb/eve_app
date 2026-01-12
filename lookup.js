@@ -285,6 +285,9 @@ function formatOutput(result) {
   if (result.category === "corporation") {
     const corp = result.details;
     renderAllianceInfo(corp);
+    
+    const isValidUrl = corp.url && corp.url.trim().length > 7 && corp.url.includes('.');
+
     return `
 <div class="lookup-result">
   <h2>${corp.name}</h2>
@@ -292,7 +295,9 @@ function formatOutput(result) {
   <p>[${corp.ticker}]</p>
   <img src="https://images.evetech.net/alliances/${corp.alliance_id}/logo" alt="${corp.alliance}" class="logo" height="128px" width="128px">
   <div id="alliance-name"></div>
-  <p><a href="${corp.url}" target="_blank">${corp.url}</a></p>
+  
+  ${isValidUrl ? `<p><a href="${corp.url}" target="_blank">${corp.url}</a></p>` : ''}
+  
   <p><a href="https://zkillboard.com/corporation/${result.id}" target="_blank">zKillboard</a></p>
   <hr>
   <div class="corp-description">
