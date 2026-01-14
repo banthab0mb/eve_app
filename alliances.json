@@ -18933,5 +18933,25 @@
     "id": 99014712,
     "name": "Congregation of Magiks",
     "ticker": "CNG"
+  },
+  {
+    "id": 99014713,
+    "name": "Star Sonata",
+    "ticker": "-SSA-"
+  },
+  {
+    "id": 99014714,
+    "name": "BLOOD UNION",
+    "ticker": "B U"
+  },
+  {
+    "id": 99014715,
+    "name": "Multiversal Authority Gyving Interloping Casters",
+    "ticker": "MAGIC"
+  },
+  {
+    "id": 99014716,
+    "name": "Tethys System",
+    "ticker": "TETS"
   }
 ]
