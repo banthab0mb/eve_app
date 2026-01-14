@@ -121,7 +121,10 @@ async function createCharacterRow(name) {
   } catch (err) {
     console.error(err);
     const row = document.createElement("tr");
-    row.innerHTML = `<td colspan="6">Error loading "${name}"</td>`;
+    const td = document.createElement("td");
+    td.colSpan = 6;
+    td.textContent = `Error loading "${name}"`;
+    row.appendChild(td);
     return row;
   }
 }
