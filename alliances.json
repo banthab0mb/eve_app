@@ -18953,5 +18953,90 @@
     "id": 99014716,
     "name": "Tethys System",
     "ticker": "TETS"
+  },
+  {
+    "id": 99014718,
+    "name": "Crackdown.",
+    "ticker": "BR0KE"
+  },
+  {
+    "id": 99014719,
+    "name": "Mostly Nomads",
+    "ticker": "MN"
+  },
+  {
+    "id": 99014720,
+    "name": "Mass Ascension",
+    "ticker": "MSS"
+  },
+  {
+    "id": 99014721,
+    "name": "Killmaxxing",
+    "ticker": "KMAX"
+  },
+  {
+    "id": 99014722,
+    "name": "EVE VETERANS ALLIANCE",
+    "ticker": "EVA A"
+  },
+  {
+    "id": 99014723,
+    "name": "Fraternity-DD",
+    "ticker": "FRAT"
+  },
+  {
+    "id": 99014724,
+    "name": "Gods of Night and Day",
+    "ticker": "GONAD"
+  },
+  {
+    "id": 99014725,
+    "name": "Suddenly A Sneaky Femboy",
+    "ticker": "FMBOY"
+  },
+  {
+    "id": 99014726,
+    "name": "Terminally Inept Traders and Scanners",
+    "ticker": "TITS"
+  },
+  {
+    "id": 99014727,
+    "name": "The Crimson Feed",
+    "ticker": "ROUGE"
+  },
+  {
+    "id": 99014728,
+    "name": "The Great Nut Heist",
+    "ticker": "TGNH"
+  },
+  {
+    "id": 99014729,
+    "name": "software.network",
+    "ticker": "INET"
+  },
+  {
+    "id": 99014730,
+    "name": "Fatal Disaster",
+    "ticker": "FATAL"
+  },
+  {
+    "id": 99014731,
+    "name": "Space is Overrated",
+    "ticker": "0FUN"
+  },
+  {
+    "id": 99014732,
+    "name": "Krill Issue Holdings",
+    "ticker": "KRILL"
+  },
+  {
+    "id": 99014733,
+    "name": "Cursed Cartel",
+    "ticker": "-CC-"
+  },
+  {
+    "id": 99014734,
+    "name": "Cerberus Allied Confederation",
+    "ticker": "CERAC"
   }
 ]
