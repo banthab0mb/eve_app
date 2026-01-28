@@ -19038,5 +19038,100 @@
     "id": 99014734,
     "name": "Cerberus Allied Confederation",
     "ticker": "CERAC"
+  },
+  {
+    "id": 99014735,
+    "name": "Psyno Theory",
+    "ticker": "PSYNO"
+  },
+  {
+    "id": 99014736,
+    "name": "Seahorse Riders",
+    "ticker": "RIDER"
+  },
+  {
+    "id": 99014737,
+    "name": "Cat Mom",
+    "ticker": "MAMA"
+  },
+  {
+    "id": 99014738,
+    "name": "The Black Shores",
+    "ticker": "BLKSH"
+  },
+  {
+    "id": 99014739,
+    "name": "Nord Rudel",
+    "ticker": "RUDEL"
+  },
+  {
+    "id": 99014740,
+    "name": "Ravens Nest Syndicate",
+    "ticker": "FCAWF"
+  },
+  {
+    "id": 99014742,
+    "name": "Immortal Clone Union",
+    "ticker": "-ICU-"
+  },
+  {
+    "id": 99014743,
+    "name": "Project Potato",
+    "ticker": "PP"
+  },
+  {
+    "id": 99014744,
+    "name": "Confederation of xXPIZZAXx",
+    "ticker": "PIZZA"
+  },
+  {
+    "id": 99014745,
+    "name": "Peep Show.",
+    "ticker": "PEEP"
+  },
+  {
+    "id": 99014746,
+    "name": "Gildi Manufactorum",
+    "ticker": "INDY"
+  },
+  {
+    "id": 99014747,
+    "name": "A P E X",
+    "ticker": "APE-X"
+  },
+  {
+    "id": 99014748,
+    "name": "The Trunkers Co.",
+    "ticker": "SL0NS"
+  },
+  {
+    "id": 99014749,
+    "name": "United Warriors.",
+    "ticker": "DIEMF"
+  },
+  {
+    "id": 99014750,
+    "name": "Safe Space.",
+    "ticker": "INCL."
+  },
+  {
+    "id": 99014751,
+    "name": "Free Corporations Alliance",
+    "ticker": "POL"
+  },
+  {
+    "id": 99014752,
+    "name": "The Noble Collective",
+    "ticker": "TNC"
+  },
+  {
+    "id": 99014753,
+    "name": "Temu.",
+    "ticker": "TEMU"
+  },
+  {
+    "id": 99014754,
+    "name": "Siver Coin Aglomerate",
+    "ticker": "SI"
   }
 ]
