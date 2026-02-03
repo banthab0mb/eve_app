@@ -3,7 +3,7 @@ title: "[Bug Report] "
 description: "Report the issue you're experiencing."
 projects: []
 labels:
-  - Bug
+  - bug
 body:
   - type: textarea
     id: textarea-0
