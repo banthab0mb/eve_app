@@ -19117,7 +19117,7 @@
   {
     "id": 99014751,
     "name": "Free Corporations Alliance",
-    "ticker": "POL"
+    "ticker": "FCA"
   },
   {
     "id": 99014752,
@@ -19133,5 +19133,115 @@
     "id": 99014754,
     "name": "Siver Coin Aglomerate",
     "ticker": "SI"
+  },
+  {
+    "id": 99014755,
+    "name": "Evecord",
+    "ticker": "KEK"
+  },
+  {
+    "id": 99014756,
+    "name": "Bloodsports.",
+    "ticker": "BLOSP"
+  },
+  {
+    "id": 99014757,
+    "name": "E L E M E N T S",
+    "ticker": "AFWE"
+  },
+  {
+    "id": 99014758,
+    "name": "Builder's Refuge",
+    "ticker": "BLDRF"
+  },
+  {
+    "id": 99014759,
+    "name": "White Dragoons",
+    "ticker": "K1"
+  },
+  {
+    "id": 99014760,
+    "name": "The Astral Express",
+    "ticker": "TAES"
+  },
+  {
+    "id": 99014761,
+    "name": "SANGUIS INVICTUS",
+    "ticker": "SECT"
+  },
+  {
+    "id": 99014762,
+    "name": "Abyss Shrine",
+    "ticker": "ASHRN"
+  },
+  {
+    "id": 99014763,
+    "name": "Protocol Omega",
+    "ticker": "OMG"
+  },
+  {
+    "id": 99014764,
+    "name": "EvE Online LLC",
+    "ticker": "EVO"
+  },
+  {
+    "id": 99014765,
+    "name": "Pyrolanc Squad Holding",
+    "ticker": "PSHLD"
+  },
+  {
+    "id": 99014766,
+    "name": "Rigged Outcomes",
+    "ticker": "FIXD"
+  },
+  {
+    "id": 99014767,
+    "name": "Absolute Judgment",
+    "ticker": "JUDGE"
+  },
+  {
+    "id": 99014768,
+    "name": "Storm Petrel Alliance",
+    "ticker": "SPA"
+  },
+  {
+    "id": 99014769,
+    "name": "Dis-Grunt-Old Alliance",
+    "ticker": "DGOA"
+  },
+  {
+    "id": 99014770,
+    "name": "Cleyd Free Trade Alliance",
+    "ticker": "CLEYD"
+  },
+  {
+    "id": 99014772,
+    "name": "Sunshine and Gunpowder",
+    "ticker": "SUNS"
+  },
+  {
+    "id": 99014773,
+    "name": "German Profit Holding",
+    "ticker": "GERHO"
+  },
+  {
+    "id": 99014774,
+    "name": "Disposables",
+    "ticker": "DISP"
+  },
+  {
+    "id": 99014775,
+    "name": "Asymmetric Intent",
+    "ticker": "AINT"
+  },
+  {
+    "id": 99014776,
+    "name": "Starway Solutions",
+    "ticker": "STRWY"
+  },
+  {
+    "id": 99014777,
+    "name": "Renegade Raccoon Society",
+    "ticker": "RRS"
   }
 ]
