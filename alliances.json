@@ -15196,8 +15196,8 @@
   },
   {
     "id": 99014222,
-    "name": "5erpentis Alliance",
-    "ticker": "5A"
+    "name": "Serpentine Cartel",
+    "ticker": "5C"
   },
   {
     "id": 99014223,
@@ -19243,5 +19243,95 @@
     "id": 99014777,
     "name": "Renegade Raccoon Society",
     "ticker": "RRS"
+  },
+  {
+    "id": 99014778,
+    "name": "Aridian Legion",
+    "ticker": "LEGIO"
+  },
+  {
+    "id": 99014779,
+    "name": "T R I A R C H Y",
+    "ticker": "I I I"
+  },
+  {
+    "id": 99014780,
+    "name": "NEW WEEDEN",
+    "ticker": "NEWED"
+  },
+  {
+    "id": 99014781,
+    "name": "ISKADIA",
+    "ticker": "IS-ES"
+  },
+  {
+    "id": 99014783,
+    "name": "Wings Freedom.",
+    "ticker": "WINGS"
+  },
+  {
+    "id": 99014784,
+    "name": "Paid Actors Alliance",
+    "ticker": "PALS"
+  },
+  {
+    "id": 99014785,
+    "name": "valhalla accord",
+    "ticker": "VALHA"
+  },
+  {
+    "id": 99014786,
+    "name": "Krabbing is the Question",
+    "ticker": "KI.TQ"
+  },
+  {
+    "id": 99014787,
+    "name": "The Kraken Cartel",
+    "ticker": "ABYS"
+  },
+  {
+    "id": 99014788,
+    "name": "Iron Guns",
+    "ticker": "IRON"
+  },
+  {
+    "id": 99014789,
+    "name": "Press F into The Hole",
+    "ticker": "-F-"
+  },
+  {
+    "id": 99014790,
+    "name": "Chronically Aphended",
+    "ticker": "CHAF"
+  },
+  {
+    "id": 99014792,
+    "name": "Tour-Billon-Alliance",
+    "ticker": "T-B-A"
+  },
+  {
+    "id": 99014793,
+    "name": "WeHak",
+    "ticker": "HAK"
+  },
+  {
+    "id": 99014794,
+    "name": "RED.Legion",
+    "ticker": "RDL"
+  },
+  {
+    "id": 99014795,
+    "name": "CYBER GHOST UNIT",
+    "ticker": "6H05T"
+  },
+  {
+    "id": 99014796,
+    "name": "Cosmic Potion.",
+    "ticker": "COPO"
+  },
+  {
+    "id": 99014797,
+    "name": "Shadow of the State",
+    "ticker": "GURI"
   }
 ]
