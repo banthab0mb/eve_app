@@ -19333,5 +19333,75 @@
     "id": 99014797,
     "name": "Shadow of the State",
     "ticker": "GURI"
+  },
+  {
+    "id": 99014798,
+    "name": "Industrial Violence",
+    "ticker": "-IV-"
+  },
+  {
+    "id": 99014799,
+    "name": "Surveillance Network",
+    "ticker": "REC0N"
+  },
+  {
+    "id": 99014800,
+    "name": "Costco-Wholesale",
+    "ticker": "HOTDG"
+  },
+  {
+    "id": 99014801,
+    "name": "The Rejected Syndicate",
+    "ticker": "RJCTD"
+  },
+  {
+    "id": 99014803,
+    "name": "BIue Suns",
+    "ticker": "BEAM"
+  },
+  {
+    "id": 99014804,
+    "name": "xeonY Holding Alliance",
+    "ticker": "XHA"
+  },
+  {
+    "id": 99014805,
+    "name": "MARSHMALLOW MAYHEM",
+    "ticker": "MSHM"
+  },
+  {
+    "id": 99014806,
+    "name": "Synod of the Blessed Yoke",
+    "ticker": "SOBY"
+  },
+  {
+    "id": 99014807,
+    "name": "Exxitium",
+    "ticker": "EXTM"
+  },
+  {
+    "id": 99014808,
+    "name": "Bird Law LLP Alliance",
+    "ticker": "IMOUT"
+  },
+  {
+    "id": 99014809,
+    "name": "Black Lanterns",
+    "ticker": "BL"
+  },
+  {
+    "id": 99014810,
+    "name": "Industrial Maniacs",
+    "ticker": "-I-M-"
+  },
+  {
+    "id": 99014811,
+    "name": "SuicideGirls.",
+    "ticker": "SG"
+  },
+  {
+    "id": 99014812,
+    "name": "Son's of Bob",
+    "ticker": "S.O.B"
   }
 ]
