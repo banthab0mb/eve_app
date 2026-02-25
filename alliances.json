@@ -19403,5 +19403,95 @@
     "id": 99014812,
     "name": "Son's of Bob",
     "ticker": "S.O.B"
+  },
+  {
+    "id": 99014813,
+    "name": "Deaths Auxiliary",
+    "ticker": "DAX3"
+  },
+  {
+    "id": 99014814,
+    "name": "Job For A Cowboy",
+    "ticker": "JFAC"
+  },
+  {
+    "id": 99014815,
+    "name": "Safety Squint",
+    "ticker": "DRUNK"
+  },
+  {
+    "id": 99014816,
+    "name": "Deep Space Argonauts Alliance",
+    "ticker": "DSARG"
+  },
+  {
+    "id": 99014817,
+    "name": "Oskar's Food and Sleep Company",
+    "ticker": "MOPSI"
+  },
+  {
+    "id": 99014818,
+    "name": "Wrong Side of the Hole",
+    "ticker": "WSH"
+  },
+  {
+    "id": 99014819,
+    "name": "Freedom and Opportunities Alliance",
+    "ticker": "FOA"
+  },
+  {
+    "id": 99014821,
+    "name": "Nasty Girls",
+    "ticker": "NASTY"
+  },
+  {
+    "id": 99014822,
+    "name": "The Dollywood Foundation",
+    "ticker": "DOLLY"
+  },
+  {
+    "id": 99014823,
+    "name": "Hole Tanked",
+    "ticker": "HTNK"
+  },
+  {
+    "id": 99014824,
+    "name": "Galactic Firestorm",
+    "ticker": "GTFO"
+  },
+  {
+    "id": 99014825,
+    "name": "Gorgon Cutthroats Of Thalassic Dominion",
+    "ticker": "GCOTD"
+  },
+  {
+    "id": 99014826,
+    "name": "Pirate Coalition",
+    "ticker": "PAYUS"
+  },
+  {
+    "id": 99014827,
+    "name": "Krieg und Verderb",
+    "ticker": "KUV"
+  },
+  {
+    "id": 99014828,
+    "name": "Singularity...",
+    "ticker": "ZERO."
+  },
+  {
+    "id": 99014829,
+    "name": "Choked Out",
+    "ticker": "CHOKE"
+  },
+  {
+    "id": 99014830,
+    "name": "DOMINO.",
+    "ticker": "DMNO."
+  },
+  {
+    "id": 99014831,
+    "name": "Extracurricular Hostilities",
+    "ticker": "EXTRA"
   }
 ]
