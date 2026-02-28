@@ -54356,7 +54356,7 @@
   },
   {
     "id": 98797902,
-    "name": "Back to the USSR",
+    "name": "New Eden Corporation 98797902",
     "ticker": "BTTUS"
   },
   {
@@ -73741,8 +73741,8 @@
   },
   {
     "id": 98494624,
-    "name": "Tribe Of 5erpentis",
-    "ticker": "SPNTS"
+    "name": "Serpentine Holdings",
+    "ticker": "5PTH"
   },
   {
     "id": 98808064,
@@ -89301,7 +89301,7 @@
   },
   {
     "id": 1488435599,
-    "name": "New Eden Corporation 1488435599",
+    "name": "Assisted Sacrificial Services",
     "ticker": "ASS3"
   },
   {
@@ -99618,5 +99618,2080 @@
     "id": 98825410,
     "name": "Civilized Negligence",
     "ticker": "CIV1L"
+  },
+  {
+    "id": 98825492,
+    "name": "Lock - Point - Delete",
+    "ticker": "PODIT"
+  },
+  {
+    "id": 98825651,
+    "name": "Silhilian Corporation",
+    "ticker": "SILHI"
+  },
+  {
+    "id": 98820695,
+    "name": "Puella in cursoriam",
+    "ticker": "PUELL"
+  },
+  {
+    "id": 98705072,
+    "name": "Sneaky Soldiers",
+    "ticker": "SNKY."
+  },
+  {
+    "id": 98825326,
+    "name": "Flour Power Freight",
+    "ticker": ".FPF."
+  },
+  {
+    "id": 98825556,
+    "name": "Furry Freight Services",
+    "ticker": "FURFS"
+  },
+  {
+    "id": 98564621,
+    "name": "Operation PQF",
+    "ticker": "PQF"
+  },
+  {
+    "id": 98825734,
+    "name": "Unprofitable Workers Union",
+    "ticker": "-PLOP"
+  },
+  {
+    "id": 98154172,
+    "name": "Nether Guards",
+    "ticker": "N-GA"
+  },
+  {
+    "id": 98825610,
+    "name": "Not.A.Corp.Just.An.Strategic.Military.Operation",
+    "ticker": "NACO3"
+  },
+  {
+    "id": 98568874,
+    "name": "All Together",
+    "ticker": "A T G"
+  },
+  {
+    "id": 98574340,
+    "name": "Imperial Rite Mission Rens",
+    "ticker": "IRMR"
+  },
+  {
+    "id": 98533332,
+    "name": "All comes to an end",
+    "ticker": "ACTOE"
+  },
+  {
+    "id": 98824251,
+    "name": "Astral Wayfarers",
+    "ticker": "A-WFR"
+  },
+  {
+    "id": 98820158,
+    "name": "Freelance Industrial Syndicate",
+    "ticker": "-9.11"
+  },
+  {
+    "id": 98824097,
+    "name": "BLACK'LEGION",
+    "ticker": "BLKOR"
+  },
+  {
+    "id": 98824149,
+    "name": "BLACK'LEGION Logistics",
+    "ticker": "BLLGX"
+  },
+  {
+    "id": 98671044,
+    "name": "Warp 9.975",
+    "ticker": "W9975"
+  },
+  {
+    "id": 98824845,
+    "name": "Napoleon Born to Industries",
+    "ticker": "NAPBI"
+  },
+  {
+    "id": 98734163,
+    "name": "Mustafar Resort and Spa",
+    "ticker": "M0F3"
+  },
+  {
+    "id": 98822384,
+    "name": "Red Roots Syndicate",
+    "ticker": "RR.S"
+  },
+  {
+    "id": 98536977,
+    "name": "Starfrackers Inc.",
+    "ticker": "DONTU"
+  },
+  {
+    "id": 98819407,
+    "name": "Empire Foundation",
+    "ticker": ".EFD."
+  },
+  {
+    "id": 98762487,
+    "name": "Passierschein A-38",
+    "ticker": "PSA38"
+  },
+  {
+    "id": 1795736259,
+    "name": "HildCo Interplanetar",
+    "ticker": "HILDC"
+  },
+  {
+    "id": 98605170,
+    "name": "Hungarian Shadow Group",
+    "ticker": "HS-G"
+  },
+  {
+    "id": 98811152,
+    "name": "Vilaribo",
+    "ticker": "SATNR"
+  },
+  {
+    "id": 98100376,
+    "name": "Zacharia Explorations Group",
+    "ticker": "ZWEI"
+  },
+  {
+    "id": 98276224,
+    "name": "X Space Enterprises",
+    "ticker": "XSPE"
+  },
+  {
+    "id": 98808722,
+    "name": "The Ultraviolet Control",
+    "ticker": "TUVCT"
+  },
+  {
+    "id": 98560606,
+    "name": "Morphite Industries",
+    "ticker": "MRHT"
+  },
+  {
+    "id": 98825499,
+    "name": "Spencer Interstellar Ltd",
+    "ticker": "SP1X"
+  },
+  {
+    "id": 98782555,
+    "name": "the redgoats",
+    "ticker": "RGOT"
+  },
+  {
+    "id": 98825582,
+    "name": "Dai Support Systems",
+    "ticker": "DAI S"
+  },
+  {
+    "id": 98825486,
+    "name": "Snowfactory Yamwagon..",
+    "ticker": "SNYAA"
+  },
+  {
+    "id": 98825688,
+    "name": "Arkenstone Industries",
+    "ticker": "AKSIN"
+  },
+  {
+    "id": 98781175,
+    "name": "Kandyland Industries",
+    "ticker": "TSTY1"
+  },
+  {
+    "id": 98728100,
+    "name": "Vigilant Drifter",
+    "ticker": "VIWH"
+  },
+  {
+    "id": 98799013,
+    "name": "Echoes of Thrace",
+    "ticker": "EOTHR"
+  },
+  {
+    "id": 98823857,
+    "name": "Obscura Lux Inc.",
+    "ticker": "PH2K"
+  },
+  {
+    "id": 98728965,
+    "name": "MoonBro Corp.",
+    "ticker": "MOCN"
+  },
+  {
+    "id": 98823916,
+    "name": "GR4VESGANG",
+    "ticker": "GR4G"
+  },
+  {
+    "id": 98771670,
+    "name": "Worminger",
+    "ticker": "WMGI"
+  },
+  {
+    "id": 98826107,
+    "name": "SmilePort",
+    "ticker": "SP25"
+  },
+  {
+    "id": 98825856,
+    "name": "Ship Stain",
+    "ticker": "ICK.."
+  },
+  {
+    "id": 98825542,
+    "name": "Spectre Flock Logistics",
+    "ticker": "LCEPS"
+  },
+  {
+    "id": 98825810,
+    "name": "smooth legs",
+    "ticker": "1LEGS"
+  },
+  {
+    "id": 98824772,
+    "name": "Novelis Heavy Industries",
+    "ticker": "NHI69"
+  },
+  {
+    "id": 98825995,
+    "name": "Ghost Project Alpha",
+    "ticker": "GP-A"
+  },
+  {
+    "id": 98808961,
+    "name": "Goin Wormhole",
+    "ticker": "GOWO"
+  },
+  {
+    "id": 98577094,
+    "name": "My Own Company",
+    "ticker": "MOCO-"
+  },
+  {
+    "id": 98675170,
+    "name": "Black Wing",
+    "ticker": "BWBWB"
+  },
+  {
+    "id": 98825047,
+    "name": "Alien's ArchXing",
+    "ticker": "AKSAX"
+  },
+  {
+    "id": 98825892,
+    "name": "Navigators' Union Logistics",
+    "ticker": "N-V-L"
+  },
+  {
+    "id": 98824455,
+    "name": "The house of Big Bulls",
+    "ticker": "THOBB"
+  },
+  {
+    "id": 98825121,
+    "name": "EntryError",
+    "ticker": "GUSHY"
+  },
+  {
+    "id": 98823551,
+    "name": "Inner Rim Jobs",
+    "ticker": "RMJOB"
+  },
+  {
+    "id": 98760659,
+    "name": "NONAME SOCIETY",
+    "ticker": "NNMSC"
+  },
+  {
+    "id": 98800460,
+    "name": "Mugiwara Holding",
+    "ticker": "MUGIH"
+  },
+  {
+    "id": 98825680,
+    "name": "ObeyTheLawsHereOnManaanHuman",
+    "ticker": "KOLTO"
+  },
+  {
+    "id": 98825909,
+    "name": "Stewards of Khanid",
+    "ticker": "STWRD"
+  },
+  {
+    "id": 98815753,
+    "name": "PrimeWorkspace inc",
+    "ticker": "PWSII"
+  },
+  {
+    "id": 98825791,
+    "name": "Parallax Error.",
+    "ticker": "-PE.-"
+  },
+  {
+    "id": 555073675,
+    "name": "The Green Cross",
+    "ticker": "-TGC-"
+  },
+  {
+    "id": 1625452536,
+    "name": "Big Monkey Corp",
+    "ticker": "BIG M"
+  },
+  {
+    "id": 98796565,
+    "name": "Planetary Suspects",
+    "ticker": "PI1UV"
+  },
+  {
+    "id": 98823659,
+    "name": "Mormon Fursuit Production Facility",
+    "ticker": "SOAKR"
+  },
+  {
+    "id": 98824256,
+    "name": "The 5 Percent",
+    "ticker": "5PCNT"
+  },
+  {
+    "id": 98826018,
+    "name": "Matt Was Fresh",
+    "ticker": "MT-WA"
+  },
+  {
+    "id": 98825587,
+    "name": "Occupied Space Hazard Authority",
+    "ticker": ".OSHA"
+  },
+  {
+    "id": 98763735,
+    "name": "xXSeverodvinskXx",
+    "ticker": "ZADQW"
+  },
+  {
+    "id": 98765107,
+    "name": "Monarch Group Inc.",
+    "ticker": "MOGRI"
+  },
+  {
+    "id": 98815301,
+    "name": "Redmi O279R",
+    "ticker": "RO279"
+  },
+  {
+    "id": 98825914,
+    "name": "Adeptus Teletubius Corp.",
+    "ticker": "ADTUB"
+  },
+  {
+    "id": 98810180,
+    "name": "Thackorp",
+    "ticker": "TH-CK"
+  },
+  {
+    "id": 98297218,
+    "name": "Bio Incorporated",
+    "ticker": "BINC0"
+  },
+  {
+    "id": 98771960,
+    "name": "ZLZL Tax Free Corporation",
+    "ticker": "ZLZL"
+  },
+  {
+    "id": 98825570,
+    "name": "Umamusume Betting Exchange",
+    "ticker": "-UMA"
+  },
+  {
+    "id": 98820464,
+    "name": "House Armenus",
+    "ticker": "H ARM"
+  },
+  {
+    "id": 98777034,
+    "name": "Borderland Titans",
+    "ticker": "BADLY"
+  },
+  {
+    "id": 98059011,
+    "name": "Cold-Fusion TechLab",
+    "ticker": "CFTL"
+  },
+  {
+    "id": 98825864,
+    "name": "Blackpowder Munitions and Distribution",
+    "ticker": "B MAD"
+  },
+  {
+    "id": 98825865,
+    "name": "Late-Stage Capitalism",
+    "ticker": "NB4U"
+  },
+  {
+    "id": 98469587,
+    "name": "Conserve Mass",
+    "ticker": "HODR."
+  },
+  {
+    "id": 98825513,
+    "name": "Kaz-ualties of Industry",
+    "ticker": "KAZ-"
+  },
+  {
+    "id": 98821825,
+    "name": "Agent Assets And Acquisitions",
+    "ticker": "AGNT3"
+  },
+  {
+    "id": 98825608,
+    "name": "Forgot to Siege",
+    "ticker": "4GOTS"
+  },
+  {
+    "id": 98825258,
+    "name": "Ascendant Horizons",
+    "ticker": "AS-HO"
+  },
+  {
+    "id": 98825893,
+    "name": "Sanctioned Fate's Inferno",
+    "ticker": ".LML."
+  },
+  {
+    "id": 98823351,
+    "name": "TheScarletCrusade",
+    "ticker": "TSCR."
+  },
+  {
+    "id": 98825671,
+    "name": "Rogue Eternity",
+    "ticker": "RGETY"
+  },
+  {
+    "id": 98572790,
+    "name": "Enclave of Forbidden Dreams",
+    "ticker": "EOF."
+  },
+  {
+    "id": 98740296,
+    "name": "ClanWus",
+    "ticker": ".WUS."
+  },
+  {
+    "id": 98102660,
+    "name": "My Little Pony Industries Inc.",
+    "ticker": "PO NY"
+  },
+  {
+    "id": 98802955,
+    "name": "Space Explorium Corp",
+    "ticker": "SPX25"
+  },
+  {
+    "id": 98822569,
+    "name": "Czarne Drapiezniki",
+    "ticker": "JEZDZ"
+  },
+  {
+    "id": 98756850,
+    "name": "Azariel Holdings",
+    "ticker": "AZ.HO"
+  },
+  {
+    "id": 98825301,
+    "name": "Nebula Runners",
+    "ticker": "NERU"
+  },
+  {
+    "id": 435515354,
+    "name": "Bastards Of New Eden",
+    "ticker": "BONE."
+  },
+  {
+    "id": 98203884,
+    "name": "White Flame Enterprises",
+    "ticker": "WF-E"
+  },
+  {
+    "id": 98815321,
+    "name": "New Venture",
+    "ticker": "N.VEN"
+  },
+  {
+    "id": 98823806,
+    "name": "Gold Eagle Corporation",
+    "ticker": "XGECX"
+  },
+  {
+    "id": 98825547,
+    "name": "Cleyd Strategic Logistics",
+    "ticker": "CSLFU"
+  },
+  {
+    "id": 98825612,
+    "name": "Octarine Industries",
+    "ticker": "OCTA-"
+  },
+  {
+    "id": 98825745,
+    "name": "Dark Matter Foundry",
+    "ticker": "MOLT."
+  },
+  {
+    "id": 98768148,
+    "name": "The Mining Production Corporation",
+    "ticker": "MPC01"
+  },
+  {
+    "id": 98822412,
+    "name": "Prometheus REX",
+    "ticker": "PRTHR"
+  },
+  {
+    "id": 98751745,
+    "name": "Airpower Inc",
+    "ticker": "AIRP"
+  },
+  {
+    "id": 98727952,
+    "name": "T R I D E N T",
+    "ticker": "T R I"
+  },
+  {
+    "id": 98824668,
+    "name": "L E V I A T H A N",
+    "ticker": "L E V"
+  },
+  {
+    "id": 98825681,
+    "name": "TRIARCHY HOLDINGS",
+    "ticker": "IIIH"
+  },
+  {
+    "id": 98825853,
+    "name": "O R D E R",
+    "ticker": "O R D"
+  },
+  {
+    "id": 98804474,
+    "name": "Nuthanger Farm",
+    "ticker": "NUTHA"
+  },
+  {
+    "id": 98817837,
+    "name": "BLIND-EYES",
+    "ticker": "-BLND"
+  },
+  {
+    "id": 98820298,
+    "name": "Minn Drill Ink",
+    "ticker": "MINND"
+  },
+  {
+    "id": 98559186,
+    "name": "PSA",
+    "ticker": "PSAE"
+  },
+  {
+    "id": 98819293,
+    "name": "The Axiom Army",
+    "ticker": "TAAY"
+  },
+  {
+    "id": 98825876,
+    "name": "Wings Holding",
+    "ticker": "WOFHD"
+  },
+  {
+    "id": 98821800,
+    "name": "Kleiner Hai bois",
+    "ticker": "OILYB"
+  },
+  {
+    "id": 98771173,
+    "name": "Calamity Logistics",
+    "ticker": "CL0G"
+  },
+  {
+    "id": 98807401,
+    "name": "Kraken Rising",
+    "ticker": "KRAR"
+  },
+  {
+    "id": 98825910,
+    "name": "The Kraken Nest Holding",
+    "ticker": "TKNH"
+  },
+  {
+    "id": 98825949,
+    "name": "Iron Guns Holding",
+    "ticker": "-IGH-"
+  },
+  {
+    "id": 98826137,
+    "name": "Iron Rebels",
+    "ticker": "-26"
+  },
+  {
+    "id": 98820973,
+    "name": "Shadow Garden 01",
+    "ticker": "SDD01"
+  },
+  {
+    "id": 98736213,
+    "name": "SHADOW RESEARCH CORPRATION",
+    "ticker": "SRCPT"
+  },
+  {
+    "id": 98091980,
+    "name": "Omniscience Explorations Political Organization",
+    "ticker": "P ORG"
+  },
+  {
+    "id": 98092259,
+    "name": "Trade Academy",
+    "ticker": "TRDAC"
+  },
+  {
+    "id": 98432392,
+    "name": "Royal Cross Guard",
+    "ticker": "RXGRD"
+  },
+  {
+    "id": 98826133,
+    "name": "blucrs",
+    "ticker": "BCBSS"
+  },
+  {
+    "id": 98741157,
+    "name": "Darkstorm Trade Ltd.",
+    "ticker": "C01N5"
+  },
+  {
+    "id": 98826150,
+    "name": "CYBER GHOST NET",
+    "ticker": "CGNET"
+  },
+  {
+    "id": 98733147,
+    "name": "The Light of New Eden",
+    "ticker": "T.LNE"
+  },
+  {
+    "id": 98826208,
+    "name": "Stereotypical Holding Corporation",
+    "ticker": "STHCN"
+  },
+  {
+    "id": 98823705,
+    "name": "Moribund Industries",
+    "ticker": "MORI-"
+  },
+  {
+    "id": 98644620,
+    "name": "Deep Skye Industries",
+    "ticker": "EYKS"
+  },
+  {
+    "id": 98669573,
+    "name": "EA Enterprises",
+    "ticker": "-EAE-"
+  },
+  {
+    "id": 98781498,
+    "name": "SpaceX.",
+    "ticker": "SP.X"
+  },
+  {
+    "id": 98811579,
+    "name": "Tooth Ferry Industries",
+    "ticker": "ZANA2"
+  },
+  {
+    "id": 98824330,
+    "name": "Oksarth Enterprises",
+    "ticker": "OKENT"
+  },
+  {
+    "id": 98824383,
+    "name": "zZzZz Corporation",
+    "ticker": "95Z7"
+  },
+  {
+    "id": 98825137,
+    "name": "Ozuwara's Industry Complex",
+    "ticker": "OZ-IC"
+  },
+  {
+    "id": 98825416,
+    "name": "Gravelink",
+    "ticker": "G-LNK"
+  },
+  {
+    "id": 98822285,
+    "name": "Frictionless Yield Pipeline Management",
+    "ticker": "FYPM."
+  },
+  {
+    "id": 98826094,
+    "name": "Failure to Integrate",
+    "ticker": "KCU-F"
+  },
+  {
+    "id": 98826207,
+    "name": "Failure to Integrate - Industrials",
+    "ticker": "F1N1T"
+  },
+  {
+    "id": 98826414,
+    "name": "Jorund Corporation",
+    "ticker": ".J.C."
+  },
+  {
+    "id": 98826453,
+    "name": "Dragon Aeternum",
+    "ticker": "AION."
+  },
+  {
+    "id": 98579646,
+    "name": "Painter Advanced Logistics",
+    "ticker": "WTTDZ"
+  },
+  {
+    "id": 98826432,
+    "name": "Painter Claims Processing",
+    "ticker": "CL4IM"
+  },
+  {
+    "id": 693804367,
+    "name": "Canadian Operations",
+    "ticker": "-CDN-"
+  },
+  {
+    "id": 98172336,
+    "name": "Great white north bait and tackle",
+    "ticker": "-BAIT"
+  },
+  {
+    "id": 98532509,
+    "name": "Pretzel Logic.",
+    "ticker": "TWSIT"
+  },
+  {
+    "id": 98808182,
+    "name": "Can Can Need Try Try Wood",
+    "ticker": "SAOJG"
+  },
+  {
+    "id": 98824902,
+    "name": "QuackOps",
+    "ticker": "DKHNT"
+  },
+  {
+    "id": 98826406,
+    "name": "LionRoyalKnight Corporation",
+    "ticker": "LRKX"
+  },
+  {
+    "id": 98826225,
+    "name": "NightMoon Solid",
+    "ticker": "WHYWN"
+  },
+  {
+    "id": 98818456,
+    "name": "LowHellhounds",
+    "ticker": "EXAUS"
+  },
+  {
+    "id": 98826262,
+    "name": "The Survival Protocol",
+    "ticker": "TSP1"
+  },
+  {
+    "id": 98823768,
+    "name": "Midlarra Brand Modules and Ships",
+    "ticker": "MBMAS"
+  },
+  {
+    "id": 98825998,
+    "name": "Keno. Corp.",
+    "ticker": "KENOC"
+  },
+  {
+    "id": 98755400,
+    "name": "Haven for Renn",
+    "ticker": "REN-0"
+  },
+  {
+    "id": 98826060,
+    "name": "KOTSMALTZO",
+    "ticker": "KOMTZ"
+  },
+  {
+    "id": 98826596,
+    "name": "Prismatic Opiate Holdings",
+    "ticker": "AZU-H"
+  },
+  {
+    "id": 98741356,
+    "name": "Genital Jousting.",
+    "ticker": "CUMY"
+  },
+  {
+    "id": 98022553,
+    "name": "Trusted Rust Inc.",
+    "ticker": "RAOF"
+  },
+  {
+    "id": 98703539,
+    "name": "Jolly Devils",
+    "ticker": "JODS"
+  },
+  {
+    "id": 98501062,
+    "name": "Mishka TM Corporation",
+    "ticker": "MTM2"
+  },
+  {
+    "id": 98592738,
+    "name": "Quest Dealer",
+    "ticker": "QSTDR"
+  },
+  {
+    "id": 98733492,
+    "name": "CrounseCorp",
+    "ticker": "CR211"
+  },
+  {
+    "id": 98818348,
+    "name": "BOO-Z",
+    "ticker": "BOO Z"
+  },
+  {
+    "id": 98823961,
+    "name": "Manifest Family Corp",
+    "ticker": "MFCCA"
+  },
+  {
+    "id": 98707094,
+    "name": "Goo go Brrrr",
+    "ticker": "FOALY"
+  },
+  {
+    "id": 98826710,
+    "name": "SlothMart",
+    "ticker": "SM.RT"
+  },
+  {
+    "id": 98662033,
+    "name": "Demurrage",
+    "ticker": "-DEM"
+  },
+  {
+    "id": 98763564,
+    "name": "McCray's",
+    "ticker": "M-RAY"
+  },
+  {
+    "id": 98764953,
+    "name": "Twcortic",
+    "ticker": "TTWW"
+  },
+  {
+    "id": 98604199,
+    "name": "Acquisition's Incorporated",
+    "ticker": "AINC-"
+  },
+  {
+    "id": 98649458,
+    "name": "Per aspera ad astra.",
+    "ticker": ".PAAA"
+  },
+  {
+    "id": 98825678,
+    "name": "Ishukone Watch D.I.R.E Marshals",
+    "ticker": "IDIRE"
+  },
+  {
+    "id": 98702985,
+    "name": "Micam Solutions",
+    "ticker": "MICAM"
+  },
+  {
+    "id": 98502663,
+    "name": "Institute of Inner Peace",
+    "ticker": "IOIP"
+  },
+  {
+    "id": 98826460,
+    "name": "Minmatar Resource Extraction INC",
+    "ticker": "MRECK"
+  },
+  {
+    "id": 98472010,
+    "name": "ChemCirc Liberates",
+    "ticker": "CCLBR"
+  },
+  {
+    "id": 98056535,
+    "name": "Chaven Baptist Church",
+    "ticker": "CHAY"
+  },
+  {
+    "id": 98587214,
+    "name": "Rekkingcrew",
+    "ticker": "HTGRC"
+  },
+  {
+    "id": 98745561,
+    "name": "Venatio",
+    "ticker": "ARCUS"
+  },
+  {
+    "id": 1082521020,
+    "name": "The Tok'ra Federation",
+    "ticker": "TOKRA"
+  },
+  {
+    "id": 98826535,
+    "name": "Industrial Accidents",
+    "ticker": "OVLD"
+  },
+  {
+    "id": 98235666,
+    "name": "Knave Industries",
+    "ticker": ".K.I"
+  },
+  {
+    "id": 98826593,
+    "name": "Astral Projection Hold.",
+    "ticker": "AS.H"
+  },
+  {
+    "id": 98380436,
+    "name": "Exotic Matter Operations",
+    "ticker": "A EMO"
+  },
+  {
+    "id": 98824965,
+    "name": "Aurelion Frame",
+    "ticker": "AFRX"
+  },
+  {
+    "id": 98826353,
+    "name": "Hammer and Shield Co",
+    "ticker": "HMSHI"
+  },
+  {
+    "id": 98594392,
+    "name": "Contorta",
+    "ticker": "CNTRT"
+  },
+  {
+    "id": 98815928,
+    "name": "HA OCTPOBAX",
+    "ticker": "HAOCT"
+  },
+  {
+    "id": 98823508,
+    "name": "Black Ocean.",
+    "ticker": "BK.ON"
+  },
+  {
+    "id": 98823249,
+    "name": "Frontline Dead Drop Logistics",
+    "ticker": "FDDL2"
+  },
+  {
+    "id": 98671823,
+    "name": "The Imperial Bank",
+    "ticker": "OSHOO"
+  },
+  {
+    "id": 98826724,
+    "name": "720th Uncloaked Sabre Battalion",
+    "ticker": "72USB"
+  },
+  {
+    "id": 98824588,
+    "name": "Broken Fish Industries",
+    "ticker": "INDBF"
+  },
+  {
+    "id": 98745117,
+    "name": "Gallifrey Conclave",
+    "ticker": "X8X8"
+  },
+  {
+    "id": 98819567,
+    "name": "LP WALLET SHELLCORP",
+    "ticker": "LPWAL"
+  },
+  {
+    "id": 98826717,
+    "name": "Warforged Militants",
+    "ticker": ".WAR."
+  },
+  {
+    "id": 98035324,
+    "name": "Overtly Covert Operations",
+    "ticker": "-OCO-"
+  },
+  {
+    "id": 98444105,
+    "name": "Wormhole PaX",
+    "ticker": "PAXW"
+  },
+  {
+    "id": 98826076,
+    "name": "GC Strategic Transport",
+    "ticker": "GCST"
+  },
+  {
+    "id": 98826308,
+    "name": "Invisible Rangers",
+    "ticker": "IVRG"
+  },
+  {
+    "id": 98826713,
+    "name": "Virtual Industries Inc.",
+    "ticker": "Z.ISK"
+  },
+  {
+    "id": 98809008,
+    "name": "The Public Safety Bureau",
+    "ticker": "NSAB"
+  },
+  {
+    "id": 98441900,
+    "name": "Panzer Recycling Station",
+    "ticker": "PZRS"
+  },
+  {
+    "id": 98826386,
+    "name": "Jorund Intelligence",
+    "ticker": ".J.I."
+  },
+  {
+    "id": 98520659,
+    "name": "Calaran Security Inc",
+    "ticker": "CAL.S"
+  },
+  {
+    "id": 98781935,
+    "name": "Black Ghost Industery",
+    "ticker": "BLKGT"
+  },
+  {
+    "id": 98811344,
+    "name": "The Outlaws I See Red",
+    "ticker": "TOISR"
+  },
+  {
+    "id": 98822844,
+    "name": "Joint Mining Task Farce",
+    "ticker": "JMTF"
+  },
+  {
+    "id": 98767723,
+    "name": "We Like To Move It",
+    "ticker": "M0VED"
+  },
+  {
+    "id": 98532006,
+    "name": "Covert Syndicate Holdings",
+    "ticker": "COV H"
+  },
+  {
+    "id": 98479815,
+    "name": "Cruisers Crew",
+    "ticker": "W3RC"
+  },
+  {
+    "id": 98683306,
+    "name": "Sons of Cain",
+    "ticker": "S0NC"
+  },
+  {
+    "id": 98816628,
+    "name": "Primordial Solutions",
+    "ticker": "OR1GN"
+  },
+  {
+    "id": 98824165,
+    "name": "420 wormhole gypsy",
+    "ticker": "420WG"
+  },
+  {
+    "id": 98825705,
+    "name": "Praxis Industrial Group",
+    "ticker": "PIGFF"
+  },
+  {
+    "id": 98819419,
+    "name": "Obscura Intelligence Directorate",
+    "ticker": "OBDC"
+  },
+  {
+    "id": 98824192,
+    "name": "always blob",
+    "ticker": "ABLOB"
+  },
+  {
+    "id": 98826309,
+    "name": "ORK War Party",
+    "ticker": "6.72"
+  },
+  {
+    "id": 98826303,
+    "name": "Staying Until Evicted",
+    "ticker": "-SUE-"
+  },
+  {
+    "id": 98824526,
+    "name": "Crimea Mining Corp",
+    "ticker": "CR-MN"
+  },
+  {
+    "id": 98826362,
+    "name": "Startouch's Holding",
+    "ticker": "STHTD"
+  },
+  {
+    "id": 98821320,
+    "name": "Black Doctrine Collective",
+    "ticker": "BDCOL"
+  },
+  {
+    "id": 98826475,
+    "name": "Ronin Interstellar Development Group",
+    "ticker": "RIDG."
+  },
+  {
+    "id": 98105774,
+    "name": "Dark protocol",
+    "ticker": "CLOKE"
+  },
+  {
+    "id": 98795573,
+    "name": "GoddessNemesis Corporation",
+    "ticker": "GDDNC"
+  },
+  {
+    "id": 98628540,
+    "name": "Forth TIl Valhalla",
+    "ticker": "FTVAL"
+  },
+  {
+    "id": 98826004,
+    "name": "Madullier's Bizarre Bazaar",
+    "ticker": "M-BB"
+  },
+  {
+    "id": 98756549,
+    "name": "666.Slytherin Space Mining Corporation",
+    "ticker": "666SS"
+  },
+  {
+    "id": 98343074,
+    "name": "This is a fake corp",
+    "ticker": "TIAFC"
+  },
+  {
+    "id": 98589755,
+    "name": "Hidden Star Legion",
+    "ticker": ".HSL."
+  },
+  {
+    "id": 98826496,
+    "name": "Ore Refinement Company Acquisitions",
+    "ticker": "ORC.A"
+  },
+  {
+    "id": 98826477,
+    "name": "True Souls",
+    "ticker": "BG8.3"
+  },
+  {
+    "id": 98508527,
+    "name": "Faction Underground",
+    "ticker": "FAXUN"
+  },
+  {
+    "id": 98183193,
+    "name": "Tengoo Uninstallation Service",
+    "ticker": "REKT"
+  },
+  {
+    "id": 98822465,
+    "name": "FreightWorks",
+    "ticker": "FR8WK"
+  },
+  {
+    "id": 619978191,
+    "name": "Auto Scoop Solutions",
+    "ticker": ".ASS."
+  },
+  {
+    "id": 1528336439,
+    "name": "Encina Technologies",
+    "ticker": "ENTEC"
+  },
+  {
+    "id": 98679090,
+    "name": "Wormholes In Nuts",
+    "ticker": "W I N"
+  },
+  {
+    "id": 98825308,
+    "name": "Olympium",
+    "ticker": "OTRTO"
+  },
+  {
+    "id": 98825505,
+    "name": "No Taxes Needed",
+    "ticker": ".NTN."
+  },
+  {
+    "id": 1015950561,
+    "name": "Gobbledegook Industrial Gadgets",
+    "ticker": "GOOK"
+  },
+  {
+    "id": 98826335,
+    "name": "Steinbrecher Bergbau GmbH",
+    "ticker": "VYTW"
+  },
+  {
+    "id": 98826196,
+    "name": "Dirty Rod",
+    "ticker": "DIRTR"
+  },
+  {
+    "id": 98350886,
+    "name": "Forsak-N-Legion",
+    "ticker": "-PTSD"
+  },
+  {
+    "id": 98648243,
+    "name": "The Saggasu",
+    "ticker": "SAGAZ"
+  },
+  {
+    "id": 98826185,
+    "name": "Bastards Corporation",
+    "ticker": "BAS-1"
+  },
+  {
+    "id": 98824987,
+    "name": "Overwatch Command",
+    "ticker": "0WTC."
+  },
+  {
+    "id": 98826464,
+    "name": "Survey Solutions",
+    "ticker": "SRSV"
+  },
+  {
+    "id": 98826299,
+    "name": "Kirkland-Signature",
+    "ticker": "KKLS"
+  },
+  {
+    "id": 98786225,
+    "name": "Rejected Syndicate",
+    "ticker": "-RJS-"
+  },
+  {
+    "id": 98472367,
+    "name": "lolalola Corporation",
+    "ticker": "51243"
+  },
+  {
+    "id": 98780130,
+    "name": "Dawn..",
+    "ticker": "DWN."
+  },
+  {
+    "id": 98800724,
+    "name": "xeonY Holding",
+    "ticker": "XEONY"
+  },
+  {
+    "id": 98801088,
+    "name": "xeonY Sales",
+    "ticker": "XNYS"
+  },
+  {
+    "id": 98826488,
+    "name": "Ruthless Marshmellows",
+    "ticker": "SMRE"
+  },
+  {
+    "id": 98813036,
+    "name": "Velvet Scripture Syndicate",
+    "ticker": "CWAT"
+  },
+  {
+    "id": 98816192,
+    "name": "Order of the Golden Yoke",
+    "ticker": ".HRM"
+  },
+  {
+    "id": 98816290,
+    "name": "Guardians of the Sacred Lash",
+    "ticker": "LASH."
+  },
+  {
+    "id": 2035782672,
+    "name": "The Lost Squadron",
+    "ticker": "LSQD"
+  },
+  {
+    "id": 98823004,
+    "name": "Bird Law LLP",
+    "ticker": "BRDLA"
+  },
+  {
+    "id": 98826573,
+    "name": "Cut-N-Run Industries Incorporated",
+    "ticker": "ZXTCZ"
+  },
+  {
+    "id": 98363725,
+    "name": "House of Black Lanterns",
+    "ticker": "H-BLK"
+  },
+  {
+    "id": 98735331,
+    "name": "SuicideGirls Holding",
+    "ticker": "-5G-"
+  },
+  {
+    "id": 98826771,
+    "name": "Glacial Drift Defence",
+    "ticker": "ICEIT"
+  },
+  {
+    "id": 98826719,
+    "name": "Wheelbarrow Logistics",
+    "ticker": "WHLBR"
+  },
+  {
+    "id": 98825941,
+    "name": "Kun-Lun",
+    "ticker": "KN-L"
+  },
+  {
+    "id": 98826057,
+    "name": "Sorry About Your Space",
+    "ticker": "GVSN1"
+  },
+  {
+    "id": 98826101,
+    "name": "Zentralreferat Nebenproduktverwaltung",
+    "ticker": "PH-W"
+  },
+  {
+    "id": 98826537,
+    "name": "Love. Death. Bees",
+    "ticker": "LDB."
+  },
+  {
+    "id": 98233640,
+    "name": "Minmatar Brotherhood",
+    "ticker": "-MB-."
+  },
+  {
+    "id": 98788115,
+    "name": "LP Sweeper",
+    "ticker": "LP.S"
+  },
+  {
+    "id": 98238277,
+    "name": "The 2nd Army. The Bridgeburners",
+    "ticker": "TFILO"
+  },
+  {
+    "id": 98817732,
+    "name": "Equinox Galactic",
+    "ticker": "NOXG"
+  },
+  {
+    "id": 98276273,
+    "name": "Brave Operations - Lollipop Division",
+    "ticker": "BO-LD"
+  },
+  {
+    "id": 98261004,
+    "name": "Union of independent miners and industrials",
+    "ticker": "UIMIC"
+  },
+  {
+    "id": 98516127,
+    "name": "Fallens Corp",
+    "ticker": "FACO."
+  },
+  {
+    "id": 98826755,
+    "name": "Little Brown Dwarf",
+    "ticker": "LBDWF"
+  },
+  {
+    "id": 98826009,
+    "name": "20 Legion",
+    "ticker": "-20L-"
+  },
+  {
+    "id": 98827129,
+    "name": "Legio Noctis",
+    "ticker": "N0XIS"
+  },
+  {
+    "id": 98813721,
+    "name": "The Council Of Ricks",
+    "ticker": "R1CK"
+  },
+  {
+    "id": 98761586,
+    "name": "Yutani Drilling Corporation",
+    "ticker": "AWYDC"
+  },
+  {
+    "id": 98804173,
+    "name": "Indicators of Compromise",
+    "ticker": ".IOC."
+  },
+  {
+    "id": 98191024,
+    "name": "Nogard Nebula",
+    "ticker": "NGNBC"
+  },
+  {
+    "id": 128008322,
+    "name": "Death Row Enterprises",
+    "ticker": "-DTE-"
+  },
+  {
+    "id": 98733595,
+    "name": "W'Bank",
+    "ticker": "BAN.K"
+  },
+  {
+    "id": 98821431,
+    "name": "Imminent Failure",
+    "ticker": "IMFA"
+  },
+  {
+    "id": 98629830,
+    "name": "Eieumeo",
+    "ticker": "EIEUM"
+  },
+  {
+    "id": 98826808,
+    "name": "holdendeezz Co.",
+    "ticker": "N-UTZ"
+  },
+  {
+    "id": 963741269,
+    "name": "Battlestars",
+    "ticker": "BTLS"
+  },
+  {
+    "id": 98826716,
+    "name": "The Tolling Company",
+    "ticker": "TCMPY"
+  },
+  {
+    "id": 98824565,
+    "name": "Bebbanburger",
+    "ticker": "BANNF"
+  },
+  {
+    "id": 98825182,
+    "name": "Shattered Steele Operations",
+    "ticker": "550P"
+  },
+  {
+    "id": 665117462,
+    "name": "The Spartans",
+    "ticker": "SPAN"
+  },
+  {
+    "id": 98747987,
+    "name": "Silence of Dark",
+    "ticker": "1SOD1"
+  },
+  {
+    "id": 98812380,
+    "name": "Gojo's Letter To Nanami",
+    "ticker": "PEN1Z"
+  },
+  {
+    "id": 98776988,
+    "name": "The Air Pony",
+    "ticker": "BAUGO"
+  },
+  {
+    "id": 98826926,
+    "name": "NND Holding",
+    "ticker": "N.N.D"
+  },
+  {
+    "id": 98153489,
+    "name": "Silent Horrors",
+    "ticker": "SHRRS"
+  },
+  {
+    "id": 98631114,
+    "name": "Trade Wormhole Industy",
+    "ticker": "TRWHI"
+  },
+  {
+    "id": 98790154,
+    "name": "Faceless Team",
+    "ticker": "FTEAM"
+  },
+  {
+    "id": 98809629,
+    "name": "KRACorporation",
+    "ticker": "KCPC"
+  },
+  {
+    "id": 1629681060,
+    "name": "Man-of-war Primary Unit",
+    "ticker": "PROOF"
+  },
+  {
+    "id": 98827132,
+    "name": "Ragga Muffin' Bizniz",
+    "ticker": "5446"
+  },
+  {
+    "id": 98755326,
+    "name": "KRS Industry",
+    "ticker": "KRS I"
+  },
+  {
+    "id": 98826983,
+    "name": "meow meow inc.",
+    "ticker": "NYA-"
+  },
+  {
+    "id": 98751604,
+    "name": "Dirty Ghetto Kids",
+    "ticker": "D.G.K"
+  },
+  {
+    "id": 98827164,
+    "name": "BLACK'LEGION Unlimited",
+    "ticker": "BLK-U"
+  },
+  {
+    "id": 98826528,
+    "name": "Crimson Shadows of War",
+    "ticker": "XTAYP"
+  },
+  {
+    "id": 98827043,
+    "name": "Super Earth Armed Forces",
+    "ticker": "SE.AF"
+  },
+  {
+    "id": 98723633,
+    "name": "Neo's Meme House",
+    "ticker": "Y0L0O"
+  },
+  {
+    "id": 98822443,
+    "name": "Roux the Day",
+    "ticker": "RTDDD"
+  },
+  {
+    "id": 98826858,
+    "name": "Zergling Scout Association",
+    "ticker": "ZCOUT"
+  },
+  {
+    "id": 98822738,
+    "name": "PluNid INC.",
+    "ticker": "BGBTS"
+  },
+  {
+    "id": 98826791,
+    "name": "Moon Supply And Services",
+    "ticker": "RTRTR"
+  },
+  {
+    "id": 98318187,
+    "name": "Anchorman.",
+    "ticker": "AKRMN"
+  },
+  {
+    "id": 98814037,
+    "name": "Phycho Services",
+    "ticker": "PHYSC"
+  },
+  {
+    "id": 98827117,
+    "name": "The Phantom Fleet",
+    "ticker": "TPF-"
+  },
+  {
+    "id": 98773675,
+    "name": "LP Hoarders",
+    "ticker": "L P H"
+  },
+  {
+    "id": 98811015,
+    "name": "Shinobi's 11",
+    "ticker": "H3I5T"
+  },
+  {
+    "id": 98809841,
+    "name": "Sprite Claw",
+    "ticker": "CS.CS"
+  },
+  {
+    "id": 98812631,
+    "name": "Lizardman Executioners",
+    "ticker": "X.LE."
+  },
+  {
+    "id": 98812848,
+    "name": "Slayers of Elves",
+    "ticker": "S.ELF"
+  },
+  {
+    "id": 98788626,
+    "name": "OljeGassStein AS",
+    "ticker": "OGSAS"
+  },
+  {
+    "id": 98826434,
+    "name": "Changers of Ways",
+    "ticker": "TZNT"
+  },
+  {
+    "id": 98826430,
+    "name": "ZQ Investments",
+    "ticker": "ZQ IN"
+  },
+  {
+    "id": 98826820,
+    "name": "Droppers Without Borders.",
+    "ticker": "DOC-D"
+  },
+  {
+    "id": 98826957,
+    "name": "Lord Baron von Count-Sire Estate Management",
+    "ticker": "LBVCS"
+  },
+  {
+    "id": 98827150,
+    "name": "Cosmic Signature Logistics",
+    "ticker": "CSL0"
+  },
+  {
+    "id": 98826860,
+    "name": "The Jasper Group",
+    "ticker": "1337J"
+  },
+  {
+    "id": 98760009,
+    "name": "ABS-NO....1",
+    "ticker": "ABS-"
+  },
+  {
+    "id": 98816776,
+    "name": "Forgotten Bastards Corporation",
+    "ticker": "6226"
+  },
+  {
+    "id": 98026109,
+    "name": "Noor Tech Enterprise",
+    "ticker": "NEOO"
+  },
+  {
+    "id": 98826325,
+    "name": "The Mane Event",
+    "ticker": "TMAEV"
+  },
+  {
+    "id": 98826663,
+    "name": "FMN Logistics",
+    "ticker": "FMN.L"
+  },
+  {
+    "id": 98826819,
+    "name": "A Highsec Alt Corp",
+    "ticker": "LWSEX"
+  },
+  {
+    "id": 98827052,
+    "name": "Northern Star Resources",
+    "ticker": "NS-R"
+  },
+  {
+    "id": 98826829,
+    "name": "No Local Just Syrup",
+    "ticker": "J.S.L"
+  },
+  {
+    "id": 2028783197,
+    "name": "Carebearly Legal",
+    "ticker": "420L"
+  },
+  {
+    "id": 98625002,
+    "name": "Lucid Demeanour",
+    "ticker": "DEMU"
+  },
+  {
+    "id": 98552432,
+    "name": "Hijos de la Luna",
+    "ticker": "HDELU"
+  },
+  {
+    "id": 98626598,
+    "name": "Full faire parvenir",
+    "ticker": "FFPV"
+  },
+  {
+    "id": 98822823,
+    "name": "Cult of the Void",
+    "ticker": "CULTV"
+  },
+  {
+    "id": 98825961,
+    "name": "Jr AYASOFYA",
+    "ticker": "JAYAS"
+  },
+  {
+    "id": 98802863,
+    "name": "SMEGMA BOYS",
+    "ticker": "DOBOJ"
+  },
+  {
+    "id": 98814966,
+    "name": "Ronin Commerce and Trading",
+    "ticker": "ROCTD"
+  },
+  {
+    "id": 98805794,
+    "name": "The Isotopes",
+    "ticker": "T.ISO"
+  },
+  {
+    "id": 98826703,
+    "name": "The Hrenaly tam Dumat",
+    "ticker": "MAZOK"
+  },
+  {
+    "id": 98826123,
+    "name": "Union del Oeste",
+    "ticker": "OESTE"
+  },
+  {
+    "id": 98797075,
+    "name": "Friendly Authority",
+    "ticker": "04ARM"
+  },
+  {
+    "id": 98827065,
+    "name": "Cloaked Up",
+    "ticker": "CL-UP"
+  },
+  {
+    "id": 98799299,
+    "name": "Nontributa",
+    "ticker": "NONTR"
+  },
+  {
+    "id": 98826828,
+    "name": "MoIon Labe",
+    "ticker": "UTAKE"
+  },
+  {
+    "id": 98824757,
+    "name": "Closed Plan",
+    "ticker": "CLPN"
+  },
+  {
+    "id": 98497376,
+    "name": "0.0 Massive Production",
+    "ticker": "0MP"
+  },
+  {
+    "id": 98825576,
+    "name": "Cannibal Town",
+    "ticker": "HAZB"
+  },
+  {
+    "id": 98826642,
+    "name": "Shekel Industries LLC.",
+    "ticker": "AIPAC"
+  },
+  {
+    "id": 98826562,
+    "name": "Grumpy old Men of EVE",
+    "ticker": "GOMOE"
+  },
+  {
+    "id": 98826867,
+    "name": "Golden Spears and Iron Horses",
+    "ticker": "V4WAR"
+  },
+  {
+    "id": 98827001,
+    "name": "SEIZE CONTROL",
+    "ticker": "SE1ZE"
+  },
+  {
+    "id": 98422833,
+    "name": "X Dar Tex",
+    "ticker": "XDT"
+  },
+  {
+    "id": 98797410,
+    "name": "KandP-Fleet-Enterprise",
+    "ticker": "PANDK"
+  },
+  {
+    "id": 98522934,
+    "name": "Wetwork.",
+    "ticker": "WTWO"
+  },
+  {
+    "id": 98824463,
+    "name": "enterprise sindustries",
+    "ticker": "E-SIN"
+  },
+  {
+    "id": 98475708,
+    "name": "Ravens Blackbirds Mercs",
+    "ticker": "RBBM"
+  },
+  {
+    "id": 98807982,
+    "name": "Post Prototype Stress Disorder",
+    "ticker": "PP SD"
+  },
+  {
+    "id": 98824044,
+    "name": "Vulgus et Scortum",
+    "ticker": "XWWX"
+  },
+  {
+    "id": 98826783,
+    "name": "Mass Ascension Logistics",
+    "ticker": "MSS-L"
+  },
+  {
+    "id": 98826786,
+    "name": "Mass Ascension University",
+    "ticker": "MSS-U"
+  },
+  {
+    "id": 98809790,
+    "name": "All Bangs All The Time",
+    "ticker": "ZBANG"
+  },
+  {
+    "id": 98826289,
+    "name": "Iarthar Impireacht Loigeas",
+    "ticker": "IARTH"
+  },
+  {
+    "id": 98764836,
+    "name": "Evaglass",
+    "ticker": "EVGL"
+  },
+  {
+    "id": 98826769,
+    "name": "WE FORM SCHOOL UNIFORM",
+    "ticker": "M4NTA"
+  },
+  {
+    "id": 98826929,
+    "name": "Cleyd Strategic Logistics",
+    "ticker": "CSLOG"
+  },
+  {
+    "id": 98824307,
+    "name": "Serenity Capital",
+    "ticker": "-PRFT"
+  },
+  {
+    "id": 98400126,
+    "name": "Hot Drop Your Mom",
+    "ticker": "H-DYM"
+  },
+  {
+    "id": 98825096,
+    "name": "Checkerd Past Parcel and Post",
+    "ticker": "C-PAP"
+  },
+  {
+    "id": 98827232,
+    "name": "Glacial Melt",
+    "ticker": "GLMET"
+  },
+  {
+    "id": 98505066,
+    "name": "Warp to Zero Holding",
+    "ticker": "WRPZ"
+  },
+  {
+    "id": 98820793,
+    "name": "Korath's Consortium",
+    "ticker": "DAXY-"
+  },
+  {
+    "id": 98826569,
+    "name": "Rabble Social Club",
+    "ticker": "K LOL"
+  },
+  {
+    "id": 98765927,
+    "name": "Lamp Trading Center",
+    "ticker": "TLC-X"
+  },
+  {
+    "id": 98818088,
+    "name": "Deep Space Argonauts",
+    "ticker": "DSARG"
+  },
+  {
+    "id": 98376821,
+    "name": "Pharmi on CharBazaar",
+    "ticker": "C159"
+  },
+  {
+    "id": 98826963,
+    "name": "WSH Holding",
+    "ticker": "WSHHL"
+  },
+  {
+    "id": 98827018,
+    "name": "The Dark Matter Division",
+    "ticker": "DM-D"
+  },
+  {
+    "id": 98787227,
+    "name": "Freedom and Opportunities",
+    "ticker": "F4O"
+  },
+  {
+    "id": 98743116,
+    "name": "Happy People",
+    "ticker": "HA.PY"
+  },
+  {
+    "id": 98824020,
+    "name": "Uedama Nasty Girls",
+    "ticker": "UEGRL"
+  },
+  {
+    "id": 98807557,
+    "name": "pigeon forge",
+    "ticker": "PFRG"
+  },
+  {
+    "id": 98819555,
+    "name": "Galaxy Gas",
+    "ticker": "SMOG"
+  },
+  {
+    "id": 98827010,
+    "name": "Fireball Associates Holding",
+    "ticker": "FIREB"
+  },
+  {
+    "id": 98812211,
+    "name": "THE CROSSHAIRS",
+    "ticker": "CR5HR"
+  },
+  {
+    "id": 98822202,
+    "name": "Neptune's Triton",
+    "ticker": "NEP2N"
+  },
+  {
+    "id": 98827060,
+    "name": "Hostile Frigate Incoming",
+    "ticker": "HSTLF"
+  },
+  {
+    "id": 98821560,
+    "name": "Abandoned Worlds Inc.",
+    "ticker": "AB-WO"
+  },
+  {
+    "id": 98827151,
+    "name": "Axiom.",
+    "ticker": "A-X-M"
+  },
+  {
+    "id": 98827168,
+    "name": "Zero Point.",
+    "ticker": "HO-LD"
+  },
+  {
+    "id": 98827345,
+    "name": "Redshift Dynamics",
+    "ticker": "REDD."
+  },
+  {
+    "id": 98660405,
+    "name": "A null technological Institute",
+    "ticker": "A NUL"
+  },
+  {
+    "id": 98775726,
+    "name": "25yrs old man playing Azur Lane at 4am",
+    "ticker": "AZ LN"
+  },
+  {
+    "id": 98163899,
+    "name": "Sovereignty Zero",
+    "ticker": "SOV0"
+  },
+  {
+    "id": 98374498,
+    "name": "Dark Horse Capital",
+    "ticker": "DHCAP"
+  },
+  {
+    "id": 98374503,
+    "name": "Agency VII-1",
+    "ticker": "7-1"
+  },
+  {
+    "id": 98741914,
+    "name": "The Courtesy Flush",
+    "ticker": "UBEND"
+  },
+  {
+    "id": 98824292,
+    "name": "Extra Credit",
+    "ticker": "EXCRE"
+  },
+  {
+    "id": 98807937,
+    "name": "HLYT Holdings",
+    "ticker": "HHLYT"
+  },
+  {
+    "id": 98591231,
+    "name": "Grumpy old Gamers",
+    "ticker": "GOG-X"
   }
 ]
