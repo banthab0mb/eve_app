@@ -272,7 +272,7 @@ function formatOutput(result) {
     ` : "<p>None</p>"}
   </div>
   </div>
-  <p><a href="https://zkillboard.com/character/${result.id}" target="_blank">zKillboard</a></p>
+  <p><a href="https://zkillboard.com/character/${result.id}/" target="_blank">zKillboard</a></p>
   <hr>
   <div class="char-description">
     <h3>Bio</h3>
@@ -298,7 +298,7 @@ function formatOutput(result) {
   
   ${isValidUrl ? `<p><a href="${corp.url}" target="_blank">${corp.url}</a></p>` : ''}
   
-  <p><a href="https://zkillboard.com/corporation/${result.id}" target="_blank">zKillboard</a></p>
+  <p><a href="https://zkillboard.com/corporation/${result.id}/" target="_blank">zKillboard</a></p>
   <hr>
   <div class="corp-description">
     <h3>Description</h3>
@@ -317,7 +317,7 @@ function formatOutput(result) {
   <img src="https://images.evetech.net/alliances/${result.id}/logo" alt="${alliance.name}" class="logo" height="256px" width="256px">
   <p>&#60;${alliance.ticker}&#62;</p>
   <p>Date Founded: ${formatDate(alliance.date_founded)}</p>
-  <p><a href="https://zkillboard.com/alliance/${result.id}" target="_blank">zKillboard</a></p>
+  <p><a href="https://zkillboard.com/alliance/${result.id}/" target="_blank">zKillboard</a></p>
   <p>Corportations:</p>
   <div id="corp-table-container"></div>
 </div>
