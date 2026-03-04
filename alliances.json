@@ -19493,5 +19493,85 @@
     "id": 99014831,
     "name": "Extracurricular Hostilities",
     "ticker": "EXTRA"
+  },
+  {
+    "id": 99014832,
+    "name": "OLD SCHOOL OF KNOCKS Alliance",
+    "ticker": "OSOK1"
+  },
+  {
+    "id": 99014833,
+    "name": "VANGUARD COLLECTIVE",
+    "ticker": "-VC-"
+  },
+  {
+    "id": 99014834,
+    "name": "13th Corp Alliance",
+    "ticker": "ONE3"
+  },
+  {
+    "id": 99014835,
+    "name": "Skuffed Out.",
+    "ticker": "SKF"
+  },
+  {
+    "id": 99014836,
+    "name": "STAIN IS FOR STAIN PEOPLE ONLY.",
+    "ticker": "STAIN"
+  },
+  {
+    "id": 99014837,
+    "name": "Trit Happens",
+    "ticker": "TRIT"
+  },
+  {
+    "id": 99014838,
+    "name": "Axis Coalition",
+    "ticker": "AXIS"
+  },
+  {
+    "id": 99014839,
+    "name": "Odotte Industries",
+    "ticker": "ODIN2"
+  },
+  {
+    "id": 99014840,
+    "name": "Nocturnal Suicide",
+    "ticker": "H8.US"
+  },
+  {
+    "id": 99014841,
+    "name": "Verlate",
+    "ticker": "VRLT"
+  },
+  {
+    "id": 99014842,
+    "name": "Jovian End Of Days",
+    "ticker": "THE J"
+  },
+  {
+    "id": 99014843,
+    "name": "Societas Ineffabilis",
+    "ticker": "SOC."
+  },
+  {
+    "id": 99014844,
+    "name": "Worm WorX",
+    "ticker": "WRMX"
+  },
+  {
+    "id": 99014845,
+    "name": "FUitCK Alliance",
+    "ticker": "FAFO"
+  },
+  {
+    "id": 99014846,
+    "name": "D.A.R.E. Cartel",
+    "ticker": "DARE"
+  },
+  {
+    "id": 99014847,
+    "name": "Civilization Band",
+    "ticker": "CIVIL"
   }
 ]
