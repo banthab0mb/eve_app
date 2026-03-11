@@ -15501,8 +15501,8 @@
   },
   {
     "id": 99014311,
-    "name": "We Have to Keep Trying",
-    "ticker": "WHTKT"
+    "name": "Mako.",
+    "ticker": "10e-9"
   },
   {
     "id": 99014313,
@@ -19573,5 +19573,80 @@
     "id": 99014847,
     "name": "Civilization Band",
     "ticker": "CIVIL"
+  },
+  {
+    "id": 99014849,
+    "name": "Astral Ascendancy Initiative.",
+    "ticker": "AAI"
+  },
+  {
+    "id": 99014850,
+    "name": "Blue Alliance",
+    "ticker": "WERMT"
+  },
+  {
+    "id": 99014851,
+    "name": "10 Minutes' Notice",
+    "ticker": "10MN"
+  },
+  {
+    "id": 99014852,
+    "name": "Storm of the Freeborn",
+    "ticker": "STORM"
+  },
+  {
+    "id": 99014853,
+    "name": "DealDuck.",
+    "ticker": "DDUCK"
+  },
+  {
+    "id": 99014854,
+    "name": "Renegade Raccoon Society",
+    "ticker": "RRS"
+  },
+  {
+    "id": 99014855,
+    "name": "The Unvanquished Order",
+    "ticker": "UNVQ"
+  },
+  {
+    "id": 99014856,
+    "name": "Panem Circenses",
+    "ticker": "BNC"
+  },
+  {
+    "id": 99014857,
+    "name": "Tranquility Import Authority",
+    "ticker": "TARIF"
+  },
+  {
+    "id": 99014858,
+    "name": "Midgard Marauders",
+    "ticker": "MIMA"
+  },
+  {
+    "id": 99014860,
+    "name": "Explosive Diplomacy",
+    "ticker": "H8.US"
+  },
+  {
+    "id": 99014861,
+    "name": "Northern Trade Alliance",
+    "ticker": "NTA"
+  },
+  {
+    "id": 99014862,
+    "name": "Constellation Cartographic Network Directory",
+    "ticker": "CCNET"
+  },
+  {
+    "id": 99014863,
+    "name": "Flock Command",
+    "ticker": "FLOCK"
+  },
+  {
+    "id": 99014864,
+    "name": "The Other Kids",
+    "ticker": "T15M"
   }
 ]
