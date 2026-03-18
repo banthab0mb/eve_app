@@ -19648,5 +19648,55 @@
     "id": 99014864,
     "name": "The Other Kids",
     "ticker": "T15M"
+  },
+  {
+    "id": 99014865,
+    "name": "Pain au chocolat",
+    "ticker": "CHOCO"
+  },
+  {
+    "id": 99014866,
+    "name": "The Accepted.",
+    "ticker": "TXZIG"
+  },
+  {
+    "id": 99014867,
+    "name": "Advaced Corporation.Alliance",
+    "ticker": "ACA"
+  },
+  {
+    "id": 99014868,
+    "name": "N.A.N.O.",
+    "ticker": "N-A-N"
+  },
+  {
+    "id": 99014869,
+    "name": "PLAGA.",
+    "ticker": "PLAGA"
+  },
+  {
+    "id": 99014870,
+    "name": "Gold Eagle Corporation Alliance",
+    "ticker": "GECA"
+  },
+  {
+    "id": 99014871,
+    "name": "Gimme Da Loot",
+    "ticker": "JUI-C"
+  },
+  {
+    "id": 99014872,
+    "name": "Golden Sovereign",
+    "ticker": "GLD-S"
+  },
+  {
+    "id": 99014873,
+    "name": "The Sanguine Covenant",
+    "ticker": "S.C"
+  },
+  {
+    "id": 99014874,
+    "name": "The Yorkshire Trading Company",
+    "ticker": "TYTC"
   }
 ]
