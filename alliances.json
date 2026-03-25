@@ -19698,5 +19698,75 @@
     "id": 99014874,
     "name": "The Yorkshire Trading Company",
     "ticker": "TYTC"
+  },
+  {
+    "id": 99014875,
+    "name": "Void Chapter Requiem",
+    "ticker": "VCR"
+  },
+  {
+    "id": 99014877,
+    "name": "Alliance Pending.",
+    "ticker": "AP."
+  },
+  {
+    "id": 99014878,
+    "name": "Fortuna Alliance",
+    "ticker": "4TUNE"
+  },
+  {
+    "id": 99014879,
+    "name": "Council of the Ancients",
+    "ticker": "COTA"
+  },
+  {
+    "id": 99014880,
+    "name": "CO.BSI",
+    "ticker": "COBCO"
+  },
+  {
+    "id": 99014881,
+    "name": "Drinking Habit",
+    "ticker": "96ABV"
+  },
+  {
+    "id": 99014882,
+    "name": "Northern Starlight",
+    "ticker": ".NSL."
+  },
+  {
+    "id": 99014883,
+    "name": "Dudes",
+    "ticker": "DUDE"
+  },
+  {
+    "id": 99014884,
+    "name": "NamFam",
+    "ticker": "NAMCO"
+  },
+  {
+    "id": 99014885,
+    "name": "From Placid with Love",
+    "ticker": "FPWL"
+  },
+  {
+    "id": 99014886,
+    "name": "Suddenly An Unpaid Alliance Bill",
+    "ticker": "LMAO"
+  },
+  {
+    "id": 99014887,
+    "name": "The Element of Surprise",
+    "ticker": "WHOA"
+  },
+  {
+    "id": 99014888,
+    "name": "Wuling Alliance",
+    "ticker": "WULIN"
+  },
+  {
+    "id": 99014889,
+    "name": "Crimson Expanse",
+    "ticker": "CVC"
   }
 ]
