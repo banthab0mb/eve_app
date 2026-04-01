@@ -104063,5 +104063,585 @@
     "id": 98829214,
     "name": "Salty Spitoon",
     "ticker": ".SLT"
+  },
+  {
+    "id": 98367135,
+    "name": "E.B.O.L.A. Quarantaene",
+    "ticker": "E.Q."
+  },
+  {
+    "id": 98804048,
+    "name": "Bern Assembly Strategic Extraction Consortium",
+    "ticker": "MXOB"
+  },
+  {
+    "id": 98829969,
+    "name": "How to Train Your Guildmaster",
+    "ticker": "HTTYG"
+  },
+  {
+    "id": 98828850,
+    "name": "Trust Me Bro Logistics",
+    "ticker": "TRMBO"
+  },
+  {
+    "id": 98830005,
+    "name": "Bradford Pear Electronics",
+    "ticker": "BRADF"
+  },
+  {
+    "id": 98829628,
+    "name": "Camel's Toes",
+    "ticker": "CMLT0"
+  },
+  {
+    "id": 98829934,
+    "name": "No Injung",
+    "ticker": "NOIN."
+  },
+  {
+    "id": 98829675,
+    "name": "The Guristaz Cartel",
+    "ticker": "R4B17"
+  },
+  {
+    "id": 98075023,
+    "name": "Not The Droids You're Looking For",
+    "ticker": "R2-D2"
+  },
+  {
+    "id": 98771517,
+    "name": "BEZ NAZVY",
+    "ticker": "B.E.Z"
+  },
+  {
+    "id": 98830085,
+    "name": "P I R A T - E",
+    "ticker": "PRT-E"
+  },
+  {
+    "id": 1734341689,
+    "name": "Italh Enterprises",
+    "ticker": "ITALH"
+  },
+  {
+    "id": 98815452,
+    "name": "The Night Court",
+    "ticker": "TN1C"
+  },
+  {
+    "id": 98829834,
+    "name": "Tachyon Syndicate",
+    "ticker": "TACSN"
+  },
+  {
+    "id": 98810636,
+    "name": "Aiko Danuja is ALWAYS your OFFICIAL High Princess",
+    "ticker": "AI.KO"
+  },
+  {
+    "id": 98621140,
+    "name": "Vanguard Privateers",
+    "ticker": "VPONE"
+  },
+  {
+    "id": 98828979,
+    "name": "Coherent Radiation",
+    "ticker": "M3RC7"
+  },
+  {
+    "id": 98829975,
+    "name": "PARADOX TEAM",
+    "ticker": "PAR.."
+  },
+  {
+    "id": 98327563,
+    "name": "A.Y.N.I.K",
+    "ticker": "AYNIK"
+  },
+  {
+    "id": 98829595,
+    "name": "Cyno Down.",
+    "ticker": "CYN0D"
+  },
+  {
+    "id": 1845865982,
+    "name": "Order Mounts Kings",
+    "ticker": "O.M.K"
+  },
+  {
+    "id": 98652339,
+    "name": "Citywide Special",
+    "ticker": "CTYWD"
+  },
+  {
+    "id": 98515160,
+    "name": "Rift Federation Navy",
+    "ticker": "-RFN-"
+  },
+  {
+    "id": 98823731,
+    "name": "Void Ascendance",
+    "ticker": "V-ASC"
+  },
+  {
+    "id": 98829916,
+    "name": "Jovian Wanderers",
+    "ticker": "JVEM"
+  },
+  {
+    "id": 98829512,
+    "name": "ScumRats",
+    "ticker": "SRTCH"
+  },
+  {
+    "id": 98823719,
+    "name": "Beyond the Static",
+    "ticker": "-162-"
+  },
+  {
+    "id": 98829584,
+    "name": "Rogue Signal",
+    "ticker": "RGSN"
+  },
+  {
+    "id": 98011672,
+    "name": "Imperial Republic Guard",
+    "ticker": "-IRG-"
+  },
+  {
+    "id": 98776153,
+    "name": "Gold Moon Holdings",
+    "ticker": ".GMH."
+  },
+  {
+    "id": 741627015,
+    "name": "Space Pioneers",
+    "ticker": "SP4CE"
+  },
+  {
+    "id": 98826551,
+    "name": "WE THE KINGS",
+    "ticker": "WTKS"
+  },
+  {
+    "id": 98829377,
+    "name": "Greywind Wanderers",
+    "ticker": "GRWIW"
+  },
+  {
+    "id": 98829602,
+    "name": "Stone Eye Holdings",
+    "ticker": "STNEH"
+  },
+  {
+    "id": 98138375,
+    "name": "Caidin Global",
+    "ticker": "CAIDI"
+  },
+  {
+    "id": 98809892,
+    "name": "Why Do I Live in Wormholes",
+    "ticker": "WDIL"
+  },
+  {
+    "id": 98816795,
+    "name": "Wyscore Industries",
+    "ticker": "WYSCO"
+  },
+  {
+    "id": 98829671,
+    "name": "ThirdKind",
+    "ticker": "3RDND"
+  },
+  {
+    "id": 98822729,
+    "name": "Mad Marsupials",
+    "ticker": "POUCH"
+  },
+  {
+    "id": 98829744,
+    "name": "Tenebrea Molecular Industries",
+    "ticker": "T-MOL"
+  },
+  {
+    "id": 98829978,
+    "name": "Legio Aeternum",
+    "ticker": "AETRX"
+  },
+  {
+    "id": 98829855,
+    "name": "The Free Moon Society",
+    "ticker": "NOMET"
+  },
+  {
+    "id": 98566539,
+    "name": "XOF Enforcers",
+    "ticker": "XOFA"
+  },
+  {
+    "id": 98788457,
+    "name": "Elite Angle Hitmen",
+    "ticker": "EAH."
+  },
+  {
+    "id": 98829906,
+    "name": "Laura Evans Galactic Operations",
+    "ticker": ".LEGO"
+  },
+  {
+    "id": 98747927,
+    "name": "Reetard Chamber",
+    "ticker": "F211"
+  },
+  {
+    "id": 98826172,
+    "name": "New Moon Holding",
+    "ticker": "NMH1"
+  },
+  {
+    "id": 98184616,
+    "name": "Barren Star",
+    "ticker": "BARRS"
+  },
+  {
+    "id": 98340990,
+    "name": "Verum et Libra",
+    "ticker": "VL."
+  },
+  {
+    "id": 98820733,
+    "name": "Goops Express",
+    "ticker": "GOOPS"
+  },
+  {
+    "id": 98065561,
+    "name": "Bishop.",
+    "ticker": "BSHUP"
+  },
+  {
+    "id": 98820334,
+    "name": "Gray Market Holdings LLC",
+    "ticker": "GMART"
+  },
+  {
+    "id": 98808318,
+    "name": "Flippin Birds",
+    "ticker": "F1685"
+  },
+  {
+    "id": 98820730,
+    "name": "N. Eden Financial Co.",
+    "ticker": "N. ED"
+  },
+  {
+    "id": 98823626,
+    "name": "Tioxi Legion",
+    "ticker": "TIOXI"
+  },
+  {
+    "id": 98704749,
+    "name": "Back Alley Dealings",
+    "ticker": "BAD.D"
+  },
+  {
+    "id": 98822863,
+    "name": "Unwanted Content",
+    "ticker": "0THX"
+  },
+  {
+    "id": 98400822,
+    "name": "JTAG Connections",
+    "ticker": "JTAG"
+  },
+  {
+    "id": 98828970,
+    "name": "Summer Knights.",
+    "ticker": "-S.K"
+  },
+  {
+    "id": 155627335,
+    "name": "Black Widow Spider",
+    "ticker": "XEXER"
+  },
+  {
+    "id": 98818724,
+    "name": "Rhystic Study",
+    "ticker": "RHYST"
+  },
+  {
+    "id": 98126056,
+    "name": "After School Beatdown Squad",
+    "ticker": "RAWN"
+  },
+  {
+    "id": 98747113,
+    "name": "Happy old hometown",
+    "ticker": "HOHT"
+  },
+  {
+    "id": 98753121,
+    "name": "Little Shark Corporation",
+    "ticker": "LTSC1"
+  },
+  {
+    "id": 98761283,
+    "name": "Submissive und Breedable",
+    "ticker": "BRE3D"
+  },
+  {
+    "id": 98764076,
+    "name": "BravoLegion.",
+    "ticker": "BRAV1"
+  },
+  {
+    "id": 98786840,
+    "name": "All Herons Must Die",
+    "ticker": "AHMD"
+  },
+  {
+    "id": 98825795,
+    "name": "Autumnia Mercantile Company",
+    "ticker": "ATMNA"
+  },
+  {
+    "id": 98592331,
+    "name": "Military of East Eden",
+    "ticker": "MEE."
+  },
+  {
+    "id": 98127835,
+    "name": "Paranoid.",
+    "ticker": "PARA-"
+  },
+  {
+    "id": 98403285,
+    "name": "Wood Industries",
+    "ticker": "WOOD3"
+  },
+  {
+    "id": 98739283,
+    "name": "Tax Purposes",
+    "ticker": "EBITA"
+  },
+  {
+    "id": 98794836,
+    "name": "Evasive Maneuvers Only",
+    "ticker": "E M O"
+  },
+  {
+    "id": 98829048,
+    "name": "Ark Mining And Minerals",
+    "ticker": "AMAM."
+  },
+  {
+    "id": 98785067,
+    "name": "Saber Division",
+    "ticker": "SBDV"
+  },
+  {
+    "id": 98829993,
+    "name": "Trit in my Mouth Diplomacy",
+    "ticker": "DRBBL"
+  },
+  {
+    "id": 98822066,
+    "name": "Jita Fulfillment Services",
+    "ticker": "J-44"
+  },
+  {
+    "id": 98830100,
+    "name": "Victory Ventures",
+    "ticker": "AAAKK"
+  },
+  {
+    "id": 98725615,
+    "name": "Name Pending.",
+    "ticker": "NP..."
+  },
+  {
+    "id": 98777414,
+    "name": "Ender Order",
+    "ticker": "2TEND"
+  },
+  {
+    "id": 98829509,
+    "name": "XI'HE",
+    "ticker": ".XH."
+  },
+  {
+    "id": 98826715,
+    "name": "DarkStar Industrial Manufacturing",
+    "ticker": "DS-IM"
+  },
+  {
+    "id": 98734691,
+    "name": "Labratox Mining and Trading Corporation",
+    "ticker": "LMTC-"
+  },
+  {
+    "id": 98023869,
+    "name": "Kardashev Class Network",
+    "ticker": "KARDA"
+  },
+  {
+    "id": 98317645,
+    "name": "Kuma Mamako",
+    "ticker": "KUMA2"
+  },
+  {
+    "id": 98827635,
+    "name": "Ghost Anchor",
+    "ticker": "GANH"
+  },
+  {
+    "id": 331938124,
+    "name": "Knights Templar Defender's",
+    "ticker": "-KTD-"
+  },
+  {
+    "id": 1529512447,
+    "name": "The Dark Wheel Corporation",
+    "ticker": "TDWC"
+  },
+  {
+    "id": 98721847,
+    "name": "Guerreros del Mercadona",
+    "ticker": "GDMD"
+  },
+  {
+    "id": 98775577,
+    "name": "Exiliados",
+    "ticker": "L0S3X"
+  },
+  {
+    "id": 98776010,
+    "name": "Quantum Dynamics.",
+    "ticker": "ARDLA"
+  },
+  {
+    "id": 98277946,
+    "name": "Index Corp",
+    "ticker": "IND3X"
+  },
+  {
+    "id": 98743023,
+    "name": "Independent Space Monkeys",
+    "ticker": "APE.."
+  },
+  {
+    "id": 98824894,
+    "name": "The Crimson Theory",
+    "ticker": "TCRT"
+  },
+  {
+    "id": 98829763,
+    "name": "Crimson Forge Syndicate",
+    "ticker": "CFSX"
+  },
+  {
+    "id": 98778068,
+    "name": "Sniff Works",
+    "ticker": "SNLFF"
+  },
+  {
+    "id": 98784426,
+    "name": "Interstellar Oreworks",
+    "ticker": "OWORK"
+  },
+  {
+    "id": 98822453,
+    "name": "Andco Freight and Industrial Jita Branch",
+    "ticker": "AFAIJ"
+  },
+  {
+    "id": 98823474,
+    "name": "Abyssal Trading Co",
+    "ticker": "ABYTC"
+  },
+  {
+    "id": 98825447,
+    "name": "Cascades of Groveland",
+    "ticker": "XCOGX"
+  },
+  {
+    "id": 98828990,
+    "name": "ISK Laundromat",
+    "ticker": "ISKL."
+  },
+  {
+    "id": 98829921,
+    "name": "The Guristaz Logistics",
+    "ticker": "GU.RI"
+  },
+  {
+    "id": 98829943,
+    "name": "Varmatar Executorum",
+    "ticker": "VTM.E"
+  },
+  {
+    "id": 98823501,
+    "name": "Surtr's Home for Theorycrafting Madmen",
+    "ticker": "SHFTM"
+  },
+  {
+    "id": 98829995,
+    "name": "Livewell Holdings",
+    "ticker": "LWELL"
+  },
+  {
+    "id": 803520863,
+    "name": "The Mighty Boosh",
+    "ticker": "TM8"
+  },
+  {
+    "id": 854572082,
+    "name": "Evil Incorperated",
+    "ticker": "EVILI"
+  },
+  {
+    "id": 98829368,
+    "name": "Sedition. Consulting Services",
+    "ticker": "PCXCS"
+  },
+  {
+    "id": 98830093,
+    "name": "SSS Executors",
+    "ticker": "SSS.E"
+  },
+  {
+    "id": 98828043,
+    "name": "Legio VIIII",
+    "ticker": "LGVI"
+  },
+  {
+    "id": 98829856,
+    "name": "Wu-Tang Kinetic",
+    "ticker": "W-T-K"
+  },
+  {
+    "id": 98703059,
+    "name": "Danger Zone Galhood",
+    "ticker": "GLHOD"
+  },
+  {
+    "id": 98829530,
+    "name": "Solar Extraction Venture Engineering Yard",
+    "ticker": "SEVEY"
+  },
+  {
+    "id": 1583981852,
+    "name": "Used and Abused Inc.",
+    "ticker": "UA."
+  },
+  {
+    "id": 98829972,
+    "name": "Icelandic Cartel Division Alpha",
+    "ticker": "ICE.D"
+  },
+  {
+    "id": 1092084849,
+    "name": "Xoth Ltd",
+    "ticker": "XOTD"
   }
 ]

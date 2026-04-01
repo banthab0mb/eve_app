@@ -19768,5 +19768,75 @@
     "id": 99014889,
     "name": "Crimson Expanse",
     "ticker": "CVC"
+  },
+  {
+    "id": 99014890,
+    "name": "DarkStar Industrial Syndicate",
+    "ticker": "DSIS"
+  },
+  {
+    "id": 99014891,
+    "name": "Stellar Resource Collective",
+    "ticker": "-SRC-"
+  },
+  {
+    "id": 99014892,
+    "name": "Krabbing is the Question",
+    "ticker": "KITQ"
+  },
+  {
+    "id": 99014893,
+    "name": "The Dark Wheel Alliance",
+    "ticker": "TDWA"
+  },
+  {
+    "id": 99014894,
+    "name": "From Lost To The Wormhole.",
+    "ticker": "L0ST"
+  },
+  {
+    "id": 99014895,
+    "name": "Black Ribbit",
+    "ticker": "BFROG"
+  },
+  {
+    "id": 99014896,
+    "name": "Index Alliance",
+    "ticker": "INDEX"
+  },
+  {
+    "id": 99014897,
+    "name": "Crimson Forge Vanguard",
+    "ticker": "CFV"
+  },
+  {
+    "id": 99014898,
+    "name": "Guristaz Logistics Alliance",
+    "ticker": "GURIS"
+  },
+  {
+    "id": 99014899,
+    "name": "Varmatar Directorate",
+    "ticker": "VTM"
+  },
+  {
+    "id": 99014900,
+    "name": "The Dead Parrots",
+    "ticker": "TDP"
+  },
+  {
+    "id": 99014901,
+    "name": "Deep Space Anglers",
+    "ticker": "HOOKD"
+  },
+  {
+    "id": 99014902,
+    "name": "The Poo Poo Platter",
+    "ticker": "TPPP"
+  },
+  {
+    "id": 99014903,
+    "name": "Sedition. Special Services",
+    "ticker": "S.SS"
   }
 ]
