@@ -19838,5 +19838,70 @@
     "id": 99014903,
     "name": "Sedition. Special Services",
     "ticker": "S.SS"
+  },
+  {
+    "id": 99014904,
+    "name": "Institute for Embarrassing Killmails",
+    "ticker": "OOF."
+  },
+  {
+    "id": 99014905,
+    "name": "The Guerillaz",
+    "ticker": "THG"
+  },
+  {
+    "id": 99014907,
+    "name": "XI.LA",
+    "ticker": "XI LA"
+  },
+  {
+    "id": 99014908,
+    "name": "Seeds of Love",
+    "ticker": "SOLS"
+  },
+  {
+    "id": 99014909,
+    "name": "Casual Eve Enjoyers",
+    "ticker": "CASUA"
+  },
+  {
+    "id": 99014910,
+    "name": "5.56 NATO",
+    "ticker": "5.56"
+  },
+  {
+    "id": 99014911,
+    "name": "Cat Upon the Moon",
+    "ticker": "CAT U"
+  },
+  {
+    "id": 99014912,
+    "name": "Shattered Samsara",
+    "ticker": "SASHA"
+  },
+  {
+    "id": 99014913,
+    "name": "Proximity.",
+    "ticker": "PROXY"
+  },
+  {
+    "id": 99014914,
+    "name": "Three Guys",
+    "ticker": "THREE"
+  },
+  {
+    "id": 99014915,
+    "name": "40 Minutes Early",
+    "ticker": "40ME"
+  },
+  {
+    "id": 99014916,
+    "name": "Caius-Gabriel Filimon Immortalium Syndicate",
+    "ticker": "CGFIS"
+  },
+  {
+    "id": 99014917,
+    "name": "T R I A R C H Y",
+    "ticker": "I I I"
   }
 ]
