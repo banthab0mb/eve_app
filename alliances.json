@@ -15501,8 +15501,8 @@
   },
   {
     "id": 99014311,
-    "name": "We Have to Keep Trying",
-    "ticker": "WHTKT"
+    "name": "Mako.",
+    "ticker": "10e-9"
   },
   {
     "id": 99014313,
@@ -19493,5 +19493,560 @@
     "id": 99014831,
     "name": "Extracurricular Hostilities",
     "ticker": "EXTRA"
+  },
+  {
+    "id": 99014832,
+    "name": "OLD SCHOOL OF KNOCKS Alliance",
+    "ticker": "OSOK1"
+  },
+  {
+    "id": 99014833,
+    "name": "VANGUARD COLLECTIVE",
+    "ticker": "-VC-"
+  },
+  {
+    "id": 99014834,
+    "name": "13th Corp Alliance",
+    "ticker": "ONE3"
+  },
+  {
+    "id": 99014835,
+    "name": "Skuffed Out.",
+    "ticker": "SKF"
+  },
+  {
+    "id": 99014836,
+    "name": "STAIN IS FOR STAIN PEOPLE ONLY.",
+    "ticker": "STAIN"
+  },
+  {
+    "id": 99014837,
+    "name": "Trit Happens",
+    "ticker": "TRIT"
+  },
+  {
+    "id": 99014838,
+    "name": "Axis Coalition",
+    "ticker": "AXIS"
+  },
+  {
+    "id": 99014839,
+    "name": "Odotte Industries",
+    "ticker": "ODIN2"
+  },
+  {
+    "id": 99014840,
+    "name": "Nocturnal Suicide",
+    "ticker": "H8.US"
+  },
+  {
+    "id": 99014841,
+    "name": "Verlate",
+    "ticker": "VRLT"
+  },
+  {
+    "id": 99014842,
+    "name": "Jovian End Of Days",
+    "ticker": "THE J"
+  },
+  {
+    "id": 99014843,
+    "name": "Societas Ineffabilis",
+    "ticker": "SOC."
+  },
+  {
+    "id": 99014844,
+    "name": "Worm WorX",
+    "ticker": "WRMX"
+  },
+  {
+    "id": 99014845,
+    "name": "FUitCK Alliance",
+    "ticker": "FAFO"
+  },
+  {
+    "id": 99014846,
+    "name": "D.A.R.E. Cartel",
+    "ticker": "DARE"
+  },
+  {
+    "id": 99014847,
+    "name": "Civilization Band",
+    "ticker": "CIVIL"
+  },
+  {
+    "id": 99014849,
+    "name": "Astral Ascendancy Initiative.",
+    "ticker": "AAI"
+  },
+  {
+    "id": 99014850,
+    "name": "Blue Alliance",
+    "ticker": "WERMT"
+  },
+  {
+    "id": 99014851,
+    "name": "10 Minutes' Notice",
+    "ticker": "10MN"
+  },
+  {
+    "id": 99014852,
+    "name": "Storm of the Freeborn",
+    "ticker": "STORM"
+  },
+  {
+    "id": 99014853,
+    "name": "DealDuck.",
+    "ticker": "DDUCK"
+  },
+  {
+    "id": 99014854,
+    "name": "Renegade Raccoon Society",
+    "ticker": "RRS"
+  },
+  {
+    "id": 99014855,
+    "name": "The Unvanquished Order",
+    "ticker": "UNVQ"
+  },
+  {
+    "id": 99014856,
+    "name": "Panem Circenses",
+    "ticker": "BNC"
+  },
+  {
+    "id": 99014857,
+    "name": "Tranquility Import Authority",
+    "ticker": "TARIF"
+  },
+  {
+    "id": 99014858,
+    "name": "Midgard Marauders",
+    "ticker": "MIMA"
+  },
+  {
+    "id": 99014860,
+    "name": "Explosive Diplomacy",
+    "ticker": "H8.US"
+  },
+  {
+    "id": 99014861,
+    "name": "Northern Trade Alliance",
+    "ticker": "NTA"
+  },
+  {
+    "id": 99014862,
+    "name": "Constellation Cartographic Network Directory",
+    "ticker": "CCNET"
+  },
+  {
+    "id": 99014863,
+    "name": "Flock Command",
+    "ticker": "FLOCK"
+  },
+  {
+    "id": 99014864,
+    "name": "The Other Kids",
+    "ticker": "T15M"
+  },
+  {
+    "id": 99014865,
+    "name": "Pain au chocolat",
+    "ticker": "CHOCO"
+  },
+  {
+    "id": 99014866,
+    "name": "The Accepted.",
+    "ticker": "TXZIG"
+  },
+  {
+    "id": 99014867,
+    "name": "Advaced Corporation.Alliance",
+    "ticker": "ACA"
+  },
+  {
+    "id": 99014868,
+    "name": "N.A.N.O.",
+    "ticker": "N-A-N"
+  },
+  {
+    "id": 99014869,
+    "name": "PLAGA.",
+    "ticker": "PLAGA"
+  },
+  {
+    "id": 99014870,
+    "name": "Gold Eagle Corporation Alliance",
+    "ticker": "GECA"
+  },
+  {
+    "id": 99014871,
+    "name": "Gimme Da Loot",
+    "ticker": "JUI-C"
+  },
+  {
+    "id": 99014872,
+    "name": "Golden Sovereign",
+    "ticker": "GLD-S"
+  },
+  {
+    "id": 99014873,
+    "name": "The Sanguine Covenant",
+    "ticker": "S.C"
+  },
+  {
+    "id": 99014874,
+    "name": "The Yorkshire Trading Company",
+    "ticker": "TYTC"
+  },
+  {
+    "id": 99014875,
+    "name": "Void Chapter Requiem",
+    "ticker": "VCR"
+  },
+  {
+    "id": 99014877,
+    "name": "Alliance Pending.",
+    "ticker": "AP."
+  },
+  {
+    "id": 99014878,
+    "name": "Fortuna Alliance",
+    "ticker": "4TUNE"
+  },
+  {
+    "id": 99014879,
+    "name": "Council of the Ancients",
+    "ticker": "COTA"
+  },
+  {
+    "id": 99014880,
+    "name": "CO.BSI",
+    "ticker": "COBCO"
+  },
+  {
+    "id": 99014881,
+    "name": "Drinking Habit",
+    "ticker": "96ABV"
+  },
+  {
+    "id": 99014882,
+    "name": "Northern Starlight",
+    "ticker": ".NSL."
+  },
+  {
+    "id": 99014883,
+    "name": "Dudes",
+    "ticker": "DUDE"
+  },
+  {
+    "id": 99014884,
+    "name": "NamFam",
+    "ticker": "NAMCO"
+  },
+  {
+    "id": 99014885,
+    "name": "From Placid with Love",
+    "ticker": "FPWL"
+  },
+  {
+    "id": 99014886,
+    "name": "Suddenly An Unpaid Alliance Bill",
+    "ticker": "LMAO"
+  },
+  {
+    "id": 99014887,
+    "name": "The Element of Surprise",
+    "ticker": "WHOA"
+  },
+  {
+    "id": 99014888,
+    "name": "Wuling Alliance",
+    "ticker": "WULIN"
+  },
+  {
+    "id": 99014889,
+    "name": "Crimson Expanse",
+    "ticker": "CVC"
+  },
+  {
+    "id": 99014890,
+    "name": "DarkStar Industrial Syndicate",
+    "ticker": "DSIS"
+  },
+  {
+    "id": 99014891,
+    "name": "Stellar Resource Collective",
+    "ticker": "-SRC-"
+  },
+  {
+    "id": 99014892,
+    "name": "Krabbing is the Question",
+    "ticker": "KITQ"
+  },
+  {
+    "id": 99014893,
+    "name": "The Dark Wheel Alliance",
+    "ticker": "TDWA"
+  },
+  {
+    "id": 99014894,
+    "name": "From Lost To The Wormhole.",
+    "ticker": "L0ST"
+  },
+  {
+    "id": 99014895,
+    "name": "Black Ribbit",
+    "ticker": "BFROG"
+  },
+  {
+    "id": 99014896,
+    "name": "Index Alliance",
+    "ticker": "INDEX"
+  },
+  {
+    "id": 99014897,
+    "name": "Crimson Forge Vanguard",
+    "ticker": "CFV"
+  },
+  {
+    "id": 99014898,
+    "name": "Guristaz Logistics Alliance",
+    "ticker": "GURIS"
+  },
+  {
+    "id": 99014899,
+    "name": "Varmatar Directorate",
+    "ticker": "VTM"
+  },
+  {
+    "id": 99014900,
+    "name": "The Dead Parrots",
+    "ticker": "TDP"
+  },
+  {
+    "id": 99014901,
+    "name": "Deep Space Anglers",
+    "ticker": "HOOKD"
+  },
+  {
+    "id": 99014902,
+    "name": "The Poo Poo Platter",
+    "ticker": "TPPP"
+  },
+  {
+    "id": 99014903,
+    "name": "Sedition. Special Services",
+    "ticker": "S.SS"
+  },
+  {
+    "id": 99014904,
+    "name": "Institute for Embarrassing Killmails",
+    "ticker": "OOF."
+  },
+  {
+    "id": 99014905,
+    "name": "The Guerillaz",
+    "ticker": "THG"
+  },
+  {
+    "id": 99014907,
+    "name": "XI.LA",
+    "ticker": "XI LA"
+  },
+  {
+    "id": 99014908,
+    "name": "Seeds of Love",
+    "ticker": "SOLS"
+  },
+  {
+    "id": 99014909,
+    "name": "Casual Eve Enjoyers",
+    "ticker": "CASUA"
+  },
+  {
+    "id": 99014910,
+    "name": "5.56 NATO",
+    "ticker": "5.56"
+  },
+  {
+    "id": 99014911,
+    "name": "Cat Upon the Moon",
+    "ticker": "CAT U"
+  },
+  {
+    "id": 99014912,
+    "name": "Shattered Samsara",
+    "ticker": "SASHA"
+  },
+  {
+    "id": 99014913,
+    "name": "Proximity.",
+    "ticker": "PROXY"
+  },
+  {
+    "id": 99014914,
+    "name": "Three Guys",
+    "ticker": "THREE"
+  },
+  {
+    "id": 99014915,
+    "name": "40 Minutes Early",
+    "ticker": "40ME"
+  },
+  {
+    "id": 99014916,
+    "name": "Caius-Gabriel Filimon Immortalium Syndicate",
+    "ticker": "CGFIS"
+  },
+  {
+    "id": 99014917,
+    "name": "T R I A R C H Y",
+    "ticker": "I I I"
+  },
+  {
+    "id": 99014919,
+    "name": "SAYR Galactic",
+    "ticker": "SAYR-"
+  },
+  {
+    "id": 99014920,
+    "name": "Spaghetti N' Meatballs",
+    "ticker": "MTBLS"
+  },
+  {
+    "id": 99014921,
+    "name": "Drunk Monkeys",
+    "ticker": "DRMNK"
+  },
+  {
+    "id": 99014922,
+    "name": "R.A.S.H.",
+    "ticker": "RASH1"
+  },
+  {
+    "id": 99014923,
+    "name": "Ella's Fellas",
+    "ticker": "ELLA"
+  },
+  {
+    "id": 99014924,
+    "name": "Commonwealth of Confederate Nations",
+    "ticker": "CCN"
+  },
+  {
+    "id": 99014925,
+    "name": "Plenitude Holding Alliance",
+    "ticker": "PLEN"
+  },
+  {
+    "id": 99014927,
+    "name": "R A I D E R S academy",
+    "ticker": "RDR-A"
+  },
+  {
+    "id": 99014928,
+    "name": "Down Under Syndrome",
+    "ticker": "OZLAD"
+  },
+  {
+    "id": 99014929,
+    "name": "Industrial Contractors",
+    "ticker": "INC"
+  },
+  {
+    "id": 99014930,
+    "name": "BOMJ.TEAM",
+    "ticker": "BOMJ"
+  },
+  {
+    "id": 99014931,
+    "name": "Alien Spy Stuff Syndicate",
+    "ticker": "ASSS"
+  },
+  {
+    "id": 99014932,
+    "name": "Lanoia ALLC",
+    "ticker": "LACL"
+  },
+  {
+    "id": 99014933,
+    "name": "Expired Intelligence Booster",
+    "ticker": "EXPR"
+  },
+  {
+    "id": 99014934,
+    "name": "Big RU Space",
+    "ticker": "BRUS"
+  },
+  {
+    "id": 99014936,
+    "name": "Health Code Violation",
+    "ticker": "HCOV."
+  },
+  {
+    "id": 99014937,
+    "name": "F E N I X",
+    "ticker": "F E X"
+  },
+  {
+    "id": 99014938,
+    "name": "TearsOfReddit.",
+    "ticker": "TEAR"
+  },
+  {
+    "id": 99014940,
+    "name": "Calculated Aggression",
+    "ticker": "SUSSY"
+  },
+  {
+    "id": 99014941,
+    "name": "J Jeferson Holdings Alliance",
+    "ticker": "JJHA"
+  },
+  {
+    "id": 99014942,
+    "name": "Rubber Duck Republic",
+    "ticker": "QUACK"
+  },
+  {
+    "id": 99014943,
+    "name": "The Moist Ore-Play Collective",
+    "ticker": "TMO"
+  },
+  {
+    "id": 99014944,
+    "name": "Unlawful Presence",
+    "ticker": "ULP"
+  },
+  {
+    "id": 99014945,
+    "name": "Pool Hall.",
+    "ticker": "SHRKS"
+  },
+  {
+    "id": 99014946,
+    "name": "Wormhole Industry",
+    "ticker": "WI"
+  },
+  {
+    "id": 99014947,
+    "name": "ScaryDeadPeople",
+    "ticker": "SCARY"
+  },
+  {
+    "id": 99014948,
+    "name": "Legion of xXDEATHXx Holding",
+    "ticker": "XIX.H"
+  },
+  {
+    "id": 99014950,
+    "name": "OR10N Interstellar",
+    "ticker": "OR10N"
+  },
+  {
+    "id": 99014951,
+    "name": "The Holy Undertaking",
+    "ticker": "THU"
   }
 ]
