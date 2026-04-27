@@ -256,8 +256,7 @@ routeBtn.addEventListener("click", async () => {
       const sec = parseFloat(system.security_status).toFixed(1);
       const cls = secClass(sec);
       const kills = routeKills[sysId] || 0;
-      const killClass = kills >= 5 ? "kills-high" : "";
-
+      const killClass = kills >= 10 ? "kills-high" : kills >= 2 ? "kills-mid" : "";
       let info = '';
 
       if (i < routeIds.length - 1) {

@@ -278,13 +278,8 @@ tr:nth-child(even) { background: #141414; }
 /* High kills color */
 .kills-high { color: #f00; }
 
-.thera-highlight {
-  background-color: #ffeeba; /* soft yellow */
-}
-
-.turnur-highlight {
-  background-color: #ffeeba; /* soft yellow */
-}
+/* Mid kills color */
+.kills-mid { color: #ffff00; }
 
 links {
   flex: 1;
