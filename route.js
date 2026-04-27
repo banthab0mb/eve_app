@@ -225,6 +225,13 @@ routeBtn.addEventListener("click", async () => {
   }
 
   totalJumps.style.display = "none";
+
+  // Save to URL
+  const url = new URL(window.location);
+  url.searchParams.set("from", originName);
+  url.searchParams.set("to", destName);
+  window.history.pushState({}, "", url);
+  
   routeOutput.innerHTML = "<p>Fetching route...</p>";
 
   try {
@@ -311,3 +318,15 @@ routeBtn.addEventListener("click", async () => {
     routeOutput.innerHTML = "<p>Error fetching route.</p>";
   }
 });
+
+// Load from URL on page load
+  window.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from");
+    const to = params.get("to");
+    if (from && to) {
+      originInput.value = from;
+      destInput.value = to;
+      routeBtn.click();
+    }
+  });
