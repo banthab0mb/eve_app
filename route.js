@@ -12,7 +12,7 @@ const THERA_ID = 31000005;
 const TURNUR_ID = 30002086;
 
 // Load static data
-Promise.all([
+const dataReady = Promise.all([
   fetch("systems.json").then(r => r.json()).then(data => systems = data),
   fetch("stargates.json").then(r => r.json()).then(data => stargates = data)
 ]).catch(err => console.error("Failed to load JSON:", err));
@@ -320,13 +320,14 @@ routeBtn.addEventListener("click", async () => {
 });
 
 // Load from URL on page load
-  window.addEventListener("DOMContentLoaded", () => {
-    const params = new URLSearchParams(window.location.search);
-    const from = params.get("from");
-    const to = params.get("to");
-    if (from && to) {
-      originInput.value = from;
-      destInput.value = to;
-      routeBtn.click();
-    }
-  });
+window.addEventListener("DOMContentLoaded", async () => {
+  await dataReady;
+  const params = new URLSearchParams(window.location.search);
+  const from = params.get("from");
+  const to = params.get("to");
+  if (from && to) {
+    originInput.value = from;
+    destInput.value = to;
+    routeBtn.click();
+  }
+});
