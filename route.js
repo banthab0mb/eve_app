@@ -294,7 +294,7 @@ routeBtn.addEventListener("click", async () => {
           ? `<span style="color:red">EOL</span>`
           : '';    
       
-        info = `${sig} (${wh.wh_type}) <span style="font-weight:bold; opacity:0.7">${eol}</span> [${ageStr}]`;
+        info = `${sig} (${wh.wh_type}) <span style="font-weight:bold">${eol}</span> <span style="opacity:0.7">[${ageStr}]</span>`;
       }
     }
 
