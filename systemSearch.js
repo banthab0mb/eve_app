@@ -27,8 +27,6 @@
     .then(data => {
       systems = data;
       systemsLoaded = true;
-      console.log('systems.json loaded, systems:', systems.length);
-
       // Auto-run if ?system= in URL
       const urlParams = new URLSearchParams(window.location.search);
       const sysFromURL = urlParams.get('system');
@@ -168,11 +166,6 @@
 
   function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
   function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
-
-  window.clearKillCache = () => {
-    localStorage.removeItem(CACHE_KEY);
-    console.log("Kill cache cleared!");
-  };
 
   async function getPvpKills(systemId) {
     const now = Date.now();
