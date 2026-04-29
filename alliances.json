@@ -20048,5 +20048,90 @@
     "id": 99014951,
     "name": "The Holy Undertaking",
     "ticker": "THU"
+  },
+  {
+    "id": 99014952,
+    "name": "Thoze Guyz",
+    "ticker": "THOZE"
+  },
+  {
+    "id": 99014953,
+    "name": "Burn the Boats",
+    "ticker": "BTB"
+  },
+  {
+    "id": 99014954,
+    "name": "SEEK Alliance",
+    "ticker": "SEEKA"
+  },
+  {
+    "id": 99014955,
+    "name": "High Sec Enterprises",
+    "ticker": "HONK"
+  },
+  {
+    "id": 99014956,
+    "name": "Gallente Vanguard Command",
+    "ticker": "G.V.C"
+  },
+  {
+    "id": 99014957,
+    "name": "Alliance of Dimwits",
+    "ticker": "AOD"
+  },
+  {
+    "id": 99014958,
+    "name": "A S C E N S I O N",
+    "ticker": "ASCEN"
+  },
+  {
+    "id": 99014959,
+    "name": "6PATBA EVE",
+    "ticker": "6PAT"
+  },
+  {
+    "id": 99014960,
+    "name": "Deep wave 000O",
+    "ticker": "D0"
+  },
+  {
+    "id": 99014961,
+    "name": "Crawling over Corpses",
+    "ticker": "C-O-C"
+  },
+  {
+    "id": 99014962,
+    "name": "Clockwork Society",
+    "ticker": "CLCK"
+  },
+  {
+    "id": 99014963,
+    "name": "Intended Behavior",
+    "ticker": "INTED"
+  },
+  {
+    "id": 99014964,
+    "name": "Omega-Republic",
+    "ticker": "OARC"
+  },
+  {
+    "id": 99014965,
+    "name": "XB70",
+    "ticker": "XB70"
+  },
+  {
+    "id": 99014966,
+    "name": "DarkSide Void",
+    "ticker": "DVOID"
+  },
+  {
+    "id": 99014967,
+    "name": "The Fractsidus",
+    "ticker": "TFTS"
+  },
+  {
+    "id": 99014968,
+    "name": "Pub of public enjoyers",
+    "ticker": "-GF-"
   }
 ]
