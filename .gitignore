@@ -16,3 +16,5 @@ purchasable_ids.txt
 
 package-lock.json
 package.json
+
+.VSCodeCounter/
