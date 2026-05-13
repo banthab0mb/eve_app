@@ -20228,5 +20228,30 @@
     "id": 99014987,
     "name": "Children Of Ruin.",
     "ticker": "CRIN"
+  },
+  {
+    "id": 99014988,
+    "name": "Somewhat Evil Xenophobic YOLOers",
+    "ticker": "SEXY."
+  },
+  {
+    "id": 99014989,
+    "name": "Planetside Infinite",
+    "ticker": "EQUAL"
+  },
+  {
+    "id": 99014990,
+    "name": "Evecord",
+    "ticker": "NOTFC"
+  },
+  {
+    "id": 99014991,
+    "name": "40 Minutes' Early",
+    "ticker": "40ME"
+  },
+  {
+    "id": 99014992,
+    "name": "1 Months' Notice",
+    "ticker": "1MN"
   }
 ]
