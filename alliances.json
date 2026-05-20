@@ -20237,7 +20237,7 @@
   {
     "id": 99014989,
     "name": "Planetside Infinite",
-    "ticker": "EQUAL"
+    "ticker": "PS-I"
   },
   {
     "id": 99014990,
@@ -20253,5 +20253,110 @@
     "id": 99014992,
     "name": "1 Months' Notice",
     "ticker": "1MN"
+  },
+  {
+    "id": 99014993,
+    "name": "Foundational Fellowship",
+    "ticker": "TFF"
+  },
+  {
+    "id": 99014994,
+    "name": "Zombie Empire",
+    "ticker": "ZOMBI"
+  },
+  {
+    "id": 99014995,
+    "name": "Star Fleet Union",
+    "ticker": "SFPAS"
+  },
+  {
+    "id": 99014996,
+    "name": "PACK LIGHT",
+    "ticker": "PACK"
+  },
+  {
+    "id": 99014997,
+    "name": "EU Mining Alliance",
+    "ticker": "EUMA"
+  },
+  {
+    "id": 99014998,
+    "name": "The Clayde.",
+    "ticker": "ASCBA"
+  },
+  {
+    "id": 99014999,
+    "name": "Two Dreads One Braincell",
+    "ticker": "ADN21"
+  },
+  {
+    "id": 99015000,
+    "name": "DED-BAR",
+    "ticker": "DBR 1"
+  },
+  {
+    "id": 99015001,
+    "name": "Fuel Blocks Not Included",
+    "ticker": "FUEL"
+  },
+  {
+    "id": 99015002,
+    "name": "Vertigo Alliance",
+    "ticker": "VERTI"
+  },
+  {
+    "id": 99015003,
+    "name": "Hostile by Nature",
+    "ticker": "-HXN-"
+  },
+  {
+    "id": 99015004,
+    "name": "Distributed Chromie",
+    "ticker": "CHRS"
+  },
+  {
+    "id": 99015005,
+    "name": "Silk Road Enterprises",
+    "ticker": "SRE"
+  },
+  {
+    "id": 99015006,
+    "name": "Apostle In Flight",
+    "ticker": "AIF"
+  },
+  {
+    "id": 99015007,
+    "name": "The krogan Federation",
+    "ticker": "KF"
+  },
+  {
+    "id": 99015008,
+    "name": "NEW SYSTEM COMMONWEALTH",
+    "ticker": "-NSC-"
+  },
+  {
+    "id": 99015009,
+    "name": "Wildlife Industries",
+    "ticker": "WINDI"
+  },
+  {
+    "id": 99015010,
+    "name": "Deathless Ascendants",
+    "ticker": "DTH"
+  },
+  {
+    "id": 99015011,
+    "name": "Syndicate of Pain",
+    "ticker": "PWN U"
+  },
+  {
+    "id": 99015012,
+    "name": "Balcan Stellar Collective",
+    "ticker": "B-S-C"
+  },
+  {
+    "id": 99015013,
+    "name": "ORES 'R' US",
+    "ticker": "ORRU"
   }
 ]
