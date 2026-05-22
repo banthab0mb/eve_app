@@ -294,7 +294,7 @@ routeBtn.addEventListener("click", async () => {
           ? `<span style="color:red">EOL</span>`
           : '';    
       
-        info = `${sig} (${wh.wh_type}) <span style="font-weight:bold">${eol}</span> <span style="opacity:0.7">[${ageStr}]</span>`;
+        info = `${sig} (${wh.wh_type}) <span style="font-weight:bold">${eol}</span> <span style="opacity:0.7">[${ageStr} old]</span>`;
       }
     }
 
@@ -310,7 +310,7 @@ routeBtn.addEventListener("click", async () => {
 
     html += "</table>";
     totalJumps.style.display = "block";
-    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 1}`;
+    totalJumps.innerHTML = `Total Jumps: ${routeIds.length - 2}`;
     routeOutput.innerHTML = html;
 
   } catch (err) {
