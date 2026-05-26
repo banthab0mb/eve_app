@@ -1,33 +1,29 @@
 (() => {
-  // Assign elements
   const input = document.querySelector('#systemName') || document.querySelector('.search-box');
   const suggestionsDiv =
     (input && input.parentElement && input.parentElement.querySelector('.suggestions')) ||
     document.getElementById('suggestions') ||
-    document.getElementById('suggestions-box') ||
     document.querySelector('.suggestions');
   const lookupBtn =
     document.getElementById('lookupBtn') ||
     document.querySelector('.search-button') ||
-    document.querySelector('button.search-button') ||
     document.querySelector('button');
   const outputDiv = document.getElementById('output') || document.querySelector('.output');
 
   if (!input || !suggestionsDiv || !lookupBtn || !outputDiv) {
-    console.warn('systemSearch.js: missing one or more required elements:', { input, suggestionsDiv, lookupBtn, outputDiv });
+    console.warn('systemSearch.js: missing required elements');
   }
 
   let systems = [];
   let systemsLoaded = false;
   let currentFocus = -1;
+  let killChart = null;
 
-  // Load systems.json
   fetch('systems.json')
     .then(res => res.json())
     .then(data => {
       systems = data;
       systemsLoaded = true;
-      // Auto-run if ?system= in URL
       const urlParams = new URLSearchParams(window.location.search);
       const sysFromURL = urlParams.get('system');
       if (sysFromURL) {
@@ -37,9 +33,8 @@
     })
     .catch(err => console.error('Failed to load systems.json:', err));
 
-  // Security status color helper
   function secClass(sec) {
-    if (sec >= 1) return "sec-blue";
+    if (sec >= 1.0) return "sec-blue";
     if (sec >= 0.9) return "sec-lighter-blue";
     if (sec >= 0.8) return "sec-high-blue";
     if (sec >= 0.7) return "sec-sea";
@@ -52,56 +47,10 @@
     return "sec-null";
   }
 
-  // Suggestions helpers
-  function hideSuggestions() {
-    suggestionsDiv.innerHTML = '';
-    suggestionsDiv.style.display = 'none';
-    currentFocus = -1;
-  }
-  function showSuggestionsContainer() {
-    suggestionsDiv.style.display = 'block';
-  }
-
-  function renderSuggestions(query) {
-    if (!suggestionsDiv || !input) return;
-    suggestionsDiv.innerHTML = '';
-    currentFocus = -1;
-
-    if (!query || !systemsLoaded) {
-      hideSuggestions();
-      return;
-    }
-
-    const matches = systems
-      .filter(s => s.system.toLowerCase().startsWith(query))
-      .slice(0, 12);
-
-    if (!matches.length) {
-      hideSuggestions();
-      return;
-    }
-
-    const rect = input.getBoundingClientRect();
-    suggestionsDiv.style.minWidth = `${rect.width}px`;
-
-    matches.forEach((s, idx) => {
-      const div = document.createElement('div');
-      div.className = 'suggestion';
-      div.setAttribute('data-idx', idx);
-      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
-      div.style.cursor = 'pointer';
-
-      div.addEventListener('mousedown', (ev) => {
-        ev.preventDefault();
-        input.value = s.system;
-        hideSuggestions();
-        input.focus();
-        updateURL(s.system);
-      });
-      suggestionsDiv.appendChild(div);
-    });
-
-    showSuggestionsContainer();
+  function secLabel(sec) {
+    if (sec >= 0.5) return "High-sec";
+    if (sec >= 0.1) return "Low-sec";
+    return "Null-sec";
   }
 
   function escapeHtml(str) {
@@ -113,6 +62,38 @@
       .replace(/'/g, '&#039;');
   }
 
+  function hideSuggestions() {
+    suggestionsDiv.innerHTML = '';
+    suggestionsDiv.style.display = 'none';
+    currentFocus = -1;
+  }
+
+  function renderSuggestions(query) {
+    suggestionsDiv.innerHTML = '';
+    currentFocus = -1;
+    if (!query || !systemsLoaded) { hideSuggestions(); return; }
+    const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 12);
+    if (!matches.length) { hideSuggestions(); return; }
+    const rect = input.getBoundingClientRect();
+    suggestionsDiv.style.minWidth = `${rect.width}px`;
+    matches.forEach((s, idx) => {
+      const div = document.createElement('div');
+      div.className = 'suggestion';
+      div.setAttribute('data-idx', idx);
+      div.innerHTML = `${escapeHtml(s.system)} <span class="region">(${escapeHtml(s.region || 'Unknown')})</span>`;
+      div.style.cursor = 'pointer';
+      div.addEventListener('mousedown', (ev) => {
+        ev.preventDefault();
+        input.value = s.system;
+        hideSuggestions();
+        input.focus();
+        updateURL(s.system);
+      });
+      suggestionsDiv.appendChild(div);
+    });
+    suggestionsDiv.style.display = 'block';
+  }
+
   input.addEventListener('input', () => renderSuggestions(input.value.trim().toLowerCase()));
 
   input.addEventListener('keydown', (e) => {
@@ -120,13 +101,11 @@
     if (e.key === 'ArrowDown') {
       if (!items.length) return;
       currentFocus = (currentFocus + 1) % items.length;
-      setActive(items);
-      e.preventDefault();
+      setActive(items); e.preventDefault();
     } else if (e.key === 'ArrowUp') {
       if (!items.length) return;
       currentFocus = (currentFocus - 1 + items.length) % items.length;
-      setActive(items);
-      e.preventDefault();
+      setActive(items); e.preventDefault();
     } else if (e.key === 'Escape') {
       hideSuggestions();
     } else if (e.key === 'Enter') {
@@ -158,80 +137,361 @@
     hideSuggestions();
   });
 
-  lookupBtn.style.cursor = lookupBtn.style.cursor || 'pointer';
+  lookupBtn.style.cursor = 'pointer';
   lookupBtn.addEventListener('click', runLookup);
 
   const CACHE_TTL = 60 * 60 * 1000;
   const CACHE_KEY = "killCache";
+  const STATS_CACHE_KEY = "statsCache";
 
-  function loadKillCache() { return JSON.parse(localStorage.getItem(CACHE_KEY) || "{}"); }
-  function saveKillCache(cache) { localStorage.setItem(CACHE_KEY, JSON.stringify(cache)); }
+  function loadCache(key) { try { return JSON.parse(localStorage.getItem(key) || "{}"); } catch { return {}; } }
+  function saveCache(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch {} }
 
   async function getPvpKills(systemId) {
     const now = Date.now();
-    let killCache = loadKillCache();
-    if (killCache[systemId] && now - killCache[systemId].time < CACHE_TTL) {
-      return killCache[systemId].kills;
-    }
+    const cache = loadCache(CACHE_KEY);
+    if (cache[systemId] && now - cache[systemId].time < CACHE_TTL) return cache[systemId].kills;
     try {
       const res = await fetch(`https://zkillboard.com/api/kills/systemID/${systemId}/pastSeconds/3600/`, {
-        headers: {
-          "Accept-Encoding": "gzip",
-          "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com"
-        }
+        headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
       });
       const kills = await res.json();
       const pvpKills = Array.isArray(kills) ? kills.filter(k => k.zkb && !k.zkb.npc).length : 0;
-      killCache[systemId] = { time: now, kills: pvpKills };
-      saveKillCache(killCache);
+      const c = loadCache(CACHE_KEY);
+      c[systemId] = { time: now, kills: pvpKills };
+      saveCache(CACHE_KEY, c);
       return pvpKills;
-    } catch (err) {
-      console.error("zKill fetch failed", err);
-      return 0;
+    } catch { return 0; }
+  }
+
+  async function getKillStats(systemId) {
+    const now = Date.now();
+    const cache = loadCache(STATS_CACHE_KEY);
+    if (cache[systemId] && now - cache[systemId].time < CACHE_TTL * 6) return cache[systemId].data;
+    try {
+      const res = await fetch(`https://zkillboard.com/api/stats/systemID/${systemId}/`, {
+        headers: { "Accept-Encoding": "gzip", "User-Agent": "https://banthab0mb.github.io/eve_app/ Maintainer: banthab0mb@gmail.com" }
+      });
+      const data = await res.json();
+      const c = loadCache(STATS_CACHE_KEY);
+      c[systemId] = { time: now, data };
+      saveCache(STATS_CACHE_KEY, c);
+      return data;
+    } catch { return null; }
+  }
+
+  async function getSystemDetails(systemId) {
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/universe/systems/${systemId}/?datasource=tranquility`);
+      return await res.json();
+    } catch { return null; }
+  }
+
+  async function getStationInfo(stationId) {
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/universe/stations/${stationId}/?datasource=tranquility`);
+      return await res.json();
+    } catch { return null; }
+  }
+
+  async function getSovereignty() {
+    try {
+      const res = await fetch('https://esi.evetech.net/latest/sovereignty/map/?datasource=tranquility');
+      return await res.json();
+    } catch { return []; }
+  }
+
+  async function getAllianceName(allianceId) {
+    if (!allianceId) return null;
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/alliances/${allianceId}/?datasource=tranquility`);
+      const d = await res.json();
+      return d.name || null;
+    } catch { return null; }
+  }
+
+  async function getCorpName(corpId) {
+    if (!corpId) return null;
+    try {
+      const res = await fetch(`https://esi.evetech.net/latest/corporations/${corpId}/?datasource=tranquility`);
+      const d = await res.json();
+      return d.name || null;
+    } catch { return null; }
+  }
+
+  function formatServices(services) {
+    if (!services || !services.length) return 'None';
+    const labels = {
+      'bounty-missions': 'Bounty Missions', 'assay-office': 'Assay Office',
+      'reprocessing-plant': 'Reprocessing', 'repair-facilities': 'Repair',
+      'factory': 'Manufacturing', 'labratory': 'Research Lab',
+      'laboratory': 'Research Lab', 'market': 'Market',
+      'black-market': 'Black Market', 'stock-exchange': 'Stock Exchange',
+      'cloning': 'Cloning', 'surgery': 'Surgery',
+      'dna-therapy': 'DNA Therapy', 'fitting': 'Fitting',
+      'news': 'News', 'storage': 'Storage',
+      'insurance': 'Insurance', 'docking': 'Docking',
+      'office-rental': 'Office Rental', 'loyalty-point-store': 'LP Store',
+      'navy-offices': 'Navy Offices', 'security-office': 'Security Office',
+      'interbus': 'Interbus', 'mission-network': 'Mission Network',
+      'reagent': 'Reagent', 'scanner': 'Scanner',
+    };
+    return services.map(s => labels[s] || s.replace(/-/g, ' ')).join(', ');
+  }
+
+  function buildKillChart(monthlyData) {
+    const canvas = document.getElementById('killHistoryChart');
+    if (!canvas) return;
+    if (killChart) { killChart.destroy(); killChart = null; }
+    if (!monthlyData || !Object.keys(monthlyData).length) {
+      canvas.parentElement.style.display = 'none';
+      return;
     }
+    canvas.parentElement.style.display = 'block';
+
+    const sorted = Object.entries(monthlyData)
+      .map(([k, v]) => ({ label: k, count: typeof v === 'number' ? v : (v.count || 0) }))
+      .sort((a, b) => a.label.localeCompare(b.label))
+      .slice(-12);
+
+    const labels = sorted.map(d => {
+      const [year, month] = d.label.split('-');
+      const date = new Date(parseInt(year), parseInt(month) - 1);
+      return date.toLocaleDateString('en-US', { month: 'short', year: '2-digit' });
+    });
+    const data = sorted.map(d => d.count);
+
+    killChart = new Chart(canvas, {
+      type: 'bar',
+      data: {
+        labels,
+        datasets: [{
+          label: 'Kills',
+          data,
+          backgroundColor: 'rgba(200, 80, 80, 0.7)',
+          borderColor: 'rgba(200, 80, 80, 1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: ctx => `${ctx.parsed.y} kills`
+            }
+          }
+        },
+        scales: {
+          x: {
+            ticks: { color: '#aaa', font: { size: 11 }, autoSkip: false, maxRotation: 45 },
+            grid: { color: 'rgba(255,255,255,0.05)' }
+          },
+          y: {
+            ticks: { color: '#aaa', font: { size: 11 }, precision: 0 },
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            beginAtZero: true
+          }
+        }
+      }
+    });
   }
 
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
     if (!name) return;
-
-    if (!systemsLoaded) {
-      outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>';
-      return;
-    }
-
+    if (!systemsLoaded) { outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>'; return; }
     updateURL(name);
 
     const system = systems.find(s => s.system.toLowerCase() === name);
-    if (!system) {
-      outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found!</p>`;
-      return;
+    if (!system) { outputDiv.innerHTML = `<p>System "${escapeHtml(input.value)}" not found.</p>`; return; }
+
+    const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
+    const cls = secClass(sec);
+    const label = secLabel(parseFloat(sec));
+
+    outputDiv.innerHTML = `<p class="loading-msg">Loading data for <b>${escapeHtml(system.system)}</b>...</p>`;
+
+    const [jumpsData, pvpKills, details, sovMap, statsRaw] = await Promise.all([
+      fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility').then(r => r.json()).catch(() => []),
+      getPvpKills(system.system_id),
+      getSystemDetails(system.system_id),
+      getSovereignty(),
+      getKillStats(system.system_id)
+    ]);
+
+    const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
+    const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
+    const killClass = kills => kills >= 5 ? 'kills-high' : '';
+
+    // Planet info
+    const planetCount = details && details.planets ? details.planets.length : '?';
+    const starName = details && details.star_id ? `Star ID ${details.star_id}` : 'Unknown';
+    const securityClass = details && details.security_class ? details.security_class : '';
+
+    // Station fetch (NPC stations from ESI system details)
+    const stationIds = (details && details.stations) ? details.stations : [];
+    const stationDataArr = await Promise.all(stationIds.slice(0, 10).map(id => getStationInfo(id)));
+    const validStations = stationDataArr.filter(Boolean);
+
+    // Sovereignty lookup
+    const sovEntry = Array.isArray(sovMap) ? sovMap.find(s => s.system_id === system.system_id) : null;
+    let sovHtml = '';
+    if (sovEntry && (sovEntry.alliance_id || sovEntry.corporation_id || sovEntry.faction_id)) {
+      const [allianceName, corpName] = await Promise.all([
+        getAllianceName(sovEntry.alliance_id),
+        getCorpName(sovEntry.corporation_id)
+      ]);
+      const parts = [];
+      if (allianceName) parts.push(`<span class="sov-label">Alliance:</span> <span class="sov-value">${escapeHtml(allianceName)}</span>`);
+      if (corpName) parts.push(`<span class="sov-label">Corp:</span> <span class="sov-value">${escapeHtml(corpName)}</span>`);
+      if (sovEntry.faction_id) parts.push(`<span class="sov-label">Faction ID:</span> <span class="sov-value">${sovEntry.faction_id}</span>`);
+      if (parts.length) {
+        sovHtml = `
+          <div class="info-section">
+            <h3 class="section-header">Sovereignty</h3>
+            <div class="sov-grid">${parts.map(p => `<div class="sov-row">${p}</div>`).join('')}</div>
+          </div>`;
+      }
     }
 
-    outputDiv.innerHTML = `<p>Fetching kills and jumps for <b>${escapeHtml(system.system)}</b>...</p>`;
+    // NPC stations table
+    let stationsHtml = '';
+    if (validStations.length) {
+      const rows = validStations.map(st => {
+        const services = formatServices(st.services);
+        return `<tr>
+          <td>${escapeHtml(st.name)}</td>
+          <td>${escapeHtml(st.type_id ? `Type ${st.type_id}` : 'Unknown')}</td>
+          <td class="services-cell">${escapeHtml(services)}</td>
+        </tr>`;
+      }).join('');
+      stationsHtml = `
+        <div class="info-section">
+          <h3 class="section-header">NPC Stations (${validStations.length})</h3>
+          <div class="table-scroll">
+            <table class="data-table">
+              <thead><tr><th>Name</th><th>Type</th><th>Services</th></tr></thead>
+              <tbody>${rows}</tbody>
+            </table>
+          </div>
+        </div>`;
+    } else {
+      stationsHtml = `
+        <div class="info-section">
+          <h3 class="section-header">NPC Stations</h3>
+          <p class="no-data">No NPC stations in this system.</p>
+        </div>`;
+    }
 
-    try {
-      const jumpsRes = await fetch('https://esi.evetech.net/latest/universe/system_jumps/?datasource=tranquility');
-      const jumpsData = await jumpsRes.json();
-      const systemJumpsObj = Array.isArray(jumpsData) ? jumpsData.find(j => j.system_id === system.system_id) : null;
-      const jumps = systemJumpsObj ? (systemJumpsObj.ship_jumps || 0) : 0;
-      const sec = parseFloat(system.security_status.toFixed(1)).toFixed(1);
-      const cls = secClass(sec);
-      const kills = await getPvpKills(system.system_id);
-      const killClass = (kills >= 5) ? 'kills-high' : "";
+    // Monthly kill history for chart
+    let monthlyKills = null;
+    if (statsRaw && statsRaw.months) {
+      monthlyKills = {};
+      for (const [key, val] of Object.entries(statsRaw.months)) {
+        const year = key.substring(0, 4);
+        const month = key.substring(4, 6);
+        monthlyKills[`${year}-${month}`] = val.shipsDestroyed || 0;
+      }
+    }
 
-      outputDiv.innerHTML = `
-        <p><b>Name:</b> ${escapeHtml(system.system)}</p>
-        <p><b>Constellation:</b> ${escapeHtml(system.constellation || 'Unknown')}</p>
-        <p><b>Region:</b> ${escapeHtml(system.region || 'Unknown')}</p>
-        <p><b>Security Status:</b> <span class="${cls}">${sec}</span></p>
-        <p><b>Kills (last hour):</b> <span class="${killClass}">${kills}</span></p>
-        <p><b>Jumps (last hour):</b> ${jumps}</p>
-        <p><b><a href="https://zkillboard.com/system/${system.system_id}/" target="_blank">zKillboard</a></p>
-      `;
-    } catch (err) {
-      console.error(err);
-      outputDiv.innerHTML = '<p>Error fetching kills/jumps. See console.</p>';
+    // Activity bar visual (jumps + kills gauge)
+    const maxJumpsBar = Math.max(jumps, 1);
+    const maxKillsBar = Math.max(pvpKills, 1);
+    const jumpsBarPct = Math.min(100, (jumps / Math.max(jumps, 100)) * 100).toFixed(0);
+    const killsBarPct = Math.min(100, (pvpKills / Math.max(pvpKills, 10)) * 100).toFixed(0);
+
+    outputDiv.innerHTML = `
+      <div class="system-output">
+        <!-- Header -->
+        <div class="system-header">
+          <h2 class="system-name">${escapeHtml(system.system)}</h2>
+          <span class="sec-badge ${cls}">${sec} &mdash; ${escapeHtml(label)}</span>
+          ${securityClass ? `<span class="sec-class-badge">Class ${escapeHtml(securityClass)}</span>` : ''}
+        </div>
+
+        <!-- Overview cards -->
+        <div class="stat-cards">
+          <div class="stat-card">
+            <div class="stat-label">Region</div>
+            <div class="stat-value">${escapeHtml(system.region || 'Unknown')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Constellation</div>
+            <div class="stat-value">${escapeHtml(system.constellation || 'Unknown')}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Planets</div>
+            <div class="stat-value">${planetCount}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">NPC Stations</div>
+            <div class="stat-value">${validStations.length}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Kills (1h)</div>
+            <div class="stat-value ${killClass(pvpKills)}">${pvpKills}</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">Jumps (1h)</div>
+            <div class="stat-value">${jumps}</div>
+          </div>
+        </div>
+
+        <!-- Activity bars -->
+        <div class="info-section">
+          <h3 class="section-header">Current Activity</h3>
+          <div class="activity-row">
+            <span class="activity-label">Jumps</span>
+            <div class="activity-bar-wrap">
+              <div class="activity-bar jumps-bar" style="width: ${jumpsBarPct}%"></div>
+            </div>
+            <span class="activity-count">${jumps}</span>
+          </div>
+          <div class="activity-row">
+            <span class="activity-label">PvP Kills</span>
+            <div class="activity-bar-wrap">
+              <div class="activity-bar kills-bar" style="width: ${killsBarPct}%"></div>
+            </div>
+            <span class="activity-count ${killClass(pvpKills)}">${pvpKills}</span>
+          </div>
+        </div>
+
+        ${sovHtml}
+
+        ${stationsHtml}
+
+        <!-- Kill history chart -->
+        <div class="info-section" id="chartSection" style="display: none;">
+          <h3 class="section-header">Kill History (monthly)</h3>
+          <div style="position: relative; width: 100%; height: 220px;">
+            <canvas id="killHistoryChart" role="img" aria-label="Monthly kill history bar chart for ${escapeHtml(system.system)}">Kill history chart loading...</canvas>
+          </div>
+        </div>
+
+        <!-- External links -->
+        <div class="info-section links-section">
+          <a href="https://zkillboard.com/system/${system.system_id}/" target="_blank" class="ext-link">zKillboard</a>
+          <a href="https://evemaps.dotlan.net/system/${encodeURIComponent(system.system)}" target="_blank" class="ext-link">Dotlan</a>
+          <a href="https://www.eveeye.com/?s=${encodeURIComponent(system.system)}" target="_blank" class="ext-link">EveEye</a>
+        </div>
+      </div>
+    `;
+
+    // Chart.js -- inject if not already loaded, then build chart
+    if (monthlyKills && Object.keys(monthlyKills).length) {
+      document.getElementById('chartSection').style.display = 'block';
+      if (typeof Chart === 'undefined') {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js';
+        script.onload = () => buildKillChart(monthlyKills);
+        document.head.appendChild(script);
+      } else {
+        buildKillChart(monthlyKills);
+      }
     }
   }
 
