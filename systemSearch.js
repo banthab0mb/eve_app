@@ -15,15 +15,26 @@
   }
 
   let systems = [];
-  let systemsLoaded = false;
+  let factions = []; 
+  let dataLoaded = false; 
   let currentFocus = -1;
   let killChart = null;
+  
+  // Local runtime cache to avoid calling ESI repeatedly for the same item types
+  const typeNameCache = {}; 
 
-  fetch('systems.json')
-    .then(res => res.json())
-    .then(data => {
-      systems = data;
-      systemsLoaded = true;
+  Promise.all([
+    fetch('systems.json').then(res => res.json()),
+    fetch('factions.json').then(res => res.json()).catch(err => {
+      console.warn('Failed to load factions.json locally, falling back:', err);
+      return []; 
+    })
+  ])
+    .then(([systemsData, factionsData]) => {
+      systems = systemsData;
+      factions = factionsData;
+      dataLoaded = true;
+
       const urlParams = new URLSearchParams(window.location.search);
       const sysFromURL = urlParams.get('system');
       if (sysFromURL) {
@@ -31,7 +42,7 @@
         runLookup();
       }
     })
-    .catch(err => console.error('Failed to load systems.json:', err));
+    .catch(err => console.error('Critical error loading local configuration files:', err));
 
   function secClass(sec) {
     if (sec >= 1.0) return "sec-blue";
@@ -71,7 +82,7 @@
   function renderSuggestions(query) {
     suggestionsDiv.innerHTML = '';
     currentFocus = -1;
-    if (!query || !systemsLoaded) { hideSuggestions(); return; }
+    if (!query || !dataLoaded) { hideSuggestions(); return; }
     const matches = systems.filter(s => s.system.toLowerCase().startsWith(query)).slice(0, 12);
     if (!matches.length) { hideSuggestions(); return; }
     const rect = input.getBoundingClientRect();
@@ -219,6 +230,30 @@
     } catch { return null; }
   }
 
+  function getLocalFactionName(factionId) {
+    if (!factionId || !factions.length) return null;
+    const match = factions.find(f => f.faction_id === factionId);
+    return match ? match.name : null;
+  }
+
+  // --- REFINED: Targets the type_id endpoint directly to grab item names ---
+  async function getTypeName(typeId) {
+    if (!typeId) return 'Unknown';
+    if (typeNameCache[typeId]) return typeNameCache[typeId];
+    try {
+      // Direct call to universe/types/{type_id}
+      const res = await fetch(`https://esi.evetech.net/latest/universe/types/${typeId}/?datasource=tranquility`);
+      const d = await res.json();
+      if (d && d.name) {
+        typeNameCache[typeId] = d.name; // Cache the string directly
+        return d.name;
+      }
+      return `Type ${typeId}`;
+    } catch { 
+      return `Type ${typeId}`; 
+    }
+  }
+
   function formatServices(services) {
     if (!services || !services.length) return 'None';
     const labels = {
@@ -303,7 +338,7 @@
   async function runLookup() {
     const name = input.value.trim().toLowerCase();
     if (!name) return;
-    if (!systemsLoaded) { outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>'; return; }
+    if (!dataLoaded) { outputDiv.innerHTML = '<p>Systems data still loading, please wait...</p>'; return; }
     updateURL(name);
 
     const system = systems.find(s => s.system.toLowerCase() === name);
@@ -345,10 +380,19 @@
         getAllianceName(sovEntry.alliance_id),
         getCorpName(sovEntry.corporation_id)
       ]);
+      
+      const factionName = getLocalFactionName(sovEntry.faction_id);
+
       const parts = [];
       if (allianceName) parts.push(`<span class="sov-label">Alliance:</span> <span class="sov-value">${escapeHtml(allianceName)}</span>`);
       if (corpName) parts.push(`<span class="sov-label">Corp:</span> <span class="sov-value">${escapeHtml(corpName)}</span>`);
-      if (sovEntry.faction_id) parts.push(`<span class="sov-label">Faction ID:</span> <span class="sov-value">${sovEntry.faction_id}</span>`);
+      
+      if (factionName) {
+        parts.push(`<span class="sov-label">Faction:</span> <span class="sov-value">${escapeHtml(factionName)}</span>`);
+      } else if (sovEntry.faction_id) {
+        parts.push(`<span class="sov-label">Faction ID:</span> <span class="sov-value">${sovEntry.faction_id}</span>`);
+      }
+
       if (parts.length) {
         sovHtml = `
           <div class="info-section">
@@ -358,14 +402,20 @@
       }
     }
 
+    // Resolve all type IDs to their explicit string values via ESI context maps
+    const stationTypeNames = await Promise.all(
+      validStations.map(st => getTypeName(st.type_id))
+    );
+
     // NPC stations table
     let stationsHtml = '';
     if (validStations.length) {
-      const rows = validStations.map(st => {
+      const rows = validStations.map((st, index) => {
         const services = formatServices(st.services);
+        const resolvedTypeName = stationTypeNames[index];
         return `<tr>
           <td>${escapeHtml(st.name)}</td>
-          <td>${escapeHtml(st.type_id ? `Type ${st.type_id}` : 'Unknown')}</td>
+          <td>${escapeHtml(resolvedTypeName)}</td>
           <td class="services-cell">${escapeHtml(services)}</td>
         </tr>`;
       }).join('');
@@ -406,14 +456,12 @@
 
     outputDiv.innerHTML = `
       <div class="system-output">
-        <!-- Header -->
         <div class="system-header">
           <h2 class="system-name">${escapeHtml(system.system)}</h2>
           <span class="sec-badge ${cls}">${sec} &mdash; ${escapeHtml(label)}</span>
           ${securityClass ? `<span class="sec-class-badge">Class ${escapeHtml(securityClass)}</span>` : ''}
         </div>
 
-        <!-- Overview cards -->
         <div class="stat-cards">
           <div class="stat-card">
             <div class="stat-label">Region</div>
@@ -441,7 +489,6 @@
           </div>
         </div>
 
-        <!-- Activity bars -->
         <div class="info-section">
           <h3 class="section-header">Current Activity</h3>
           <div class="activity-row">
@@ -464,7 +511,6 @@
 
         ${stationsHtml}
 
-        <!-- Kill history chart -->
         <div class="info-section" id="chartSection" style="display: none;">
           <h3 class="section-header">Kill History (monthly)</h3>
           <div style="position: relative; width: 100%; height: 220px;">
@@ -472,7 +518,6 @@
           </div>
         </div>
 
-        <!-- External links -->
         <div class="info-section links-section">
           <a href="https://zkillboard.com/system/${system.system_id}/" target="_blank" class="ext-link">zKillboard</a>
           <a href="https://evemaps.dotlan.net/system/${encodeURIComponent(system.system)}" target="_blank" class="ext-link">Dotlan</a>
