@@ -20237,7 +20237,7 @@
   {
     "id": 99014989,
     "name": "Planetside Infinite",
-    "ticker": "PS-I"
+    "ticker": "PSI"
   },
   {
     "id": 99014990,
@@ -20358,5 +20358,105 @@
     "id": 99015013,
     "name": "ORES 'R' US",
     "ticker": "ORRU"
+  },
+  {
+    "id": 99015014,
+    "name": "Seahorse Holdings",
+    "ticker": "AQUA"
+  },
+  {
+    "id": 99015015,
+    "name": "Astral Menagerie",
+    "ticker": "ASTRA"
+  },
+  {
+    "id": 99015016,
+    "name": "Slide On Contact",
+    "ticker": "SLIDE"
+  },
+  {
+    "id": 99015017,
+    "name": "Fratricide.",
+    "ticker": "AWOX"
+  },
+  {
+    "id": 99015018,
+    "name": "Mining Exploration Recycling Alliance",
+    "ticker": "MERA"
+  },
+  {
+    "id": 99015019,
+    "name": "Izumi Circle",
+    "ticker": "IZUMI"
+  },
+  {
+    "id": 99015020,
+    "name": "Iron Anchor Alliance",
+    "ticker": "IRNA"
+  },
+  {
+    "id": 99015021,
+    "name": "WADCO",
+    "ticker": "WADCO"
+  },
+  {
+    "id": 99015022,
+    "name": "Black Ribbit",
+    "ticker": "BLA"
+  },
+  {
+    "id": 99015023,
+    "name": "Explosive Diplomacy",
+    "ticker": "EXDPL"
+  },
+  {
+    "id": 99015024,
+    "name": "Low Class",
+    "ticker": "LOCO"
+  },
+  {
+    "id": 99015025,
+    "name": "Stellar Aegis",
+    "ticker": "STEL"
+  },
+  {
+    "id": 99015026,
+    "name": "Getting there. Eventually...",
+    "ticker": "SLOTH"
+  },
+  {
+    "id": 99015028,
+    "name": "XIER FULEAIYA Alliance",
+    "ticker": "XIER"
+  },
+  {
+    "id": 99015029,
+    "name": "Localized Apocalypse",
+    "ticker": "LOCAP"
+  },
+  {
+    "id": 99015030,
+    "name": "The Genesis Coalition of EvE",
+    "ticker": "GCE"
+  },
+  {
+    "id": 99015031,
+    "name": "Kor-Azor Research and Mining Inst.",
+    "ticker": "NAH0L"
+  },
+  {
+    "id": 99015032,
+    "name": "Exordium Royal House",
+    "ticker": "EXROH"
+  },
+  {
+    "id": 99015033,
+    "name": "Justice Gas Consortium",
+    "ticker": "JGC"
+  },
+  {
+    "id": 99015034,
+    "name": "Rubicon Alliance Angel of Death.",
+    "ticker": "RBCAD"
   }
 ]
