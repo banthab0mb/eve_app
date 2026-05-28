@@ -269,7 +269,7 @@
       'office-rental': 'Office Rental', 'loyalty-point-store': 'LP Store',
       'navy-offices': 'Navy Offices', 'security-office': 'Security Office',
       'interbus': 'Interbus', 'mission-network': 'Mission Network',
-      'reagent': 'Reagent', 'scanner': 'Scanner',
+      'reagent': 'Reagent', 'scanner': 'Scanner', 'courier-missiong' : 'Courier Missions',
     };
     return services.map(s => labels[s] || s.replace(/-/g, ' ')).join(', ');
   }
