@@ -20458,5 +20458,70 @@
     "id": 99015034,
     "name": "Rubicon Alliance Angel of Death.",
     "ticker": "RBCAD"
+  },
+  {
+    "id": 99015035,
+    "name": "Immortal Continuum",
+    "ticker": "IMCON"
+  },
+  {
+    "id": 99015036,
+    "name": "Always Wrong Mass",
+    "ticker": "A W M"
+  },
+  {
+    "id": 99015037,
+    "name": "LoveTaps",
+    "ticker": "SOS"
+  },
+  {
+    "id": 99015038,
+    "name": "Strange Ether",
+    "ticker": "SEVC"
+  },
+  {
+    "id": 99015039,
+    "name": "ScaryDeadPeople",
+    "ticker": "SCARY"
+  },
+  {
+    "id": 99015041,
+    "name": "Frog Assault Command",
+    "ticker": "FRAC"
+  },
+  {
+    "id": 99015042,
+    "name": "Steele Industrial Consortium",
+    "ticker": "STIC"
+  },
+  {
+    "id": 99015043,
+    "name": "Legally Impaired",
+    "ticker": "BUTTZ"
+  },
+  {
+    "id": 99015044,
+    "name": "The Dantan Project.",
+    "ticker": "DPRO."
+  },
+  {
+    "id": 99015045,
+    "name": "H O S T I L E",
+    "ticker": "HOST"
+  },
+  {
+    "id": 99015046,
+    "name": "Krill Issue Holdings",
+    "ticker": "KRILL"
+  },
+  {
+    "id": 99015047,
+    "name": "Independent Industries for All",
+    "ticker": "IIA"
+  },
+  {
+    "id": 99015048,
+    "name": "Void Engine Consortium",
+    "ticker": "VONGC"
   }
 ]
