@@ -20523,5 +20523,70 @@
     "id": 99015048,
     "name": "Void Engine Consortium",
     "ticker": "VONGC"
+  },
+  {
+    "id": 99015049,
+    "name": "Baltic Pagans",
+    "ticker": "BALTS"
+  },
+  {
+    "id": 99015050,
+    "name": "Egg Related Stipulations",
+    "ticker": "ERST"
+  },
+  {
+    "id": 99015051,
+    "name": "Free State of VAN ZANDT",
+    "ticker": "FSVA"
+  },
+  {
+    "id": 99015052,
+    "name": "schwarze Flotte",
+    "ticker": "SF"
+  },
+  {
+    "id": 99015053,
+    "name": "THE VODOO MATRIX Alliance",
+    "ticker": "VODOO"
+  },
+  {
+    "id": 99015054,
+    "name": "War of the Flea",
+    "ticker": "GUURI"
+  },
+  {
+    "id": 99015055,
+    "name": "The Venomous Crimson Fleet",
+    "ticker": "TVCF"
+  },
+  {
+    "id": 99015056,
+    "name": "Calculated Disorder",
+    "ticker": "C-D"
+  },
+  {
+    "id": 99015057,
+    "name": "The Altered Ecclesiarchy",
+    "ticker": "GANG"
+  },
+  {
+    "id": 99015058,
+    "name": "Aurum Associates",
+    "ticker": "AURUM"
+  },
+  {
+    "id": 99015059,
+    "name": "Cogito Syndicate",
+    "ticker": "ERGO"
+  },
+  {
+    "id": 99015060,
+    "name": "New Eden Maid Cafe",
+    "ticker": "CAFE"
+  },
+  {
+    "id": 99015061,
+    "name": "KURULTAI.",
+    "ticker": "TAMGA"
   }
 ]
