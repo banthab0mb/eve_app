@@ -20658,5 +20658,85 @@
     "id": 99015075,
     "name": "General Industrial Company.",
     "ticker": "GIC."
+  },
+  {
+    "id": 99015076,
+    "name": "Loaded Dice",
+    "ticker": "L"
+  },
+  {
+    "id": 99015077,
+    "name": "Usurper Trucking Co.",
+    "ticker": "USRP"
+  },
+  {
+    "id": 99015078,
+    "name": "CIMMERIA The Industrial Defensive Alliance",
+    "ticker": "CMM"
+  },
+  {
+    "id": 99015079,
+    "name": "Black Quartz Alliance",
+    "ticker": "BQA"
+  },
+  {
+    "id": 99015080,
+    "name": "Liberty and Freedom",
+    "ticker": "LF"
+  },
+  {
+    "id": 99015081,
+    "name": "TIME RELAX",
+    "ticker": "TIMED"
+  },
+  {
+    "id": 99015082,
+    "name": "United State Conglomerate",
+    "ticker": "-USC-"
+  },
+  {
+    "id": 99015083,
+    "name": "Made You Corp Swap",
+    "ticker": "MYCS"
+  },
+  {
+    "id": 99015084,
+    "name": "Hiatus Deluxe.",
+    "ticker": "HIDE"
+  },
+  {
+    "id": 99015086,
+    "name": "Ganklift Logistics",
+    "ticker": "LIFT"
+  },
+  {
+    "id": 99015087,
+    "name": "Ultra Lotus's Senate seat of Empirical Ordinance A",
+    "ticker": "SOLD"
+  },
+  {
+    "id": 99015088,
+    "name": "Starshadow Alliance",
+    "ticker": "ASH"
+  },
+  {
+    "id": 99015089,
+    "name": "Shogunate Supreme",
+    "ticker": "SHOGU"
+  },
+  {
+    "id": 99015090,
+    "name": "Obsidian Privateering Consortium",
+    "ticker": "OBSLG"
+  },
+  {
+    "id": 99015091,
+    "name": "The Syndicate 14K",
+    "ticker": "TS"
+  },
+  {
+    "id": 99015092,
+    "name": "Alliance of the Lost",
+    "ticker": "LOST"
   }
 ]
