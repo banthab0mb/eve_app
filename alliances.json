@@ -20738,5 +20738,85 @@
     "id": 99015092,
     "name": "Alliance of the Lost",
     "ticker": "LOST"
+  },
+  {
+    "id": 99015093,
+    "name": "Dark Meridian",
+    "ticker": "SH4D3"
+  },
+  {
+    "id": 99015094,
+    "name": "Divine Void",
+    "ticker": "V10D"
+  },
+  {
+    "id": 99015095,
+    "name": "Wounded Hearts",
+    "ticker": "WOUND"
+  },
+  {
+    "id": 99015096,
+    "name": "Accidental Capital Escalation",
+    "ticker": "ACC"
+  },
+  {
+    "id": 99015098,
+    "name": "Vanguild Group",
+    "ticker": "GUIIG"
+  },
+  {
+    "id": 99015099,
+    "name": "Void Devourers",
+    "ticker": "VD"
+  },
+  {
+    "id": 99015100,
+    "name": "EQUANIMITY WALK",
+    "ticker": "EQWAL"
+  },
+  {
+    "id": 99015101,
+    "name": "Aegis Luminaire",
+    "ticker": "A.E.G"
+  },
+  {
+    "id": 99015102,
+    "name": "Stellar Nomads Alliance",
+    "ticker": "SNA"
+  },
+  {
+    "id": 99015104,
+    "name": "Syndicate Industrial Operations Group",
+    "ticker": "SIOG"
+  },
+  {
+    "id": 99015105,
+    "name": "Obsidian Knives",
+    "ticker": "OBSDN"
+  },
+  {
+    "id": 99015106,
+    "name": "The Pilots Republic of New Eden",
+    "ticker": "PRNE"
+  },
+  {
+    "id": 99015107,
+    "name": "Suspiciously Well-Oiled Gamers",
+    "ticker": "SW0G"
+  },
+  {
+    "id": 99015108,
+    "name": "IDSS Alliance",
+    "ticker": "IDSSA"
+  },
+  {
+    "id": 99015109,
+    "name": "Crystaline Consortium",
+    "ticker": "CRYSC"
+  },
+  {
+    "id": 99015110,
+    "name": "Solarian Dynasty",
+    "ticker": "SOLAD"
   }
 ]
