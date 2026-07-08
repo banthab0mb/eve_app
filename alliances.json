@@ -20818,5 +20818,135 @@
     "id": 99015110,
     "name": "Solarian Dynasty",
     "ticker": "SOLAD"
+  },
+  {
+    "id": 99015111,
+    "name": "Strange Ether",
+    "ticker": "SEVC"
+  },
+  {
+    "id": 99015112,
+    "name": "NO PVP ALLOWED",
+    "ticker": "NOPVP"
+  },
+  {
+    "id": 99015113,
+    "name": "Apex Mercantile",
+    "ticker": "AP.MC"
+  },
+  {
+    "id": 99015114,
+    "name": "Genesis Bulwark",
+    "ticker": "BULWK"
+  },
+  {
+    "id": 99015115,
+    "name": "BadKiss Fanclub",
+    "ticker": "BKF"
+  },
+  {
+    "id": 99015116,
+    "name": "xX Astral Phoenix Xx Alliance",
+    "ticker": "XXA"
+  },
+  {
+    "id": 99015117,
+    "name": "34-yrs-old men get nagged by wives for playing EVE",
+    "ticker": "NVREN"
+  },
+  {
+    "id": 99015118,
+    "name": "JANDY collective",
+    "ticker": "JANDY"
+  },
+  {
+    "id": 99015119,
+    "name": "C . S . A . V . G",
+    "ticker": "CSAVG"
+  },
+  {
+    "id": 99015120,
+    "name": "Dark Strikers",
+    "ticker": "DANG"
+  },
+  {
+    "id": 99015121,
+    "name": "Naraka Protectorate",
+    "ticker": "NARAK"
+  },
+  {
+    "id": 99015122,
+    "name": "Voidforge Crusaders",
+    "ticker": "F0RGE"
+  },
+  {
+    "id": 99015123,
+    "name": "I'll pay a Retri on Tuesday for a Raven Today",
+    "ticker": "P00R"
+  },
+  {
+    "id": 99015125,
+    "name": "Homeworld-Command",
+    "ticker": "HWC"
+  },
+  {
+    "id": 99015126,
+    "name": "O w O What's This",
+    "ticker": "O W O"
+  },
+  {
+    "id": 99015127,
+    "name": "Consortium of Cybernetic Rejects",
+    "ticker": "CCR"
+  },
+  {
+    "id": 99015128,
+    "name": "411-PAIN",
+    "ticker": "P411N"
+  },
+  {
+    "id": 99015129,
+    "name": "ROUGH AS GUTS INC",
+    "ticker": "RAG"
+  },
+  {
+    "id": 99015130,
+    "name": "Free State of VAN ZANDT",
+    "ticker": "FSVD"
+  },
+  {
+    "id": 99015131,
+    "name": "Show Me Your Fits",
+    "ticker": "SMURF"
+  },
+  {
+    "id": 99015132,
+    "name": "Forced Entry Doctrine",
+    "ticker": "FED"
+  },
+  {
+    "id": 99015133,
+    "name": "GOBLIN FLEET",
+    "ticker": "GOBBO"
+  },
+  {
+    "id": 99015134,
+    "name": "Toast Alliance Please Ignore",
+    "ticker": "TOST"
+  },
+  {
+    "id": 99015135,
+    "name": "Playing with Fire",
+    "ticker": "PLAY"
+  },
+  {
+    "id": 99015136,
+    "name": "Keryon Verge",
+    "ticker": "-KV-"
+  },
+  {
+    "id": 99015137,
+    "name": "Agmen Luporum Alliance",
+    "ticker": "AGMEN"
   }
 ]
