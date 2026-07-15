@@ -17746,8 +17746,8 @@
   },
   {
     "id": 99014464,
-    "name": "Zor's Pleasure Hub",
-    "ticker": "ZPHUB"
+    "name": "Exotic Pleasure Hub",
+    "ticker": "EPHUB"
   },
   {
     "id": 99014465,
@@ -20948,5 +20948,95 @@
     "id": 99015137,
     "name": "Agmen Luporum Alliance",
     "ticker": "AGMEN"
+  },
+  {
+    "id": 99015138,
+    "name": "VoidForge",
+    "ticker": "VOID."
+  },
+  {
+    "id": 99015139,
+    "name": "Unstabled",
+    "ticker": "COREX"
+  },
+  {
+    "id": 99015140,
+    "name": "Pantheon .",
+    "ticker": "-EON-"
+  },
+  {
+    "id": 99015141,
+    "name": "The Chosens",
+    "ticker": "THECH"
+  },
+  {
+    "id": 99015142,
+    "name": "Tuskers Holding.",
+    "ticker": "TSKRH"
+  },
+  {
+    "id": 99015143,
+    "name": "Amarr Fleet Alliance",
+    "ticker": "AL33T"
+  },
+  {
+    "id": 99015144,
+    "name": "Intrepid Crossing",
+    "ticker": "IRC"
+  },
+  {
+    "id": 99015145,
+    "name": "The First Covenant",
+    "ticker": "TFCOV"
+  },
+  {
+    "id": 99015146,
+    "name": "The Blood Ravens.",
+    "ticker": "TBR"
+  },
+  {
+    "id": 99015147,
+    "name": "Black Soul's",
+    "ticker": "BS"
+  },
+  {
+    "id": 99015148,
+    "name": "Big Rock Energy",
+    "ticker": "BONK"
+  },
+  {
+    "id": 99015149,
+    "name": "Angel Bordel",
+    "ticker": "BORDO"
+  },
+  {
+    "id": 99015150,
+    "name": "Highsec Harvesters",
+    "ticker": "HSH"
+  },
+  {
+    "id": 99015151,
+    "name": "Misriah Consolidated Holdings",
+    "ticker": "M-CON"
+  },
+  {
+    "id": 99015152,
+    "name": "Post Traumatic Ship Destruction",
+    "ticker": "PTSD"
+  },
+  {
+    "id": 99015153,
+    "name": "Dr Wilsons Alliance",
+    "ticker": "TOP40"
+  },
+  {
+    "id": 99015154,
+    "name": "FrogField Armory Alliance",
+    "ticker": "-FFA-"
+  },
+  {
+    "id": 99015155,
+    "name": "F U R R I E S",
+    "ticker": "PAWWS"
   }
 ]
