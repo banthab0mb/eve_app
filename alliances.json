@@ -21108,5 +21108,85 @@
     "id": 99015169,
     "name": "Escalating Entropy",
     "ticker": "CHA0S"
+  },
+  {
+    "id": 99015170,
+    "name": "Iron Anchor Alliance",
+    "ticker": "IRN"
+  },
+  {
+    "id": 99015171,
+    "name": "Rookie Crewkie.",
+    "ticker": "RKCK"
+  },
+  {
+    "id": 99015172,
+    "name": "Oskar's Food and Sleep Company 2.0",
+    "ticker": "MOPSI"
+  },
+  {
+    "id": 99015173,
+    "name": "WarBeacon.net",
+    "ticker": "WBNET"
+  },
+  {
+    "id": 99015174,
+    "name": "Wayfarers of the Eternal Light",
+    "ticker": "WOTEL"
+  },
+  {
+    "id": 99015175,
+    "name": "Dust Up",
+    "ticker": "6SHOT"
+  },
+  {
+    "id": 99015176,
+    "name": "Miaomiao. Alliance",
+    "ticker": "M.W.M"
+  },
+  {
+    "id": 99015177,
+    "name": "PandemicWhored",
+    "ticker": "PHWHO"
+  },
+  {
+    "id": 99015178,
+    "name": "Lessphere",
+    "ticker": "SPH"
+  },
+  {
+    "id": 99015179,
+    "name": "Random Violence.",
+    "ticker": "-RV-"
+  },
+  {
+    "id": 99015180,
+    "name": "Audanos del vacio",
+    "ticker": "-ADV-"
+  },
+  {
+    "id": 99015181,
+    "name": "Atra Dominus",
+    "ticker": "ATRA"
+  },
+  {
+    "id": 99015182,
+    "name": "Ambition's Call",
+    "ticker": "CALL"
+  },
+  {
+    "id": 99015183,
+    "name": "The Coming Storm",
+    "ticker": "TCS"
+  },
+  {
+    "id": 99015184,
+    "name": "Shoalwater Scoundrels",
+    "ticker": "MIDAB"
+  },
+  {
+    "id": 99015185,
+    "name": "No One Showed",
+    "ticker": "NOSHO"
   }
 ]
