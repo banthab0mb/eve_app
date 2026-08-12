@@ -19726,8 +19726,8 @@
   },
   {
     "id": 99014881,
-    "name": "Drinking Habit",
-    "ticker": "96ABV"
+    "name": "New Eden Alliance 99014881",
+    "ticker": "NEA81"
   },
   {
     "id": 99014882,
@@ -21263,5 +21263,70 @@
     "id": 99015202,
     "name": "Ordo Sanguinis",
     "ticker": "ORSAN"
+  },
+  {
+    "id": 99015203,
+    "name": "IGC Newbees",
+    "ticker": "IGCNB"
+  },
+  {
+    "id": 99015204,
+    "name": "The Doshi",
+    "ticker": "DOSHI"
+  },
+  {
+    "id": 99015206,
+    "name": "Celestial Palace.",
+    "ticker": "CP."
+  },
+  {
+    "id": 99015208,
+    "name": "A T R A X",
+    "ticker": "ATRAX"
+  },
+  {
+    "id": 99015209,
+    "name": "Wrong Crowd",
+    "ticker": "WRD"
+  },
+  {
+    "id": 99015210,
+    "name": "Milky Dragon",
+    "ticker": "NLONG"
+  },
+  {
+    "id": 99015211,
+    "name": "F L A M I N G O S",
+    "ticker": "FLAMA"
+  },
+  {
+    "id": 99015212,
+    "name": "STAIN IS FOR STAIN PEOPLE ONLY.",
+    "ticker": "STAIN"
+  },
+  {
+    "id": 99015213,
+    "name": "Aether Corsairs",
+    "ticker": "AETHR"
+  },
+  {
+    "id": 99015214,
+    "name": "O w O What's This",
+    "ticker": "O W O"
+  },
+  {
+    "id": 99015215,
+    "name": "Smash and Grab.",
+    "ticker": ".GRAB"
+  },
+  {
+    "id": 99015216,
+    "name": "Yeah Nah Federation",
+    "ticker": "YEAH"
+  },
+  {
+    "id": 99015217,
+    "name": "Placid Mercantile Consortium",
+    "ticker": "PMC"
   }
 ]
