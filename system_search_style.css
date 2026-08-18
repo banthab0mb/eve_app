@@ -8,7 +8,6 @@ html, body {
   color: #e0e0e0;
   display: flex;
   flex-direction: column;
-  align-items: center;
 }
 
 /* Fonts */
@@ -99,8 +98,18 @@ nav.top-nav a:hover {
 }
 
 /* Main Content */
-main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
-.container { max-width: 600px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important; }
+main {
+  flex: 1;
+  padding: 20px;
+  font-family: "Shentox-Regular", sans-serif !important;
+  display: flex;
+  justify-content: center;
+}
+.container {
+  width: min(100%, 600px);
+  margin: 0 auto;
+  font-family: "Shentox-Regular", sans-serif !important;
+}
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
