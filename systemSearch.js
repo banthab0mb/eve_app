@@ -236,7 +236,6 @@
     return match ? match.name : null;
   }
 
-  // --- REFINED: Targets the type_id endpoint directly to grab item names ---
   async function getTypeName(typeId) {
     if (!typeId) return 'Unknown';
     if (typeNameCache[typeId]) return typeNameCache[typeId];
@@ -269,7 +268,7 @@
       'office-rental': 'Office Rental', 'loyalty-point-store': 'LP Store',
       'navy-offices': 'Navy Offices', 'security-office': 'Security Office',
       'interbus': 'Interbus', 'mission-network': 'Mission Network',
-      'reagent': 'Reagent', 'scanner': 'Scanner', 'courier-missiong' : 'Courier Missions',
+      'reagent': 'Reagent', 'scanner': 'Scanner', 'courier-mission' : 'Courier Missions',
     };
     return services.map(s => labels[s] || s.replace(/-/g, ' ')).join(', ');
   }
