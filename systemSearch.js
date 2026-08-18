@@ -256,13 +256,13 @@
   function formatServices(services) {
     if (!services || !services.length) return 'None';
     const labels = {
-
       'repair-facilities': 'Repair',
       'factory': 'Manufacturing',
       'cloning': 'Cloning',
-      'refinery' : 'Refinery'
+      'refinery': 'Refinery'
     };
-    return services.map(s => labels[s] || s.replace(/-/g, ' ')).join(', ');
+    const known = services.filter(s => labels[s]).map(s => labels[s]);
+    return known.length ? known.join(', ') : 'None';
   }
 
   function buildKillChart(monthlyData) {
