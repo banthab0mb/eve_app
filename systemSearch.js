@@ -256,19 +256,11 @@
   function formatServices(services) {
     if (!services || !services.length) return 'None';
     const labels = {
-      'bounty-missions': 'Bounty Missions', 'assay-office': 'Assay Office',
-      'reprocessing-plant': 'Reprocessing', 'repair-facilities': 'Repair',
-      'factory': 'Manufacturing', 'labratory': 'Research Lab',
-      'laboratory': 'Research Lab', 'market': 'Market',
-      'black-market': 'Black Market', 'stock-exchange': 'Stock Exchange',
-      'cloning': 'Cloning', 'surgery': 'Surgery',
-      'dna-therapy': 'DNA Therapy', 'fitting': 'Fitting',
-      'news': 'News', 'storage': 'Storage',
-      'insurance': 'Insurance', 'docking': 'Docking',
-      'office-rental': 'Office Rental', 'loyalty-point-store': 'LP Store',
-      'navy-offices': 'Navy Offices', 'security-office': 'Security Office',
-      'interbus': 'Interbus', 'mission-network': 'Mission Network',
-      'reagent': 'Reagent', 'scanner': 'Scanner', 'courier-mission' : 'Courier Missions',
+
+      'repair-facilities': 'Repair',
+      'factory': 'Manufacturing',
+      'cloning': 'Cloning',
+      'refinery' : 'Refinery'
     };
     return services.map(s => labels[s] || s.replace(/-/g, ' ')).join(', ');
   }
