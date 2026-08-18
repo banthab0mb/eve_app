@@ -1,7 +1,6 @@
 /* Base Reset + Layout */
 html, body {
-  min-height: 100%;
-  width: 100%;
+  height: 100%;
   margin: 0;
   font-family: "Shentox-Regular", sans-serif !important;
   background: #0d0d0d;
@@ -98,19 +97,8 @@ nav.top-nav a:hover {
 }
 
 /* Main Content */
-main {
-  flex: 1;
-  padding: 20px;
-  font-family: "Shentox-Regular", sans-serif !important;
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-.container {
-  width: min(100%, 600px);
-  margin: 0 auto;
-  font-family: "Shentox-Regular", sans-serif !important;
-}
+main { flex: 1; padding: 20px; font-family: "Shentox-Regular", sans-serif !important; }
+.container { max-width: 600px; margin: 0 auto; font-family: "Shentox-Regular", sans-serif !important; }
 
 h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
 
@@ -142,7 +130,6 @@ h2 { margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; }
   border: 1px solid #555;
   border-radius: 4px;
   font-family: "Shentox-Regular", sans-serif !important;
-  align-self: flex-start;
 }
 
 /* Suggestions dropdown */
