@@ -21328,5 +21328,105 @@
     "id": 99015217,
     "name": "Placid Mercantile Consortium",
     "ticker": "PMC"
+  },
+  {
+    "id": 99015218,
+    "name": "revelations of war",
+    "ticker": "RVLS"
+  },
+  {
+    "id": 99015219,
+    "name": "Total Blackout.",
+    "ticker": "TBK."
+  },
+  {
+    "id": 99015220,
+    "name": "Mining paradise",
+    "ticker": "MP"
+  },
+  {
+    "id": 99015221,
+    "name": "Vargurs Ate My Kronos",
+    "ticker": "DMZ2U"
+  },
+  {
+    "id": 99015222,
+    "name": "Squid Empire",
+    "ticker": "S Q E"
+  },
+  {
+    "id": 99015224,
+    "name": "Poseidon Front",
+    "ticker": "PFRNT"
+  },
+  {
+    "id": 99015226,
+    "name": "Novum Alvearium Alliance",
+    "ticker": "NOVUM"
+  },
+  {
+    "id": 99015227,
+    "name": "Blizzard Academy for Wormholes",
+    "ticker": "BAFW"
+  },
+  {
+    "id": 99015228,
+    "name": "R.E.N.E.G.A.D.E.",
+    "ticker": "3-112"
+  },
+  {
+    "id": 99015229,
+    "name": "Loner Ascendancy Network",
+    "ticker": "LAN"
+  },
+  {
+    "id": 99015230,
+    "name": "CUintheNT.",
+    "ticker": "-NT-"
+  },
+  {
+    "id": 99015231,
+    "name": "Isekai Industry",
+    "ticker": "I-IND"
+  },
+  {
+    "id": 99015232,
+    "name": "Catlas Tor LoveAppreciation Society UseCodeWIZARD",
+    "ticker": "CTLAS"
+  },
+  {
+    "id": 99015233,
+    "name": "Error 404 Alliance Not Found",
+    "ticker": "ERROR"
+  },
+  {
+    "id": 99015234,
+    "name": "Aeternum Ignis",
+    "ticker": "XIGN"
+  },
+  {
+    "id": 99015235,
+    "name": "Deathless Cartel",
+    "ticker": "ANGEL"
+  },
+  {
+    "id": 99015236,
+    "name": "Space Extraction",
+    "ticker": "SPAC"
+  },
+  {
+    "id": 99015237,
+    "name": "V - VERITAS - V",
+    "ticker": "V"
+  },
+  {
+    "id": 99015238,
+    "name": "Dock Up And Chill",
+    "ticker": "DUAC"
+  },
+  {
+    "id": 99015239,
+    "name": "Drowned Star Combine",
+    "ticker": "DS.C"
   }
 ]
