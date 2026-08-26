@@ -21428,5 +21428,60 @@
     "id": 99015239,
     "name": "Drowned Star Combine",
     "ticker": "DS.C"
+  },
+  {
+    "id": 99015240,
+    "name": "Alliance Pending.",
+    "ticker": "AP..."
+  },
+  {
+    "id": 99015241,
+    "name": "Silver-winged Star",
+    "ticker": "VLSTX"
+  },
+  {
+    "id": 99015242,
+    "name": "Decadent Angels of Exquisite Taste",
+    "ticker": "ANGEL"
+  },
+  {
+    "id": 99015243,
+    "name": "Bureau of Poorly Supervised Truckers",
+    "ticker": "BPST"
+  },
+  {
+    "id": 99015244,
+    "name": "Ndoria United Steel",
+    "ticker": "NUS"
+  },
+  {
+    "id": 99015245,
+    "name": "Dock Up Chill Down",
+    "ticker": "DUCD"
+  },
+  {
+    "id": 99015246,
+    "name": "The Free Miner's Ore Cartel",
+    "ticker": "TFMOC"
+  },
+  {
+    "id": 99015247,
+    "name": "Omega XE Cartel",
+    "ticker": "OXEC"
+  },
+  {
+    "id": 99015248,
+    "name": "Rare.",
+    "ticker": "DXL"
+  },
+  {
+    "id": 99015249,
+    "name": "Technically Operational",
+    "ticker": "TECH"
+  },
+  {
+    "id": 99015250,
+    "name": "Loose Affiliation",
+    "ticker": "LAFF"
   }
 ]
