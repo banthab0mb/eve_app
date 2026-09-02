@@ -21483,5 +21483,70 @@
     "id": 99015250,
     "name": "Loose Affiliation",
     "ticker": "LAFF"
+  },
+  {
+    "id": 99015251,
+    "name": "REDRUM FLEET",
+    "ticker": "-RR-"
+  },
+  {
+    "id": 99015252,
+    "name": "PLEASE - Do Not Disturb",
+    "ticker": "D.N.D"
+  },
+  {
+    "id": 99015253,
+    "name": "The Devil Is A Gentleman.",
+    "ticker": "ANGEL"
+  },
+  {
+    "id": 99015254,
+    "name": "3in1 Alliance",
+    "ticker": "TRIUN"
+  },
+  {
+    "id": 99015255,
+    "name": "New Eden Information Network",
+    "ticker": "NEIN"
+  },
+  {
+    "id": 99015256,
+    "name": "Who Has Point",
+    "ticker": "WHP"
+  },
+  {
+    "id": 99015257,
+    "name": "Brotherhood of Nod..",
+    "ticker": "NOD"
+  },
+  {
+    "id": 99015258,
+    "name": "Mining Permit Enforcement",
+    "ticker": "-MPE-"
+  },
+  {
+    "id": 99015259,
+    "name": "PillageRats",
+    "ticker": "PRATS"
+  },
+  {
+    "id": 99015260,
+    "name": "XL Prophylactics",
+    "ticker": "GIRTH"
+  },
+  {
+    "id": 99015261,
+    "name": "The Idustrial Outfitters",
+    "ticker": "-IO-"
+  },
+  {
+    "id": 99015262,
+    "name": "Dark. Moon",
+    "ticker": "HEIYA"
+  },
+  {
+    "id": 99015263,
+    "name": "Holy Krab",
+    "ticker": "H.B"
   }
 ]
