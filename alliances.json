@@ -18867,7 +18867,7 @@
   {
     "id": 99014699,
     "name": "Recursive Frenzy",
-    "ticker": "GOIDA"
+    "ticker": "Renzy"
   },
   {
     "id": 99014700,
@@ -21548,5 +21548,80 @@
     "id": 99015263,
     "name": "Holy Krab",
     "ticker": "H.B"
+  },
+  {
+    "id": 99015264,
+    "name": "Elysium Alliance",
+    "ticker": "ELYS"
+  },
+  {
+    "id": 99015265,
+    "name": "Ashland Family",
+    "ticker": "AF"
+  },
+  {
+    "id": 99015266,
+    "name": "Turok Holdings",
+    "ticker": "TUR0K"
+  },
+  {
+    "id": 99015267,
+    "name": "SACR4MENT",
+    "ticker": "SCR4M"
+  },
+  {
+    "id": 99015268,
+    "name": "01100101 01110010 01110010 01110001 01110010",
+    "ticker": "ERRQR"
+  },
+  {
+    "id": 99015269,
+    "name": "Bureau of Mining Compliance",
+    "ticker": "BIGMC"
+  },
+  {
+    "id": 99015270,
+    "name": "Fringe Alliance",
+    "ticker": "FH-A"
+  },
+  {
+    "id": 99015271,
+    "name": "Static Watch",
+    "ticker": "NRDS"
+  },
+  {
+    "id": 99015272,
+    "name": "Escalate.",
+    "ticker": "D33Z"
+  },
+  {
+    "id": 99015273,
+    "name": "Marauder Diplomacy",
+    "ticker": "MRDPL"
+  },
+  {
+    "id": 99015274,
+    "name": "The Syndicate Confederation",
+    "ticker": "TSCB"
+  },
+  {
+    "id": 99015275,
+    "name": "Central Core AI",
+    "ticker": "CENT"
+  },
+  {
+    "id": 99015276,
+    "name": "Solarian Dynasty",
+    "ticker": "SOLES"
+  },
+  {
+    "id": 99015277,
+    "name": "Crystaline Consortium",
+    "ticker": "CRYCO"
+  },
+  {
+    "id": 99015278,
+    "name": "Wrong Crowd",
+    "ticker": "WRD"
   }
 ]
