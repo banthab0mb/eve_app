@@ -8471,7 +8471,7 @@
   },
   {
     "id": 99011107,
-    "name": "Great Leap Forward",
+    "name": "New Eden Alliance 99011107",
     "ticker": "GLF"
   },
   {
@@ -21623,5 +21623,110 @@
     "id": 99015278,
     "name": "Wrong Crowd",
     "ticker": "WRD"
+  },
+  {
+    "id": 99015279,
+    "name": "SkyWorkers",
+    "ticker": "SKYW"
+  },
+  {
+    "id": 99015280,
+    "name": "Guardians of the Lotus",
+    "ticker": "GOTL"
+  },
+  {
+    "id": 99015281,
+    "name": "Prometheus Rising.",
+    "ticker": ".P-R."
+  },
+  {
+    "id": 99015282,
+    "name": "Nordheim Hird",
+    "ticker": "NHH"
+  },
+  {
+    "id": 99015283,
+    "name": "Post-Logibidon Rehabilitation Center",
+    "ticker": "BIDON"
+  },
+  {
+    "id": 99015284,
+    "name": "Shakari Dominion",
+    "ticker": "SHAKA"
+  },
+  {
+    "id": 99015285,
+    "name": "Baetylus Industrial Empire Ltd",
+    "ticker": "CAPOS"
+  },
+  {
+    "id": 99015286,
+    "name": "DarkSide Void",
+    "ticker": "DVOID"
+  },
+  {
+    "id": 99015287,
+    "name": "The Bonecollective",
+    "ticker": "BONES"
+  },
+  {
+    "id": 99015288,
+    "name": "The Universe Never Noticed",
+    "ticker": "NOTED"
+  },
+  {
+    "id": 99015289,
+    "name": "Woke-Kapelle",
+    "ticker": "-WOKE"
+  },
+  {
+    "id": 99015290,
+    "name": "Only Holes",
+    "ticker": "ONL"
+  },
+  {
+    "id": 99015291,
+    "name": "Far0ut",
+    "ticker": "LSDX2"
+  },
+  {
+    "id": 99015292,
+    "name": "The Gravity Well",
+    "ticker": "SOKOL"
+  },
+  {
+    "id": 99015293,
+    "name": "Amarr Fleet Alliance",
+    "ticker": "AL33T"
+  },
+  {
+    "id": 99015294,
+    "name": "TIED UP",
+    "ticker": "TIED"
+  },
+  {
+    "id": 99015295,
+    "name": "De Escalate holding",
+    "ticker": "DE E"
+  },
+  {
+    "id": 99015296,
+    "name": "Grudgeworks",
+    "ticker": "GDWK"
+  },
+  {
+    "id": 99015297,
+    "name": "Pax Aurelia",
+    "ticker": "PAURA"
+  },
+  {
+    "id": 99015298,
+    "name": "Solo Player.",
+    "ticker": "SOLO."
+  },
+  {
+    "id": 99015299,
+    "name": "Red Ridings Path",
+    "ticker": "REHO"
   }
 ]
