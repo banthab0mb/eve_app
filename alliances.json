@@ -21823,5 +21823,80 @@
     "id": 99015319,
     "name": "arohanui",
     "ticker": "AROHA"
+  },
+  {
+    "id": 99015320,
+    "name": "Stormakten",
+    "ticker": "STORM"
+  },
+  {
+    "id": 99015321,
+    "name": "Rhodesians Never Die",
+    "ticker": "FNFAL"
+  },
+  {
+    "id": 99015322,
+    "name": "X877 United",
+    "ticker": "X877"
+  },
+  {
+    "id": 99015323,
+    "name": "Engage The Bait",
+    "ticker": "LURE"
+  },
+  {
+    "id": 99015324,
+    "name": "Hellraven Federation",
+    "ticker": "HRFED"
+  },
+  {
+    "id": 99015325,
+    "name": "Archimedes Heavy Logistics Alliance",
+    "ticker": "ARCH"
+  },
+  {
+    "id": 99015326,
+    "name": "115TH UNITED SPACE FORCE",
+    "ticker": "USF"
+  },
+  {
+    "id": 99015328,
+    "name": "PISS GANG",
+    "ticker": "PISS."
+  },
+  {
+    "id": 99015329,
+    "name": "Black Water Federation",
+    "ticker": "BLF"
+  },
+  {
+    "id": 99015330,
+    "name": "The Chiss Ascendancy",
+    "ticker": "CHI-A"
+  },
+  {
+    "id": 99015331,
+    "name": "Armed Resistance Movement of Anoikis",
+    "ticker": "ARM.A"
+  },
+  {
+    "id": 99015332,
+    "name": "Rooks and Queens",
+    "ticker": "RNQ"
+  },
+  {
+    "id": 99015333,
+    "name": "New Horizons Coalition",
+    "ticker": "NHC"
+  },
+  {
+    "id": 99015334,
+    "name": "Ancient Ascendancy",
+    "ticker": "ASCND"
+  },
+  {
+    "id": 99015335,
+    "name": "The Infinity Collective",
+    "ticker": "TIC"
   }
 ]
