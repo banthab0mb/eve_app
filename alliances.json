@@ -21898,5 +21898,65 @@
     "id": 99015335,
     "name": "The Infinity Collective",
     "ticker": "TIC"
+  },
+  {
+    "id": 99015336,
+    "name": "Enigma Ravens",
+    "ticker": "ENIGM"
+  },
+  {
+    "id": 99015337,
+    "name": "The Orlov Family",
+    "ticker": "ORLOV"
+  },
+  {
+    "id": 99015338,
+    "name": "Tesseract Conglomerate",
+    "ticker": "TESCO"
+  },
+  {
+    "id": 99015339,
+    "name": "Dead End Junction",
+    "ticker": "D.E.J"
+  },
+  {
+    "id": 99015340,
+    "name": "Short Bus Mafia",
+    "ticker": "NOH0E"
+  },
+  {
+    "id": 99015341,
+    "name": "Almost Dangerous.",
+    "ticker": "AD"
+  },
+  {
+    "id": 99015342,
+    "name": "Almost Dangerous Holding",
+    "ticker": "ADH"
+  },
+  {
+    "id": 99015343,
+    "name": "Dread and Buried",
+    "ticker": "6FT"
+  },
+  {
+    "id": 99015344,
+    "name": "Niived Kavytan",
+    "ticker": "VEDII"
+  },
+  {
+    "id": 99015345,
+    "name": "Fraggles Rock Alliance",
+    "ticker": "-FRA-"
+  },
+  {
+    "id": 99015346,
+    "name": "Pandoran Astral Assets",
+    "ticker": "PAAMS"
+  },
+  {
+    "id": 99015347,
+    "name": "Consistently Inconsistent",
+    "ticker": "CI"
   }
 ]
