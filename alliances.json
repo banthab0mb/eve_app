@@ -21958,5 +21958,70 @@
     "id": 99015347,
     "name": "Consistently Inconsistent",
     "ticker": "CI"
+  },
+  {
+    "id": 99015348,
+    "name": "Ratel Tribe Alliance",
+    "ticker": "RATEL"
+  },
+  {
+    "id": 99015349,
+    "name": "Fox Paws",
+    "ticker": "00P5."
+  },
+  {
+    "id": 99015350,
+    "name": "The Meridian",
+    "ticker": "MRDN"
+  },
+  {
+    "id": 99015351,
+    "name": "Lexi's Degenerates Alliance",
+    "ticker": "LXDA"
+  },
+  {
+    "id": 99015353,
+    "name": "Hard Neck Kirkizens",
+    "ticker": "HKIRK"
+  },
+  {
+    "id": 99015354,
+    "name": "11th Fleet The Ashen Vanguard",
+    "ticker": "AV"
+  },
+  {
+    "id": 99015355,
+    "name": "Darkwraiths.",
+    "ticker": "EVICT"
+  },
+  {
+    "id": 99015356,
+    "name": "Khanid Aerospace",
+    "ticker": "A3SPA"
+  },
+  {
+    "id": 99015357,
+    "name": "S U B-Z E R O",
+    "ticker": "SUBZ"
+  },
+  {
+    "id": 99015358,
+    "name": "FREE PEOPLES OF PARADISE",
+    "ticker": "CHILL"
+  },
+  {
+    "id": 99015359,
+    "name": "Tossing it DEEP",
+    "ticker": "TOSS"
+  },
+  {
+    "id": 99015360,
+    "name": "We'll Talk About It",
+    "ticker": "SOON"
+  },
+  {
+    "id": 99015361,
+    "name": "Sicarii Avenodi",
+    "ticker": "SIC.A"
   }
 ]

@@ -118483,5 +118483,450 @@
     "id": 98845834,
     "name": "Curse Scan Initiative",
     "ticker": "16A.E"
+  },
+  {
+    "id": 98844775,
+    "name": "Verus North Holding Company",
+    "ticker": "CNCK"
+  },
+  {
+    "id": 98846346,
+    "name": "Wind of Change 2.0",
+    "ticker": "WOC2"
+  },
+  {
+    "id": 98846377,
+    "name": "Galactic Logistics and Orbital Routing Platform",
+    "ticker": "GLAOR"
+  },
+  {
+    "id": 98522213,
+    "name": "Leviathan Appreciation Society",
+    "ticker": "LAS.."
+  },
+  {
+    "id": 98522214,
+    "name": "Ragnarok Appreciation Society",
+    "ticker": "RAS.."
+  },
+  {
+    "id": 98841205,
+    "name": "BanG Dream Our Notes",
+    "ticker": "B.ANG"
+  },
+  {
+    "id": 98846066,
+    "name": "Kalevala Incorp.",
+    "ticker": "INKAV"
+  },
+  {
+    "id": 98845717,
+    "name": "Umbrae Occidentes",
+    "ticker": "UMBRM"
+  },
+  {
+    "id": 98846115,
+    "name": "Moravha Maze Propulsion Labs",
+    "ticker": "MOMAZ"
+  },
+  {
+    "id": 98829896,
+    "name": "Absolutely Special Spacepilots",
+    "ticker": "-AS5-"
+  },
+  {
+    "id": 98840163,
+    "name": "Broken Singularity",
+    "ticker": "BKSIG"
+  },
+  {
+    "id": 98845769,
+    "name": "M2 Contracting and Exchange",
+    "ticker": "M2CAE"
+  },
+  {
+    "id": 98846278,
+    "name": "9 Raven Enterprises",
+    "ticker": "9 RAV"
+  },
+  {
+    "id": 98836845,
+    "name": "No Otter Option",
+    "ticker": "NOPPO"
+  },
+  {
+    "id": 681678992,
+    "name": "Crush Kill n' Destroy",
+    "ticker": "CRUSH"
+  },
+  {
+    "id": 98846348,
+    "name": "Ctrl Alt Defeat.",
+    "ticker": "GGF."
+  },
+  {
+    "id": 98602781,
+    "name": "Trash Pandas of Kaunokka",
+    "ticker": "TPOK"
+  },
+  {
+    "id": 98753557,
+    "name": "mortis victum.",
+    "ticker": "MVICT"
+  },
+  {
+    "id": 98720683,
+    "name": "Free diggers Corporation",
+    "ticker": "FRDIC"
+  },
+  {
+    "id": 98804100,
+    "name": "One plus one equals friends",
+    "ticker": "OPOEF"
+  },
+  {
+    "id": 98719417,
+    "name": "Kamuri Zasso",
+    "ticker": "ZASSO"
+  },
+  {
+    "id": 98844833,
+    "name": "Ohana mining",
+    "ticker": "UKRL"
+  },
+  {
+    "id": 98846043,
+    "name": "ASGARD.UA",
+    "ticker": ".AGR."
+  },
+  {
+    "id": 98611216,
+    "name": "UwU Industry",
+    "ticker": "UVVU-"
+  },
+  {
+    "id": 98773246,
+    "name": "B C B Corporation",
+    "ticker": "B C B"
+  },
+  {
+    "id": 98784429,
+    "name": "CuzOf Mining and Production",
+    "ticker": "CUZOF"
+  },
+  {
+    "id": 98313886,
+    "name": "Galactic Auxiliaris Navalis",
+    "ticker": "-648-"
+  },
+  {
+    "id": 98824910,
+    "name": "Dragons Blood Brotherhood",
+    "ticker": "D.B.B"
+  },
+  {
+    "id": 98845662,
+    "name": "MIAWX LOGISTICS DIV",
+    "ticker": "MWXLD"
+  },
+  {
+    "id": 98746708,
+    "name": "Pilsner Urquel Klub Uznani",
+    "ticker": "PILSN"
+  },
+  {
+    "id": 98737365,
+    "name": "Preload EMP",
+    "ticker": "PLEMP"
+  },
+  {
+    "id": 98839627,
+    "name": "Takshashila",
+    "ticker": "TXILA"
+  },
+  {
+    "id": 98796106,
+    "name": "wwwww00001 Chinses Breeze Peace",
+    "ticker": "WW01"
+  },
+  {
+    "id": 98837623,
+    "name": "DarkForces",
+    "ticker": "DK4"
+  },
+  {
+    "id": 98845479,
+    "name": "brianloveyou",
+    "ticker": "BLY-G"
+  },
+  {
+    "id": 98817287,
+    "name": "Industry Manifest Holdings Group",
+    "ticker": "IMHG"
+  },
+  {
+    "id": 98846189,
+    "name": "Black-Cat Enterprises",
+    "ticker": "BCCAT"
+  },
+  {
+    "id": 98546342,
+    "name": "Jennas Hauling",
+    "ticker": "JENAD"
+  },
+  {
+    "id": 98684304,
+    "name": "Deamonfire22 yeet-a's",
+    "ticker": "DF22Y"
+  },
+  {
+    "id": 98842405,
+    "name": "SPIKA 5-sun system",
+    "ticker": "SPIKA"
+  },
+  {
+    "id": 98846287,
+    "name": "Cloaked By Bad Decisions",
+    "ticker": "CBBDS"
+  },
+  {
+    "id": 98846305,
+    "name": "Mostly Nomads.",
+    "ticker": "WRKD"
+  },
+  {
+    "id": 98846270,
+    "name": "Infinite Stars Consortium",
+    "ticker": "NAOM"
+  },
+  {
+    "id": 98784821,
+    "name": "BioSphere Solutions",
+    "ticker": "ID-BS"
+  },
+  {
+    "id": 98835140,
+    "name": "Lobos Herrantes",
+    "ticker": "RNGLF"
+  },
+  {
+    "id": 98846194,
+    "name": "Mammoths did not extinct",
+    "ticker": "MMNTS"
+  },
+  {
+    "id": 98846204,
+    "name": "Far beyond the mountains and seas",
+    "ticker": "FBTMS"
+  },
+  {
+    "id": 98846275,
+    "name": "Wormhole Snack Collective",
+    "ticker": "WSCK"
+  },
+  {
+    "id": 98842452,
+    "name": "FlavourTown",
+    "ticker": "HCOD."
+  },
+  {
+    "id": 98845447,
+    "name": "Knicker-Twisters",
+    "ticker": "KNIC"
+  },
+  {
+    "id": 98845635,
+    "name": "Purjola Mining Corporation 5",
+    "ticker": "PMCC5"
+  },
+  {
+    "id": 98846112,
+    "name": "MyFacebook 018 Corporation",
+    "ticker": "MF018"
+  },
+  {
+    "id": 98846138,
+    "name": "MyFacebook 021 Corporation",
+    "ticker": "MF021"
+  },
+  {
+    "id": 98846139,
+    "name": "MyFacebook 019 Corporation",
+    "ticker": "MF019"
+  },
+  {
+    "id": 98846141,
+    "name": "MyFacebook 020 Corporation",
+    "ticker": "MF020"
+  },
+  {
+    "id": 98846302,
+    "name": "MyFacebook 038 Corporation",
+    "ticker": "MF038"
+  },
+  {
+    "id": 98846303,
+    "name": "MyFacebook 036 Corporation",
+    "ticker": "MF036"
+  },
+  {
+    "id": 98846304,
+    "name": "MyFacebook 034 Corporation",
+    "ticker": "MF034"
+  },
+  {
+    "id": 98846309,
+    "name": "MyFacebook 029 Corporation",
+    "ticker": "MF029"
+  },
+  {
+    "id": 98016754,
+    "name": "Hartman Ornamental Confectionery and Pies",
+    "ticker": "PETIT"
+  },
+  {
+    "id": 98834405,
+    "name": "The Ming Company",
+    "ticker": "MING1"
+  },
+  {
+    "id": 98141430,
+    "name": "Geschenk Geschaefte GmbH",
+    "ticker": "GLIED"
+  },
+  {
+    "id": 451016557,
+    "name": "DOG Comercio Estelar",
+    "ticker": "DOGCE"
+  },
+  {
+    "id": 98772496,
+    "name": "Nonsensically Blingy Fits",
+    "ticker": "ZO0T"
+  },
+  {
+    "id": 98687154,
+    "name": "Adamo Adventum",
+    "ticker": "ADVTR"
+  },
+  {
+    "id": 98846064,
+    "name": "The Syndicate Homeless Company",
+    "ticker": "TSHOC"
+  },
+  {
+    "id": 606743571,
+    "name": "Deaths Right Hand",
+    "ticker": "DRHM"
+  },
+  {
+    "id": 98846240,
+    "name": "Cartographers",
+    "ticker": "1E3"
+  },
+  {
+    "id": 98719606,
+    "name": "Eagle Minning and Manufacturing LLC.",
+    "ticker": "EMAML"
+  },
+  {
+    "id": 98804631,
+    "name": "Lemar Delivery Services",
+    "ticker": "LEM99"
+  },
+  {
+    "id": 98812049,
+    "name": "BAZA TAKTYCZNA PIORUN",
+    "ticker": "PL666"
+  },
+  {
+    "id": 98822045,
+    "name": "ZAKON MARTWEGO DUCHA",
+    "ticker": "ANIO"
+  },
+  {
+    "id": 98837277,
+    "name": "RustAnus Corporation",
+    "ticker": "0DBYT"
+  },
+  {
+    "id": 98845648,
+    "name": "Dead End Enterprises",
+    "ticker": "D.END"
+  },
+  {
+    "id": 98837502,
+    "name": "The FERRING",
+    "ticker": "T-FER"
+  },
+  {
+    "id": 98844659,
+    "name": "Lexi's Degenerates",
+    "ticker": "LXD."
+  },
+  {
+    "id": 98833153,
+    "name": "ANTI-LOGOFF LOGOFF CLUB",
+    "ticker": "RVRSD"
+  },
+  {
+    "id": 98846353,
+    "name": "11th Fleet Strategic Command",
+    "ticker": "11FSC"
+  },
+  {
+    "id": 98846355,
+    "name": "11th Imperial Auxilia",
+    "ticker": "11AUX"
+  },
+  {
+    "id": 98846445,
+    "name": "11th Imperial Shock Fleet",
+    "ticker": "11ISF"
+  },
+  {
+    "id": 98846438,
+    "name": "Explosive Rage Disorder",
+    "ticker": "E-R-D"
+  },
+  {
+    "id": 98845946,
+    "name": "Cosmic Order",
+    "ticker": "CODR."
+  },
+  {
+    "id": 98846401,
+    "name": "Sub-Zero Foundation",
+    "ticker": "SZF"
+  },
+  {
+    "id": 98846448,
+    "name": "Paradise Pottery Preservation Society of Paradise",
+    "ticker": "-PPS"
+  },
+  {
+    "id": 98846582,
+    "name": "Seroius Daddy Issues",
+    "ticker": "DAD-Y"
+  },
+  {
+    "id": 1239553956,
+    "name": "Kazakh Ministry of Wealth Redistribution",
+    "ticker": "KAZAK"
+  },
+  {
+    "id": 98747633,
+    "name": "Super Happy Mega Fun Time Corporation Ltd",
+    "ticker": "HIPRN"
+  },
+  {
+    "id": 98846577,
+    "name": "Tossing it",
+    "ticker": "TOSIT"
+  },
+  {
+    "id": 98846620,
+    "name": "Another Meeting",
+    "ticker": "MEET."
   }
 ]
