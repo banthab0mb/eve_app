@@ -118928,5 +118928,310 @@
     "id": 98846620,
     "name": "Another Meeting",
     "ticker": "MEET."
+  },
+  {
+    "id": 98843803,
+    "name": "Blacksite Logistics Co.",
+    "ticker": "BS LC"
+  },
+  {
+    "id": 1316364801,
+    "name": "Naquaddah-Ion Potential Extravation Group",
+    "ticker": "E2PZ"
+  },
+  {
+    "id": 98846618,
+    "name": "Clover Co. Shipping",
+    "ticker": "C1VSH"
+  },
+  {
+    "id": 98760149,
+    "name": "Armizon",
+    "ticker": "ARMIZ"
+  },
+  {
+    "id": 98259229,
+    "name": "The Crying Panda",
+    "ticker": "T-CPA"
+  },
+  {
+    "id": 98368217,
+    "name": "G Buzz Inc",
+    "ticker": "GBUZZ"
+  },
+  {
+    "id": 98663567,
+    "name": "The True Carebear Syndicate",
+    "ticker": "TTCAS"
+  },
+  {
+    "id": 98844237,
+    "name": "Pi-Hole",
+    "ticker": "PI-HO"
+  },
+  {
+    "id": 98818204,
+    "name": "ZorgCorp",
+    "ticker": "ZRGCO"
+  },
+  {
+    "id": 98498841,
+    "name": "Big ol' Box of Chocolates",
+    "ticker": "BBCEE"
+  },
+  {
+    "id": 98758090,
+    "name": "plex boyos unite",
+    "ticker": "P-L-X"
+  },
+  {
+    "id": 98047606,
+    "name": "The Irregulars",
+    "ticker": "IREGS"
+  },
+  {
+    "id": 98630157,
+    "name": "Seoul City",
+    "ticker": "SEOUL"
+  },
+  {
+    "id": 98630164,
+    "name": "Delusions of Grandur",
+    "ticker": "DE-GR"
+  },
+  {
+    "id": 98630854,
+    "name": "United Mining Council",
+    "ticker": "UM..K"
+  },
+  {
+    "id": 98631538,
+    "name": "Xenel Industrial",
+    "ticker": "XENEL"
+  },
+  {
+    "id": 98706910,
+    "name": "Non Playable Corporation",
+    "ticker": "N0PCS"
+  },
+  {
+    "id": 842886555,
+    "name": "Amarrian Micro Devices",
+    "ticker": "-AMD-"
+  },
+  {
+    "id": 98846629,
+    "name": "Recursive Defense Force",
+    "ticker": "RLDF"
+  },
+  {
+    "id": 98838665,
+    "name": "Galactic Granary Corp",
+    "ticker": "GG.UA"
+  },
+  {
+    "id": 98845721,
+    "name": "Alpha Star Logistical Group",
+    "ticker": "ASLG"
+  },
+  {
+    "id": 98840263,
+    "name": "Palantir Incorporated",
+    "ticker": "WTCHR"
+  },
+  {
+    "id": 98846759,
+    "name": "Blades of Poverty",
+    "ticker": "BOPOV"
+  },
+  {
+    "id": 98050627,
+    "name": "Capsuleers Who Say Ni",
+    "ticker": "CWSN"
+  },
+  {
+    "id": 98259693,
+    "name": "Multi-Tech EFM.",
+    "ticker": "MTEFM"
+  },
+  {
+    "id": 98840717,
+    "name": "Geode Core Industries Limited Liability Company",
+    "ticker": "GCI01"
+  },
+  {
+    "id": 98312402,
+    "name": "Alternative Pharmaceutical Technologies",
+    "ticker": "APT."
+  },
+  {
+    "id": 98844990,
+    "name": "Dominion of the CIA",
+    "ticker": "DOCIA"
+  },
+  {
+    "id": 98155236,
+    "name": "Unsightly Buildup",
+    "ticker": "UNSBD"
+  },
+  {
+    "id": 98845836,
+    "name": "CLOWNCAR",
+    "ticker": "CLONW"
+  },
+  {
+    "id": 98846665,
+    "name": "Mystery Syndicate",
+    "ticker": "MSYN."
+  },
+  {
+    "id": 98831003,
+    "name": "Hkan Corporate",
+    "ticker": "HKCT"
+  },
+  {
+    "id": 98781249,
+    "name": "InterStellar Resource and Salvage",
+    "ticker": "IR.S"
+  },
+  {
+    "id": 98821718,
+    "name": "KeeperOfsleepCorporation",
+    "ticker": "KPUOH"
+  },
+  {
+    "id": 98837534,
+    "name": "Iwakusa Corporation",
+    "ticker": "IWAKU"
+  },
+  {
+    "id": 98839936,
+    "name": "ALVALADE XXI Ind.",
+    "ticker": "S1906"
+  },
+  {
+    "id": 98847057,
+    "name": "Anvil Deep Space Aquisitions",
+    "ticker": "AVII"
+  },
+  {
+    "id": 98677448,
+    "name": "XTRARS",
+    "ticker": "XTRAS"
+  },
+  {
+    "id": 98470930,
+    "name": "eXpanse eXploration",
+    "ticker": "-X2"
+  },
+  {
+    "id": 98777909,
+    "name": "Krayg Holdings LLC",
+    "ticker": "KRAGY"
+  },
+  {
+    "id": 98411213,
+    "name": "Krosus Sork Aktie Bolag",
+    "ticker": "KSAB"
+  },
+  {
+    "id": 715837867,
+    "name": "Bluesun Logistics",
+    "ticker": "BSLOG"
+  },
+  {
+    "id": 1068643422,
+    "name": "Brotherhood of Night Riders",
+    "ticker": "BONR"
+  },
+  {
+    "id": 98701774,
+    "name": "Astra Minerale",
+    "ticker": "7847"
+  },
+  {
+    "id": 98846411,
+    "name": "The Reddington Empire",
+    "ticker": "TRE11"
+  },
+  {
+    "id": 98466542,
+    "name": "K162'S",
+    "ticker": "KI62"
+  },
+  {
+    "id": 98838108,
+    "name": "Vektus Logistics",
+    "ticker": "VKTUS"
+  },
+  {
+    "id": 98843820,
+    "name": "Vektus Holdings",
+    "ticker": "VKTUH"
+  },
+  {
+    "id": 98846627,
+    "name": "5 or 6 Degrees",
+    "ticker": "GIBBR"
+  },
+  {
+    "id": 98846632,
+    "name": "10 Minutes of Talking",
+    "ticker": "YAPP."
+  },
+  {
+    "id": 98525921,
+    "name": "ISK Pirates",
+    "ticker": "ISK.P"
+  },
+  {
+    "id": 98846854,
+    "name": "FAT COQ HOLDING CORPORATION",
+    "ticker": "CKHLD"
+  },
+  {
+    "id": 976157507,
+    "name": "SPORADIC MOVEMENT",
+    "ticker": "SP0RE"
+  },
+  {
+    "id": 98846040,
+    "name": "Hostilities",
+    "ticker": "95275"
+  },
+  {
+    "id": 98842199,
+    "name": "letus gogogo",
+    "ticker": "JDIT"
+  },
+  {
+    "id": 98658329,
+    "name": "Yet Another Holding Corp",
+    "ticker": "YAHC."
+  },
+  {
+    "id": 98839645,
+    "name": "The Riot Formation Member Asset Protection Service",
+    "ticker": "RMAPS"
+  },
+  {
+    "id": 98654053,
+    "name": "Feros Initiative",
+    "ticker": "FER0S"
+  },
+  {
+    "id": 98079389,
+    "name": "Cobra Enterprises",
+    "ticker": "CBRAE"
+  },
+  {
+    "id": 98833647,
+    "name": "Berding Industries",
+    "ticker": "BERDI"
+  },
+  {
+    "id": 98846251,
+    "name": "Naglfar Ghost Fleet",
+    "ticker": "N-G-F"
   }
 ]

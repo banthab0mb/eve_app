@@ -22023,5 +22023,45 @@
     "id": 99015361,
     "name": "Sicarii Avenodi",
     "ticker": "SIC.A"
+  },
+  {
+    "id": 99015362,
+    "name": "Vektus Industrial",
+    "ticker": "VEKIN"
+  },
+  {
+    "id": 99015363,
+    "name": "Zero Minutes of Action",
+    "ticker": ".ZERO"
+  },
+  {
+    "id": 99015364,
+    "name": "FAT COQ.",
+    "ticker": "BWARK"
+  },
+  {
+    "id": 99015365,
+    "name": "Wild Accord",
+    "ticker": "WA"
+  },
+  {
+    "id": 99015366,
+    "name": "slop coded",
+    "ticker": "SLOP"
+  },
+  {
+    "id": 99015367,
+    "name": "letus gogogo Alliance",
+    "ticker": "ASDF"
+  },
+  {
+    "id": 99015369,
+    "name": "Bad Decisions.",
+    "ticker": "-BAD-"
+  },
+  {
+    "id": 99015370,
+    "name": "New Eden Pub Company",
+    "ticker": "PUBCO"
   }
 ]
