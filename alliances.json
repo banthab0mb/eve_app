@@ -18461,8 +18461,8 @@
   },
   {
     "id": 99014614,
-    "name": "InnerZone",
-    "ticker": "INZON"
+    "name": "SupplyZone",
+    "ticker": "SuZon"
   },
   {
     "id": 99014615,
@@ -21981,8 +21981,8 @@
   },
   {
     "id": 99015353,
-    "name": "Hard Neck Kirkizens",
-    "ticker": "HKIRK"
+    "name": "New Eden Alliance 99015353",
+    "ticker": "NEA53"
   },
   {
     "id": 99015354,
@@ -22063,5 +22063,50 @@
     "id": 99015370,
     "name": "New Eden Pub Company",
     "ticker": "PUBCO"
+  },
+  {
+    "id": 99015371,
+    "name": "Astra Militarum.",
+    "ticker": "ASTRM"
+  },
+  {
+    "id": 99015372,
+    "name": "Konvicted.",
+    "ticker": "XKONS"
+  },
+  {
+    "id": 99015373,
+    "name": "Minepire Alliance",
+    "ticker": "MPIRA"
+  },
+  {
+    "id": 99015374,
+    "name": "USDA ALLIANCE",
+    "ticker": "USDAA"
+  },
+  {
+    "id": 99015375,
+    "name": "Blunt Rotation",
+    "ticker": "BLUNT"
+  },
+  {
+    "id": 99015376,
+    "name": "ESS Taxation Bureau",
+    "ticker": "ETB"
+  },
+  {
+    "id": 99015377,
+    "name": "Miku Trade Company",
+    "ticker": "MIKY"
+  },
+  {
+    "id": 99015378,
+    "name": "Chaos Warbands",
+    "ticker": "CHW"
+  },
+  {
+    "id": 99015379,
+    "name": "METR0N0ME",
+    "ticker": "TEMP0"
   }
 ]
