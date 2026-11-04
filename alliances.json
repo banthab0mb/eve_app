@@ -22108,5 +22108,70 @@
     "id": 99015379,
     "name": "METR0N0ME",
     "ticker": "TEMP0"
+  },
+  {
+    "id": 99015380,
+    "name": "Kidnappers and Blackmailers",
+    "ticker": "KDNAP"
+  },
+  {
+    "id": 99015381,
+    "name": "Dawn Collective",
+    "ticker": "DWNC"
+  },
+  {
+    "id": 99015382,
+    "name": "Anoikis Shogunate",
+    "ticker": "ANOIK"
+  },
+  {
+    "id": 99015383,
+    "name": "MERIDIEL RECORDS NEW EDEN",
+    "ticker": "MRNE"
+  },
+  {
+    "id": 99015384,
+    "name": "Hogwarts of EVE Alliance",
+    "ticker": "HOGS"
+  },
+  {
+    "id": 99015385,
+    "name": "PISS GANG",
+    "ticker": "PISS."
+  },
+  {
+    "id": 99015386,
+    "name": "Spliffany and Co.",
+    "ticker": "SPLIF"
+  },
+  {
+    "id": 99015387,
+    "name": "SuddenlyAFirecuckWatchingAFightSittingInThatChair",
+    "ticker": "FIREC"
+  },
+  {
+    "id": 99015388,
+    "name": "Israeli Navy",
+    "ticker": "ETZEL"
+  },
+  {
+    "id": 99015389,
+    "name": "V0ID H0UNDS",
+    "ticker": "D0G5"
+  },
+  {
+    "id": 99015390,
+    "name": "Bomber University Alliance",
+    "ticker": "BOMBU"
+  },
+  {
+    "id": 99015391,
+    "name": "P0NI",
+    "ticker": "P0NI"
+  },
+  {
+    "id": 99015392,
+    "name": "Forced Euthanasia.",
+    "ticker": "D.N.R"
   }
 ]
