@@ -22173,5 +22173,95 @@
     "id": 99015392,
     "name": "Forced Euthanasia.",
     "ticker": "D.N.R"
+  },
+  {
+    "id": 99015393,
+    "name": "Smile 'n' Profit",
+    "ticker": "MONEY"
+  },
+  {
+    "id": 99015394,
+    "name": "Botche",
+    "ticker": "BT"
+  },
+  {
+    "id": 99015395,
+    "name": "The Federation of Unpaid Interns",
+    "ticker": "INTRN"
+  },
+  {
+    "id": 99015396,
+    "name": "S t a r-d u s t",
+    "ticker": "STDST"
+  },
+  {
+    "id": 99015397,
+    "name": "Tortuga Trading Syndicate",
+    "ticker": "TRTGA"
+  },
+  {
+    "id": 99015398,
+    "name": "Genus Ultra Anathema",
+    "ticker": "-GUA-"
+  },
+  {
+    "id": 99015399,
+    "name": "The Tau'va Empire",
+    "ticker": "4GOOD"
+  },
+  {
+    "id": 99015400,
+    "name": "Phalanx.",
+    "ticker": "PHLNX"
+  },
+  {
+    "id": 99015401,
+    "name": "Serpent Cult.",
+    "ticker": "SNAKE"
+  },
+  {
+    "id": 99015402,
+    "name": "Consortium Shipyards",
+    "ticker": "SHIPS"
+  },
+  {
+    "id": 99015403,
+    "name": "Hot Singles In Your Static",
+    "ticker": "HSIYS"
+  },
+  {
+    "id": 99015404,
+    "name": "Armageddon Armada",
+    "ticker": ".A.A."
+  },
+  {
+    "id": 99015405,
+    "name": "Skuldar Aettlingar",
+    "ticker": "SKAE"
+  },
+  {
+    "id": 99015406,
+    "name": "Hot Chocolate Cartel",
+    "ticker": "HCC"
+  },
+  {
+    "id": 99015407,
+    "name": "Ranger Regiment",
+    "ticker": "RR"
+  },
+  {
+    "id": 99015408,
+    "name": "Malevolent Hive",
+    "ticker": "MALEV"
+  },
+  {
+    "id": 99015410,
+    "name": "Defense and Industry Solutions",
+    "ticker": "DIS"
+  },
+  {
+    "id": 99015411,
+    "name": "Bob Wills It.",
+    "ticker": ".BWI."
   }
 ]
