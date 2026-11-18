@@ -22263,5 +22263,75 @@
     "id": 99015411,
     "name": "Bob Wills It.",
     "ticker": ".BWI."
+  },
+  {
+    "id": 99015412,
+    "name": "Hot Chocolate Brewery",
+    "ticker": "HCB"
+  },
+  {
+    "id": 99015413,
+    "name": "2HOT2COLD.",
+    "ticker": "2H2C"
+  },
+  {
+    "id": 99015414,
+    "name": "Arctic Alliance",
+    "ticker": "ARCA"
+  },
+  {
+    "id": 99015416,
+    "name": "PEPE CARTEL",
+    "ticker": "PCRTL"
+  },
+  {
+    "id": 99015417,
+    "name": "Tethys System",
+    "ticker": "TETS"
+  },
+  {
+    "id": 99015418,
+    "name": "Tethys Holding Alliance",
+    "ticker": "THA"
+  },
+  {
+    "id": 99015419,
+    "name": "Lodestone Collective",
+    "ticker": "LODE"
+  },
+  {
+    "id": 99015421,
+    "name": "Cold Horizon",
+    "ticker": "CLDHR"
+  },
+  {
+    "id": 99015422,
+    "name": "Cat Tails Of New Eden",
+    "ticker": "CTONE"
+  },
+  {
+    "id": 99015423,
+    "name": "Stellar Symphony",
+    "ticker": "STESY"
+  },
+  {
+    "id": 99015424,
+    "name": "Chronically Aphended",
+    "ticker": "CA"
+  },
+  {
+    "id": 99015425,
+    "name": "WORLD PVP TEAMS",
+    "ticker": "WPVPT"
+  },
+  {
+    "id": 99015426,
+    "name": "House Atreide's",
+    "ticker": "HOUSE"
+  },
+  {
+    "id": 99015427,
+    "name": "Something Sinister.",
+    "ticker": "SOSI"
   }
 ]
